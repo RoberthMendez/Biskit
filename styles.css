@@ -1,29 +1,23 @@
-*{
-
+* {
   margin: 0;
   padding: 0;
-  box-sizing: border-box ;
-  font-family: 'Inter', sans-serif;
-  
+  box-sizing: border-box;
+  font-family: "Inter", sans-serif;
 }
 
-body{
-
-  background-color: #FCF6F0;
-
+body {
+  background-color: #fcf6f0;
+  margin-top: 4%;
 }
 
-a{
-
+a {
   text-decoration: none;
-
 }
 
 /* ========== ESTILOS DE LA NAVBAR ========== */
 
 /* ----- Generales ----- */
 .navbar {
-
   display: flex;
   position: sticky;
   top: 0;
@@ -32,18 +26,16 @@ a{
   align-items: center;
   padding: 0 !important;
   background: linear-gradient(
-  90deg,
-  #ecebe8 0%,
-  #efeeeb 35%,
-  #f2f1ee 50%,
-  #f5f3f0 65%,
-  #faf8f5 100%
+    90deg,
+    #ecebe8 0%,
+    #efeeeb 35%,
+    #f2f1ee 50%,
+    #f5f3f0 65%,
+    #faf8f5 100%
   );
-
 }
 
 .opciones {
-
   display: flex;
   list-style: none;
   align-items: center;
@@ -52,55 +44,41 @@ a{
   margin-bottom: 0;
   font-size: 0.85rem;
   font-weight: 500;
-
 }
 
-.navbar .container-fluid{
-
+.navbar .container-fluid {
   display: flex;
   flex-wrap: nowrap;
   align-items: center;
   width: 100%;
-
 }
 
-.navbar-collapse{
-
+.navbar-collapse {
   justify-content: flex-end;
-
 }
 
 /* ----- BISKIT ----- */
 
-.navbar-brand{
-
+.navbar-brand {
   display: flex;
   padding: 0;
   margin: 0;
-
 }
 
-.nombre{
-
+.nombre {
   padding-left: 30px;
-
 }
 
-.icono{
-
+.icono {
   padding-left: 10px;
-
 }
 
 /* ----- Toggler (Responsive) ----- */
-.nav-toggle-checkbox{
-
+.nav-toggle-checkbox {
   display: none;
-
 }
 
-.navbar-toggler{
-
+.navbar-toggler {
   border: none;
   margin-left: auto;
   margin-right: 20px;
@@ -111,82 +89,133 @@ a{
   justify-content: center;
   gap: 5px;
   cursor: pointer;
-
 }
 
 .navbar-toggler::before,
 .navbar-toggler::after,
-.navbar-toggler span.toggler-line{
-
-  content: '';
+.navbar-toggler span.toggler-line {
+  content: "";
   display: block;
   width: 22px;
   height: 2px;
-  background-color: #6D6155;
+  background-color: #6d6155;
   border-radius: 2px;
-
 }
 
-.navbar-toggler:focus{
-
+.navbar-toggler:focus {
   box-shadow: none;
-
 }
 
 /* ----- Páginas ----- */
-.paginas a{
-
-  color: #6D6155;
-  margin: 0px 20px; 
+.paginas a {
+  color: #6d6155;
+  margin: 0px 20px;
   transition: color 0.25s ease;
-
 }
 
-.paginas a:hover{
-
-  color: #2B5392;
-
+.paginas a:hover {
+  color: #2b5392;
 }
-
 
 /* ----- Botón Contáctanos ----- */
-.contacto{
-
+.contacto {
   display: flex;
   align-items: center;
   padding: 8px;
-  background-color: #2B5392;
+  background-color: #2b5392;
   border-radius: 12px;
   margin-left: 15px;
   transition: background-color 0.25s ease;
-
 }
 
-.contacto:hover{
-
-  background-color: #1A3A6B;
-
+.contacto:hover {
+  background-color: #1a3a6b;
 }
 
-.contacto p{
-
-  color: #FCF6F0;
+.contacto p {
+  color: #fcf6f0;
   margin-right: 10px;
   margin-left: 17.5px;
-
 }
 
-.contacto img{
-
+.contacto img {
   margin-left: 5px;
+}
 
+/*======================== FOOTER ======================*/
+
+.footer {
+  background-color: #4b4b4b;
+  color: #cfcfcf;
+  text-align: center;
+  padding: 40px 10% 32px;
+}
+
+.footer-logo {
+  justify-content: center;
+  color: #f3f3f3;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.footer-logo img {
+  width: 15%;
+}
+
+.footer-paw {
+  width: 18px;
+  height: 18px;
+}
+
+.footer-text {
+  margin: 4px 0;
+  color: #cfcfcf;
+  font-size: 0.95rem;
+}
+
+.footer-team {
+  margin: 10px 0 0;
+  color: #bdbdbd;
+  font-size: 0.95rem;
+}
+
+.footer-team:hover {
+  color: #f3f3f3;
+}
+
+.footer-divider {
+  width: 60%;
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.15);
+  margin: 18px auto 10px;
+}
+
+.footer-copy {
+  margin: 0;
+  color: #b0b0b0;
+  font-size: 0.85rem;
+}
+
+.footer-heart {
+  color: #bf8552;
+  margin-left: 1px;
+  font-size: 1.2rem;
+}
+
+@media (max-width: 600px) {
+  .footer {
+    padding: 36px 8% 28px;
+  }
+
+  .footer-divider {
+    width: 80%;
+  }
 }
 
 /* ========== RESPONSIVE - NAVBAR ========== */
 
 /* ----- Escritorio: navbar expandida ----- */
 @media (min-width: 992px) {
-
   .navbar-collapse {
     display: flex !important;
     flex: 1 1 0% !important;
@@ -196,12 +225,10 @@ a{
   .navbar-toggler {
     display: none !important;
   }
-
 }
 
 /* ----- Móvil: navbar colapsada ----- */
 @media (max-width: 991.98px) {
-
   /* Responsive: posición relativa para el menú desplegable */
   .navbar {
     position: relative;
@@ -222,11 +249,7 @@ a{
     display: flex !important;
     flex-direction: column;
     align-items: center;
-    background: linear-gradient(
-      180deg,
-      #ecebe8 0%,
-      #f5f3f0 100%
-    );
+    background: linear-gradient(180deg, #ecebe8 0%, #f5f3f0 100%);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     padding: 20px 0;
     clip-path: inset(0 0 100% 0);
@@ -259,5 +282,4 @@ a{
     margin-left: 0;
     margin-top: 15px;
   }
-
 }
