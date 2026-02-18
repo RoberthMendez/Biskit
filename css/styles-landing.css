@@ -314,8 +314,8 @@ h3 {
   content: "";
   position: absolute;
   left: 61px;
-  top: 25px;
-  bottom: 15%;
+  top: 10%;
+  bottom: 12%;
   width: 1px;
   background-color: #4a4a4a59;
   z-index: 1;
@@ -346,7 +346,8 @@ h3 {
   content: attr(data-step);
   position: absolute;
   left: -65px;
-  top: 0;
+  top: 50%;
+  transform: translateY(-50%);
   width: 50px;
   height: 50px;
   background-color: #2b5392;

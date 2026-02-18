@@ -5,9 +5,13 @@
   font-family: "Inter", sans-serif;
 }
 
+html {
+  scroll-padding-top: 13vh;
+  scroll-behavior: smooth;
+}
+
 body {
   background-color: #fcf6f0;
-  margin-top: 4%;
 }
 
 a {
@@ -18,6 +22,7 @@ a {
 
 /* ----- Generales ----- */
 .navbar {
+  margin-top: 0px;
   display: flex;
   position: sticky;
   top: 0;
@@ -149,6 +154,27 @@ a {
   color: #cfcfcf;
   text-align: center;
   padding: 40px 10% 32px;
+  justify-content: space-around;
+}
+
+.footer-columns {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: 40px;
+}
+
+.footer-col + .footer-col {
+  border-left: 3px solid rgba(255, 255, 255, 0.15);
+  padding-left: 40px;
+}
+
+.footer-col-title {
+  color: #f3f3f3;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 12px;
 }
 
 .footer-logo {
@@ -159,12 +185,8 @@ a {
 }
 
 .footer-logo img {
-  width: 15%;
-}
-
-.footer-paw {
-  width: 18px;
-  height: 18px;
+  width: 60%;
+  max-width: 180px;
 }
 
 .footer-text {
@@ -173,21 +195,36 @@ a {
   font-size: 0.95rem;
 }
 
-.footer-team {
-  margin: 10px 0 0;
-  color: #bdbdbd;
-  font-size: 0.95rem;
+#redes-sociales{
+  padding-top: 40px;
+  padding-bottom: 40px;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
 }
 
-.footer-team:hover {
-  color: #f3f3f3;
+.footer-socials {
+  display: flex;
+  gap: 16px;
+  
 }
 
-.footer-divider {
-  width: 60%;
-  height: 1px;
-  background-color: rgba(255, 255, 255, 0.15);
-  margin: 18px auto 10px;
+.footer-socials a{
+  text-align: center;
+  text-justify: center;
+  display: flex;
+  
+  gap: 6px;
+
+}
+
+.footer-social-link {
+  color: #cfcfcf;
+  transition: color 0.2s ease;
+}
+
+.footer-social-link:hover {
+  color: #91bbff;
 }
 
 .footer-copy {
@@ -205,6 +242,27 @@ a {
 @media (max-width: 600px) {
   .footer {
     padding: 36px 8% 28px;
+  }
+
+  .footer-columns {
+    flex-direction: column;
+    text-align: center;
+    gap: 24px;
+  }
+
+  .footer-col + .footer-col {
+    border-left: none;
+    padding-left: 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    padding-top: 24px;
+  }
+
+  .footer-logo img {
+    width: 40%;
+  }
+
+  .footer-socials {
+    justify-content: center;
   }
 
   .footer-divider {
