@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class LandingPageController {
 
-    @GetMapping("")
-    public String LandingPage(@RequestParam String param) {
-        return "index";
-    }
+  @GetMapping("")
+  public String LandingPage() {
+    return "index";
+  }
 
 }
