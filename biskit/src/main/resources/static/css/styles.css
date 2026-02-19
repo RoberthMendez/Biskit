@@ -22,14 +22,10 @@ a {
 
 /* ----- Generales ----- */
 .navbar {
-  margin-top: 0px;
   display: flex;
   position: sticky;
-  top: 0;
-  z-index: 1030;
-  min-height: 12.5vh;
+  height: 12.5vh;
   align-items: center;
-  padding: 0 !important;
   background: linear-gradient(
     90deg,
     #ecebe8 0%,
@@ -46,28 +42,14 @@ a {
   align-items: center;
   margin-left: auto;
   margin-right: 30px;
-  margin-bottom: 0;
   font-size: 0.85rem;
   font-weight: 500;
 }
 
-.navbar .container-fluid {
-  display: flex;
-  flex-wrap: nowrap;
-  align-items: center;
-  width: 100%;
-}
-
-.navbar-collapse {
-  justify-content: flex-end;
-}
-
 /* ----- BISKIT ----- */
 
-.navbar-brand {
+.navbar  a {
   display: flex;
-  padding: 0;
-  margin: 0;
 }
 
 .nombre {
@@ -76,39 +58,6 @@ a {
 
 .icono {
   padding-left: 10px;
-}
-
-/* ----- Toggler (Responsive) ----- */
-.nav-toggle-checkbox {
-  display: none;
-}
-
-.navbar-toggler {
-  border: none;
-  margin-left: auto;
-  margin-right: 20px;
-  padding: 8px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
-  cursor: pointer;
-}
-
-.navbar-toggler::before,
-.navbar-toggler::after,
-.navbar-toggler span.toggler-line {
-  content: "";
-  display: block;
-  width: 22px;
-  height: 2px;
-  background-color: #6d6155;
-  border-radius: 2px;
-}
-
-.navbar-toggler:focus {
-  box-shadow: none;
 }
 
 /* ----- Páginas ----- */
@@ -216,10 +165,15 @@ footer li{
   color: #cfcfcf;
   font-weight: 400;
   margin-bottom: 10px;
-  transition:
-    color 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+  transition: color 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+
+}
+
+#footer-redes svg path{
+
+  transition: 
     fill 0.35s cubic-bezier(0.4, 0, 0.2, 1),
-    stroke 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    stroke 0.35s cubic-bezier(0.4, 0, 0.2, 1);  
 
 }
 
@@ -253,74 +207,4 @@ footer li{
 }
 
 
-/* ========== RESPONSIVE - NAVBAR ========== */
 
-/* ----- Escritorio: navbar expandida ----- */
-@media (min-width: 992px) {
-  .navbar-collapse {
-    display: flex !important;
-    flex: 1 1 0% !important;
-  }
-
-  /* Responsive: ocultar el toggler en escritorio */
-  .navbar-toggler {
-    display: none !important;
-  }
-}
-
-/* ----- Móvil: navbar colapsada ----- */
-@media (max-width: 991.98px) {
-  /* Responsive: posición relativa para el menú desplegable */
-  .navbar {
-    position: relative;
-  }
-
-  /* Responsive: permitir que el contenido se envuelva */
-  .navbar .container-fluid {
-    flex-wrap: wrap;
-  }
-
-  /* Responsive: menú desplegable con animación */
-  .navbar-collapse {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    z-index: 1050;
-    display: flex !important;
-    flex-direction: column;
-    align-items: center;
-    background: linear-gradient(180deg, #ecebe8 0%, #f5f3f0 100%);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    padding: 20px 0;
-    clip-path: inset(0 0 100% 0);
-    transition: clip-path 0.45s cubic-bezier(0.22, 1, 0.36, 1);
-    pointer-events: none;
-  }
-
-  /* Responsive: mostrar menú al activar el checkbox */
-  .nav-toggle-checkbox:checked ~ .navbar-collapse {
-    clip-path: inset(0 0 0 0);
-    pointer-events: auto;
-  }
-
-  /* Responsive: opciones en columna centradas */
-  .opciones {
-    flex-direction: column;
-    align-items: center;
-    margin: 0;
-    padding: 0;
-  }
-
-  /* Responsive: espaciado de las páginas */
-  .paginas a {
-    margin: 10px 0;
-    display: block;
-  }
-
-  /* Responsive: ajustar botón contáctanos */
-  .log-in {
-    margin-left: 0;
-    margin-top: 15px;
-  }
-}
