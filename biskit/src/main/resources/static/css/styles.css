@@ -18,12 +18,17 @@ a {
   text-decoration: none;
 }
 
+
+/*======================== FOOTER ======================*/
+
 /* ========== ESTILOS DE LA NAVBAR ========== */
 
 /* ----- Generales ----- */
 .navbar {
   display: flex;
   position: sticky;
+  top: 0;
+  z-index: 1000;
   height: 12.5vh;
   align-items: center;
   background: linear-gradient(
@@ -95,8 +100,6 @@ a {
 .log-in img {
   margin-left: 5px;
 }
-
-/*======================== FOOTER ======================*/
 
 /* ----- Generales ----- */
 footer {

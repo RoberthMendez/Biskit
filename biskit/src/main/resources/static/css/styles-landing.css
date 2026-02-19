@@ -398,8 +398,7 @@ h3 {
 /*======================== ¿POR QUÉ BISKIT ======================*/
 
 #por-que {
-  margin-top: 1%;
-  margin: 4% 15%;
+  margin: 0 15% 4% 15%;
   display: inline-flex;
   justify-content: space-between;
   gap: 40px;
