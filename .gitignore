@@ -1,0 +1,5 @@
+# Node
+node_modules/
+
+# Tailwind output (se genera automáticamente)
+biskit/src/main/resources/static/css/output.css

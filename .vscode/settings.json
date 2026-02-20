@@ -1,0 +1,6 @@
+{
+  "css.customData": [],
+  "css.lint.unknownAtRules": "ignore",
+  "css.lint.propertyIgnoredDueToDisplay": "ignore"
+
+}
