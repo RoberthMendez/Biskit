@@ -4,76 +4,155 @@
     <!---------- NAVBAR ---------->
     <header
       th:fragment="navbar"
-      class="flex sticky top-0 z-1000 h-[12.5vh] items-center bg-[linear-gradient(90deg,#ecebe8_0%,#efeeeb_35%,#f2f1ee_50%,#f5f3f0_65%,#faf8f5_100%)]">
-      <a href="/" th:href="@{/}" class="flex items-center"
-        ><div class="pl-7.5">
-          <img
-            src="images/marca/nombre.png"
-            class="h-10"
-            th:src="@{/images/marca/nombre.png}"
-            alt="nombre-biskit" />
-        </div>
-        <div class="pl-2.5">
-          <img
-            src="images/marca/icono.png"
-            th:src="@{/images/marca/icono.png}"
-            class="h-10"
-            alt="icono-biskit" /></div
-      ></a>
-      <ul
-        class="flex list-none items-center ml-auto mr-7.5 text-[0.85rem] font-medium">
-        <li>
-          <a
-            href="#hero"
-            class="flex text-[#6d6155] mx-5 [transition:color_0.25s_ease] hover:text-[#2b5392]"
-            >Inicio</a
-          >
-        </li>
-        <li>
-          <a
-            href="#sobre-biskit"
-            class="flex text-[#6d6155] mx-5 [transition:color_0.25s_ease] hover:text-[#2b5392]"
-            >Nosotros</a
-          >
-        </li>
-        <li>
-          <a
-            href="#servicios"
-            class="flex text-[#6d6155] mx-5 [transition:color_0.25s_ease] hover:text-[#2b5392]"
-            >Servicios</a
-          >
-        </li>
-        <li>
-          <a
-            href="#proceso"
-            class="flex text-[#6d6155] mx-5 [transition:color_0.25s_ease] hover:text-[#2b5392]"
-            >Proceso</a
-          >
-        </li>
-        <li>
-          <a
-            href="#contacto"
-            class="flex text-[#6d6155] mx-5 [transition:color_0.25s_ease] hover:text-[#2b5392]"
-            >Contacto</a
-          >
-        </li>
-        <li>
-          <a
-            class="flex items-center p-2 bg-[#2b5392] rounded-xl ml-3.75 [transition:background-color_0.25s_ease] hover:bg-[#1a3a6b]"
-            href="">
+      class="group sticky top-0 z-1000 bg-[linear-gradient(90deg,#ecebe8_0%,#efeeeb_35%,#f2f1ee_50%,#f5f3f0_65%,#faf8f5_100%)]">
+      <!-- Hidden checkbox for pure-CSS toggle -->
+      <input type="checkbox" id="nav-toggle" class="hidden peer" />
+
+      <!-- Top bar -->
+      <div class="flex h-[12.5vh] items-center">
+        <a href="/" th:href="@{/}" class="flex items-center shrink-0">
+          <div class="pl-7.5">
             <img
-              src="/images/usuario.png"
-              th:src="@{/images/usuario.png}"
-              alt="usuario"
-              class="h-4 ml-1.25" />
-            <p class="text-[#fcf6f0] mr-2.5 ml-2.5">Iniciar Sesión</p>
-          </a>
-        </li>
-      </ul>
+              src="images/marca/nombre.png"
+              class="h-10"
+              th:src="@{/images/marca/nombre.png}"
+              alt="nombre-biskit" />
+          </div>
+          <div class="pl-2.5">
+            <img
+              src="images/marca/icono.png"
+              th:src="@{/images/marca/icono.png}"
+              class="h-10"
+              alt="icono-biskit" />
+          </div>
+        </a>
+
+        <!-- Hamburger toggle (label for checkbox, visible below lg) -->
+        <label
+          for="nav-toggle"
+          class="ml-auto mr-7.5 lg:hidden flex flex-col justify-center items-center w-10 h-10 gap-1.5 cursor-pointer"
+          aria-label="Abrir menú">
+          <span
+            class="block w-6 h-0.5 bg-[#6d6155] rounded-full transition-all duration-300 origin-center group-has-checked:translate-y-2 group-has-checked:rotate-45"></span>
+          <span
+            class="block w-6 h-0.5 bg-[#6d6155] rounded-full transition-all duration-300 group-has-checked:opacity-0"></span>
+          <span
+            class="block w-6 h-0.5 bg-[#6d6155] rounded-full transition-all duration-300 origin-center group-has-checked:-translate-y-2 group-has-checked:-rotate-45"></span>
+        </label>
+
+        <!-- Desktop nav (visible from lg up) -->
+        <ul
+          class="hidden lg:flex list-none items-center ml-auto mr-7.5 text-[0.85rem] font-medium">
+          <li>
+            <a
+              href="#hero"
+              class="flex text-[#6d6155] mx-5 [transition:color_0.25s_ease] hover:text-[#2b5392]"
+              >Inicio</a
+            >
+          </li>
+          <li>
+            <a
+              href="#sobre-biskit"
+              class="flex text-[#6d6155] mx-5 [transition:color_0.25s_ease] hover:text-[#2b5392]"
+              >Nosotros</a
+            >
+          </li>
+          <li>
+            <a
+              href="#servicios"
+              class="flex text-[#6d6155] mx-5 [transition:color_0.25s_ease] hover:text-[#2b5392]"
+              >Servicios</a
+            >
+          </li>
+          <li>
+            <a
+              href="#proceso"
+              class="flex text-[#6d6155] mx-5 [transition:color_0.25s_ease] hover:text-[#2b5392]"
+              >Proceso</a
+            >
+          </li>
+          <li>
+            <a
+              href="#contacto"
+              class="flex text-[#6d6155] mx-5 [transition:color_0.25s_ease] hover:text-[#2b5392]"
+              >Contacto</a
+            >
+          </li>
+          <li>
+            <a
+              class="flex items-center p-2 bg-[#2b5392] rounded-xl ml-3.75 [transition:background-color_0.25s_ease] hover:bg-[#1a3a6b]"
+              href="">
+              <img
+                src="/images/usuario.png"
+                th:src="@{/images/usuario.png}"
+                alt="usuario"
+                class="h-4 ml-1.25" />
+              <p class="text-[#fcf6f0] mr-2.5 ml-2.5">Iniciar Sesión</p>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Mobile nav dropdown (slides open via peer-checked on the checkbox) -->
+      <nav
+        class="lg:hidden overflow-hidden max-h-0 peer-checked:max-h-[500px] transition-[max-height] duration-500 ease-in-out bg-[linear-gradient(90deg,#e0dfdb_0%,#e3e2de_35%,#e6e5e1_50%,#e9e7e4_65%,#f0eeeb_100%)] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.1)]">
+        <ul
+          class="flex flex-col items-center list-none text-[0.95rem] font-medium py-6 gap-5">
+          <li>
+            <a
+              href="#hero"
+              class="text-[#6d6155] [transition:color_0.25s_ease] hover:text-[#2b5392]"
+              >Inicio</a
+            >
+          </li>
+          <li>
+            <a
+              href="#sobre-biskit"
+              class="text-[#6d6155] [transition:color_0.25s_ease] hover:text-[#2b5392]"
+              >Nosotros</a
+            >
+          </li>
+          <li>
+            <a
+              href="#servicios"
+              class="text-[#6d6155] [transition:color_0.25s_ease] hover:text-[#2b5392]"
+              >Servicios</a
+            >
+          </li>
+          <li>
+            <a
+              href="#proceso"
+              class="text-[#6d6155] [transition:color_0.25s_ease] hover:text-[#2b5392]"
+              >Proceso</a
+            >
+          </li>
+          <li>
+            <a
+              href="#contacto"
+              class="text-[#6d6155] [transition:color_0.25s_ease] hover:text-[#2b5392]"
+              >Contacto</a
+            >
+          </li>
+          <li>
+            <a
+              class="flex items-center p-2 bg-[#2b5392] rounded-xl [transition:background-color_0.25s_ease] hover:bg-[#1a3a6b]"
+              href="">
+              <img
+                src="/images/usuario.png"
+                th:src="@{/images/usuario.png}"
+                alt="usuario"
+                class="h-4 ml-1.25" />
+              <p class="text-[#fcf6f0] mr-2.5 ml-2.5">Iniciar Sesión</p>
+            </a>
+          </li>
+        </ul>
+      </nav>
     </header>
 
     <!---------- FOOTER ---------->
-    <footer th:fragment="footer" class="flex flex-col bg-[#4b4b4b] text-[#cfcfcf] font-light text-[0.7rem] text-center pt-10 px-10 pb-3.75">
+    <footer
+      th:fragment="footer"
+      class="flex flex-col bg-[#4b4b4b] text-[#cfcfcf] font-light text-[0.7rem] text-center pt-10 px-10 pb-3.75">
       <section class="flex justify-around items-center w-full">
         <article class="flex flex-col" id="footer-marca">
           <div class="flex justify-center">
@@ -110,7 +189,9 @@
           <h3 class="text-left text-[#fcf6f0]">Redes Sociales</h3>
           <ul class="list-none mt-3 text-left">
             <li class="mb-2">
-              <a href="#" class="redes-link flex items-center text-[#cfcfcf] font-normal mb-2.5 [transition:color_0.35s_cubic-bezier(0.4,0,0.2,1)] hover:text-[#8eb3ef]"
+              <a
+                href="#"
+                class="redes-link flex items-center text-[#cfcfcf] font-normal mb-2.5 [transition:color_0.35s_cubic-bezier(0.4,0,0.2,1)] hover:text-[#8eb3ef]"
                 ><svg
                   width="16"
                   height="16"
@@ -144,7 +225,9 @@
               >
             </li>
             <li class="mb-2">
-              <a href="#" class="redes-link flex items-center text-[#cfcfcf] font-normal mb-2.5 [transition:color_0.35s_cubic-bezier(0.4,0,0.2,1)] hover:text-[#8eb3ef]"
+              <a
+                href="#"
+                class="redes-link flex items-center text-[#cfcfcf] font-normal mb-2.5 [transition:color_0.35s_cubic-bezier(0.4,0,0.2,1)] hover:text-[#8eb3ef]"
                 ><svg
                   width="16"
                   height="16"
@@ -169,7 +252,9 @@
               >
             </li>
             <li class="mb-2">
-              <a href="#" class="redes-link flex items-center text-[#cfcfcf] font-normal mb-2.5 [transition:color_0.35s_cubic-bezier(0.4,0,0.2,1)] hover:text-[#8eb3ef]"
+              <a
+                href="#"
+                class="redes-link flex items-center text-[#cfcfcf] font-normal mb-2.5 [transition:color_0.35s_cubic-bezier(0.4,0,0.2,1)] hover:text-[#8eb3ef]"
                 ><svg
                   width="16"
                   height="16"

@@ -21,27 +21,30 @@
       <!---------- HERO BANNER ---------->
       <section
         id="hero"
-        class="hero-bg h-[80vh] bg-cover bg-top bg-no-repeat text-[#fcf6f0] flex flex-col justify-center mb-[4%]">
-        <h2 class="font-bold text-[3.75rem] leading-none w-171.25 mb-5 ml-5">
+        class="hero-bg min-h-[60vh] h-[80vh] sm:h-[70vh] md:h-[60vh] lg:h-[80vh] bg-cover bg-top bg-no-repeat text-[#fcf6f0] flex flex-col justify-center mb-[4%] px-4 sm:px-8 md:px-16 lg:px-20">
+        <h2
+          class="font-bold text-[2.1rem] sm:text-[2.7rem] md:text-[3.2rem] lg:text-[3.75rem] leading-tight md:leading-none max-w-full md:max-w-[700px] mb-4 sm:mb-5 ml-0 sm:ml-2 md:ml-5">
           Cuidamos a tu mascota cuando más lo necesita
         </h2>
-        <p class="font-normal text-[1.25rem] w-167.5 text-[#e9e6e2de] ml-5">
+        <p
+          class="font-normal text-[1.05rem] sm:text-[1.15rem] md:text-[1.25rem] max-w-full md:max-w-[670px] text-[#e9e6e2de] mb-4 sm:mb-6 ml-0 sm:ml-2 md:ml-5">
           Hospitalización veterinaria especializada para perros y gatos con
           atención profesional, monitoreo constante y tratamientos
           personalizados.
         </p>
-        <div>
+        <div
+          class="flex flex-col sm:flex-row gap-4 sm:gap-6 ml-0 sm:ml-2 md:ml-6 mt-2 sm:mt-6 items-start">
           <a
-            class="inline-flex text-[#fcf6f0] font-semibold rounded-xl mt-6.25 ml-6.25 items-center bg-[#2b5392] py-[12.5px] px-7.5 [transition:background-color_0.25s_ease] hover:bg-[#1a3a6b]"
+            class="inline-flex text-[#fcf6f0] font-semibold rounded-xl items-center bg-[#2b5392] py-3 px-7 [transition:background-color_0.25s_ease] hover:bg-[#1a3a6b] text-base sm:text-lg max-w-xs w-auto min-w-[180px] justify-center"
             href="">
             Agendar valoración
             <img
-              class="h-4 pl-[12.5px]"
+              class="h-4 pl-3"
               th:src="@{/images/hero/arrow-forward.png}"
               alt="arrow-forward" />
           </a>
           <a
-            class="inline-flex text-[#fcf6f0] font-semibold rounded-xl mt-6.25 ml-6.25 items-center bg-[#fcf6f029] border border-solid border-[#fcf6f0] py-[12.5px] px-10 [transition:background-color_0.25s_ease] hover:bg-[#fcf6f04d]"
+            class="inline-flex text-[#fcf6f0] font-semibold rounded-xl items-center bg-[#fcf6f029] border border-solid border-[#fcf6f0] py-3 px-8 [transition:background-color_0.25s_ease] hover:bg-[#fcf6f04d] text-base sm:text-lg max-w-xs w-auto min-w-[180px] justify-center"
             href="">
             WhatsApp
           </a>
@@ -52,7 +55,7 @@
         <article
           class="relative ml-30 flex items-center justify-center shrink-0">
           <div
-            class="absolute bg-[#bf8552] w-94 h-94 rounded-full top-9.75"></div>
+            class="absolute bg-[#bf8552] w-94 h-94 rounded-full top-10 left-3"></div>
           <img
             class="relative z-10 max-h-105 w-auto"
             th:src="@{/images/sobre-biskit/sobre.png}"
@@ -689,18 +692,18 @@
         </div>
       </section>
       <!---------- CONTACTO ---------->
-      <section id="contacto" class="bg-[#f6efe7] py-16 px-[8%] text-center">
+      <section id="contacto" class="py-16 px-[8%] text-center">
         <p class="text-[0.85rem] tracking-[2px] font-bold text-[#2b5392] mb-3">
           CONTACTO
         </p>
         <h2
           class="font-[Playfair_Display,serif] text-[2.4rem] text-[#4a4a4a] mb-3">
-          Estamos aqui para ti y tu mascota
+          Estamos aquí para ti y tu mascota
         </h2>
         <p
           class="text-[#6d6155] max-w-180 mx-auto mb-9 text-base leading-relaxed">
-          Contactanos para agendar una valoracion o resolver cualquier duda
-          sobre nuestros servicios de hospitalizacion.
+          Contáctanos para agendar una valoración o resolver cualquier duda
+          sobre nuestros servicios de hospitalización.
         </p>
         <div class="grid grid-cols-[repeat(4,minmax(180px,1fr))] gap-5.5">
           <article
@@ -722,7 +725,7 @@
                   stroke-linejoin="round" />
               </svg>
             </div>
-            <h3 class="text-base text-[#4a4a4a] font-bold">Telefono</h3>
+            <h3 class="text-base text-[#4a4a4a] font-bold">Teléfono</h3>
             <p class="text-[#6d6155] text-[0.95rem]">+57 (319) 123-4567</p>
           </article>
           <article
@@ -766,7 +769,7 @@
                   stroke-width="1.6" />
               </svg>
             </div>
-            <h3 class="text-base text-[#4a4a4a] font-bold">Direccion</h3>
+            <h3 class="text-base text-[#4a4a4a] font-bold">Dirección</h3>
             <p class="text-[#6d6155] text-[0.95rem]">
               Tv 58 #108 - 68. Bogotá D.C. Colombia
             </p>
