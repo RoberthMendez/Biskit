@@ -7,6 +7,7 @@
     <link rel="icon" type="image/png" th:href="@{/images/marca/icono.png}" />
     <link rel="stylesheet" th:href="@{/css/styles.css}" />
     <link rel="stylesheet" th:href="@{/css/styles-landing.css}" />
+    <link rel="stylesheet" th:href="@{/css/output.css}" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -14,38 +15,59 @@
       rel="stylesheet" />
   </head>
   <body>
+    <!---------- NAVBAR ---------->
     <div th:replace="fragmentos::navbar"></div>
     <main>
-      <section id="hero" class="hero">
-        <h2>Cuidamos a tu mascota cuando más lo necesita</h2>
-        <p>
+      <!---------- HERO BANNER ---------->
+      <section
+        id="hero"
+        class="hero-bg h-[80vh] bg-cover bg-top bg-no-repeat text-[#fcf6f0] flex flex-col justify-center mb-[4%]">
+        <h2 class="font-bold text-[3.75rem] leading-none w-171.25 mb-5 ml-5">
+          Cuidamos a tu mascota cuando más lo necesita
+        </h2>
+        <p class="font-normal text-[1.25rem] w-167.5 text-[#e9e6e2de] ml-5">
           Hospitalización veterinaria especializada para perros y gatos con
           atención profesional, monitoreo constante y tratamientos
           personalizados.
         </p>
         <div>
-          <a class="boton-hero agendar" href="">
+          <a
+            class="inline-flex text-[#fcf6f0] font-semibold rounded-xl mt-6.25 ml-6.25 items-center bg-[#2b5392] py-[12.5px] px-7.5 [transition:background-color_0.25s_ease] hover:bg-[#1a3a6b]"
+            href="">
             Agendar valoración
             <img
+              class="h-4 pl-[12.5px]"
               th:src="@{/images/hero/arrow-forward.png}"
-              alt="arrow-forward"
-              height="17.5" />
+              alt="arrow-forward" />
           </a>
-          <a class="boton-hero whatsapp" href=""> WhatsApp </a>
+          <a
+            class="inline-flex text-[#fcf6f0] font-semibold rounded-xl mt-6.25 ml-6.25 items-center bg-[#fcf6f029] border border-solid border-[#fcf6f0] py-[12.5px] px-10 [transition:background-color_0.25s_ease] hover:bg-[#fcf6f04d]"
+            href="">
+            WhatsApp
+          </a>
         </div>
       </section>
-      <section id="sobre-biskit" class="sobre-biskit">
-        <article class="imagen-container">
-          <div class="circulo"></div>
+      <!---------- SOBRE BISKIT ---------->
+      <section id="sobre-biskit" class="flex items-center mb-[4%]">
+        <article
+          class="relative ml-30 flex items-center justify-center shrink-0">
+          <div
+            class="absolute bg-[#bf8552] w-94 h-94 rounded-full top-9.75"></div>
           <img
+            class="relative z-10 max-h-105 w-auto"
             th:src="@{/images/sobre-biskit/sobre.png}"
-            alt="sobre-biskit"
-            height="422" />
+            alt="sobre-biskit" />
         </article>
-        <article class="text-container">
-          <p class="titulo">SOBRE BISKIT</p>
-          <h2>Especialistas en hospitalización veterinaria</h2>
-          <p class="parrafo">
+        <article class="ml-3.75">
+          <p
+            class="font-semibold text-[#2b5392] text-[0.9rem] tracking-[1.5px] mb-2.5 mt-10">
+            SOBRE BISKIT
+          </p>
+          <h2
+            class="text-[2.35rem] font-black leading-none text-[#4a4a4a] w-137.5 mb-10 tracking-[2px]">
+            Especialistas en hospitalización veterinaria
+          </h2>
+          <p class="text-[#6d6155] text-[1.1rem] leading-normal w-160">
             En Biskit nos especializamos en la hospitalización de mascotas que
             requieren cuidados médicos continuos, reposo supervisado y
             tratamientos administrados por profesionales. Nuestro compromiso es
@@ -54,118 +76,161 @@
           </p>
         </article>
       </section>
-      <section class="caracteristicas">
-        <article>
-          <div class="barra"></div>
-          <div class="text-container-2">
-            <h2>Experiencia</h2>
-            <p class="parrafo">
+      <!----- Características ----->
+      <section class="flex justify-between mt-7.5 ml-30 mr-25">
+        <article class="flex items-center">
+          <div class="h-18.75 w-2.75 bg-[#bf85525d] rounded-xl"></div>
+          <div class="flex flex-col justify-center ml-2.5">
+            <h2
+              class="text-[1.4rem] tracking-[1.25px] font-black text-[#4a4a4a] mb-2.5">
+              Experiencia
+            </h2>
+            <p class="text-[#6d6155] text-[0.9rem] w-70">
               Equipo veterinario con años de experiencia en cuidado
               hospitalario.
             </p>
           </div>
         </article>
-        <article>
-          <div class="barra"></div>
-          <div class="text-container-2">
-            <h2>Atención personalizada</h2>
-            <p class="parrafo">
+        <article class="flex items-center">
+          <div class="h-18.75 w-2.75 bg-[#bf85525d] rounded-xl"></div>
+          <div class="flex flex-col justify-center ml-2.5">
+            <h2
+              class="text-[1.4rem] tracking-[1.25px] font-black text-[#4a4a4a] mb-2.5">
+              Atención personalizada
+            </h2>
+            <p class="text-[#6d6155] text-[0.9rem] w-70">
               Cada mascota recibe un plan de tratamiento adaptado a sus
               necesidades.
             </p>
           </div>
         </article>
-        <article>
-          <div class="barra"></div>
-          <div class="text-container-2">
-            <h2>Amor por los Animales</h2>
-            <p class="parrafo">
+        <article class="flex items-center">
+          <div class="h-18.75 w-2.75 bg-[#bf85525d] rounded-xl"></div>
+          <div class="flex flex-col justify-center ml-2.5">
+            <h2
+              class="text-[1.4rem] tracking-[1.25px] font-black text-[#4a4a4a] mb-2.5">
+              Amor por los Animales
+            </h2>
+            <p class="text-[#6d6155] text-[0.9rem] w-70">
               Tratamos a cada paciente como si fuera parte de nuestra familia.
             </p>
           </div>
         </article>
       </section>
-      <section class="servicios" id="servicios">
-        <p class="titulo">NUESTROS SERVICIOS</p>
-        <h2>Cuidado Integral durante la Hospitalización</h2>
-        <p class="parrafo">
+      <!---------- NUESTROS SERVICIOS ---------->
+      <section id="servicios" class="mt-[5%] flex flex-col items-center">
+        <p
+          class="font-semibold text-[#2b5392] text-[0.9rem] tracking-[1.5px] mb-2.5 mt-10">
+          NUESTROS SERVICIOS
+        </p>
+        <h2
+          class="text-[2.35rem] font-semibold leading-none text-[#4a4a4a] w-137.5b-5 text-center">
+          Cuidado Integral durante la Hospitalización
+        </h2>
+        <p
+          class="text-[#6d6155] text-[1.1rem] leading-normal w-160 text-center">
           Ofrecemos todos los servicios necesarios para que tu mascota tenga la
           mejor atención y recuperación posible.
         </p>
-        <article class="servicios-container">
-          <div class="tarjeta">
+        <!----- Tarjetas ----->
+        <article class="max-w-300 py-10 px-5 grid grid-cols-3 gap-8">
+          <div
+            class="bg-[#F8F9FA] rounded-2xl overflow-hidden shadow-[inset_0_0_2px_rgba(0,0,0,0.25)] [transition:translate_0.2s_ease] hover:-translate-y-1">
             <img
               th:src="@{/images/servicios/hospitalizacion.jpg}"
               alt="hospitalizacion"
-              class="tarjeta-imagen" />
-            <div class="tarjeta-texto">
-              <h3>Hospitalización para perros y gatos</h3>
-              <p>
+              class="w-full h-[55%] object-cover" />
+            <div class="py-2.5">
+              <h3 class="text-[#4a4a4a] mb-2.5 font-semibold text-center">
+                Hospitalización para perros y gatos
+              </h3>
+              <p
+                class="text-[0.8rem] text-[#6d6155] text-center mx-3.75 font-normal">
                 Espacios cómodos, seguros y adaptados para la recuperación de tu
                 mascota.
               </p>
             </div>
           </div>
-          <div class="tarjeta">
+          <div
+            class="bg-[#F8F9FA] rounded-2xl overflow-hidden shadow-[inset_0_0_2px_rgba(0,0,0,0.25)] [transition:translate_0.2s_ease] hover:-translate-y-1">
             <img
               th:src="@{/images/servicios/monitoreo.jpg}"
               alt="monitoreo"
-              class="tarjeta-imagen" />
-            <div class="tarjeta-texto">
-              <h3>Monitoreo médico continuo</h3>
-              <p>
+              class="w-full h-[55%] object-cover" />
+            <div class="py-2.5">
+              <h3 class="text-[#4a4a4a] mb-2.5 font-semibold text-center">
+                Monitoreo médico continuo
+              </h3>
+              <p
+                class="text-[0.8rem] text-[#6d6155] text-center mx-3.75 font-normal">
                 Vigilancia constante de signos vitales y estado de salud las 24
                 horas.
               </p>
             </div>
           </div>
-          <div class="tarjeta">
+          <div
+            class="bg-[#F8F9FA] rounded-2xl overflow-hidden shadow-[inset_0_0_2px_rgba(0,0,0,0.25)] [transition:translate_0.2s_ease] hover:-translate-y-1">
             <img
               th:src="@{/images/servicios/administracion.jpg}"
               alt="administracion"
-              class="tarjeta-imagen" />
-            <div class="tarjeta-texto">
-              <h3>Administración de tratamientos</h3>
-              <p>
+              class="w-full h-[55%] object-cover" />
+            <div class="py-2.5">
+              <h3 class="text-[#4a4a4a] mb-2.5 font-semibold text-center">
+                Administración de tratamientos
+              </h3>
+              <p
+                class="text-[0.8rem] text-[#6d6155] text-center mx-3.75 font-normal">
                 Medicamentos y terapias administrados por profesionales con
                 precisión.
               </p>
             </div>
           </div>
-          <div class="tarjeta">
+          <div
+            class="bg-[#F8F9FA] rounded-2xl overflow-hidden shadow-[inset_0_0_2px_rgba(0,0,0,0.25)] [transition:translate_0.2s_ease] hover:-translate-y-1">
             <img
               th:src="@{/images/servicios/supervision.jpg}"
               alt="supervision"
-              class="tarjeta-imagen" />
-            <div class="tarjeta-texto">
-              <h3>Supervisión veterinaria permanente</h3>
-              <p>
+              class="w-full h-[55%] object-cover" />
+            <div class="py-2.5">
+              <h3 class="text-[#4a4a4a] mb-2.5 font-semibold text-center">
+                Supervisión veterinaria permanente
+              </h3>
+              <p
+                class="text-[0.8rem] text-[#6d6155] text-center mx-3.75 font-normal">
                 Nuestro equipo veterinario supervisa cada etapa de la
                 recuperación.
               </p>
             </div>
           </div>
-          <div class="tarjeta">
+          <div
+            class="bg-[#F8F9FA] rounded-2xl overflow-hidden shadow-[inset_0_0_2px_rgba(0,0,0,0.25)] [transition:translate_0.2s_ease] hover:-translate-y-1">
             <img
               th:src="@{/images/servicios/espacios.jpg}"
               alt="espacios"
-              class="tarjeta-imagen" />
-            <div class="tarjeta-texto">
-              <h3>Espacios de recuperación</h3>
-              <p>
+              class="w-full h-[55%] object-cover" />
+            <div class="py-2.5">
+              <h3 class="text-[#4a4a4a] mb-2.5 font-semibold text-center">
+                Espacios de recuperación
+              </h3>
+              <p
+                class="text-[0.8rem] text-[#6d6155] text-center mx-3.75 font-normal">
                 Instalaciones limpias, climatizadas y diseñadas para el confort
                 animal.
               </p>
             </div>
           </div>
-          <div class="tarjeta">
+          <div
+            class="bg-[#F8F9FA] rounded-2xl overflow-hidden shadow-[inset_0_0_2px_rgba(0,0,0,0.25)] [transition:translate_0.2s_ease] hover:-translate-y-1">
             <img
               th:src="@{/images/servicios/comunicacion.jpg}"
               alt="comunicacion"
-              class="tarjeta-imagen" />
-            <div class="tarjeta-texto">
-              <h3>Comunicación con dueños</h3>
-              <p>
+              class="w-full h-[55%] object-cover" />
+            <div class="py-2.5">
+              <h3 class="text-[#4a4a4a] mb-2.5 font-semibold text-center">
+                Comunicación con dueños
+              </h3>
+              <p
+                class="text-[0.8rem] text-[#6d6155] text-center mx-3.75 font-normal">
                 Te mantenemos informado del estado de tu mascota en todo
                 momento.
               </p>
@@ -173,18 +238,29 @@
           </div>
         </article>
       </section>
-      <section id="proceso">
-        <p class="titulo">NUESTRO PROCESO</p>
-        <h2>Cómo Funciona Nuestra Hospitalización Veterinaria</h2>
-        <p class="parrafo">
+      <!---------- NUESTRO PROCESO ---------->
+      <section id="proceso" class="mt-0 flex flex-col items-center">
+        <p
+          class="font-semibold text-[#2b5392] text-[0.9rem] tracking-[1.5px] mb-2.5 mt-10">
+          NUESTRO PROCESO
+        </p>
+        <h2
+          class="text-[2.35rem] font-semibold leading-none text-[#4a4a4a] w-137.5 mb-5 text-center">
+          Cómo Funciona Nuestra Hospitalización Veterinaria
+        </h2>
+        <p
+          class="text-[#6d6155] text-[1.1rem] leading-normal w-160 text-center mb-12.5">
           Nuestro proceso de hospitalización veterinaria está diseñado para
           brindar la mejor atención a tu mascota en cada etapa de su
           recuperación.
         </p>
-        <article class="proceso-container">
-          <div class="paso" data-step="1">
-            <div class="paso-titulo">
-              <div class="paso-icono">
+        <article class="proceso-linea flex flex-col relative w-[60%] pl-25">
+          <div
+            class="paso-numero w-full flex flex-col items-start mb-12.5 relative bg-[#f5f5f5] border border-solid border-[#e0e0e0] rounded-xl py-6.25 px-7.5 shadow-[0_2px_8px_rgba(0,0,0,0.08)] [transition:box-shadow_0.3s_ease] hover:shadow-[0_4px_16px_rgba(0,0,0,0.12)]"
+            data-step="1">
+            <div class="flex items-center">
+              <div
+                class="w-12.5 h-12.5 mr-1.25 flex items-center justify-center shrink-0 [&_svg]:w-[70%] [&_svg]:h-full [&_svg]:object-contain">
                 <svg
                   width="28"
                   height="28"
@@ -199,13 +275,20 @@
                     fill="#2B5392" />
                 </svg>
               </div>
-              <h3>Evaluación médica inicial</h3>
+              <h3 class="text-[1.25rem] font-bold text-[#4a4a4a]">
+                Evaluación médica inicial
+              </h3>
             </div>
-            <p>Revisión completa del estado de salud de tu mascota.</p>
+            <p class="text-[#6d6155] text-[0.95rem] leading-normal">
+              Revisión completa del estado de salud de tu mascota.
+            </p>
           </div>
-          <div class="paso" data-step="2">
-            <div class="paso-titulo">
-              <div class="paso-icono">
+          <div
+            class="paso-numero w-full flex flex-col items-start mb-12.5 relative bg-[#f5f5f5] border border-solid border-[#e0e0e0] rounded-xl py-6.25 px-7.5 shadow-[0_2px_8px_rgba(0,0,0,0.08)] [transition:box-shadow_0.3s_ease] hover:shadow-[0_4px_16px_rgba(0,0,0,0.12)]"
+            data-step="2">
+            <div class="flex items-center">
+              <div
+                class="w-12.5 h-12.5 mr-1.25 flex items-center justify-center shrink-0 [&_svg]:w-[70%] [&_svg]:h-full [&_svg]:object-contain">
                 <svg
                   width="32"
                   height="32"
@@ -246,13 +329,20 @@
                   </g>
                 </svg>
               </div>
-              <h3>Plan de tratamiento personalizado</h3>
+              <h3 class="text-[1.25rem] font-bold text-[#4a4a4a]">
+                Plan de tratamiento personalizado
+              </h3>
             </div>
-            <p>Diseñamos un plan adaptado a las necesidades específicas.</p>
+            <p class="text-[#6d6155] text-[0.95rem] leading-normal">
+              Diseñamos un plan adaptado a las necesidades específicas.
+            </p>
           </div>
-          <div class="paso" data-step="3">
-            <div class="paso-titulo">
-              <div class="paso-icono">
+          <div
+            class="paso-numero w-full flex flex-col items-start mb-12.5 relative bg-[#f5f5f5] border border-solid border-[#e0e0e0] rounded-xl py-6.25 px-7.5 shadow-[0_2px_8px_rgba(0,0,0,0.08)] [transition:box-shadow_0.3s_ease] hover:shadow-[0_4px_16px_rgba(0,0,0,0.12)]"
+            data-step="3">
+            <div class="flex items-center">
+              <div
+                class="w-12.5 h-12.5 mr-1.25 flex items-center justify-center shrink-0 [&_svg]:w-[70%] [&_svg]:h-full [&_svg]:object-contain">
                 <svg
                   width="32"
                   height="32"
@@ -274,14 +364,21 @@
                   </defs>
                 </svg>
               </div>
-              <h3>Estancia hospitalaria</h3>
+              <h3 class="text-[1.25rem] font-bold text-[#4a4a4a]">
+                Estancia hospitalaria
+              </h3>
             </div>
 
-            <p>Cuidados profesionales en instalaciones seguras y equipadas.</p>
+            <p class="text-[#6d6155] text-[0.95rem] leading-normal">
+              Cuidados profesionales en instalaciones seguras y equipadas.
+            </p>
           </div>
-          <div class="paso" data-step="4">
-            <div class="paso-titulo">
-              <div class="paso-icono">
+          <div
+            class="paso-numero w-full flex flex-col items-start mb-12.5 relative bg-[#f5f5f5] border border-solid border-[#e0e0e0] rounded-xl py-6.25 px-7.5 shadow-[0_2px_8px_rgba(0,0,0,0.08)] [transition:box-shadow_0.3s_ease] hover:shadow-[0_4px_16px_rgba(0,0,0,0.12)]"
+            data-step="4">
+            <div class="flex items-center">
+              <div
+                class="w-12.5 h-12.5 mr-1.25 flex items-center justify-center shrink-0 [&_svg]:w-[70%] [&_svg]:h-full [&_svg]:object-contain">
                 <svg
                   width="32"
                   height="32"
@@ -302,14 +399,21 @@
                   </defs>
                 </svg>
               </div>
-              <h3>Seguimiento continuo</h3>
+              <h3 class="text-[1.25rem] font-bold text-[#4a4a4a]">
+                Seguimiento continuo
+              </h3>
             </div>
 
-            <p>Monitoreo constante y comunicación con los dueños.</p>
+            <p class="text-[#6d6155] text-[0.95rem] leading-normal">
+              Monitoreo constante y comunicación con los dueños.
+            </p>
           </div>
-          <div class="paso" data-step="5">
-            <div class="paso-titulo">
-              <div class="paso-icono">
+          <div
+            class="paso-numero w-full flex flex-col items-start mb-12.5 relative bg-[#f5f5f5] border border-solid border-[#e0e0e0] rounded-xl py-6.25 px-7.5 shadow-[0_2px_8px_rgba(0,0,0,0.08)] [transition:box-shadow_0.3s_ease] hover:shadow-[0_4px_16px_rgba(0,0,0,0.12)]"
+            data-step="5">
+            <div class="flex items-center">
+              <div
+                class="w-12.5 h-12.5 mr-1.25 flex items-center justify-center shrink-0 [&_svg]:w-[70%] [&_svg]:h-full [&_svg]:object-contain">
                 <svg
                   width="32"
                   height="32"
@@ -321,20 +425,30 @@
                     fill="#2B5392" />
                 </svg>
               </div>
-              <h3>Alta médica</h3>
+              <h3 class="text-[1.25rem] font-bold text-[#4a4a4a]">
+                Alta médica
+              </h3>
             </div>
-            <p>Entrega de recomendaciones para continuar el cuidado en casa.</p>
+            <p class="text-[#6d6155] text-[0.95rem] leading-normal">
+              Entrega de recomendaciones para continuar el cuidado en casa.
+            </p>
           </div>
         </article>
       </section>
-
-      <section id="por-que">
-        <div class="por-que-contenido">
+      <!---------- ¿POR QUÉ BISKIT? ---------->
+      <section
+        id="por-que"
+        class="inline-flex justify-between gap-10 mx-[15%] mb-[4%]">
+        <div>
           <p class="titulo">¿POR QUÉ BISKIT?</p>
-          <h2>Tu mascota en las mejores manos</h2>
-          <article id="razones">
-            <div class="razon">
-              <div class="razon-icono">
+          <h2
+            class="text-[2.35rem] font-semibold leading-none text-[#4a4a4a] w-137.5 mb-5 font-[Playfair_Display,serif]">
+            Tu mascota en las mejores manos
+          </h2>
+          <article id="razones" class="flex flex-col max-w-150">
+            <div class="flex items-center gap-2.5 py-1.25">
+              <div
+                class="w-8 h-8 bg-[#e4e9f1] rounded-full flex items-center justify-center shrink-0">
                 <svg
                   width="24"
                   height="24"
@@ -394,10 +508,14 @@
                   </defs>
                 </svg>
               </div>
-              <p>Atención profesional especializada</p>
+              <p
+                class="text-[#6d6155] text-[0.95rem] leading-normal font-medium">
+                Atención profesional especializada
+              </p>
             </div>
-            <div class="razon">
-              <div class="razon-icono">
+            <div class="flex items-center gap-2.5 py-1.25">
+              <div
+                class="w-8 h-8 bg-[#e4e9f1] rounded-full flex items-center justify-center shrink-0">
                 <svg
                   width="24"
                   height="24"
@@ -419,10 +537,14 @@
                   </defs>
                 </svg>
               </div>
-              <p>Instalaciones seguras y equipadas</p>
+              <p
+                class="text-[#6d6155] text-[0.95rem] leading-normal font-medium">
+                Instalaciones seguras y equipadas
+              </p>
             </div>
-            <div class="razon">
-              <div class="razon-icono">
+            <div class="flex items-center gap-2.5 py-1.25">
+              <div
+                class="w-8 h-8 bg-[#e4e9f1] rounded-full flex items-center justify-center shrink-0">
                 <svg
                   width="24"
                   height="24"
@@ -453,10 +575,14 @@
                   </defs>
                 </svg>
               </div>
-              <p>Trato amoroso y respetuoso</p>
+              <p
+                class="text-[#6d6155] text-[0.95rem] leading-normal font-medium">
+                Trato amoroso y respetuoso
+              </p>
             </div>
-            <div class="razon">
-              <div class="razon-icono">
+            <div class="flex items-center gap-2.5 py-1.25">
+              <div
+                class="w-8 h-8 bg-[#e4e9f1] rounded-full flex items-center justify-center shrink-0">
                 <svg
                   width="24"
                   height="24"
@@ -478,10 +604,14 @@
                   </defs>
                 </svg>
               </div>
-              <p>Comunicación constante con los dueños</p>
+              <p
+                class="text-[#6d6155] text-[0.95rem] leading-normal font-medium">
+                Comunicación constante con los dueños
+              </p>
             </div>
-            <div class="razon">
-              <div class="razon-icono">
+            <div class="flex items-center gap-2.5 py-1.25">
+              <div
+                class="w-8 h-8 bg-[#e4e9f1] rounded-full flex items-center justify-center shrink-0">
                 <svg
                   width="24"
                   height="24"
@@ -501,18 +631,28 @@
                   </defs>
                 </svg>
               </div>
-              <p>Prioridad en el bienestar y recuperación</p>
+              <p
+                class="text-[#6d6155] text-[0.95rem] leading-normal font-medium">
+                Prioridad en el bienestar y recuperación
+              </p>
             </div>
           </article>
         </div>
-        <div class="por-que-imagen">
+        <div
+          class="pt-[5%] flex-[10%_10%_100%] max-w-[60%] flex items-center justify-center">
           <img
             th:src="@{/images/por-que/por-que.jpg}"
-            alt="Imagen de por qué Biskit" />
+            alt="Imagen de por qué Biskit"
+            class="shadow-2xl h-60 object-cover rounded-[20px]" />
         </div>
       </section>
-      <section id="cta">
-        <div class="cta-icon" aria-hidden="true">
+      <!---------- CALL TO ACTION ---------->
+      <section
+        id="cta"
+        class="my-[1%] bg-[#2b5392] text-[#f5f7fb] py-12 px-6 text-center flex flex-col items-center gap-4">
+        <div
+          class="w-17.5 h-17.5 rounded-full inline-flex items-center justify-center [&_svg]:w-17.5 [&_svg]:h-17.5"
+          aria-hidden="true">
           <svg
             width="67"
             height="67"
@@ -526,31 +666,48 @@
             </g>
           </svg>
         </div>
-        <h2>Tu mascota merece el mejor cuidado durante su recuperación</h2>
-        <p>
+        <h2
+          class="font-[Playfair_Display,serif] text-[2.2rem] tracking-[1.25px] leading-[1.2] max-w-205 text-[#f8f9fb]">
+          Tu mascota merece el mejor cuidado durante su recuperación
+        </h2>
+        <p class="max-w-180 text-[#e7ecf5] text-base leading-normal">
           Nuestro equipo está listo para ayudarte. Agenda una valoración y deja
           que nos encarguemos del bienestar de tu compañero.
         </p>
-        <div class="cta-actions">
-          <a class="cta-btn cta-btn-primary" href="">
+        <div class="flex gap-3 mt-2 flex-wrap justify-center">
+          <a
+            class="inline-flex items-center gap-2.5 py-2.5 px-4.5 rounded-[10px] font-semibold text-[0.95rem] no-underline [transition:background-color_0.25s_ease,color_0.25s_ease] bg-[#f5f7fb] text-[#2b5392] hover:bg-[#e8eef9]"
+            href="">
             Agendar valoración
-            <span class="cta-arrow">→</span>
+            <span class="text-base leading-none">→</span>
           </a>
-          <a class="cta-btn cta-btn-secondary" href="">
+          <a
+            class="inline-flex items-center gap-2.5 py-2.5 px-4.5 rounded-[10px] font-semibold text-[0.95rem] no-underline [transition:background-color_0.25s_ease,color_0.25s_ease] bg-white/20 text-[#f5f7fb] border border-solid border-white/35 hover:bg-white/[0.28]"
+            href="">
             Escríbenos por WhatsApp
           </a>
         </div>
       </section>
-      <section id="contacto">
-        <p class="contacto-titulo">CONTACTO</p>
-        <h2>Estamos aqui para ti y tu mascota</h2>
-        <p class="contacto-subtitulo">
+      <!---------- CONTACTO ---------->
+      <section id="contacto" class="bg-[#f6efe7] py-16 px-[8%] text-center">
+        <p class="text-[0.85rem] tracking-[2px] font-bold text-[#2b5392] mb-3">
+          CONTACTO
+        </p>
+        <h2
+          class="font-[Playfair_Display,serif] text-[2.4rem] text-[#4a4a4a] mb-3">
+          Estamos aqui para ti y tu mascota
+        </h2>
+        <p
+          class="text-[#6d6155] max-w-180 mx-auto mb-9 text-base leading-relaxed">
           Contactanos para agendar una valoracion o resolver cualquier duda
           sobre nuestros servicios de hospitalizacion.
         </p>
-        <div class="contacto-cards">
-          <article class="contacto-card">
-            <div class="contacto-icono" aria-hidden="true">
+        <div class="grid grid-cols-[repeat(4,minmax(180px,1fr))] gap-5.5">
+          <article
+            class="bg-white rounded-2xl py-6.5 px-4.5 border border-solid border-[#eadfd4] shadow-[0_6px_16px_rgba(0,0,0,0.04)] flex flex-col items-center gap-2.5 [transition:box-shadow_0.2s_cubic-bezier(0.4,0,0.6,1)] hover:shadow-[0_5px_10px_rgba(0,0,0,0.2)]">
+            <div
+              class="w-13 h-13 rounded-full bg-[#e9eef7] inline-flex items-center justify-center [&_svg]:w-6.5 [&_svg]:h-6.5"
+              aria-hidden="true">
               <svg
                 width="20"
                 height="20"
@@ -565,11 +722,14 @@
                   stroke-linejoin="round" />
               </svg>
             </div>
-            <h3>Telefono</h3>
-            <p>+57 (319) 123-4567</p>
+            <h3 class="text-base text-[#4a4a4a] font-bold">Telefono</h3>
+            <p class="text-[#6d6155] text-[0.95rem]">+57 (319) 123-4567</p>
           </article>
-          <article class="contacto-card">
-            <div class="contacto-icono" aria-hidden="true">
+          <article
+            class="bg-white rounded-2xl py-6.5 px-4.5 border border-solid border-[#eadfd4] shadow-[0_6px_16px_rgba(0,0,0,0.04)] flex flex-col items-center gap-2.5 [transition:box-shadow_0.2s_cubic-bezier(0.4,0,0.6,1)] hover:shadow-[0_5px_10px_rgba(0,0,0,0.2)]">
+            <div
+              class="w-13 h-13 rounded-full bg-[#e9eef7] inline-flex items-center justify-center [&_svg]:w-6.5 [&_svg]:h-6.5"
+              aria-hidden="true">
               <svg
                 viewBox="0 0 24 24"
                 fill="none"
@@ -581,11 +741,14 @@
                   stroke-linejoin="round" />
               </svg>
             </div>
-            <h3>WhatsApp</h3>
-            <p>+57 (319) 123-4567</p>
+            <h3 class="text-base text-[#4a4a4a] font-bold">WhatsApp</h3>
+            <p class="text-[#6d6155] text-[0.95rem]">+57 (319) 123-4567</p>
           </article>
-          <article class="contacto-card">
-            <div class="contacto-icono" aria-hidden="true">
+          <article
+            class="bg-white rounded-2xl py-6.5 px-4.5 border border-solid border-[#eadfd4] shadow-[0_6px_16px_rgba(0,0,0,0.04)] flex flex-col items-center gap-2.5 [transition:box-shadow_0.2s_cubic-bezier(0.4,0,0.6,1)] hover:shadow-[0_5px_10px_rgba(0,0,0,0.2)]">
+            <div
+              class="w-13 h-13 rounded-full bg-[#e9eef7] inline-flex items-center justify-center [&_svg]:w-6.5 [&_svg]:h-6.5"
+              aria-hidden="true">
               <svg
                 viewBox="0 0 24 24"
                 fill="none"
@@ -603,11 +766,16 @@
                   stroke-width="1.6" />
               </svg>
             </div>
-            <h3>Direccion</h3>
-            <p>Tv 58 #108 - 68. Bogotá D.C. Colombia</p>
+            <h3 class="text-base text-[#4a4a4a] font-bold">Direccion</h3>
+            <p class="text-[#6d6155] text-[0.95rem]">
+              Tv 58 #108 - 68. Bogotá D.C. Colombia
+            </p>
           </article>
-          <article class="contacto-card">
-            <div class="contacto-icono" aria-hidden="true">
+          <article
+            class="bg-white rounded-2xl py-6.5 px-4.5 border border-solid border-[#eadfd4] shadow-[0_6px_16px_rgba(0,0,0,0.04)] flex flex-col items-center gap-2.5 [transition:box-shadow_0.2s_cubic-bezier(0.4,0,0.6,1)] hover:shadow-[0_5px_10px_rgba(0,0,0,0.2)]">
+            <div
+              class="w-13 h-13 rounded-full bg-[#e9eef7] inline-flex items-center justify-center [&_svg]:w-6.5 [&_svg]:h-6.5"
+              aria-hidden="true">
               <svg
                 viewBox="0 0 24 24"
                 fill="none"
@@ -626,12 +794,13 @@
                   stroke-linejoin="round" />
               </svg>
             </div>
-            <h3>Horarios</h3>
-            <p>Lun-Dom: 24 horas</p>
+            <h3 class="text-base text-[#4a4a4a] font-bold">Horarios</h3>
+            <p class="text-[#6d6155] text-[0.95rem]">Lun-Dom: 24 horas</p>
           </article>
         </div>
       </section>
     </main>
+    <!---------- FOOTER ---------->
     <div th:replace="fragmentos :: footer"></div>
   </body>
 </html>

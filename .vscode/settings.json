@@ -1,6 +1,7 @@
 {
   "css.customData": [],
   "css.lint.unknownAtRules": "ignore",
-  "css.lint.propertyIgnoredDueToDisplay": "ignore"
+  "css.lint.propertyIgnoredDueToDisplay": "ignore",
+  "java.compile.nullAnalysis.mode": "automatic"
 
 }

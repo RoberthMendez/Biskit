@@ -1,2 +1,58 @@
 @import "tailwindcss";
 @source "../../templates/**/*.html";
+
+@utility redes-link {
+  & svg path {
+    transition: fill 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+                stroke 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  &:hover svg path {
+    fill: #8eb3ef;
+    stroke: #8eb3ef;
+  }
+}
+
+@utility hero-bg {
+  background-image:
+    linear-gradient(
+      to right,
+      rgba(15, 23, 42, 0.75),
+      rgba(15, 23, 42, 0.50),
+      rgba(15, 23, 42, 0.25)
+    ),
+    url("../images/hero/hero.jpeg");
+}
+
+@utility proceso-linea {
+  &::before {
+    content: "";
+    position: absolute;
+    left: 61px;
+    top: 10%;
+    bottom: 12%;
+    width: 1px;
+    background-color: #4a4a4a59;
+    z-index: 1;
+  }
+}
+
+@utility paso-numero {
+  &::before {
+    content: attr(data-step);
+    position: absolute;
+    left: -65px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 50px;
+    height: 50px;
+    background-color: #2b5392;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    z-index: 10;
+  }
+}
