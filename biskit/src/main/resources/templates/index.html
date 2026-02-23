@@ -6,7 +6,6 @@
     <title>Biskit</title>
     <link rel="icon" type="image/png" th:href="@{/images/marca/icono.png}" />
     <link rel="stylesheet" th:href="@{/css/styles.css}" />
-    <link rel="stylesheet" th:href="@{/css/styles-landing.css}" />
     <link rel="stylesheet" th:href="@{/css/output.css}" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -16,26 +15,26 @@
   </head>
   <body>
     <!---------- NAVBAR ---------->
-    <div th:replace="fragmentos::navbar"></div>
+    <div th:replace="fragmentos::navbar-landing"></div>
     <main>
       <!---------- HERO BANNER ---------->
       <section
         id="hero"
-        class="hero-bg min-h-[60vh] h-[80vh] sm:h-[70vh] md:h-[60vh] lg:h-[80vh] bg-cover bg-top bg-no-repeat text-[#fcf6f0] flex flex-col justify-center mb-[4%] px-4 sm:px-8 md:px-16 lg:px-20">
+        class="hero-bg min-h-[60vh] h-[80vh] bg-cover bg-top bg-no-repeat text-[#fcf6f0] flex flex-col justify-center mb-[4%] px-4 sm:px-8 md:px-16 lg:px-20">
         <h2
-          class="font-bold text-[2.1rem] sm:text-[2.7rem] md:text-[3.2rem] lg:text-[3.75rem] leading-tight md:leading-none max-w-full md:max-w-[700px] mb-4 sm:mb-5 ml-0 sm:ml-2 md:ml-5">
+          class="font-bold text-[2.1rem] leading-tight max-w-full mb-4 ml-0 sm:text-[2.7rem] md:text-[3.2rem] lg:text-[3.75rem] md:leading-none md:max-w-175 sm:mb-5 sm:ml-2 md:ml-5">
           Cuidamos a tu mascota cuando más lo necesita
         </h2>
         <p
-          class="font-normal text-[1.05rem] sm:text-[1.15rem] md:text-[1.25rem] max-w-full md:max-w-[670px] text-[#e9e6e2de] mb-4 sm:mb-6 ml-0 sm:ml-2 md:ml-5">
+          class="font-normal text-[1.05rem] max-w-full text-[#e9e6e2de] mb-4 ml-0 sm:text-[1.15rem] md:text-[1.25rem] md:max-w-167.5 sm:mb-6 sm:ml-2 md:ml-5">
           Hospitalización veterinaria especializada para perros y gatos con
           atención profesional, monitoreo constante y tratamientos
           personalizados.
         </p>
         <div
-          class="flex flex-col sm:flex-row gap-4 sm:gap-6 ml-0 sm:ml-2 md:ml-6 mt-2 sm:mt-6 items-start">
+          class="flex flex-col gap-4 ml-0 mt-2 items-start sm:flex-row sm:gap-6 sm:ml-2 md:ml-6 sm:mt-6">
           <a
-            class="inline-flex text-[#fcf6f0] font-semibold rounded-xl items-center bg-[#2b5392] py-3 px-7 [transition:background-color_0.25s_ease] hover:bg-[#1a3a6b] text-base sm:text-lg max-w-xs w-auto min-w-[180px] justify-center"
+            class="inline-flex text-[#fcf6f0] font-semibold rounded-xl items-center bg-[#2b5392] py-3 px-7 [transition:background-color_0.25s_ease] hover:bg-[#1a3a6b] text-base max-w-xs w-auto min-w-45 justify-center sm:text-lg"
             href="">
             Agendar valoración
             <img
@@ -44,7 +43,7 @@
               alt="arrow-forward" />
           </a>
           <a
-            class="inline-flex text-[#fcf6f0] font-semibold rounded-xl items-center bg-[#fcf6f029] border border-solid border-[#fcf6f0] py-3 px-8 [transition:background-color_0.25s_ease] hover:bg-[#fcf6f04d] text-base sm:text-lg max-w-xs w-auto min-w-[180px] justify-center"
+            class="inline-flex text-[#fcf6f0] font-semibold rounded-xl items-center bg-[#fcf6f029] border border-solid border-[#fcf6f0] py-3 px-8 [transition:background-color_0.25s_ease] hover:bg-[#fcf6f04d] text-base max-w-xs w-auto min-w-45 justify-center sm:text-lg"
             href="">
             WhatsApp
           </a>

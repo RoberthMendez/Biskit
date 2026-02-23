@@ -1,5 +1,6 @@
 * {
   font-family: "Inter", sans-serif;
+  /* border: 1px solid red; */
 }
 
 html {
@@ -9,6 +10,12 @@ html {
 
 body {
   background-color: #fcf6f0;
+}
+
+h1,
+h2,
+h3 {
+  font-family: "Playfair Display", serif;
 }
 
 a {

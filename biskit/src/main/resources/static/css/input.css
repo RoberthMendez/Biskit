@@ -56,3 +56,13 @@
     z-index: 10;
   }
 }
+
+@utility back-link {
+  & svg path {
+    transition: fill 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+                stroke 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  &:hover svg path {
+    stroke: #4a4a4a;
+  }
+}

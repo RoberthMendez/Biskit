@@ -1,9 +1,9 @@
 <!doctype html>
 <html lang="en">
   <body>
-    <!---------- NAVBAR ---------->
+    <!---------- NAVBAR LANDING---------->
     <header
-      th:fragment="navbar"
+      th:fragment="navbar-landing"
       class="group sticky top-0 z-1000 bg-[linear-gradient(90deg,#ecebe8_0%,#efeeeb_35%,#f2f1ee_50%,#f5f3f0_65%,#faf8f5_100%)]">
       <!-- Hidden checkbox for pure-CSS toggle -->
       <input type="checkbox" id="nav-toggle" class="hidden peer" />
@@ -95,7 +95,7 @@
 
       <!-- Mobile nav dropdown (slides open via peer-checked on the checkbox) -->
       <nav
-        class="lg:hidden overflow-hidden max-h-0 peer-checked:max-h-[500px] transition-[max-height] duration-500 ease-in-out bg-[linear-gradient(90deg,#e0dfdb_0%,#e3e2de_35%,#e6e5e1_50%,#e9e7e4_65%,#f0eeeb_100%)] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.1)]">
+        class="lg:hidden overflow-hidden max-h-0 peer-checked:max-h-125 transition-[max-height] duration-500 ease-in-out bg-[linear-gradient(90deg,#e0dfdb_0%,#e3e2de_35%,#e6e5e1_50%,#e9e7e4_65%,#f0eeeb_100%)] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.1)]">
         <ul
           class="flex flex-col items-center list-none text-[0.95rem] font-medium py-6 gap-5">
           <li>
@@ -147,6 +147,58 @@
           </li>
         </ul>
       </nav>
+    </header>
+
+    <!---------- NAVBAR LOGGED ---------->
+    <header
+      th:fragment="navbar-logged"
+      class="group sticky top-0 z-1000 bg-[linear-gradient(90deg,#ecebe8_0%,#efeeeb_35%,#f2f1ee_50%,#f5f3f0_65%,#faf8f5_100%)]">
+      <!-- Solo logo y botón de cerrar sesión -->
+      <div class="flex h-[12.5vh] items-center justify-between px-7.5">
+        <a href="/" th:href="@{/}" class="flex items-center shrink-0">
+          <div class="pl-0">
+            <img
+              src="images/marca/nombre.png"
+              class="h-10"
+              th:src="@{/images/marca/nombre.png}"
+              alt="nombre-biskit" />
+          </div>
+          <div class="pl-2.5">
+            <img
+              src="images/marca/icono.png"
+              th:src="@{/images/marca/icono.png}"
+              class="h-10"
+              alt="icono-biskit" />
+          </div>
+        </a>
+        <a
+          class="flex items-center p-2 bg-[#2b5392] rounded-xl [transition:background-color_0.25s_ease] hover:bg-[#1a3a6b]"
+          href="">
+          <svg
+            class="h-5 ml-1.5"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg">
+            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+            <g
+              id="SVGRepo_tracerCarrier"
+              stroke-linecap="round"
+              stroke-linejoin="round"></g>
+            <g id="SVGRepo_iconCarrier">
+              <g id="Interface / Log_Out">
+                <path
+                  id="Vector"
+                  d="M12 15L15 12M15 12L12 9M15 12H4M9 7.24859V7.2002C9 6.08009 9 5.51962 9.21799 5.0918C9.40973 4.71547 9.71547 4.40973 10.0918 4.21799C10.5196 4 11.0801 4 12.2002 4H16.8002C17.9203 4 18.4796 4 18.9074 4.21799C19.2837 4.40973 19.5905 4.71547 19.7822 5.0918C20 5.5192 20 6.07899 20 7.19691V16.8036C20 17.9215 20 18.4805 19.7822 18.9079C19.5905 19.2842 19.2837 19.5905 18.9074 19.7822C18.48 20 17.921 20 16.8031 20H12.1969C11.079 20 10.5192 20 10.0918 19.7822C9.71547 19.5905 9.40973 19.2839 9.21799 18.9076C9 18.4798 9 17.9201 9 16.8V16.75"
+                  stroke="#fcf6f0"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"></path>
+              </g>
+            </g>
+          </svg>
+          <p class="text-[#fcf6f0] mr-2.5 ml-2.5">Cerrar Sesión</p>
+        </a>
+      </div>
     </header>
 
     <!---------- FOOTER ---------->
