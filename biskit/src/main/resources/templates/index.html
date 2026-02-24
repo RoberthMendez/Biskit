@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8" />
@@ -20,7 +20,7 @@
       <!---------- HERO BANNER ---------->
       <section
         id="hero"
-        class="hero-bg min-h-[60vh] h-[80vh] bg-cover bg-top bg-no-repeat text-[#fcf6f0] flex flex-col justify-center mb-[4%] px-4 sm:px-8 md:px-16 lg:px-20">
+        class="hero-bg min-h-[60vh] h-[80vh] bg-cover bg-top bg-no-repeat text-[#fcf6f0] flex flex-col justify-center mb-[2%] px-4 sm:px-8 md:px-16 lg:px-20">
         <h2
           class="font-bold text-[2.1rem] leading-tight max-w-full mb-4 ml-0 sm:text-[2.7rem] md:text-[3.2rem] lg:text-[3.75rem] md:leading-none md:max-w-175 sm:mb-5 sm:ml-2 md:ml-5">
           Cuidamos a tu mascota cuando más lo necesita
@@ -50,27 +50,30 @@
         </div>
       </section>
       <!---------- SOBRE BISKIT ---------->
-      <section id="sobre-biskit" class="flex items-center mb-[4%]">
+      <section
+        id="sobre-biskit"
+        class="flex flex-col md:flex-row items-center mb-[4%] px-5 md:px-0">
         <article
-          class="relative ml-30 flex items-center justify-center shrink-0">
+          class="relative ml-0 md:ml-30 flex items-center justify-center shrink-0">
           <div
-            class="absolute bg-[#bf8552] w-94 h-94 rounded-full top-10 left-3"></div>
+            class="absolute bg-[#bf8552] w-60 md:w-94 h-60 md:h-94 rounded-full top-6 md:top-10 left-2 md:left-3"></div>
           <img
-            class="relative z-10 max-h-105 w-auto"
+            class="relative z-10 max-h-72 md:max-h-105 w-auto"
             th:src="@{/images/sobre-biskit/sobre.png}"
             alt="sobre-biskit" />
         </article>
-        <article class="ml-3.75">
+        <article class="ml-0 md:ml-3.75 text-center md:text-left mt-8 md:mt-0">
           <p
             class="font-semibold text-[#2b5392] text-[0.9rem] tracking-[1.5px] mb-2.5 mt-10">
             SOBRE BISKIT
           </p>
           <h2
-            class="text-[2.35rem] font-black leading-none text-[#4a4a4a] w-137.5 mb-10 tracking-[2px]">
-            Especialistas en hospitalización veterinaria
+            class="text-[1.7rem] md:text-[2.35rem] font-black leading-none text-[#4a4a4a] w-auto md:max-w-137.5 mb-10 tracking-[2px]">
+            Especialistas en Hospitalización veterinaria
           </h2>
-          <p class="text-[#6d6155] text-[1.1rem] leading-normal w-160">
-            En Biskit nos especializamos en la hospitalización de mascotas que
+          <p
+            class="text-[#6d6155] text-[0.95rem] md:text-[1.1rem] leading-normal w-auto md:max-w-160">
+            En Biskit nos especializamos en la Hospitalización de mascotas que
             requieren cuidados médicos continuos, reposo supervisado y
             tratamientos administrados por profesionales. Nuestro compromiso es
             garantizar el bienestar de tu mascota y tu tranquilidad durante todo
@@ -79,160 +82,170 @@
         </article>
       </section>
       <!----- Características ----->
-      <section class="flex justify-between mt-7.5 ml-30 mr-25">
-        <article class="flex items-center">
-          <div class="h-18.75 w-2.75 bg-[#bf85525d] rounded-xl"></div>
-          <div class="flex flex-col justify-center ml-2.5">
+      <section
+        class="flex flex-col md:flex-row justify-between mt-7.5 mx-5 md:ml-30 md:mr-25 gap-8 md:gap-4">
+        <article class="flex items-center min-w-0">
+          <div class="h-18.75 w-2.75 shrink-0 bg-[#bf85525d] rounded-xl"></div>
+          <div class="flex flex-col justify-center ml-2.5 min-w-0">
             <h2
               class="text-[1.4rem] tracking-[1.25px] font-black text-[#4a4a4a] mb-2.5">
               Experiencia
             </h2>
-            <p class="text-[#6d6155] text-[0.9rem] w-70">
+            <p class="text-[#6d6155] text-[0.9rem] md:max-w-70">
               Equipo veterinario con años de experiencia en cuidado
               hospitalario.
             </p>
           </div>
         </article>
-        <article class="flex items-center">
-          <div class="h-18.75 w-2.75 bg-[#bf85525d] rounded-xl"></div>
-          <div class="flex flex-col justify-center ml-2.5">
+        <article class="flex items-center min-w-0">
+          <div class="h-18.75 w-2.75 shrink-0 bg-[#bf85525d] rounded-xl"></div>
+          <div class="flex flex-col justify-center ml-2.5 min-w-0">
             <h2
               class="text-[1.4rem] tracking-[1.25px] font-black text-[#4a4a4a] mb-2.5">
-              Atención personalizada
+              Atención Personalizada
             </h2>
-            <p class="text-[#6d6155] text-[0.9rem] w-70">
+            <p class="text-[#6d6155] text-[0.9rem] md:max-w-70">
               Cada mascota recibe un plan de tratamiento adaptado a sus
               necesidades.
             </p>
           </div>
         </article>
-        <article class="flex items-center">
-          <div class="h-18.75 w-2.75 bg-[#bf85525d] rounded-xl"></div>
-          <div class="flex flex-col justify-center ml-2.5">
+        <article class="flex items-center min-w-0">
+          <div class="h-18.75 w-2.75 shrink-0 bg-[#bf85525d] rounded-xl"></div>
+          <div class="flex flex-col justify-center ml-2.5 min-w-0">
             <h2
               class="text-[1.4rem] tracking-[1.25px] font-black text-[#4a4a4a] mb-2.5">
               Amor por los Animales
             </h2>
-            <p class="text-[#6d6155] text-[0.9rem] w-70">
+            <p class="text-[#6d6155] text-[0.9rem] md:max-w-70">
               Tratamos a cada paciente como si fuera parte de nuestra familia.
             </p>
           </div>
         </article>
       </section>
       <!---------- NUESTROS SERVICIOS ---------->
-      <section id="servicios" class="mt-[5%] flex flex-col items-center">
+      <section
+        id="servicios"
+        class="mt-[2%] flex flex-col items-center px-4 sm:px-8">
         <p
-          class="font-semibold text-[#2b5392] text-[0.9rem] tracking-[1.5px] mb-2.5 mt-10">
+          class="font-semibold text-[#2b5392] text-[0.8rem] sm:text-[0.9rem] tracking-[1.5px] mb-2.5 mt-10">
           NUESTROS SERVICIOS
         </p>
         <h2
-          class="text-[2.35rem] font-semibold leading-none text-[#4a4a4a] w-137.5b-5 text-center">
+          class="text-[1.6rem] sm:text-[2rem] md:text-[2.35rem] font-semibold leading-tight md:leading-none text-[#4a4a4a] w-full max-w-137.5 mb-5 text-center">
           Cuidado Integral durante la Hospitalización
         </h2>
         <p
-          class="text-[#6d6155] text-[1.1rem] leading-normal w-160 text-center">
+          class="text-[#6d6155] text-[0.95rem] sm:text-[1.05rem] md:text-[1.1rem] leading-normal w-full max-w-160 text-center">
           Ofrecemos todos los servicios necesarios para que tu mascota tenga la
           mejor atención y recuperación posible.
         </p>
         <!----- Tarjetas ----->
-        <article class="max-w-300 py-10 px-5 grid grid-cols-3 gap-8">
+        <article
+          class="max-w-300 w-full py-10 px-0 sm:px-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           <div
-            class="bg-[#F8F9FA] rounded-2xl overflow-hidden shadow-[inset_0_0_2px_rgba(0,0,0,0.25)] [transition:translate_0.2s_ease] hover:-translate-y-1">
+            class="bg-[#FBFAF8] rounded-2xl overflow-hidden shadow-[inset_0_0_2px_rgba(0,0,0,0.25)] [transition:translate_0.2s_ease] hover:-translate-y-1 flex flex-col">
             <img
               th:src="@{/images/servicios/hospitalizacion.jpg}"
               alt="hospitalizacion"
-              class="w-full h-[55%] object-cover" />
-            <div class="py-2.5">
-              <h3 class="text-[#4a4a4a] mb-2.5 font-semibold text-center">
+              class="w-full h-48 sm:h-56 object-cover shrink-0" />
+            <div class="py-3 px-4 flex-1 flex flex-col justify-center">
+              <h3
+                class="text-[#4a4a4a] mb-2 font-semibold text-center text-[0.95rem] sm:text-base">
                 Hospitalización para perros y gatos
               </h3>
               <p
-                class="text-[0.8rem] text-[#6d6155] text-center mx-3.75 font-normal">
-                Espacios cómodos, seguros y adaptados para la recuperación de tu
+                class="text-[0.8rem] text-[#6d6155] text-center font-normal leading-relaxed">
+                Espacios Cómodos, seguros y adaptados para la recuperación de tu
                 mascota.
               </p>
             </div>
           </div>
           <div
-            class="bg-[#F8F9FA] rounded-2xl overflow-hidden shadow-[inset_0_0_2px_rgba(0,0,0,0.25)] [transition:translate_0.2s_ease] hover:-translate-y-1">
+            class="bg-[#FBFAF8] rounded-2xl overflow-hidden shadow-[inset_0_0_2px_rgba(0,0,0,0.25)] [transition:translate_0.2s_ease] hover:-translate-y-1 flex flex-col">
             <img
               th:src="@{/images/servicios/monitoreo.jpg}"
               alt="monitoreo"
-              class="w-full h-[55%] object-cover" />
-            <div class="py-2.5">
-              <h3 class="text-[#4a4a4a] mb-2.5 font-semibold text-center">
+              class="w-full h-48 sm:h-56 object-cover shrink-0" />
+            <div class="py-3 px-4 flex-1 flex flex-col justify-center">
+              <h3
+                class="text-[#4a4a4a] mb-2 font-semibold text-center text-[0.95rem] sm:text-base">
                 Monitoreo médico continuo
               </h3>
               <p
-                class="text-[0.8rem] text-[#6d6155] text-center mx-3.75 font-normal">
+                class="text-[0.8rem] text-[#6d6155] text-center font-normal leading-relaxed">
                 Vigilancia constante de signos vitales y estado de salud las 24
                 horas.
               </p>
             </div>
           </div>
           <div
-            class="bg-[#F8F9FA] rounded-2xl overflow-hidden shadow-[inset_0_0_2px_rgba(0,0,0,0.25)] [transition:translate_0.2s_ease] hover:-translate-y-1">
+            class="bg-[#FBFAF8] rounded-2xl overflow-hidden shadow-[inset_0_0_2px_rgba(0,0,0,0.25)] [transition:translate_0.2s_ease] hover:-translate-y-1 flex flex-col">
             <img
               th:src="@{/images/servicios/administracion.jpg}"
               alt="administracion"
-              class="w-full h-[55%] object-cover" />
-            <div class="py-2.5">
-              <h3 class="text-[#4a4a4a] mb-2.5 font-semibold text-center">
+              class="w-full h-48 sm:h-56 object-cover shrink-0" />
+            <div class="py-3 px-4 flex-1 flex flex-col justify-center">
+              <h3
+                class="text-[#4a4a4a] mb-2 font-semibold text-center text-[0.95rem] sm:text-base">
                 Administración de tratamientos
               </h3>
               <p
-                class="text-[0.8rem] text-[#6d6155] text-center mx-3.75 font-normal">
+                class="text-[0.8rem] text-[#6d6155] text-center font-normal leading-relaxed">
                 Medicamentos y terapias administrados por profesionales con
                 precisión.
               </p>
             </div>
           </div>
           <div
-            class="bg-[#F8F9FA] rounded-2xl overflow-hidden shadow-[inset_0_0_2px_rgba(0,0,0,0.25)] [transition:translate_0.2s_ease] hover:-translate-y-1">
+            class="bg-[#FBFAF8] rounded-2xl overflow-hidden shadow-[inset_0_0_2px_rgba(0,0,0,0.25)] [transition:translate_0.2s_ease] hover:-translate-y-1 flex flex-col">
             <img
               th:src="@{/images/servicios/supervision.jpg}"
               alt="supervision"
-              class="w-full h-[55%] object-cover" />
-            <div class="py-2.5">
-              <h3 class="text-[#4a4a4a] mb-2.5 font-semibold text-center">
+              class="w-full h-48 sm:h-56 object-cover shrink-0" />
+            <div class="py-3 px-4 flex-1 flex flex-col justify-center">
+              <h3
+                class="text-[#4a4a4a] mb-2 font-semibold text-center text-[0.95rem] sm:text-base">
                 Supervisión veterinaria permanente
               </h3>
               <p
-                class="text-[0.8rem] text-[#6d6155] text-center mx-3.75 font-normal">
+                class="text-[0.8rem] text-[#6d6155] text-center font-normal leading-relaxed">
                 Nuestro equipo veterinario supervisa cada etapa de la
                 recuperación.
               </p>
             </div>
           </div>
           <div
-            class="bg-[#F8F9FA] rounded-2xl overflow-hidden shadow-[inset_0_0_2px_rgba(0,0,0,0.25)] [transition:translate_0.2s_ease] hover:-translate-y-1">
+            class="bg-[#FBFAF8] rounded-2xl overflow-hidden shadow-[inset_0_0_2px_rgba(0,0,0,0.25)] [transition:translate_0.2s_ease] hover:-translate-y-1 flex flex-col">
             <img
               th:src="@{/images/servicios/espacios.jpg}"
               alt="espacios"
-              class="w-full h-[55%] object-cover" />
-            <div class="py-2.5">
-              <h3 class="text-[#4a4a4a] mb-2.5 font-semibold text-center">
+              class="w-full h-48 sm:h-56 object-cover shrink-0" />
+            <div class="py-3 px-4 flex-1 flex flex-col justify-center">
+              <h3
+                class="text-[#4a4a4a] mb-2 font-semibold text-center text-[0.95rem] sm:text-base">
                 Espacios de recuperación
               </h3>
               <p
-                class="text-[0.8rem] text-[#6d6155] text-center mx-3.75 font-normal">
+                class="text-[0.8rem] text-[#6d6155] text-center font-normal leading-relaxed">
                 Instalaciones limpias, climatizadas y diseñadas para el confort
                 animal.
               </p>
             </div>
           </div>
           <div
-            class="bg-[#F8F9FA] rounded-2xl overflow-hidden shadow-[inset_0_0_2px_rgba(0,0,0,0.25)] [transition:translate_0.2s_ease] hover:-translate-y-1">
+            class="bg-[#FBFAF8] rounded-2xl overflow-hidden shadow-[inset_0_0_2px_rgba(0,0,0,0.25)] [transition:translate_0.2s_ease] hover:-translate-y-1 flex flex-col">
             <img
               th:src="@{/images/servicios/comunicacion.jpg}"
               alt="comunicacion"
-              class="w-full h-[55%] object-cover" />
-            <div class="py-2.5">
-              <h3 class="text-[#4a4a4a] mb-2.5 font-semibold text-center">
+              class="w-full h-48 sm:h-56 object-cover shrink-0" />
+            <div class="py-3 px-4 flex-1 flex flex-col justify-center">
+              <h3
+                class="text-[#4a4a4a] mb-2 font-semibold text-center text-[0.95rem] sm:text-base">
                 Comunicación con dueños
               </h3>
               <p
-                class="text-[0.8rem] text-[#6d6155] text-center mx-3.75 font-normal">
+                class="text-[0.8rem] text-[#6d6155] text-center font-normal leading-relaxed">
                 Te mantenemos informado del estado de tu mascota en todo
                 momento.
               </p>
@@ -241,28 +254,31 @@
         </article>
       </section>
       <!---------- NUESTRO PROCESO ---------->
-      <section id="proceso" class="mt-0 flex flex-col items-center">
+      <section
+        id="proceso"
+        class="mt-0 flex flex-col items-center px-4 sm:px-8">
         <p
-          class="font-semibold text-[#2b5392] text-[0.9rem] tracking-[1.5px] mb-2.5 mt-10">
+          class="font-semibold text-[#2b5392] text-[0.8rem] sm:text-[0.9rem] tracking-[1.5px] mb-2.5 mt-10">
           NUESTRO PROCESO
         </p>
         <h2
-          class="text-[2.35rem] font-semibold leading-none text-[#4a4a4a] w-137.5 mb-5 text-center">
+          class="text-[1.6rem] sm:text-[2rem] md:text-[2.35rem] font-semibold leading-tight md:leading-none text-[#4a4a4a] w-full max-w-137.5 mb-5 text-center">
           Cómo Funciona Nuestra Hospitalización Veterinaria
         </h2>
         <p
-          class="text-[#6d6155] text-[1.1rem] leading-normal w-160 text-center mb-12.5">
+          class="text-[#6d6155] text-[0.95rem] sm:text-[1.05rem] md:text-[1.1rem] leading-normal w-full max-w-160 text-center mb-8 md:mb-12.5">
           Nuestro proceso de hospitalización veterinaria está diseñado para
           brindar la mejor atención a tu mascota en cada etapa de su
           recuperación.
         </p>
-        <article class="proceso-linea flex flex-col relative w-[60%] pl-25">
+        <article
+          class="proceso-linea flex flex-col relative w-full md:w-[60%] pl-14 md:pl-25">
           <div
-            class="paso-numero w-full flex flex-col items-start mb-12.5 relative bg-[#f5f5f5] border border-solid border-[#e0e0e0] rounded-xl py-6.25 px-7.5 shadow-[0_2px_8px_rgba(0,0,0,0.08)] [transition:box-shadow_0.3s_ease] hover:shadow-[0_4px_16px_rgba(0,0,0,0.12)]"
+            class="paso-numero w-full flex flex-col items-start mb-8 md:mb-12.5 relative bg-[#FBFAF8] border border-solid border-[#e0e0e0] rounded-xl py-4 px-4 sm:py-5 sm:px-6 md:py-6.25 md:px-7.5 shadow-[0_2px_8px_rgba(0,0,0,0.08)] [transition:box-shadow_0.3s_ease] hover:shadow-[0_4px_16px_rgba(0,0,0,0.12)]"
             data-step="1">
-            <div class="flex items-center">
+            <div class="flex items-center gap-2">
               <div
-                class="w-12.5 h-12.5 mr-1.25 flex items-center justify-center shrink-0 [&_svg]:w-[70%] [&_svg]:h-full [&_svg]:object-contain">
+                class="w-10 h-10 md:w-12.5 md:h-12.5 mr-0 md:mr-1.25 flex items-center justify-center shrink-0 [&_svg]:w-[70%] [&_svg]:h-full [&_svg]:object-contain">
                 <svg
                   width="28"
                   height="28"
@@ -277,20 +293,22 @@
                     fill="#2B5392" />
                 </svg>
               </div>
-              <h3 class="text-[1.25rem] font-bold text-[#4a4a4a]">
+              <h3
+                class="text-[1rem] sm:text-[1.1rem] md:text-[1.25rem] font-bold text-[#4a4a4a]">
                 Evaluación médica inicial
               </h3>
             </div>
-            <p class="text-[#6d6155] text-[0.95rem] leading-normal">
+            <p
+              class="text-[#6d6155] text-[0.85rem] sm:text-[0.9rem] md:text-[0.95rem] leading-normal">
               Revisión completa del estado de salud de tu mascota.
             </p>
           </div>
           <div
-            class="paso-numero w-full flex flex-col items-start mb-12.5 relative bg-[#f5f5f5] border border-solid border-[#e0e0e0] rounded-xl py-6.25 px-7.5 shadow-[0_2px_8px_rgba(0,0,0,0.08)] [transition:box-shadow_0.3s_ease] hover:shadow-[0_4px_16px_rgba(0,0,0,0.12)]"
+            class="paso-numero w-full flex flex-col items-start mb-8 md:mb-12.5 relative bg-[#FBFAF8] border border-solid border-[#e0e0e0] rounded-xl py-4 px-4 sm:py-5 sm:px-6 md:py-6.25 md:px-7.5 shadow-[0_2px_8px_rgba(0,0,0,0.08)] [transition:box-shadow_0.3s_ease] hover:shadow-[0_4px_16px_rgba(0,0,0,0.12)]"
             data-step="2">
-            <div class="flex items-center">
+            <div class="flex items-center gap-2">
               <div
-                class="w-12.5 h-12.5 mr-1.25 flex items-center justify-center shrink-0 [&_svg]:w-[70%] [&_svg]:h-full [&_svg]:object-contain">
+                class="w-10 h-10 md:w-12.5 md:h-12.5 mr-0 md:mr-1.25 flex items-center justify-center shrink-0 [&_svg]:w-[70%] [&_svg]:h-full [&_svg]:object-contain">
                 <svg
                   width="32"
                   height="32"
@@ -331,20 +349,22 @@
                   </g>
                 </svg>
               </div>
-              <h3 class="text-[1.25rem] font-bold text-[#4a4a4a]">
+              <h3
+                class="text-[1rem] sm:text-[1.1rem] md:text-[1.25rem] font-bold text-[#4a4a4a]">
                 Plan de tratamiento personalizado
               </h3>
             </div>
-            <p class="text-[#6d6155] text-[0.95rem] leading-normal">
+            <p
+              class="text-[#6d6155] text-[0.85rem] sm:text-[0.9rem] md:text-[0.95rem] leading-normal">
               Diseñamos un plan adaptado a las necesidades específicas.
             </p>
           </div>
           <div
-            class="paso-numero w-full flex flex-col items-start mb-12.5 relative bg-[#f5f5f5] border border-solid border-[#e0e0e0] rounded-xl py-6.25 px-7.5 shadow-[0_2px_8px_rgba(0,0,0,0.08)] [transition:box-shadow_0.3s_ease] hover:shadow-[0_4px_16px_rgba(0,0,0,0.12)]"
+            class="paso-numero w-full flex flex-col items-start mb-8 md:mb-12.5 relative bg-[#FBFAF8] border border-solid border-[#e0e0e0] rounded-xl py-4 px-4 sm:py-5 sm:px-6 md:py-6.25 md:px-7.5 shadow-[0_2px_8px_rgba(0,0,0,0.08)] [transition:box-shadow_0.3s_ease] hover:shadow-[0_4px_16px_rgba(0,0,0,0.12)]"
             data-step="3">
-            <div class="flex items-center">
+            <div class="flex items-center gap-2">
               <div
-                class="w-12.5 h-12.5 mr-1.25 flex items-center justify-center shrink-0 [&_svg]:w-[70%] [&_svg]:h-full [&_svg]:object-contain">
+                class="w-10 h-10 md:w-12.5 md:h-12.5 mr-0 md:mr-1.25 flex items-center justify-center shrink-0 [&_svg]:w-[70%] [&_svg]:h-full [&_svg]:object-contain">
                 <svg
                   width="32"
                   height="32"
@@ -366,21 +386,23 @@
                   </defs>
                 </svg>
               </div>
-              <h3 class="text-[1.25rem] font-bold text-[#4a4a4a]">
+              <h3
+                class="text-[1rem] sm:text-[1.1rem] md:text-[1.25rem] font-bold text-[#4a4a4a]">
                 Estancia hospitalaria
               </h3>
             </div>
 
-            <p class="text-[#6d6155] text-[0.95rem] leading-normal">
+            <p
+              class="text-[#6d6155] text-[0.85rem] sm:text-[0.9rem] md:text-[0.95rem] leading-normal">
               Cuidados profesionales en instalaciones seguras y equipadas.
             </p>
           </div>
           <div
-            class="paso-numero w-full flex flex-col items-start mb-12.5 relative bg-[#f5f5f5] border border-solid border-[#e0e0e0] rounded-xl py-6.25 px-7.5 shadow-[0_2px_8px_rgba(0,0,0,0.08)] [transition:box-shadow_0.3s_ease] hover:shadow-[0_4px_16px_rgba(0,0,0,0.12)]"
+            class="paso-numero w-full flex flex-col items-start mb-8 md:mb-12.5 relative bg-[#FBFAF8] border border-solid border-[#e0e0e0] rounded-xl py-4 px-4 sm:py-5 sm:px-6 md:py-6.25 md:px-7.5 shadow-[0_2px_8px_rgba(0,0,0,0.08)] [transition:box-shadow_0.3s_ease] hover:shadow-[0_4px_16px_rgba(0,0,0,0.12)]"
             data-step="4">
-            <div class="flex items-center">
+            <div class="flex items-center gap-2">
               <div
-                class="w-12.5 h-12.5 mr-1.25 flex items-center justify-center shrink-0 [&_svg]:w-[70%] [&_svg]:h-full [&_svg]:object-contain">
+                class="w-10 h-10 md:w-12.5 md:h-12.5 mr-0 md:mr-1.25 flex items-center justify-center shrink-0 [&_svg]:w-[70%] [&_svg]:h-full [&_svg]:object-contain">
                 <svg
                   width="32"
                   height="32"
@@ -401,21 +423,23 @@
                   </defs>
                 </svg>
               </div>
-              <h3 class="text-[1.25rem] font-bold text-[#4a4a4a]">
+              <h3
+                class="text-[1rem] sm:text-[1.1rem] md:text-[1.25rem] font-bold text-[#4a4a4a]">
                 Seguimiento continuo
               </h3>
             </div>
 
-            <p class="text-[#6d6155] text-[0.95rem] leading-normal">
+            <p
+              class="text-[#6d6155] text-[0.85rem] sm:text-[0.9rem] md:text-[0.95rem] leading-normal">
               Monitoreo constante y comunicación con los dueños.
             </p>
           </div>
           <div
-            class="paso-numero w-full flex flex-col items-start mb-12.5 relative bg-[#f5f5f5] border border-solid border-[#e0e0e0] rounded-xl py-6.25 px-7.5 shadow-[0_2px_8px_rgba(0,0,0,0.08)] [transition:box-shadow_0.3s_ease] hover:shadow-[0_4px_16px_rgba(0,0,0,0.12)]"
+            class="paso-numero w-full flex flex-col items-start mb-8 md:mb-12.5 relative bg-[#FBFAF8] border border-solid border-[#e0e0e0] rounded-xl py-4 px-4 sm:py-5 sm:px-6 md:py-6.25 md:px-7.5 shadow-[0_2px_8px_rgba(0,0,0,0.08)] [transition:box-shadow_0.3s_ease] hover:shadow-[0_4px_16px_rgba(0,0,0,0.12)]"
             data-step="5">
-            <div class="flex items-center">
+            <div class="flex items-center gap-2">
               <div
-                class="w-12.5 h-12.5 mr-1.25 flex items-center justify-center shrink-0 [&_svg]:w-[70%] [&_svg]:h-full [&_svg]:object-contain">
+                class="w-10 h-10 md:w-12.5 md:h-12.5 mr-0 md:mr-1.25 flex items-center justify-center shrink-0 [&_svg]:w-[70%] [&_svg]:h-full [&_svg]:object-contain">
                 <svg
                   width="32"
                   height="32"
@@ -427,11 +451,13 @@
                     fill="#2B5392" />
                 </svg>
               </div>
-              <h3 class="text-[1.25rem] font-bold text-[#4a4a4a]">
+              <h3
+                class="text-[1rem] sm:text-[1.1rem] md:text-[1.25rem] font-bold text-[#4a4a4a]">
                 Alta médica
               </h3>
             </div>
-            <p class="text-[#6d6155] text-[0.95rem] leading-normal">
+            <p
+              class="text-[#6d6155] text-[0.85rem] sm:text-[0.9rem] md:text-[0.95rem] leading-normal">
               Entrega de recomendaciones para continuar el cuidado en casa.
             </p>
           </div>
@@ -440,14 +466,17 @@
       <!---------- ¿POR QUÉ BISKIT? ---------->
       <section
         id="por-que"
-        class="inline-flex justify-between gap-10 mx-[15%] mb-[4%]">
-        <div>
-          <p class="titulo">¿POR QUÉ BISKIT?</p>
+        class="flex flex-col md:flex-row justify-between gap-8 md:gap-10 mx-4 sm:mx-8 md:mx-[10%] lg:mx-[15%] mb-[4%]">
+        <div class="md:flex-1 md:min-w-0">
+          <p
+            class="titulo text-[0.8rem] sm:text-[0.85rem] tracking-[2px] font-bold text-[#2b5392] mb-3">
+            ¿POR QUÉ BISKIT?
+          </p>
           <h2
-            class="text-[2.35rem] font-semibold leading-none text-[#4a4a4a] w-137.5 mb-5 font-[Playfair_Display,serif]">
+            class="text-[1.6rem] sm:text-[2rem] md:text-[2.35rem] font-semibold leading-tight md:leading-none text-[#4a4a4a] w-full md:w-137.5 mb-5 font-[Playfair_Display,serif]">
             Tu mascota en las mejores manos
           </h2>
-          <article id="razones" class="flex flex-col max-w-150">
+          <article id="razones" class="flex flex-col max-w-full md:max-w-150">
             <div class="flex items-center gap-2.5 py-1.25">
               <div
                 class="w-8 h-8 bg-[#e4e9f1] rounded-full flex items-center justify-center shrink-0">
@@ -641,19 +670,19 @@
           </article>
         </div>
         <div
-          class="pt-[5%] flex-[10%_10%_100%] max-w-[60%] flex items-center justify-center">
+          class="pt-0 md:pt-[5%] w-full md:w-[45%] md:shrink-0 flex items-center justify-center">
           <img
             th:src="@{/images/por-que/por-que.jpg}"
             alt="Imagen de por qué Biskit"
-            class="shadow-2xl h-60 object-cover rounded-[20px]" />
+            class="shadow-2xl w-full h-48 sm:h-56 md:h-auto md:max-h-80 object-cover rounded-[20px]" />
         </div>
       </section>
       <!---------- CALL TO ACTION ---------->
       <section
         id="cta"
-        class="my-[1%] bg-[#2b5392] text-[#f5f7fb] py-12 px-6 text-center flex flex-col items-center gap-4">
+        class="my-[1%] bg-[#2b5392] text-[#f5f7fb] py-8 sm:py-10 md:py-12 px-4 sm:px-6 text-center flex flex-col items-center gap-3 sm:gap-4">
         <div
-          class="w-17.5 h-17.5 rounded-full inline-flex items-center justify-center [&_svg]:w-17.5 [&_svg]:h-17.5"
+          class="w-12 h-12 sm:w-14 sm:h-14 md:w-17.5 md:h-17.5 rounded-full inline-flex items-center justify-center [&_svg]:w-12 [&_svg]:h-12 sm:[&_svg]:w-14 sm:[&_svg]:h-14 md:[&_svg]:w-17.5 md:[&_svg]:h-17.5"
           aria-hidden="true">
           <svg
             width="67"
@@ -669,16 +698,17 @@
           </svg>
         </div>
         <h2
-          class="font-[Playfair_Display,serif] text-[2.2rem] tracking-[1.25px] leading-[1.2] max-w-205 text-[#f8f9fb]">
+          class="font-[Playfair_Display,serif] text-[1.5rem] sm:text-[1.8rem] md:text-[2.2rem] tracking-[1.25px] leading-[1.2] max-w-full md:max-w-205 text-[#f8f9fb]">
           Tu mascota merece el mejor cuidado durante su recuperación
         </h2>
-        <p class="max-w-180 text-[#e7ecf5] text-base leading-normal">
+        <p
+          class="max-w-full md:max-w-180 text-[#e7ecf5] text-sm sm:text-base leading-normal">
           Nuestro equipo está listo para ayudarte. Agenda una valoración y deja
           que nos encarguemos del bienestar de tu compañero.
         </p>
         <div class="flex gap-3 mt-2 flex-wrap justify-center">
           <a
-            class="inline-flex items-center gap-2.5 py-2.5 px-4.5 rounded-[10px] font-semibold text-[0.95rem] no-underline [transition:background-color_0.25s_ease,color_0.25s_ease] bg-[#f5f7fb] text-[#2b5392] hover:bg-[#e8eef9]"
+            class="inline-flex items-center gap-2.5 py-2.5 px-4.5 rounded-[10px] font-semibold text-[0.95rem] no-underline [transition:background-color_0.25s_ease,color_0.25s_ease] bg-[#FBFAF8] text-[#2b5392] hover:bg-[#e8eef9]"
             href="">
             Agendar valoración
             <span class="text-base leading-none">→</span>
@@ -691,22 +721,26 @@
         </div>
       </section>
       <!---------- CONTACTO ---------->
-      <section id="contacto" class="py-16 px-[8%] text-center">
-        <p class="text-[0.85rem] tracking-[2px] font-bold text-[#2b5392] mb-3">
+      <section
+        id="contacto"
+        class="py-10 sm:py-12 md:py-16 px-4 sm:px-[6%] md:px-[8%] text-center">
+        <p
+          class="text-[0.8rem] sm:text-[0.85rem] tracking-[2px] font-bold text-[#2b5392] mb-3">
           CONTACTO
         </p>
         <h2
-          class="font-[Playfair_Display,serif] text-[2.4rem] text-[#4a4a4a] mb-3">
+          class="font-[Playfair_Display,serif] text-[1.6rem] sm:text-[2rem] md:text-[2.4rem] text-[#4a4a4a] mb-3">
           Estamos aquí para ti y tu mascota
         </h2>
         <p
-          class="text-[#6d6155] max-w-180 mx-auto mb-9 text-base leading-relaxed">
+          class="text-[#6d6155] max-w-full md:max-w-180 mx-auto mb-6 sm:mb-7 md:mb-9 text-sm sm:text-base leading-relaxed">
           Contáctanos para agendar una valoración o resolver cualquier duda
           sobre nuestros servicios de hospitalización.
         </p>
-        <div class="grid grid-cols-[repeat(4,minmax(180px,1fr))] gap-5.5">
+        <div
+          class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 md:gap-5.5">
           <article
-            class="bg-white rounded-2xl py-6.5 px-4.5 border border-solid border-[#eadfd4] shadow-[0_6px_16px_rgba(0,0,0,0.04)] flex flex-col items-center gap-2.5 [transition:box-shadow_0.2s_cubic-bezier(0.4,0,0.6,1)] hover:shadow-[0_5px_10px_rgba(0,0,0,0.2)]">
+            class="bg-[#FBFAF8] rounded-2xl py-6.5 px-4.5 border border-solid border-[#eadfd4] shadow-[0_6px_16px_rgba(0,0,0,0.04)] flex flex-col items-center gap-2.5 [transition:box-shadow_0.2s_cubic-bezier(0.4,0,0.6,1)] hover:shadow-[0_5px_10px_rgba(0,0,0,0.2)]">
             <div
               class="w-13 h-13 rounded-full bg-[#e9eef7] inline-flex items-center justify-center [&_svg]:w-6.5 [&_svg]:h-6.5"
               aria-hidden="true">
@@ -728,7 +762,7 @@
             <p class="text-[#6d6155] text-[0.95rem]">+57 (319) 123-4567</p>
           </article>
           <article
-            class="bg-white rounded-2xl py-6.5 px-4.5 border border-solid border-[#eadfd4] shadow-[0_6px_16px_rgba(0,0,0,0.04)] flex flex-col items-center gap-2.5 [transition:box-shadow_0.2s_cubic-bezier(0.4,0,0.6,1)] hover:shadow-[0_5px_10px_rgba(0,0,0,0.2)]">
+            class="bg-[#FBFAF8] rounded-2xl py-6.5 px-4.5 border border-solid border-[#eadfd4] shadow-[0_6px_16px_rgba(0,0,0,0.04)] flex flex-col items-center gap-2.5 [transition:box-shadow_0.2s_cubic-bezier(0.4,0,0.6,1)] hover:shadow-[0_5px_10px_rgba(0,0,0,0.2)]">
             <div
               class="w-13 h-13 rounded-full bg-[#e9eef7] inline-flex items-center justify-center [&_svg]:w-6.5 [&_svg]:h-6.5"
               aria-hidden="true">
@@ -747,7 +781,7 @@
             <p class="text-[#6d6155] text-[0.95rem]">+57 (319) 123-4567</p>
           </article>
           <article
-            class="bg-white rounded-2xl py-6.5 px-4.5 border border-solid border-[#eadfd4] shadow-[0_6px_16px_rgba(0,0,0,0.04)] flex flex-col items-center gap-2.5 [transition:box-shadow_0.2s_cubic-bezier(0.4,0,0.6,1)] hover:shadow-[0_5px_10px_rgba(0,0,0,0.2)]">
+            class="bg-[#FBFAF8] rounded-2xl py-6.5 px-4.5 border border-solid border-[#eadfd4] shadow-[0_6px_16px_rgba(0,0,0,0.04)] flex flex-col items-center gap-2.5 [transition:box-shadow_0.2s_cubic-bezier(0.4,0,0.6,1)] hover:shadow-[0_5px_10px_rgba(0,0,0,0.2)]">
             <div
               class="w-13 h-13 rounded-full bg-[#e9eef7] inline-flex items-center justify-center [&_svg]:w-6.5 [&_svg]:h-6.5"
               aria-hidden="true">
@@ -774,7 +808,7 @@
             </p>
           </article>
           <article
-            class="bg-white rounded-2xl py-6.5 px-4.5 border border-solid border-[#eadfd4] shadow-[0_6px_16px_rgba(0,0,0,0.04)] flex flex-col items-center gap-2.5 [transition:box-shadow_0.2s_cubic-bezier(0.4,0,0.6,1)] hover:shadow-[0_5px_10px_rgba(0,0,0,0.2)]">
+            class="bg-[#FBFAF8] rounded-2xl py-6.5 px-4.5 border border-solid border-[#eadfd4] shadow-[0_6px_16px_rgba(0,0,0,0.04)] flex flex-col items-center gap-2.5 [transition:box-shadow_0.2s_cubic-bezier(0.4,0,0.6,1)] hover:shadow-[0_5px_10px_rgba(0,0,0,0.2)]">
             <div
               class="w-13 h-13 rounded-full bg-[#e9eef7] inline-flex items-center justify-center [&_svg]:w-6.5 [&_svg]:h-6.5"
               aria-hidden="true">

@@ -147,6 +147,7 @@
           </li>
         </ul>
       </nav>
+      <script th:src="@{/js/navbar.js}"></script>
     </header>
 
     <!---------- NAVBAR LOGGED ---------->
@@ -204,8 +205,9 @@
     <!---------- FOOTER ---------->
     <footer
       th:fragment="footer"
-      class="flex flex-col bg-[#4b4b4b] text-[#cfcfcf] font-light text-[0.7rem] text-center pt-10 px-10 pb-3.75">
-      <section class="flex justify-around items-center w-full">
+      class="flex flex-col bg-[#4b4b4b] text-[#cfcfcf] font-light text-[0.7rem] text-center pt-10 px-5 md:px-10 pb-3.75">
+      <section
+        class="flex flex-col md:flex-row gap-8 md:gap-0 justify-around items-center w-full">
         <article class="flex flex-col" id="footer-marca">
           <div class="flex justify-center">
             <img
@@ -219,27 +221,39 @@
             para perros y gatos.
           </p>
         </article>
-        <article class="flex flex-col" id="footer-compromiso">
-          <h3 class="text-left text-[#fcf6f0]">Nuestro Compromiso</h3>
-          <ul class="list-none mt-3 text-left">
+        <article
+          class="flex flex-col items-center md:items-start"
+          id="footer-compromiso">
+          <h3 class="text-center md:text-left text-[#fcf6f0]">
+            Nuestro Compromiso
+          </h3>
+          <ul class="list-none mt-3 text-center md:text-left">
             <li class="mb-2">Atención 24/7</li>
             <li class="mb-2">Monitoreo constante</li>
             <li class="mb-2">Personal veterinario certificado</li>
             <li class="mb-2">Comunicación continua con tutores</li>
           </ul>
         </article>
-        <article class="flex flex-col" id="footer-calidad">
-          <h3 class="text-left text-[#fcf6f0]">Calidad y Cuidado</h3>
-          <ul class="list-none mt-3 text-left">
+        <article
+          class="flex flex-col items-center md:items-start"
+          id="footer-calidad">
+          <h3 class="text-center md:text-left text-[#fcf6f0]">
+            Calidad y Cuidado
+          </h3>
+          <ul class="list-none mt-3 text-center md:text-left">
             <li class="mb-2">Protocolos médicos definidos</li>
             <li class="mb-2">Supervisión veterinaria constante</li>
             <li class="mb-2">Procesos claros y documentados</li>
             <li class="mb-2">Enfoque en bienestar animal</li>
           </ul>
         </article>
-        <article class="flex flex-col items-start w-30" id="footer-redes">
-          <h3 class="text-left text-[#fcf6f0]">Redes Sociales</h3>
-          <ul class="list-none mt-3 text-left">
+        <article
+          class="flex flex-col items-center md:items-start w-auto md:w-30"
+          id="footer-redes">
+          <h3 class="text-center md:text-left text-[#fcf6f0]">
+            Redes Sociales
+          </h3>
+          <ul class="list-none mt-3 text-center md:text-left">
             <li class="mb-2">
               <a
                 href="#"
