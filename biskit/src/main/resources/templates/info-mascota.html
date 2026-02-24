@@ -17,7 +17,7 @@
     <header th:replace="fragmentos::navbar-logged"></header>
     <main>
       <a
-        href=""
+        th:href="@{/mascotas}"
         class="back-link group inline-flex justify-start items-center h-10 mt-8 mb-2 ml-7.5 sm:ml-10 md:ml-16 lg:ml-28">
         <svg
           class="h-9 mt-1"
@@ -49,6 +49,459 @@
           Lista de Mascotas
         </h2>
       </a>
+      <section class="grid grid-cols-2 mx-30 mt-5 mb-10">
+        <!----- Card de la Mascota ----->
+        <aside
+          class="card-mascota group h-auto w-full max-w-xs mx-auto p-3 bg-[#FBFAF8] rounded-2xl shadow-[0_10px_30px_-6px_rgba(0,0,0,0.08)] hover:shadow-[0_16px_40px_-8px_rgba(0,0,0,0.12)] hover:-translate-y-1 transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]">
+          <!-- CONTENIDO -->
+          <article class="h-full">
+            <div
+              th:switch="${mascota.estado}"
+              class="relative overflow-hidden rounded-2xl">
+              <img
+                th:src="${mascota.URLFoto}"
+                th:alt="${'Foto de ' + mascota.nombre}"
+                class="h-48 sm:h-56 md:h-65 w-full object-cover object-top transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.04]" />
+              <span
+                th:case="${T(com.example.biskit.entities.Estado).ACTIVO}"
+                th:text="${mascota.estado}"
+                class="absolute top-3 right-2 z-10 px-3 py-1 rounded-md text-xs font-semibold tracking-wide bg-[#ebfaf1] text-[#2bab60]">
+              </span>
+              <span
+                th:case="${T(com.example.biskit.entities.Estado).INACTIVO}"
+                th:text="${mascota.estado}"
+                class="absolute top-3 right-2 z-10 px-3 py-1 rounded-md text-xs font-semibold tracking-wide bg-[#ededed] text-[#8c8c8c]"></span>
+            </div>
+            <!-- Nombre y Raza -->
+            <div
+              class="flex justify-between items-center mx-2 mb-5 sm:mx-4 mt-3">
+              <h3
+                class="text-[#4a4a4a] font-bold text-lg sm:text-xl leading-none tracking-wider"
+                th:text="${mascota.nombre}"></h3>
+              <p
+                class="text-[#6D6155] font-medium text-xs leading-none"
+                th:text="${mascota.especie.getTexto() + ' · ' + mascota.raza}"></p>
+            </div>
+            <!-- Edad, Peso y Dueño -->
+            <div
+              class="flex justify-center items-center mx-2 sm:mx-4 my-3 gap-3 sm:gap-5">
+              <!-- Edad -->
+              <aside class="flex flex-col items-center gap-1">
+                <svg
+                  class="h-4"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                  <g
+                    id="SVGRepo_tracerCarrier"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"></g>
+                  <g id="SVGRepo_iconCarrier">
+                    <path
+                      d="M14 22H10C6.22876 22 4.34315 22 3.17157 20.8284C2 19.6569 2 17.7712 2 14V12C2 8.22876 2 6.34315 3.17157 5.17157C4.34315 4 6.22876 4 10 4H14C17.7712 4 19.6569 4 20.8284 5.17157C22 6.34315 22 8.22876 22 12V14C22 17.7712 22 19.6569 20.8284 20.8284C20.1752 21.4816 19.3001 21.7706 18 21.8985"
+                      stroke="#2B5392"
+                      stroke-width="1.5"
+                      stroke-linecap="round"></path>
+                    <path
+                      d="M7 4V2.5"
+                      stroke="#2B5392"
+                      stroke-width="1.5"
+                      stroke-linecap="round"></path>
+                    <path
+                      d="M17 4V2.5"
+                      stroke="#2B5392"
+                      stroke-width="1.5"
+                      stroke-linecap="round"></path>
+                    <path
+                      d="M21.5 9H16.625H10.75M2 9H5.875"
+                      stroke="#2B5392"
+                      stroke-width="1.5"
+                      stroke-linecap="round"></path>
+                  </g>
+                </svg>
+                <p class="text-xs text-[#8D8580] font-semibold">EDAD</p>
+                <p
+                  class="text-xs text-[#282828] font-medium"
+                  th:text="${mascota.edad == 1} ? ${mascota.edad + ' año'} : ${mascota.edad + ' años'}"></p>
+              </aside>
+              <!-- Peso -->
+              <aside class="flex flex-col items-center gap-1">
+                <svg
+                  class="h-4"
+                  viewBox="0 0 512 512"
+                  id="icons"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="#000000">
+                  <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                  <g
+                    id="SVGRepo_tracerCarrier"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"></g>
+                  <g id="SVGRepo_iconCarrier">
+                    <rect
+                      x="48"
+                      y="48"
+                      width="416"
+                      height="416"
+                      rx="96"
+                      fill="none"
+                      stroke="#2B5392"
+                      stroke-linejoin="round"
+                      stroke-width="32"></rect>
+                    <path
+                      d="M388.94,151.56c-24.46-22.28-68.72-51.4-132.94-51.4s-108.48,29.12-132.94,51.4A34.66,34.66,0,0,0,120,199.64l33.32,39.21a26.07,26.07,0,0,0,33.6,5.21c15.92-9.83,40.91-21.64,69.1-21.64s53.18,11.81,69.1,21.64a26.07,26.07,0,0,0,33.6-5.21L392,199.64A34.66,34.66,0,0,0,388.94,151.56Z"
+                      fill="none"
+                      stroke="#2B5392"
+                      stroke-linejoin="round"
+                      stroke-width="32"></path>
+                  </g>
+                </svg>
+                <p class="text-xs text-[#8D8580] font-semibold">PESO</p>
+                <p
+                  class="text-xs text-[#282828] font-medium"
+                  th:text="${mascota.peso} + ' Kg'"></p>
+              </aside>
+            </div>
+            <hr
+              class="border-[#6D6155] opacity-40 border-t my-5 mx-2 sm:mx-4" />
+            <!-- Diagnóstico -->
+            <div
+              class="flex flex-col justify-center items-center mx-2 sm:mx-4 gap-1">
+              <svg
+                class="h-4"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                <g
+                  id="SVGRepo_tracerCarrier"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"></g>
+                <g id="SVGRepo_iconCarrier">
+                  <path
+                    fill-rule="evenodd"
+                    clip-rule="evenodd"
+                    d="M8 3C8 4.10457 7.10457 5 6 5C5.36522 5 4.7995 4.70426 4.43312 4.24305L3.68377 4.49284C3.26354 4.63291 3.04437 4.9938 3.07687 5.34291C3.21171 6.79144 3.57308 9.0342 4.50664 10.8852C5.42593 12.7078 6.80542 14 8.99998 14C11.1945 14 12.574 12.7078 13.4933 10.8852C14.4269 9.0342 14.7883 6.79144 14.9231 5.3429C14.9556 4.9938 14.7365 4.63291 14.3162 4.49284L13.5669 4.24305C13.2005 4.70426 12.6348 5 12 5C10.8954 5 10 4.10457 10 3C10 1.89543 10.8954 1 12 1C12.8308 1 13.5433 1.50659 13.8455 2.22772L14.9487 2.59547C16.1618 2.99985 17.0416 4.16308 16.9145 5.52828C16.7719 7.06027 16.3817 9.59971 15.2791 11.7858C14.2796 13.7674 12.6201 15.5771 9.97404 15.9358C10.0144 16.4923 10.1026 17.1152 10.2753 17.7292C10.5254 18.6186 10.9354 19.4287 11.5733 20.0119C12.1909 20.5765 13.0987 20.9999 14.5001 20.9999C15.9014 20.9999 16.8093 20.5765 17.4268 20.0119C18.0648 19.4286 18.4747 18.6186 18.7249 17.7292C19.0249 16.6625 19.0693 15.5564 19.0521 14.8472C17.8598 14.4504 17 13.3256 17 12C17 10.3431 18.3432 9 20 9C21.6569 9 23 10.3431 23 12C23 13.2868 22.1899 14.3843 21.0518 14.8104C21.0711 15.6368 21.0261 16.9341 20.6502 18.2707C20.3378 19.3812 19.7791 20.5712 18.7764 21.4879C17.7533 22.4233 16.3487 22.9999 14.5001 22.9999C12.6515 22.9999 11.2468 22.4233 10.2238 21.4879C9.22107 20.5712 8.66231 19.3812 8.34997 18.2707C8.11685 17.4418 8.01127 16.6232 7.9691 15.9278C5.35608 15.5511 3.71316 13.7532 2.72091 11.7858C1.61832 9.5997 1.22808 7.06026 1.08548 5.52828C0.958397 4.16308 1.83818 2.99985 3.05131 2.59547L4.15456 2.22772C4.45669 1.50659 5.16919 1 6 1C7.10457 1 8 1.89543 8 3ZM20 13.0283C19.4321 13.0283 18.9717 12.5679 18.9717 12C18.9717 11.4321 19.4321 10.9717 20 10.9717C20.5679 10.9717 21.0283 11.4321 21.0283 12C21.0283 12.5679 20.5679 13.0283 20 13.0283Z"
+                    fill="#b33333"></path>
+                </g>
+              </svg>
+              <p class="text-xs text-[#8D8580] font-semibold">DIAGNÓSTICO</p>
+              <p
+                class="text-xs text-[#282828] font-medium"
+                th:text="${mascota.enfermedad}"></p>
+            </div>
+          </article>
+        </aside>
+        <!----- Tratamientos y Dueño ----->
+        <aside class="flex flex-col gap-5">
+          <!-- Tratamientos -->
+          <article
+            class="flex flex-col h-1/2 w-full mx-auto p-4 bg-[#FBFAF8] rounded-2xl shadow-[0_10px_30px_-6px_rgba(0,0,0,0.08)] hover:shadow-[0_16px_40px_-8px_rgba(0,0,0,0.12)] hover:-translate-y-1 transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]">
+            <!-- Titulo -->
+            <div
+              class="flex justify-start items-center w-full mx-3 mt-2 mb-4 gap-1">
+              <svg
+                class="h-7 w-auto"
+                fill="#2B5392"
+                version="1.1"
+                id="Layer_1"
+                xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink"
+                viewBox="0 0 512 512"
+                xml:space="preserve"
+                stroke="#2B5392">
+                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                <g
+                  id="SVGRepo_tracerCarrier"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"></g>
+                <g id="SVGRepo_iconCarrier">
+                  <g>
+                    <g>
+                      <path
+                        d="M384,221.091h-62.836l-27.927-62.836c-2.327-4.655-5.818-6.982-10.473-6.982c-4.655,0-9.309,2.327-10.473,6.982 l-51.2,116.364l-22.109-46.545c-2.327-3.491-5.818-6.982-10.473-6.982H128c-6.982,0-11.636,4.655-11.636,11.636 s4.655,11.636,11.636,11.636h52.364l30.255,62.836c2.327,3.491,5.818,6.982,10.473,6.982s8.145-2.327,10.473-6.982l51.2-115.2 l20.945,46.545c1.164,3.491,5.818,5.818,10.473,5.818H384c6.982,0,11.636-4.655,11.636-11.636S390.982,221.091,384,221.091z"></path>
+                    </g>
+                  </g>
+                  <g>
+                    <g>
+                      <path
+                        d="M407.273,34.909h-69.818c0-6.982-4.655-11.636-11.636-11.636h-29.091c-4.655,0-8.145-2.327-9.309-4.655 C280.436,6.982,268.8,0,256,0s-24.436,6.982-30.255,18.618c-2.327,2.327-5.818,4.655-10.473,4.655h-29.091 c-6.982,0-11.636,4.655-11.636,11.636v58.182c0,6.982,4.655,11.636,11.636,11.636h139.636c6.982,0,11.636-4.655,11.636-11.636 c0-6.982-4.655-11.636-11.636-11.636h-128V46.545h17.455c12.8,0,24.436-6.982,30.255-17.455c4.655-8.145,16.291-6.982,20.945,0 c5.818,10.473,17.455,17.455,30.255,17.455h17.455c0,6.982,4.655,11.636,11.636,11.636h81.455c6.982,0,11.636,4.655,11.636,11.636 v407.273c0,6.982-4.655,11.636-11.636,11.636H104.727c-6.982,0-11.636-4.655-11.636-11.636V69.818 c0-6.982,4.655-11.636,11.636-11.636H128c6.982,0,11.636-4.655,11.636-11.636S134.982,34.909,128,34.909h-23.273 c-19.782,0-34.909,15.127-34.909,34.909v407.273c0,19.782,15.127,34.909,34.909,34.909h302.545 c19.782,0,34.909-15.127,34.909-34.909V69.818C442.182,50.036,427.055,34.909,407.273,34.909z"></path>
+                    </g>
+                  </g>
+                  <g>
+                    <g>
+                      <path
+                        d="M279.273,372.364H128c-6.982,0-11.636,4.655-11.636,11.636s4.655,11.636,11.636,11.636h151.273 c6.982,0,11.636-4.655,11.636-11.636S286.255,372.364,279.273,372.364z"></path>
+                    </g>
+                  </g>
+                  <g>
+                    <g>
+                      <path
+                        d="M209.455,418.909H128c-6.982,0-11.636,4.655-11.636,11.636s4.655,11.636,11.636,11.636h81.455 c6.982,0,11.636-4.655,11.636-11.636S216.436,418.909,209.455,418.909z"></path>
+                    </g>
+                  </g>
+                </g>
+              </svg>
+              <h3
+                class="text-[#4a4a4a] font-black text-xl leading-none tracking-wider ml-2"
+                th:text="${'Tratamientos de ' + mascota.nombre}"></h3>
+            </div>
+            <!-- Tratamientos -->
+            <div
+              class="overflow-auto grid grid-cols-2 justify-center custom-scroll">
+              <div class="flex gap-2 mx-3 mb-5">
+                <div class="w-0.5 bg-[#2B5392]"></div>
+                <div class="flex flex-col gap-1">
+                  <p class="text-xs text-[#8D8580] font-semibold">23-02-2026</p>
+                  <p class="text-xs text-[#282828] font-medium">
+                    90mg de Selamectina
+                  </p>
+                </div>
+              </div>
+              <div class="flex gap-2 mx-3 mb-5">
+                <div class="w-0.5 bg-[#2B5392]"></div>
+                <div class="flex flex-col gap-1">
+                  <p class="text-xs text-[#8D8580] font-semibold">23-02-2026</p>
+                  <p class="text-xs text-[#282828] font-medium">
+                    90mg de Selamectina
+                  </p>
+                </div>
+              </div>
+              <div class="flex gap-2 mx-3 mb-5">
+                <div class="w-0.5 bg-[#2B5392]"></div>
+                <div class="flex flex-col gap-1">
+                  <p class="text-xs text-[#8D8580] font-semibold">23-02-2026</p>
+                  <p class="text-xs text-[#282828] font-medium">
+                    90mg de Selamectina
+                  </p>
+                </div>
+              </div>
+              <div class="flex gap-2 mx-3 mb-5">
+                <div class="w-0.5 bg-[#2B5392]"></div>
+                <div class="flex flex-col gap-1">
+                  <p class="text-xs text-[#8D8580] font-semibold">23-02-2026</p>
+                  <p class="text-xs text-[#282828] font-medium">
+                    90mg de Selamectina
+                  </p>
+                </div>
+              </div>
+              <div class="flex gap-2 mx-3 mb-5">
+                <div class="w-0.5 bg-[#2B5392]"></div>
+                <div class="flex flex-col gap-1">
+                  <p class="text-xs text-[#8D8580] font-semibold">23-02-2026</p>
+                  <p class="text-xs text-[#282828] font-medium">
+                    90mg de Selamectina
+                  </p>
+                </div>
+              </div>
+              <div class="flex gap-2 mx-3 mb-5">
+                <div class="w-0.5 bg-[#2B5392]"></div>
+                <div class="flex flex-col gap-1">
+                  <p class="text-xs text-[#8D8580] font-semibold">23-02-2026</p>
+                  <p class="text-xs text-[#282828] font-medium">
+                    90mg de Selamectina
+                  </p>
+                </div>
+              </div>
+              <div class="flex gap-2 mx-3 mb-5">
+                <div class="w-0.5 bg-[#2B5392]"></div>
+                <div class="flex flex-col gap-1">
+                  <p class="text-xs text-[#8D8580] font-semibold">23-02-2026</p>
+                  <p class="text-xs text-[#282828] font-medium">
+                    90mg de Selamectina
+                  </p>
+                </div>
+              </div>
+              <div class="flex gap-2 mx-3 mb-5">
+                <div class="w-0.5 bg-[#2B5392]"></div>
+                <div class="flex flex-col gap-1">
+                  <p class="text-xs text-[#8D8580] font-semibold">23-02-2026</p>
+                  <p class="text-xs text-[#282828] font-medium">
+                    90mg de Selamectina
+                  </p>
+                </div>
+              </div>
+            </div>
+          </article>
+          <!-- Dueño -->
+          <article
+            class="flex flex-col h-1/2 w-full mx-auto p-3 items-center bg-[#FBFAF8] rounded-2xl shadow-[0_10px_30px_-6px_rgba(0,0,0,0.08)] hover:shadow-[0_16px_40px_-8px_rgba(0,0,0,0.12)] hover:-translate-y-1 transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]">
+            <!-- Titulo -->
+            <div class="flex justify-start items-center w-full px-5 mt-2 gap-1">
+              <svg
+                class="h-7 w-auto"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                <g
+                  id="SVGRepo_tracerCarrier"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"></g>
+                <g id="SVGRepo_iconCarrier">
+                  <circle
+                    cx="12"
+                    cy="6"
+                    r="4"
+                    stroke="#2B5392"
+                    stroke-width="1.5"></circle>
+                  <path
+                    d="M19.9975 18C20 17.8358 20 17.669 20 17.5C20 15.0147 16.4183 13 12 13C7.58172 13 4 15.0147 4 17.5C4 19.9853 4 22 12 22C14.231 22 15.8398 21.8433 17 21.5634"
+                    stroke="#2B5392"
+                    stroke-width="1.5"
+                    stroke-linecap="round"></path>
+                </g>
+              </svg>
+              <h3
+                class="text-[#4a4a4a] font-black text-xl leading-none tracking-wider ml-2">
+                Información del Dueño
+              </h3>
+            </div>
+            <!-- Info del Dueño -->
+            <div class="flex-1 flex flex-col justify-center gap-3 px-3 w-full">
+              <!-- Nombre -->
+              <div class="flex items-center gap-2 w-full">
+                <svg
+                  class="h-5 w-auto"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                  <g
+                    id="SVGRepo_tracerCarrier"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"></g>
+                  <g id="SVGRepo_iconCarrier">
+                    <circle
+                      cx="12"
+                      cy="6"
+                      r="4"
+                      stroke="#2B5392"
+                      stroke-width="1.5"></circle>
+                    <path
+                      d="M19.9975 18C20 17.8358 20 17.669 20 17.5C20 15.0147 16.4183 13 12 13C7.58172 13 4 15.0147 4 17.5C4 19.9853 4 22 12 22C14.231 22 15.8398 21.8433 17 21.5634"
+                      stroke="#2B5392"
+                      stroke-width="1.5"
+                      stroke-linecap="round"></path>
+                  </g>
+                </svg>
+                <div class="flex justify-between w-full">
+                  <p class="text-xs text-[#8D8580] font-semibold">Nombre</p>
+                  <p class="text-xs text-[#282828] font-medium">Juan Pérez</p>
+                </div>
+              </div>
+              <!-- Cédula -->
+              <div class="flex items-center gap-2 w-full">
+                <svg
+                  class="h-5 w-auto"
+                  viewBox="0 -0.5 25 25"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                  <g
+                    id="SVGRepo_tracerCarrier"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"></g>
+                  <g id="SVGRepo_iconCarrier">
+                    <path
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                      d="M3.5 7V17C3.5 18.1046 4.39543 19 5.5 19H19.5C20.6046 19 21.5 18.1046 21.5 17V7C21.5 5.89543 20.6046 5 19.5 5H5.5C4.39543 5 3.5 5.89543 3.5 7Z"
+                      stroke="#2B5392"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"></path>
+                    <path
+                      d="M15.5 10H18.5"
+                      stroke="#2B5392"
+                      stroke-width="1.5"
+                      stroke-linecap="round"></path>
+                    <path
+                      d="M15.5 13H18.5"
+                      stroke="#2B5392"
+                      stroke-width="1.5"
+                      stroke-linecap="round"></path>
+                    <path
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                      d="M11.5 10C11.5 11.1046 10.6046 12 9.5 12C8.39543 12 7.5 11.1046 7.5 10C7.5 8.89543 8.39543 8 9.5 8C10.0304 8 10.5391 8.21071 10.9142 8.58579C11.2893 8.96086 11.5 9.46957 11.5 10Z"
+                      stroke="#2B5392"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"></path>
+                    <path
+                      d="M5.5 16C8.283 12.863 11.552 13.849 13.5 16"
+                      stroke="#2B5392"
+                      stroke-width="1.5"
+                      stroke-linecap="round"></path>
+                  </g>
+                </svg>
+                <div class="flex justify-between w-full">
+                  <p class="text-xs text-[#8D8580] font-semibold">Cédula</p>
+                  <p class="text-xs text-[#282828] font-medium">1234567890</p>
+                </div>
+              </div>
+              <!-- Correo -->
+              <div class="flex items-center gap-2 w-full">
+                <svg
+                  class="h-5 w-auto"
+                  viewBox="0 0 32 32"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none">
+                  <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                  <g
+                    id="SVGRepo_tracerCarrier"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"></g>
+                  <g id="SVGRepo_iconCarrier">
+                    <path
+                      stroke="#2b5392"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M3 9a2 2 0 012-2h22a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path>
+                    <path
+                      stroke="#2b5392"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M3 9l11.862 8.212a2 2 0 002.276 0L29 9"></path>
+                  </g>
+                </svg>
+                <div class="flex justify-between w-full">
+                  <p class="text-xs text-[#8D8580] font-semibold">Correo</p>
+                  <p class="text-xs text-[#282828] font-medium">
+                    roberhmendez08@gmail.com
+                  </p>
+                </div>
+              </div>
+              <!-- Celular -->
+              <div class="flex items-center gap-2 w-full">
+                <svg
+                  class="h-5 w-auto"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                  <g
+                    id="SVGRepo_tracerCarrier"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"></g>
+                  <g id="SVGRepo_iconCarrier">
+                    <path
+                      d="M16.1007 13.359L15.5719 12.8272H15.5719L16.1007 13.359ZM16.5562 12.9062L17.085 13.438H17.085L16.5562 12.9062ZM18.9728 12.5894L18.6146 13.2483L18.9728 12.5894ZM20.8833 13.628L20.5251 14.2869L20.8833 13.628ZM21.4217 16.883L21.9505 17.4148L21.4217 16.883ZM20.0011 18.2954L19.4723 17.7636L20.0011 18.2954ZM18.6763 18.9651L18.7459 19.7119H18.7459L18.6763 18.9651ZM8.81536 14.7266L9.34418 14.1947L8.81536 14.7266ZM4.00289 5.74561L3.2541 5.78816L3.2541 5.78816L4.00289 5.74561ZM10.4775 7.19738L11.0063 7.72922H11.0063L10.4775 7.19738ZM10.6342 4.54348L11.2346 4.09401L10.6342 4.54348ZM9.37326 2.85908L8.77286 3.30855V3.30855L9.37326 2.85908ZM6.26145 2.57483L6.79027 3.10667H6.79027L6.26145 2.57483ZM4.69185 4.13552L4.16303 3.60368H4.16303L4.69185 4.13552ZM12.0631 11.4972L12.5919 10.9654L12.0631 11.4972ZM16.6295 13.8909L17.085 13.438L16.0273 12.3743L15.5719 12.8272L16.6295 13.8909ZM18.6146 13.2483L20.5251 14.2869L21.2415 12.9691L19.331 11.9305L18.6146 13.2483ZM20.8929 16.3511L19.4723 17.7636L20.5299 18.8273L21.9505 17.4148L20.8929 16.3511ZM18.6067 18.2184C17.1568 18.3535 13.4056 18.2331 9.34418 14.1947L8.28654 15.2584C12.7186 19.6653 16.9369 19.8805 18.7459 19.7119L18.6067 18.2184ZM9.34418 14.1947C5.4728 10.3453 4.83151 7.10765 4.75168 5.70305L3.2541 5.78816C3.35456 7.55599 4.14863 11.144 8.28654 15.2584L9.34418 14.1947ZM10.7195 8.01441L11.0063 7.72922L9.9487 6.66555L9.66189 6.95073L10.7195 8.01441ZM11.2346 4.09401L9.97365 2.40961L8.77286 3.30855L10.0338 4.99296L11.2346 4.09401ZM5.73263 2.04299L4.16303 3.60368L5.22067 4.66736L6.79027 3.10667L5.73263 2.04299ZM10.1907 7.48257C9.66189 6.95073 9.66117 6.95144 9.66045 6.95216C9.66021 6.9524 9.65949 6.95313 9.659 6.95362C9.65802 6.95461 9.65702 6.95561 9.65601 6.95664C9.65398 6.95871 9.65188 6.96086 9.64972 6.9631C9.64539 6.96759 9.64081 6.97245 9.63599 6.97769C9.62634 6.98816 9.61575 7.00014 9.60441 7.01367C9.58174 7.04072 9.55605 7.07403 9.52905 7.11388C9.47492 7.19377 9.41594 7.2994 9.36589 7.43224C9.26376 7.70329 9.20901 8.0606 9.27765 8.50305C9.41189 9.36833 10.0078 10.5113 11.5343 12.0291L12.5919 10.9654C11.1634 9.54499 10.8231 8.68059 10.7599 8.27309C10.7298 8.07916 10.761 7.98371 10.7696 7.96111C10.7748 7.94713 10.7773 7.9457 10.7709 7.95525C10.7677 7.95992 10.7624 7.96723 10.7541 7.97708C10.75 7.98201 10.7451 7.98759 10.7394 7.99381C10.7365 7.99692 10.7335 8.00019 10.7301 8.00362C10.7285 8.00534 10.7268 8.00709 10.725 8.00889C10.7241 8.00979 10.7232 8.0107 10.7223 8.01162C10.7219 8.01208 10.7212 8.01278 10.7209 8.01301C10.7202 8.01371 10.7195 8.01441 10.1907 7.48257ZM11.5343 12.0291C13.0613 13.5474 14.2096 14.1383 15.0763 14.2713C15.5192 14.3392 15.8763 14.285 16.1472 14.1841C16.28 14.1346 16.3858 14.0763 16.4658 14.0227C16.5058 13.9959 16.5392 13.9704 16.5663 13.9479C16.5799 13.9367 16.5919 13.9262 16.6024 13.9166C16.6077 13.9118 16.6126 13.9073 16.6171 13.903C16.6194 13.9008 16.6215 13.8987 16.6236 13.8967C16.6246 13.8957 16.6256 13.8947 16.6266 13.8937C16.6271 13.8932 16.6279 13.8925 16.6281 13.8923C16.6288 13.8916 16.6295 13.8909 16.1007 13.359C15.5719 12.8272 15.5726 12.8265 15.5733 12.8258C15.5735 12.8256 15.5742 12.8249 15.5747 12.8244C15.5756 12.8235 15.5765 12.8226 15.5774 12.8217C15.5793 12.82 15.581 12.8183 15.5827 12.8166C15.5862 12.8133 15.5895 12.8103 15.5926 12.8074C15.5988 12.8018 15.6044 12.7969 15.6094 12.7929C15.6192 12.7847 15.6265 12.7795 15.631 12.7764C15.6403 12.7702 15.6384 12.773 15.6236 12.7785C15.5991 12.7876 15.501 12.8189 15.3038 12.7886C14.8905 12.7253 14.02 12.3853 12.5919 10.9654L11.5343 12.0291ZM9.97365 2.40961C8.95434 1.04802 6.94996 0.83257 5.73263 2.04299L6.79027 3.10667C7.32195 2.578 8.26623 2.63181 8.77286 3.30855L9.97365 2.40961ZM4.75168 5.70305C4.73201 5.35694 4.89075 4.9954 5.22067 4.66736L4.16303 3.60368C3.62571 4.13795 3.20329 4.89425 3.2541 5.78816L4.75168 5.70305ZM19.4723 17.7636C19.1975 18.0369 18.9029 18.1908 18.6067 18.2184L18.7459 19.7119C19.4805 19.6434 20.0824 19.2723 20.5299 18.8273L19.4723 17.7636ZM11.0063 7.72922C11.9908 6.7503 12.064 5.2019 11.2346 4.09401L10.0338 4.99295C10.4373 5.53193 10.3773 6.23938 9.9487 6.66555L11.0063 7.72922ZM20.5251 14.2869C21.3429 14.7315 21.4703 15.7769 20.8929 16.3511L21.9505 17.4148C23.2908 16.0821 22.8775 13.8584 21.2415 12.9691L20.5251 14.2869ZM17.085 13.438C17.469 13.0562 18.0871 12.9616 18.6146 13.2483L19.331 11.9305C18.2474 11.3414 16.9026 11.5041 16.0273 12.3743L17.085 13.438Z"
+                      fill="#2B5392"></path>
+                  </g>
+                </svg>
+                <div class="flex justify-between w-full">
+                  <p class="text-xs text-[#8D8580] font-semibold">Celular</p>
+                  <p class="text-xs text-[#282828] font-medium">3001234567</p>
+                </div>
+              </div>
+            </div>
+          </article>
+        </aside>
+      </section>
     </main>
     <footer th:replace="fragmentos::footer"></footer>
   </body>

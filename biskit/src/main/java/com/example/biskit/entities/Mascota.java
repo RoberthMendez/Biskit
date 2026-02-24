@@ -15,6 +15,22 @@ public class Mascota {
   private int edad;
   private float peso;
   private String enfermedad;
+  private String dueño;
   private String URLFoto;
+
+  public String getNombreDueño() {
+
+    return dueño.split(" ")[0];
+
+  }
+
+  public String getApellidoDueño() {
+
+    String[] partes = dueño.split(" ");
+    if (partes.length > 1)
+      return partes[partes.length - 1];
+
+    return "";
+  }
 
 }
