@@ -131,7 +131,7 @@
                 <img
                   th:src="${mascota.URLFoto}"
                   th:alt="${'Foto de ' + mascota.nombre}"
-                  class="h-48 sm:h-56 md:h-65 w-full object-cover object-top transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.04]" />
+                  class="h-48 sm:h-56 md:h-65 w-full object-cover object-center md:object-top transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.04]" />
                 <span
                   th:case="${T(com.example.biskit.entities.Estado).ACTIVO}"
                   th:text="${mascota.estado}"
