@@ -54,30 +54,27 @@ public class PetsRepo {
         return pets.get(id);
     }
 
-    public void addPet(String nombre, String especie, String raza, String estado, int edad, float peso,
-            String enfermedad,
-            String dueño, String URLFoto) {
-
-        Pet pet = new Pet(pets.size() + 1, nombre, Especie.valueOf(especie.toUpperCase()), raza,
-                Estado.valueOf(estado.toUpperCase()), edad, peso, enfermedad, dueño, URLFoto);
+    public void addPet(Pet pet) {
+        int tam = pets.size();
+        int LastId = pets.get(tam).getId();
+        pet.setId(LastId + 1);
         pets.put(pet.getId(), pet);
     }
 
-    public void updatePet(Integer id, String nombre, String especie, String raza, String estado, int edad, float peso,
-            String enfermedad,
-            String dueño, String URLFoto) {
-
-        Pet pet = pets.get(id);
-        if (pet != null) {
-            pet.update(nombre, Especie.valueOf(especie.toUpperCase()), raza,
-                    Estado.valueOf(estado.toUpperCase()), edad, peso, enfermedad, dueño, URLFoto);
+    public void savePet(Pet pet) {
+        if (pet.getId() == null) {
+            addPet(pet);
+        } else {
+            updatePet(pet);
         }
     }
 
+    public void updatePet(Pet pet) {
+        pets.put(pet.getId(), pet);
+    }
+
     public void deletePet(Integer id) {
-        Pet pet = pets.get(id);
-        if (pet != null)
-            pets.remove(id);
+        pets.remove(id);
     }
 
 }

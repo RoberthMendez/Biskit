@@ -25,16 +25,13 @@ public class PetsImpl implements PetsService {
   }
 
   @Override
-  public void addPet(String nombre, String especie, String raza, String estado, int edad, float peso, String enfermedad,
-      String dueño, String URLFoto) {
-    petsRepo.addPet(nombre, especie, raza, estado, edad, peso, enfermedad, dueño, URLFoto);
+  public void addPet(Pet pet) {
+    petsRepo.addPet(pet);
   }
 
   @Override
-  public void updatePet(Integer id, String nombre, String especie, String raza, String estado, int edad, float peso,
-      String enfermedad,
-      String dueño, String URLFoto) {
-    petsRepo.updatePet(id, nombre, especie, raza, estado, edad, peso, enfermedad, dueño, URLFoto);
+  public void updatePet(Pet pet) {
+    petsRepo.updatePet(pet);
   }
 
   @Override

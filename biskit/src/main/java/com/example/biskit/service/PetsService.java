@@ -10,12 +10,9 @@ public interface PetsService {
 
   public Pet getPetById(Integer id);
 
-  public void addPet(String nombre, String especie, String raza, String estado, int edad, float peso, String enfermedad,
-      String dueño, String URLFoto);
+  public void addPet(Pet pet);
 
-  public void updatePet(Integer id, String nombre, String especie, String raza, String estado, int edad, float peso,
-      String enfermedad,
-      String dueño, String URLFoto);
+  public void updatePet(Pet pet);
 
   public void deletePet(Integer id);
 
