@@ -116,40 +116,40 @@
         </div>
         <!-- MASCOTAS -->
         <section
-          class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mx-2 sm:mx-10 mb-10 gap-6 sm:gap-8 lg:gap-10">
+          class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 mx-2 sm:mx-10 mb-10 gap-6 sm:gap-8 lg:gap-10">
           <!-- Card -->
           <a
-            th:href="@{/mascotas/{id}(id=${mascota.id})}"
-            th:each="mascota : ${mascotas}"
-            th:attr="data-nombre=${mascota.nombre}"
+            th:href="@{/vet/pets/{id}(id=${pet.id})}"
+            th:each="pet : ${pets}"
+            th:attr="data-nombre=${pet.nombre}"
             class="card-mascota group cursor-pointer h-auto w-full max-w-xs mx-auto p-3 bg-[#FBFAF8] rounded-2xl shadow-[0_10px_30px_-6px_rgba(0,0,0,0.08)] hover:shadow-[0_16px_40px_-8px_rgba(0,0,0,0.12)] hover:-translate-y-1 transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]">
             <!-- CONTENIDO -->
             <article class="h-full">
               <div
-                th:switch="${mascota.estado}"
+                th:switch="${pet.estado}"
                 class="relative overflow-hidden rounded-2xl">
                 <img
-                  th:src="${mascota.URLFoto}"
-                  th:alt="${'Foto de ' + mascota.nombre}"
+                  th:src="${pet.URLFoto}"
+                  th:alt="${'Foto de ' + pet.nombre}"
                   class="h-48 sm:h-56 md:h-65 w-full object-cover object-center transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.04]" />
                 <span
                   th:case="${T(com.example.biskit.entities.Estado).ACTIVO}"
-                  th:text="${mascota.estado}"
+                  th:text="${pet.estado}"
                   class="absolute top-3 right-2 z-10 px-3 py-1 rounded-md text-xs font-semibold tracking-wide bg-[#ebfaf1] text-[#2bab60]">
                 </span>
                 <span
                   th:case="${T(com.example.biskit.entities.Estado).INACTIVO}"
-                  th:text="${mascota.estado}"
+                  th:text="${pet.estado}"
                   class="absolute top-3 right-2 z-10 px-3 py-1 rounded-md text-xs font-semibold tracking-wide bg-[#ededed] text-[#8c8c8c]"></span>
               </div>
               <!-- Nombre y Raza -->
               <div class="flex justify-between items-center mx-2 sm:mx-4 mt-3">
                 <h3
                   class="text-[#4a4a4a] font-bold text-lg sm:text-xl leading-none tracking-wider"
-                  th:text="${mascota.nombre}"></h3>
+                  th:text="${pet.nombre}"></h3>
                 <p
                   class="text-[#6D6155] font-medium text-xs leading-none"
-                  th:text="${mascota.especie.getTexto() + ' · ' + mascota.raza}"></p>
+                  th:text="${pet.especie.getTexto() + ' · ' + pet.raza}"></p>
               </div>
               <!-- Edad, Peso y Dueño -->
               <div
@@ -195,7 +195,7 @@
                   <div class="flex flex-1 items-center">
                     <p
                       class="text-xs text-[#282828] font-medium"
-                      th:text="${mascota.edad == 1} ? ${mascota.edad + ' año'} : ${mascota.edad + ' años'}"></p>
+                      th:text="${pet.edad == 1} ? ${pet.edad + ' año'} : ${pet.edad + ' años'}"></p>
                   </div>
                 </aside>
                 <!-- PESO -->
@@ -237,7 +237,7 @@
                   <div class="flex flex-1 items-center">
                     <p
                       class="text-xs text-[#282828] font-medium"
-                      th:text="${mascota.peso} + ' Kg'"></p>
+                      th:text="${pet.peso} + ' Kg'"></p>
                   </div>
                 </aside>
                 <!-- DUEÑO -->
@@ -272,7 +272,7 @@
                   <div class="flex flex-1 items-start justify-center">
                     <p
                       class="text-xs text-[#282828] font-medium text-center wrap-break-word leading-tight max-w-26"
-                      th:text="${mascota.getNombreDueño()} + ' ' + ${mascota.getApellidoDueño()}"></p>
+                      th:text="${pet.getNombreDueño()} + ' ' + ${pet.getApellidoDueño()}"></p>
                   </div>
                 </aside>
               </div>
@@ -302,7 +302,7 @@
                 <p class="text-xs text-[#8D8580] font-semibold">DIAGNÓSTICO</p>
                 <p
                   class="text-xs text-[#282828] font-medium"
-                  th:text="${mascota.enfermedad}"></p>
+                  th:text="${pet.enfermedad}"></p>
               </div>
             </article>
           </a>
@@ -311,6 +311,6 @@
     </main>
     <!----- Footer ------>
     <footer th:replace="fragmentos::footer"></footer>
-    <script th:src="@{/js/mascotas.js}"></script>
+    <script th:src="@{/js/pets.js}"></script>
   </body>
 </html>

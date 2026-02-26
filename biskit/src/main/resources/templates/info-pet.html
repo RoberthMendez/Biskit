@@ -17,7 +17,7 @@
     <header th:replace="fragmentos::navbar-logged"></header>
     <main>
       <a
-        th:href="@{/mascotas}"
+        th:href="@{/vet/pets}"
         class="back-link group inline-flex justify-start items-center h-10 ml-5 sm:ml-8 md:ml-16 lg:ml-28 mt-8 mb-2">
         <svg
           class="h-9 mt-1"
@@ -57,20 +57,20 @@
           <!-- CONTENIDO -->
           <article class="h-full">
             <div
-              th:switch="${mascota.estado}"
+              th:switch="${pet.estado}"
               class="relative overflow-hidden rounded-2xl">
               <img
-                th:src="${mascota.URLFoto}"
-                th:alt="${'Foto de ' + mascota.nombre}"
+                th:src="${pet.URLFoto}"
+                th:alt="${'Foto de ' + pet.nombre}"
                 class="h-48 sm:h-56 md:h-65 w-full object-cover object-center transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.04]" />
               <span
                 th:case="${T(com.example.biskit.entities.Estado).ACTIVO}"
-                th:text="${mascota.estado}"
+                th:text="${pet.estado}"
                 class="absolute top-3 right-2 z-10 px-3 py-1 rounded-md text-xs font-semibold tracking-wide bg-[#ebfaf1] text-[#2bab60]">
               </span>
               <span
                 th:case="${T(com.example.biskit.entities.Estado).INACTIVO}"
-                th:text="${mascota.estado}"
+                th:text="${pet.estado}"
                 class="absolute top-3 right-2 z-10 px-3 py-1 rounded-md text-xs font-semibold tracking-wide bg-[#ededed] text-[#8c8c8c]"></span>
             </div>
             <!-- Nombre y Raza -->
@@ -78,10 +78,10 @@
               class="flex justify-between items-center mx-2 mb-5 sm:mx-4 mt-3">
               <h3
                 class="text-[#4a4a4a] font-bold text-lg sm:text-xl leading-none tracking-wider"
-                th:text="${mascota.nombre}"></h3>
+                th:text="${pet.nombre}"></h3>
               <p
                 class="text-[#6D6155] font-medium text-xs leading-none"
-                th:text="${mascota.especie.getTexto() + ' · ' + mascota.raza}"></p>
+                th:text="${pet.especie.getTexto() + ' · ' + pet.raza}"></p>
             </div>
             <!-- Edad, Peso y Dueño -->
             <div
@@ -124,7 +124,7 @@
                 <p class="text-xs text-[#8D8580] font-semibold">EDAD</p>
                 <p
                   class="text-xs text-[#282828] font-medium"
-                  th:text="${mascota.edad == 1} ? ${mascota.edad + ' año'} : ${mascota.edad + ' años'}"></p>
+                  th:text="${pet.edad == 1} ? ${pet.edad + ' año'} : ${pet.edad + ' años'}"></p>
               </aside>
               <!-- Peso -->
               <aside class="flex flex-col items-center gap-1">
@@ -161,7 +161,7 @@
                 <p class="text-xs text-[#8D8580] font-semibold">PESO</p>
                 <p
                   class="text-xs text-[#282828] font-medium"
-                  th:text="${mascota.peso} + ' Kg'"></p>
+                  th:text="${pet.peso} + ' Kg'"></p>
               </aside>
             </div>
             <hr
@@ -190,7 +190,7 @@
               <p class="text-xs text-[#8D8580] font-semibold">DIAGNÓSTICO</p>
               <p
                 class="text-xs text-[#282828] font-medium"
-                th:text="${mascota.enfermedad}"></p>
+                th:text="${pet.enfermedad}"></p>
             </div>
           </article>
         </aside>
@@ -246,7 +246,7 @@
               </svg>
               <h3
                 class="text-[#4a4a4a] font-black text-xl leading-none tracking-wider ml-2"
-                th:text="${'Tratamientos de ' + mascota.nombre}"></h3>
+                th:text="${'Tratamientos de ' + pet.nombre}"></h3>
             </div>
             <!-- Tratamientos -->
             <div
