@@ -1,9 +1,14 @@
 package com.example.biskit.service;
 
 import java.util.Collection;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import com.example.biskit.entities.Client;
+import com.example.biskit.entities.Pet;
+
 import com.example.biskit.repo.ClientsRepo;
 
 @Service
@@ -35,5 +40,11 @@ public class ClientsImpl implements ClientsService {
     @Override
     public void deleteClient(Integer id) {
         clientsRepo.deleteClient(id);
+    }
+
+    @Override
+    public List<Pet> getPetsByClientId(Integer clientId) {
+        Client client = clientsRepo.getClientById(clientId);
+        return client.getPets();
     }
 }

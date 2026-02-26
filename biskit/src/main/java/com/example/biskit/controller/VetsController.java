@@ -1,5 +1,7 @@
 package com.example.biskit.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,6 +10,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.biskit.service.PetsService;
+import com.example.biskit.service.ClientsService;
+
+import com.example.biskit.entities.Client;
 
 @Controller
 @RequestMapping("/vet")
@@ -15,6 +20,9 @@ public class VetsController {
 
   @Autowired
   private PetsService petsService;
+
+  @Autowired
+  private ClientsService clientsService;
 
   // ----- MASCOTAS -----
   @GetMapping("/pets")
@@ -27,6 +35,13 @@ public class VetsController {
   public String mostrarMascota(@PathVariable("id") Integer id, Model model) {
     model.addAttribute("pet", petsService.getPetById(id));
     return "info-pet";
+  }
+
+  public void eliminarCliente(Integer id) {
+    Client cliente = clientsService.getClientById(id);
+    List<Integer> petIds = cliente.getPets().stream().map(pet -> pet.getId()).toList();
+    petIds.forEach(petId -> petsService.deletePet(petId));
+    clientsService.deleteClient(id);
   }
 
 }

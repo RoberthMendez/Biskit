@@ -38,6 +38,7 @@ public class ClientsRepo {
     }
 
     public void deleteClient(Integer id) {
+        clients.get(id);
         clients.remove(id);
     }
 }
