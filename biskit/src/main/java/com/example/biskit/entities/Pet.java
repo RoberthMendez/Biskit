@@ -33,4 +33,18 @@ public class Pet {
     return "";
   }
 
+  public void update(String nombre, Especie especie, String raza, Estado estado, int edad, float peso,
+      String enfermedad,
+      String dueño, String URLFoto) {
+    this.nombre = nombre;
+    this.especie = especie;
+    this.raza = raza;
+    this.estado = estado;
+    this.edad = edad;
+    this.peso = peso;
+    this.enfermedad = enfermedad;
+    this.dueño = dueño;
+    this.URLFoto = URLFoto;
+  }
+
 }

@@ -24,4 +24,22 @@ public class PetsImpl implements PetsService {
     return petsRepo.getPetById(id);
   }
 
+  @Override
+  public void addPet(String nombre, String especie, String raza, String estado, int edad, float peso, String enfermedad,
+      String dueño, String URLFoto) {
+    petsRepo.addPet(nombre, especie, raza, estado, edad, peso, enfermedad, dueño, URLFoto);
+  }
+
+  @Override
+  public void updatePet(Integer id, String nombre, String especie, String raza, String estado, int edad, float peso,
+      String enfermedad,
+      String dueño, String URLFoto) {
+    petsRepo.updatePet(id, nombre, especie, raza, estado, edad, peso, enfermedad, dueño, URLFoto);
+  }
+
+  @Override
+  public void deletePet(Integer id) {
+    petsRepo.deletePet(id);
+  }
+
 }
