@@ -14,6 +14,7 @@ import com.example.biskit.service.PetsService;
 import com.example.biskit.service.ClientsService;
 
 import com.example.biskit.entities.Client;
+import com.example.biskit.entities.Pet;
 
 @Controller
 @RequestMapping("/vet")
@@ -42,6 +43,13 @@ public class VetsController {
   public String eliminarMascota(@PathVariable("id") Integer id) {
     petsService.deletePet(id);
     return "redirect:/vet/pets";
+  }
+
+  @GetMapping("/add-pet")
+  public String mostrarFormularioAddPet(Model model) {
+    Pet pet = new Pet(null, "", null, "", null, 0, 0.0f, "", "", "");
+    model.addAttribute("pet", pet);
+    return "add-pet";
   }
 
 }
