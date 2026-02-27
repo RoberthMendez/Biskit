@@ -11,7 +11,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap"
-      rel="stylesheet" />
+      rel="stylesheet"
+    />
   </head>
   <body>
     <!----- Navbar ------>
@@ -20,41 +21,48 @@
       <!----- Devolver ----->
       <a
         href=""
-        class="back-link group inline-flex justify-start items-center h-10 mt-8 mb-2 ml-7.5 sm:ml-10 md:ml-16 lg:ml-28">
+        class="back-link group inline-flex justify-start items-center h-10 mt-8 mb-2 ml-7.5 sm:ml-10 md:ml-16 lg:ml-28"
+      >
         <svg
           class="h-9 mt-1"
           viewBox="0 0 24 24"
           fill="none"
-          xmlns="http://www.w3.org/2000/svg">
+          xmlns="http://www.w3.org/2000/svg"
+        >
           <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
           <g
             id="SVGRepo_tracerCarrier"
             stroke-linecap="round"
-            stroke-linejoin="round"></g>
+            stroke-linejoin="round"
+          ></g>
           <g id="SVGRepo_iconCarrier">
             <path
               d="M8 12L16 12"
               stroke="#6B6B6B"
               stroke-width="2"
               stroke-linecap="round"
-              stroke-linejoin="round"></path>
+              stroke-linejoin="round"
+            ></path>
             <path
               d="M11 9L8.08704 11.913V11.913C8.03897 11.961 8.03897 12.039 8.08704 12.087V12.087L11 15"
               stroke="#6B6B6B"
               stroke-width="2"
               stroke-linecap="round"
-              stroke-linejoin="round"></path>
+              stroke-linejoin="round"
+            ></path>
           </g>
         </svg>
         <h2
-          class="underline underline-offset-6 font-bold tracking-wider text-lg ml-1 text-[#4a4a4acc] group-hover:text-[#4A4A4Aee] transition-colors duration-300">
+          class="underline underline-offset-6 font-bold tracking-wider text-lg ml-1 text-[#4a4a4acc] group-hover:text-[#4A4A4Aee] transition-colors duration-300"
+        >
           Dashboard
         </h2>
       </a>
       <!----- Titulo ----->
       <div class="text-[#4a4a4a] mt-4 mb-7 mx-6 sm:mx-16 md:mx-24 lg:mx-36">
         <h1
-          class="text-[#4a4a4a] text-2xl sm:text-3xl md:text-4xl font-semibold tracking-wider">
+          class="text-[#4a4a4a] text-2xl sm:text-3xl md:text-4xl font-semibold tracking-wider"
+        >
           Mascotas Registradas
         </h1>
         <p class="text-[#8d8580dd] font-medium text-sm sm:text-base">
@@ -69,12 +77,14 @@
             class="h-6 ml-5"
             viewBox="0 0 24 24"
             fill="none"
-            xmlns="http://www.w3.org/2000/svg">
+            xmlns="http://www.w3.org/2000/svg"
+          >
             <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
             <g
               id="SVGRepo_tracerCarrier"
               stroke-linecap="round"
-              stroke-linejoin="round"></g>
+              stroke-linejoin="round"
+            ></g>
             <g id="SVGRepo_iconCarrier">
               <g clip-path="url(#clip0_15_152)">
                 <rect width="24" height="24" fill=""></rect>
@@ -83,10 +93,12 @@
                   cy="10.5"
                   r="6.5"
                   stroke="#2B5392BD"
-                  stroke-linejoin="round"></circle>
+                  stroke-linejoin="round"
+                ></circle>
                 <path
                   d="M19.6464 20.3536C19.8417 20.5488 20.1583 20.5488 20.3536 20.3536C20.5488 20.1583 20.5488 19.8417 20.3536 19.6464L19.6464 20.3536ZM20.3536 19.6464L15.3536 14.6464L14.6464 15.3536L19.6464 20.3536L20.3536 19.6464Z"
-                  fill="#2B5392BD"></path>
+                  fill="#2B5392BD"
+                ></path>
               </g>
               <defs>
                 <clipPath id="clip0_15_152">
@@ -99,61 +111,107 @@
             type="text"
             id="busquedaMascota"
             placeholder="Buscar mascota..."
-            class="text-xs ml-2.5 text-[#2b5392] bg-transparent border-none focus:outline-none w-full" />
+            class="text-xs ml-2.5 text-[#2b5392] bg-transparent border-none focus:outline-none w-full"
+          />
         </div>
         <!-- Mensaje de no encontrado -->
         <div
           id="sinResultados"
-          class="hidden mx-2 sm:mx-10 my-20 flex-col items-center justify-center text-center gap-4">
+          class="hidden mx-2 sm:mx-10 my-20 flex-col items-center justify-center text-center gap-4"
+        >
           <p class="text-[#8d8580dd] text-base mb-2">
             No se encontraron mascotas que coincidan con tu búsqueda
           </p>
           <button
             id="limpiarBusqueda"
-            class="px-4 py-2 rounded-xl text-[#6D6155] border border-[#6D6155]/30 bg-[#6D6155]/5 hover:bg-[#6D6155]/10 hover:text-[#4F453D] transition-all duration-200 cursor-pointer">
+            class="px-4 py-2 rounded-xl text-[#6D6155] border border-[#6D6155]/30 bg-[#6D6155]/5 hover:bg-[#6D6155]/10 hover:text-[#4F453D] transition-all duration-200 cursor-pointer"
+          >
             Limpiar búsqueda
           </button>
         </div>
         <!-- MASCOTAS -->
         <section
-          class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 mx-2 sm:mx-10 mb-10 gap-6 sm:gap-8 lg:gap-10">
+          class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 mx-2 sm:mx-10 mb-10 gap-6 sm:gap-8 lg:gap-10"
+        >
           <!-- Card -->
           <a
             th:href="@{/vet/pets/{id}(id=${pet.id})}"
             th:each="pet : ${pets}"
             th:attr="data-nombre=${pet.nombre}"
-            class="card-mascota group cursor-pointer h-auto w-full max-w-xs mx-auto p-3 bg-[#FBFAF8] rounded-2xl shadow-[0_10px_30px_-6px_rgba(0,0,0,0.08)] hover:shadow-[0_16px_40px_-8px_rgba(0,0,0,0.12)] hover:-translate-y-1 transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]">
+            class="card-mascota group cursor-pointer h-auto w-full max-w-xs mx-auto p-3 bg-[#FBFAF8] rounded-2xl shadow-[0_10px_30px_-6px_rgba(0,0,0,0.08)] hover:shadow-[0_16px_40px_-8px_rgba(0,0,0,0.12)] hover:-translate-y-1 transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]"
+          >
             <!-- CONTENIDO -->
             <article class="h-full">
               <div
                 th:switch="${pet.estado}"
-                class="relative overflow-hidden rounded-2xl">
+                class="relative overflow-hidden rounded-2xl"
+              >
+                <!-- BOTÓN ELIMINAR -->
+                <form
+                  th:action="@{/vet/pets/delete/{id}(id=${pet.id})}"
+                  method="post"
+                >
+                  <button
+                    type="submit"
+                    class="absolute top-3 left-3 z-10 px-3 py-1 rounded-md opacity-0 group-hover:opacity-100 bg-[#E2240B] text-xs font-semibold hover:bg-[#C41E08] text-white"
+                  >
+                    <svg
+                      class="h-5"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      stroke="#ffffff"
+                    >
+                      <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                      <g
+                        id="SVGRepo_tracerCarrier"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      ></g>
+                      <g id="SVGRepo_iconCarrier">
+                        <path
+                          d="M4 6H20M16 6L15.7294 5.18807C15.4671 4.40125 15.3359 4.00784 15.0927 3.71698C14.8779 3.46013 14.6021 3.26132 14.2905 3.13878C13.9376 3 13.523 3 12.6936 3H11.3064C10.477 3 10.0624 3 9.70951 3.13878C9.39792 3.26132 9.12208 3.46013 8.90729 3.71698C8.66405 4.00784 8.53292 4.40125 8.27064 5.18807L8 6M18 6V16.2C18 17.8802 18 18.7202 17.673 19.362C17.3854 19.9265 16.9265 20.3854 16.362 20.673C15.7202 21 14.8802 21 13.2 21H10.8C9.11984 21 8.27976 21 7.63803 20.673C7.07354 20.3854 6.6146 19.9265 6.32698 19.362C6 18.7202 6 17.8802 6 16.2V6M14 10V17M10 10V17"
+                          stroke="#ffffff"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        ></path>
+                      </g>
+                    </svg>
+                  </button>
+                </form>
                 <img
                   th:src="${pet.URLFoto}"
                   th:alt="${'Foto de ' + pet.nombre}"
-                  class="h-48 sm:h-56 md:h-65 w-full object-cover object-center transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.04]" />
+                  class="h-48 sm:h-56 md:h-65 w-full object-cover object-center transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.04]"
+                />
                 <span
                   th:case="${T(com.example.biskit.entities.Estado).ACTIVO}"
                   th:text="${pet.estado}"
-                  class="absolute top-3 right-2 z-10 px-3 py-1 rounded-md text-xs font-semibold tracking-wide bg-[#ebfaf1] text-[#2bab60]">
+                  class="absolute top-3 right-2 z-10 px-3 py-1 rounded-md text-xs font-semibold tracking-wide bg-[#ebfaf1] text-[#2bab60]"
+                >
                 </span>
                 <span
                   th:case="${T(com.example.biskit.entities.Estado).INACTIVO}"
                   th:text="${pet.estado}"
-                  class="absolute top-3 right-2 z-10 px-3 py-1 rounded-md text-xs font-semibold tracking-wide bg-[#ededed] text-[#8c8c8c]"></span>
+                  class="absolute top-3 right-2 z-10 px-3 py-1 rounded-md text-xs font-semibold tracking-wide bg-[#ededed] text-[#8c8c8c]"
+                ></span>
               </div>
               <!-- Nombre y Raza -->
               <div class="flex justify-between items-center mx-2 sm:mx-4 mt-3">
                 <h3
                   class="text-[#4a4a4a] font-bold text-lg sm:text-xl leading-none tracking-wider"
-                  th:text="${pet.nombre}"></h3>
+                  th:text="${pet.nombre}"
+                ></h3>
                 <p
                   class="text-[#6D6155] font-medium text-xs leading-none"
-                  th:text="${pet.especie.getTexto() + ' · ' + pet.raza}"></p>
+                  th:text="${pet.especie.getTexto() + ' · ' + pet.raza}"
+                ></p>
               </div>
               <!-- Edad, Peso y Dueño -->
               <div
-                class="grid grid-cols-3 mx-4 my-3 gap-3 sm:gap-5 items-stretch justify-items-center">
+                class="grid grid-cols-3 mx-4 my-3 gap-3 sm:gap-5 items-stretch justify-items-center"
+              >
                 <!-- EDAD -->
                 <aside class="flex flex-col items-center w-full">
                   <div class="flex flex-col items-center gap-1">
@@ -161,33 +219,39 @@
                       class="h-4"
                       viewBox="0 0 24 24"
                       fill="none"
-                      xmlns="http://www.w3.org/2000/svg">
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
                       <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                       <g
                         id="SVGRepo_tracerCarrier"
                         stroke-linecap="round"
-                        stroke-linejoin="round"></g>
+                        stroke-linejoin="round"
+                      ></g>
                       <g id="SVGRepo_iconCarrier">
                         <path
                           d="M14 22H10C6.22876 22 4.34315 22 3.17157 20.8284C2 19.6569 2 17.7712 2 14V12C2 8.22876 2 6.34315 3.17157 5.17157C4.34315 4 6.22876 4 10 4H14C17.7712 4 19.6569 4 20.8284 5.17157C22 6.34315 22 8.22876 22 12V14C22 17.7712 22 19.6569 20.8284 20.8284C20.1752 21.4816 19.3001 21.7706 18 21.8985"
                           stroke="#2B5392"
                           stroke-width="1.5"
-                          stroke-linecap="round"></path>
+                          stroke-linecap="round"
+                        ></path>
                         <path
                           d="M7 4V2.5"
                           stroke="#2B5392"
                           stroke-width="1.5"
-                          stroke-linecap="round"></path>
+                          stroke-linecap="round"
+                        ></path>
                         <path
                           d="M17 4V2.5"
                           stroke="#2B5392"
                           stroke-width="1.5"
-                          stroke-linecap="round"></path>
+                          stroke-linecap="round"
+                        ></path>
                         <path
                           d="M21.5 9H16.625H10.75M2 9H5.875"
                           stroke="#2B5392"
                           stroke-width="1.5"
-                          stroke-linecap="round"></path>
+                          stroke-linecap="round"
+                        ></path>
                       </g>
                     </svg>
                     <p class="text-xs text-[#8D8580] font-semibold">EDAD</p>
@@ -195,7 +259,8 @@
                   <div class="flex flex-1 items-center">
                     <p
                       class="text-xs text-[#282828] font-medium"
-                      th:text="${pet.edad == 1} ? ${pet.edad + ' año'} : ${pet.edad + ' años'}"></p>
+                      th:text="${pet.edad == 1} ? ${pet.edad + ' año'} : ${pet.edad + ' años'}"
+                    ></p>
                   </div>
                 </aside>
                 <!-- PESO -->
@@ -206,12 +271,14 @@
                       viewBox="0 0 512 512"
                       id="icons"
                       xmlns="http://www.w3.org/2000/svg"
-                      fill="#000000">
+                      fill="#000000"
+                    >
                       <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                       <g
                         id="SVGRepo_tracerCarrier"
                         stroke-linecap="round"
-                        stroke-linejoin="round"></g>
+                        stroke-linejoin="round"
+                      ></g>
                       <g id="SVGRepo_iconCarrier">
                         <rect
                           x="48"
@@ -222,13 +289,15 @@
                           fill="none"
                           stroke="#2B5392"
                           stroke-linejoin="round"
-                          stroke-width="32"></rect>
+                          stroke-width="32"
+                        ></rect>
                         <path
                           d="M388.94,151.56c-24.46-22.28-68.72-51.4-132.94-51.4s-108.48,29.12-132.94,51.4A34.66,34.66,0,0,0,120,199.64l33.32,39.21a26.07,26.07,0,0,0,33.6,5.21c15.92-9.83,40.91-21.64,69.1-21.64s53.18,11.81,69.1,21.64a26.07,26.07,0,0,0,33.6-5.21L392,199.64A34.66,34.66,0,0,0,388.94,151.56Z"
                           fill="none"
                           stroke="#2B5392"
                           stroke-linejoin="round"
-                          stroke-width="32"></path>
+                          stroke-width="32"
+                        ></path>
                       </g>
                     </svg>
                     <p class="text-xs text-[#8D8580] font-semibold">PESO</p>
@@ -237,7 +306,8 @@
                   <div class="flex flex-1 items-center">
                     <p
                       class="text-xs text-[#282828] font-medium"
-                      th:text="${pet.peso} + ' Kg'"></p>
+                      th:text="${pet.peso} + ' Kg'"
+                    ></p>
                   </div>
                 </aside>
                 <!-- DUEÑO -->
@@ -247,24 +317,28 @@
                       class="h-4"
                       viewBox="0 0 24 24"
                       fill="none"
-                      xmlns="http://www.w3.org/2000/svg">
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
                       <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                       <g
                         id="SVGRepo_tracerCarrier"
                         stroke-linecap="round"
-                        stroke-linejoin="round"></g>
+                        stroke-linejoin="round"
+                      ></g>
                       <g id="SVGRepo_iconCarrier">
                         <circle
                           cx="12"
                           cy="6"
                           r="4"
                           stroke="#2B5392"
-                          stroke-width="1.5"></circle>
+                          stroke-width="1.5"
+                        ></circle>
                         <path
                           d="M19.9975 18C20 17.8358 20 17.669 20 17.5C20 15.0147 16.4183 13 12 13C7.58172 13 4 15.0147 4 17.5C4 19.9853 4 22 12 22C14.231 22 15.8398 21.8433 17 21.5634"
                           stroke="#2B5392"
                           stroke-width="1.5"
-                          stroke-linecap="round"></path>
+                          stroke-linecap="round"
+                        ></path>
                       </g>
                     </svg>
                     <p class="text-xs text-[#8D8580] font-semibold">DUEÑO</p>
@@ -272,37 +346,44 @@
                   <div class="flex flex-1 items-start justify-center">
                     <p
                       class="text-xs text-[#282828] font-medium text-center wrap-break-word leading-tight max-w-26"
-                      th:text="${pet.getNombreDueño()} + ' ' + ${pet.getApellidoDueño()}"></p>
+                      th:text="${pet.getNombreDueño()} + ' ' + ${pet.getApellidoDueño()}"
+                    ></p>
                   </div>
                 </aside>
               </div>
               <hr
-                class="border-[#6D6155] opacity-40 border-t my-2 mx-2 sm:mx-4" />
+                class="border-[#6D6155] opacity-40 border-t my-2 mx-2 sm:mx-4"
+              />
               <!-- Diagnóstico -->
               <div
-                class="flex flex-col justify-center items-center mx-2 sm:mx-4 gap-1">
+                class="flex flex-col justify-center items-center mx-2 sm:mx-4 gap-1"
+              >
                 <svg
                   class="h-4"
                   viewBox="0 0 24 24"
                   fill="none"
-                  xmlns="http://www.w3.org/2000/svg">
+                  xmlns="http://www.w3.org/2000/svg"
+                >
                   <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                   <g
                     id="SVGRepo_tracerCarrier"
                     stroke-linecap="round"
-                    stroke-linejoin="round"></g>
+                    stroke-linejoin="round"
+                  ></g>
                   <g id="SVGRepo_iconCarrier">
                     <path
                       fill-rule="evenodd"
                       clip-rule="evenodd"
                       d="M8 3C8 4.10457 7.10457 5 6 5C5.36522 5 4.7995 4.70426 4.43312 4.24305L3.68377 4.49284C3.26354 4.63291 3.04437 4.9938 3.07687 5.34291C3.21171 6.79144 3.57308 9.0342 4.50664 10.8852C5.42593 12.7078 6.80542 14 8.99998 14C11.1945 14 12.574 12.7078 13.4933 10.8852C14.4269 9.0342 14.7883 6.79144 14.9231 5.3429C14.9556 4.9938 14.7365 4.63291 14.3162 4.49284L13.5669 4.24305C13.2005 4.70426 12.6348 5 12 5C10.8954 5 10 4.10457 10 3C10 1.89543 10.8954 1 12 1C12.8308 1 13.5433 1.50659 13.8455 2.22772L14.9487 2.59547C16.1618 2.99985 17.0416 4.16308 16.9145 5.52828C16.7719 7.06027 16.3817 9.59971 15.2791 11.7858C14.2796 13.7674 12.6201 15.5771 9.97404 15.9358C10.0144 16.4923 10.1026 17.1152 10.2753 17.7292C10.5254 18.6186 10.9354 19.4287 11.5733 20.0119C12.1909 20.5765 13.0987 20.9999 14.5001 20.9999C15.9014 20.9999 16.8093 20.5765 17.4268 20.0119C18.0648 19.4286 18.4747 18.6186 18.7249 17.7292C19.0249 16.6625 19.0693 15.5564 19.0521 14.8472C17.8598 14.4504 17 13.3256 17 12C17 10.3431 18.3432 9 20 9C21.6569 9 23 10.3431 23 12C23 13.2868 22.1899 14.3843 21.0518 14.8104C21.0711 15.6368 21.0261 16.9341 20.6502 18.2707C20.3378 19.3812 19.7791 20.5712 18.7764 21.4879C17.7533 22.4233 16.3487 22.9999 14.5001 22.9999C12.6515 22.9999 11.2468 22.4233 10.2238 21.4879C9.22107 20.5712 8.66231 19.3812 8.34997 18.2707C8.11685 17.4418 8.01127 16.6232 7.9691 15.9278C5.35608 15.5511 3.71316 13.7532 2.72091 11.7858C1.61832 9.5997 1.22808 7.06026 1.08548 5.52828C0.958397 4.16308 1.83818 2.99985 3.05131 2.59547L4.15456 2.22772C4.45669 1.50659 5.16919 1 6 1C7.10457 1 8 1.89543 8 3ZM20 13.0283C19.4321 13.0283 18.9717 12.5679 18.9717 12C18.9717 11.4321 19.4321 10.9717 20 10.9717C20.5679 10.9717 21.0283 11.4321 21.0283 12C21.0283 12.5679 20.5679 13.0283 20 13.0283Z"
-                      fill="#b33333"></path>
+                      fill="#b33333"
+                    ></path>
                   </g>
                 </svg>
                 <p class="text-xs text-[#8D8580] font-semibold">DIAGNÓSTICO</p>
                 <p
                   class="text-xs text-[#282828] font-medium"
-                  th:text="${pet.enfermedad}"></p>
+                  th:text="${pet.enfermedad}"
+                ></p>
               </div>
             </article>
           </a>
