@@ -17,6 +17,9 @@ public class ClientsImpl implements ClientsService {
     @Autowired
     private ClientsRepo clientsRepo;
 
+    @Autowired
+    private PetsImpl petsService;
+
     @Override
     public Collection<Client> getClients() {
         return clientsRepo.getClients();
@@ -39,6 +42,9 @@ public class ClientsImpl implements ClientsService {
 
     @Override
     public void deleteClient(Integer id) {
+        Client cliente = clientsRepo.getClientById(id);
+        List<Integer> petIds = cliente.getPets().stream().map(pet -> pet.getId()).toList();
+        petIds.forEach(petId -> petsService.deletePet(petId));
         clientsRepo.deleteClient(id);
     }
 
