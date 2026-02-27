@@ -37,11 +37,4 @@ public class VetsController {
     return "info-pet";
   }
 
-  public void eliminarCliente(Integer id) {
-    Client cliente = clientsService.getClientById(id);
-    List<Integer> petIds = cliente.getPets().stream().map(pet -> pet.getId()).toList();
-    petIds.forEach(petId -> petsService.deletePet(petId));
-    clientsService.deleteClient(id);
-  }
-
 }
