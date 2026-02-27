@@ -26,7 +26,7 @@ public class PetsImpl implements PetsService {
 
   @Override
   public void addPet(Pet pet) {
-    petsRepo.addPet(pet);
+    petsRepo.savePet(pet);
   }
 
   @Override

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -50,6 +51,12 @@ public class VetsController {
     Pet pet = new Pet(null, "", null, "", null, 0, 0.0f, "", "", "");
     model.addAttribute("pet", pet);
     return "add-pet";
+  }
+
+  @PostMapping("/add-pet")
+  public String agregarMascota(@ModelAttribute("pet") Pet pet) {
+    petsService.addPet(pet);
+    return "redirect:/vet/pets";
   }
 
 }
