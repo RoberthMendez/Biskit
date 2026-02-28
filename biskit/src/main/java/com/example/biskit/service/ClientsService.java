@@ -22,7 +22,7 @@ public interface ClientsService {
 
     public void addPetToClient(Integer clientId, Pet pet);
 
-    public List<Pair<Pet, Client>> getPetAndClients();
+    public List<Pair<Pet, String>> getPetsAndClientNames();
 
     public Client getClientByPetId(Integer petId);
 
