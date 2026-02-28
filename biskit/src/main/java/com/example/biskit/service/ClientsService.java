@@ -4,6 +4,7 @@ import java.util.Collection;
 import com.example.biskit.entities.Client;
 import com.example.biskit.entities.Pet;
 import java.util.List;
+import org.apache.commons.lang3.tuple.Pair;
 
 public interface ClientsService {
 
@@ -20,5 +21,7 @@ public interface ClientsService {
     public List<Pet> getPetsByClientId(Integer clientId);
 
     public void addPetToClient(Integer clientId, Pet pet);
+
+    public List<Pair<Pet, Client>> getPetAndClients();
 
 }
