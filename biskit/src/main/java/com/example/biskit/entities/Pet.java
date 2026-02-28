@@ -15,7 +15,6 @@ public class Pet {
   private int edad;
   private float peso;
   private String enfermedad;
-  private String dueño;
   private String URLFoto;
 
   public void update(String nombre, Especie especie, String raza, Estado estado, int edad, float peso,
@@ -28,7 +27,6 @@ public class Pet {
     this.edad = edad;
     this.peso = peso;
     this.enfermedad = enfermedad;
-    this.dueño = dueño;
     this.URLFoto = URLFoto;
   }
 

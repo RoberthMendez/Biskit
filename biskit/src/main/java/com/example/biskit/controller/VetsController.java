@@ -75,7 +75,7 @@ public class VetsController {
 
   @GetMapping("/add-pet")
   public String mostrarFormularioAddPet(Model model) {
-    Pet pet = new Pet(null, "", null, "", null, 0, 0.0f, "", "", "");
+    Pet pet = new Pet(null, "", null, "", null, 0, 0.0f, "", "");
     model.addAttribute("pet", pet);
     model.addAttribute("clientes", clientsService.getClients());
     return "add-pet";

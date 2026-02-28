@@ -10,7 +10,7 @@ public interface PetsService {
 
   public Pet getPetById(Integer id);
 
-  public void addPet(Pet pet, String nombreCliente);
+  public void addPet(Pet pet);
 
   public void updatePet(Pet pet);
 

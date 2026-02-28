@@ -25,10 +25,7 @@ public class PetsImpl implements PetsService {
   }
 
   @Override
-  public void addPet(Pet pet, String nombreCliente) {
-
-    // Asignar el dueño de la mascota
-    pet.setDueño(nombreCliente);
+  public void addPet(Pet pet) {
     petsRepo.savePet(pet);
   }
 

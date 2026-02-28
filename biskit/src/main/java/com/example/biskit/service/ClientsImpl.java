@@ -59,20 +59,25 @@ public class ClientsImpl implements ClientsService {
     @Override
     public void addPetToClient(Integer clientId, Pet pet) {
 
-        // Si el dueño cambió, eliminar la mascota de su lista de mascotas
+        Client dueñoIngresado = clientsRepo.getClientById(clientId);
+
+        // Si la mascota se está actualizando
         if (pet.getId() != null) {
             Client dueñoAnterior = getClientByPetId(pet.getId());
+            // Si la mascota cambió de dueño, se actualiza la relación
             if (dueñoAnterior != null && !dueñoAnterior.getId().equals(clientId)) {
                 dueñoAnterior.getPets().removeIf(p -> p.getId().equals(pet.getId()));
+                dueñoIngresado.getPets().add(pet);
             }
         }
 
-        // Agregar la mascota al repositorio de mascotas y asignarle el dueño
-        petsService.addPet(pet, clientsRepo.getClientById(clientId).getNombre());
+        // SI la mascota es nueva, se agrega a la lista de mascotas del dueño
+        if (pet.getId() == null) {
+            dueñoIngresado.getPets().add(pet);
+        }
 
-        // Agregar la mascota a la lista de mascotas del cliente
-        Client client = clientsRepo.getClientById(clientId);
-        client.getPets().add(pet);
+        // Guardar la mascota en el repositorio de mascotas
+        petsService.addPet(pet);
 
     }
 
