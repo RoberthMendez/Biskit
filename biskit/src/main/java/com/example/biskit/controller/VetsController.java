@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.biskit.service.PetsService;
-import com.example.biskit.entities.Estado;
 import com.example.biskit.entities.Pet;
 import com.example.biskit.service.ClientsService;
 
