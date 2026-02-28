@@ -77,4 +77,15 @@ public class ClientsImpl implements ClientsService {
         });
         return petAndClients;
     }
+
+    @Override
+    public Client getClientByPetId(Integer petId) {
+        return clientsRepo.getClients()
+                .stream()
+                .filter(c -> c.getPets() != null
+                        && c.getPets().stream().anyMatch(p -> p.getId() != null && p.getId().equals(petId)))
+                .findFirst()
+                .orElse(null);
+    }
+
 }

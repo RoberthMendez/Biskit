@@ -2,6 +2,7 @@ const input = document.getElementById("clienteSearch");
 const dropdown = document.getElementById("clienteDropdown");
 const hiddenInput = document.getElementById("clienteId");
 const options = document.querySelectorAll(".cliente-option");
+const tituloFormulario = document.getElementById("titulo-formulario");
 
 // Mostrar dropdown al enfocar
 input.addEventListener("focus", () => {
@@ -42,3 +43,24 @@ document.addEventListener("click", (e) => {
         dropdown.classList.add("hidden");
     }
 });
+
+//Si el input id no está vacío, mostrar el nombre del cliente en el input de búsqueda y guardar la cédula en el input oculto
+window.addEventListener("DOMContentLoaded", () => {
+    const clienteId = hiddenInput.value;
+    if (clienteId) {
+        const option = document.querySelector(`.cliente-option[data-id="${clienteId}"]`);
+        if (option) {
+            input.value = option.dataset.nombre;
+            
+        }
+    }
+});
+
+// Si el input de id no está vacío, cambiar el título del formulario a "Editar Paciente"
+window.addEventListener("DOMContentLoaded", () => {
+    const clienteId = hiddenInput.value;
+    if (clienteId) {
+        tituloFormulario.textContent = "Editar Paciente";
+    }
+});
+

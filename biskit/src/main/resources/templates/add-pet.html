@@ -102,6 +102,7 @@
             />
             <div class="flex flex-col">
               <h2
+                id="titulo-formulario"
                 class="text-xl sm:text-2xl font-bold tracking-wide text-[#4A4A4A]"
               >
                 Nuevo Paciente
@@ -245,14 +246,20 @@
                   <input
                     type="text"
                     id="clienteSearch"
+                    th:value="${owner != null ? owner.nombre : ''}"
                     placeholder="Buscar por nombre..."
                     autocomplete="off"
                     class="w-full bg-transparent outline-none text-sm sm:text-base text-[#4A4A4A]"
                   />
                 </div>
 
-                <!-- Input oculto donde se guarda la cédula -->
-                <input type="hidden" name="idCliente" id="clienteId" />
+                <!-- Input oculto donde se guarda el id del dueño -->
+                <input
+                  type="hidden"
+                  name="idCliente"
+                  id="clienteId"
+                  th:value="${owner != null ? owner.id : ''}"
+                />
 
                 <!-- Dropdown -->
                 <div
@@ -277,7 +284,29 @@
                   </div>
                 </div>
               </div>
+              <!-- Estado -->
+              <div th:if="*{id != null}">
+                <!-- Solo se ve al editar -->
+                <label
+                  class="block text-[#4A4A4A] text-sm sm:text-base font-semibold mb-2"
+                >
+                  Estado
+                </label>
+                <select
+                  th:field="*{estado}"
+                  class="bg-gray-50 w-full text-[#4A4A4A] border border-gray-200 rounded-xl px-3 py-2 h-12"
+                >
+                  <option value="" disabled selected>
+                    Seleccione el estado
+                  </option>
 
+                  <option
+                    th:each="est : ${T(com.example.biskit.entities.Estado).values()}"
+                    th:value="${est}"
+                    th:text="${est.texto}"
+                  ></option>
+                </select>
+              </div>
               <!-- Enfermedad -->
               <div>
                 <label
@@ -318,6 +347,9 @@
                   />
                 </div>
               </div>
+              <!-- ID oculto -->
+              <input type="hidden" th:field="*{id}" />
+
               <!-- Botón -->
               <button
                 type="submit"
