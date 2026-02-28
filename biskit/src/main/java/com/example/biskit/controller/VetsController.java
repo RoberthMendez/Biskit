@@ -53,7 +53,7 @@ public class VetsController {
   // ----- MASCOTAS -----
   @GetMapping("/pets")
   public String mostrarMascotas(Model model) {
-    model.addAttribute("pets", petsService.getPets());
+    model.addAttribute("petsClientname", clientsService.getPetsAndClientNames());
     return "vet/pets";
   }
 

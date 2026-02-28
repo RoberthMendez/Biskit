@@ -68,11 +68,11 @@ public class ClientsImpl implements ClientsService {
     }
 
     @Override
-    public List<Pair<Pet, Client>> getPetAndClients() {
-        List<Pair<Pet, Client>> petAndClients = new ArrayList<>();
+    public List<Pair<Pet, String>> getPetsAndClientNames() {
+        List<Pair<Pet, String>> petAndClients = new ArrayList<>();
         clientsRepo.getClients().forEach(client -> {
             client.getPets().forEach(pet -> {
-                petAndClients.add(Pair.of(pet, client));
+                petAndClients.add(Pair.of(pet, client.getNombre()));
             });
         });
         return petAndClients;

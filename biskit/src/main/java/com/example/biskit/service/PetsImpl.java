@@ -5,7 +5,6 @@ import java.util.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.biskit.entities.Estado;
 import com.example.biskit.entities.Pet;
 import com.example.biskit.repo.PetsRepo;
 
