@@ -2,6 +2,8 @@ package com.example.biskit.service;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.ArrayList;
+import org.apache.commons.lang3.tuple.Pair;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -52,5 +54,16 @@ public class ClientsImpl implements ClientsService {
     public List<Pet> getPetsByClientId(Integer clientId) {
         Client client = clientsRepo.getClientById(clientId);
         return client.getPets();
+    }
+
+    @Override
+    public List<Pair<Pet, Client>> getPetAndClients() {
+        List<Pair<Pet, Client>> petAndClients = new ArrayList<>();
+        clientsRepo.getClients().forEach(client -> {
+            client.getPets().forEach(pet -> {
+                petAndClients.add(Pair.of(pet, client));
+            });
+        });
+        return petAndClients;
     }
 }

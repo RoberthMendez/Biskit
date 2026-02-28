@@ -54,19 +54,19 @@ public class PetsRepo {
         return pets.get(id);
     }
 
-    public void addPet(Pet pet) {
-        int tam = pets.size();
-        int LastId = pets.get(tam).getId();
-        pet.setId(LastId + 1);
-        pets.put(pet.getId(), pet);
-    }
-
     public void savePet(Pet pet) {
         if (pet.getId() == null) {
             addPet(pet);
         } else {
             updatePet(pet);
         }
+    }
+
+    public void addPet(Pet pet) {
+        int tam = pets.size();
+        int LastId = pets.get(tam).getId();
+        pet.setId(LastId + 1);
+        pets.put(pet.getId(), pet);
     }
 
     public void updatePet(Pet pet) {
