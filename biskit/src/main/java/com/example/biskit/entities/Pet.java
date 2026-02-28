@@ -18,21 +18,6 @@ public class Pet {
   private String dueño;
   private String URLFoto;
 
-  public String getNombreDueño() {
-
-    return dueño.split(" ")[0];
-
-  }
-
-  public String getApellidoDueño() {
-
-    String[] partes = dueño.split(" ");
-    if (partes.length > 1)
-      return partes[partes.length - 1];
-
-    return "";
-  }
-
   public void update(String nombre, Especie especie, String raza, Estado estado, int edad, float peso,
       String enfermedad,
       String dueño, String URLFoto) {
