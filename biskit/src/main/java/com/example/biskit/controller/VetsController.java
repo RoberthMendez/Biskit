@@ -23,6 +23,14 @@ public class VetsController {
   @Autowired
   private ClientsService clientsService;
 
+  // ---- CLIENTES -----
+
+  @GetMapping("/clients")
+  public String mostrarClientes(Model model) {
+    model.addAttribute("clients", clientsService.getClients());
+    return "vet/clients";
+  }
+
   @GetMapping("/new-client")
   public String mostrarFormularioNuevoCliente(Model model) {
     model.addAttribute("client", new Object()); // Aquí puedes usar tu clase Client en lugar de Object

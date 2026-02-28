@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Biskit</title>
+    <link rel="icon" type="image/png" th:href="@{/images/marca/icono.png}" />
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+    <link rel="stylesheet" th:href="@{/css/output.css}" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap"
+      rel="stylesheet" />
+  </head>
+  <body>
+    <header th:replace="fragmentos::navbar-logged"></header>
+    <main>
+      <div th:replace="fragmentos::volver-al-dashboard"></div>
+    </main>
+    <footer th:replace="fragmentos::footer"></footer>
+  </body>
+</html>
