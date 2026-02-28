@@ -58,6 +58,7 @@ public class PetsRepo {
         int tam = pets.size();
         int LastId = pets.get(tam).getId();
         pet.setId(LastId + 1);
+        pet.setEstado(Estado.ACTIVO);
         pets.put(pet.getId(), pet);
     }
 

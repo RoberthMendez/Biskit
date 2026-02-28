@@ -5,6 +5,7 @@ import java.util.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.biskit.entities.Estado;
 import com.example.biskit.entities.Pet;
 import com.example.biskit.repo.PetsRepo;
 
@@ -25,7 +26,10 @@ public class PetsImpl implements PetsService {
   }
 
   @Override
-  public void addPet(Pet pet) {
+  public void addPet(Pet pet, String nombreCliente) {
+
+    // Asignar el dueño de la mascota
+    pet.setDueño(nombreCliente);
     petsRepo.savePet(pet);
   }
 

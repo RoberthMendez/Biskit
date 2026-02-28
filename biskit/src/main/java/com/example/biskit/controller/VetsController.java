@@ -78,8 +78,8 @@ public class VetsController {
   }
 
   @PostMapping("/add-pet")
-  public String agregarMascota(@ModelAttribute("pet") Pet pet, @RequestParam("cedulaCliente") String cedulaCliente) {
-    petsService.addPet(pet);
+  public String agregarMascota(@ModelAttribute("pet") Pet pet, @RequestParam("idCliente") Integer idCliente) {
+    clientsService.addPetToClient(idCliente, pet);
     return "redirect:/vet/pets";
   }
 
