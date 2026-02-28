@@ -362,5 +362,41 @@
         <p>&copy 2026 Biskit · Todos los Derechos Reservados</p>
       </section>
     </footer>
+
+    <!-- VOLVER AL DASHBOARD DE VETERINARIO -->
+    <a
+      th:fragment="volver-al-dashboard"
+      th:href="@{/vet}"
+      class="back-link group inline-flex justify-start items-center h-10 ml-4 sm:ml-8 md:ml-12 lg:ml-20 xl:ml-28 mt-6 sm:mt-8 mb-2">
+      <svg
+        class="h-9 mt-1"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg">
+        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+        <g
+          id="SVGRepo_tracerCarrier"
+          stroke-linecap="round"
+          stroke-linejoin="round"></g>
+        <g id="SVGRepo_iconCarrier">
+          <path
+            d="M8 12L16 12"
+            stroke="#6B6B6B"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"></path>
+          <path
+            d="M11 9L8.08704 11.913V11.913C8.03897 11.961 8.03897 12.039 8.08704 12.087V12.087L11 15"
+            stroke="#6B6B6B"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"></path>
+        </g>
+      </svg>
+      <h2
+        class="underline underline-offset-6 font-bold tracking-wider text-base sm:text-lg ml-1 text-[#4a4a4acc] group-hover:text-[#4A4A4Aee] transition-colors duration-300">
+        Dashboard
+      </h2>
+    </a>
   </body>
 </html>

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.biskit.service.PetsService;
+import com.example.biskit.entities.Pet;
 import com.example.biskit.service.ClientsService;
 
 @Controller
