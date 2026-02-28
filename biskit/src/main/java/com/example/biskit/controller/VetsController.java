@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.biskit.service.PetsService;
+import com.example.biskit.entities.Estado;
 import com.example.biskit.entities.Pet;
 import com.example.biskit.service.ClientsService;
 
@@ -66,8 +67,8 @@ public class VetsController {
   }
 
   @PostMapping("/add-pet")
-  public String agregarMascota(@ModelAttribute("pet") Pet pet, @RequestParam("cedulaCliente") String cedulaCliente) {
-    petsService.addPet(pet);
+  public String agregarMascota(@ModelAttribute("pet") Pet pet, @RequestParam("idCliente") Integer idCliente) {
+    clientsService.addPetToClient(idCliente, pet);
     return "redirect:/vet/pets";
   }
 

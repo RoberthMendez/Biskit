@@ -19,4 +19,6 @@ public interface ClientsService {
 
     public List<Pet> getPetsByClientId(Integer clientId);
 
+    public void addPetToClient(Integer clientId, Pet pet);
+
 }

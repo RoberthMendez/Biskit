@@ -57,7 +57,7 @@
         </h2>
       </a>
       <section
-        class="grid grid-cols-1 md:grid-cols-2 mx-5 sm:mx-8 md:mx-30 lg:mx-40 gap-8 mt-5 mb-10"
+        class="grid grid-cols-1 md:grid-cols-2 mx-4 sm:mx-8 md:mx-12 lg:mx-20 xl:mx-28 mt-5 mb-10 gap-6 md:gap-8 lg:gap-12"
       >
         <!----- CARD DE IMAGEN ----->
         <div
@@ -247,23 +247,24 @@
                     id="clienteSearch"
                     placeholder="Buscar por nombre..."
                     autocomplete="off"
-                    class="w-full bg-transparent outline-none text-sm text-[#4A4A4A]"
+                    class="w-full bg-transparent outline-none text-sm sm:text-base text-[#4A4A4A]"
                   />
                 </div>
 
                 <!-- Input oculto donde se guarda la cédula -->
-                <input type="hidden" name="cedulaCliente" id="clienteCedula" />
+                <input type="hidden" name="idCliente" id="clienteId" />
 
-                <!-- Dropdown personalizado -->
+                <!-- Dropdown -->
                 <div
                   id="clienteDropdown"
-                  class="absolute z-50 mt-1 w-full bg-white border border-gray-200 rounded-xl shadow-lg max-h-60 overflow-y-auto hidden"
+                  class="absolute custom-scroll z-10 mt-1 w-full bg-white border border-gray-200 rounded-xl shadow-lg max-h-60 overflow-y-auto hidden"
                 >
                   <div
                     th:each="cliente : ${clientes}"
                     class="cliente-option px-4 py-3 hover:bg-blue-50 cursor-pointer border-b border-gray-100"
                     th:data-nombre="${cliente.nombre}"
                     th:data-cedula="${cliente.cedula}"
+                    th:data-id="${cliente.id}"
                   >
                     <p
                       class="font-semibold text-sm text-gray-800"

@@ -53,4 +53,15 @@ public class ClientsImpl implements ClientsService {
         Client client = clientsRepo.getClientById(clientId);
         return client.getPets();
     }
+
+    @Override
+    public void addPetToClient(Integer clientId, Pet pet) {
+
+        // Agregar la mascota al repositorio de mascotas y asignarle el dueño
+        petsService.addPet(pet, clientsRepo.getClientById(clientId).getNombre());
+
+        // Agregar la mascota a la lista de mascotas del cliente
+        Client client = clientsRepo.getClientById(clientId);
+        client.getPets().add(pet);
+    }
 }

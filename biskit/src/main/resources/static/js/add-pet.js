@@ -1,6 +1,6 @@
 const input = document.getElementById("clienteSearch");
 const dropdown = document.getElementById("clienteDropdown");
-const hiddenInput = document.getElementById("clienteCedula");
+const hiddenInput = document.getElementById("clienteId");
 const options = document.querySelectorAll(".cliente-option");
 
 // Mostrar dropdown al enfocar
@@ -28,10 +28,10 @@ input.addEventListener("input", () => {
 options.forEach(option => {
     option.addEventListener("click", () => {
         const nombre = option.dataset.nombre;
-        const cedula = option.dataset.cedula;
+        const id = option.dataset.id;
 
-        input.value = nombre;        // Muestra nombre
-        hiddenInput.value = cedula;  // Guarda cédula
+        input.value = nombre;        
+        hiddenInput.value = id;  
         dropdown.classList.add("hidden");
     });
 });
