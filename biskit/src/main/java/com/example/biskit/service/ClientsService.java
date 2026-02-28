@@ -24,4 +24,6 @@ public interface ClientsService {
 
     public List<Pair<Pet, String>> getPetsAndClientNames();
 
+    public Client getClientByPetId(Integer petId);
+
 }
