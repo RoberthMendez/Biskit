@@ -9,6 +9,7 @@
     <link rel="stylesheet" th:href="@{/css/output.css}" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap"
       rel="stylesheet" />
@@ -16,8 +17,85 @@
   <body>
     <header th:replace="fragmentos::navbar-logged"></header>
     <main>
+      <!-- Botón de volver al dashboard -->
       <div th:replace="fragmentos::volver-al-dashboard"></div>
+      <!-- Titulo -->
+      <div class="text-[#4a4a4a] mt-4 mb-7 mx-6 sm:mx-16 md:mx-24 lg:mx-36">
+        <h1
+          class="text-[#4a4a4a] text-2xl sm:text-3xl md:text-4xl font-semibold tracking-wider">
+          Clientes Registrados
+        </h1>
+        <p class="text-[#8d8580dd] font-medium text-sm sm:text-base">
+          Lista de todos los Clientes de la Veterinaria
+        </p>
+      </div>
+      <!-- Contenido -->
+      <section class="mx-6 sm:mx-16 md:mx-24 lg:mx-36">
+        <!-- Buscador -->
+        <div class="flex items-center mb-5 h-10 bg-[#efe7df80] rounded-full">
+          <svg
+            class="h-6 ml-5"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg">
+            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+            <g
+              id="SVGRepo_tracerCarrier"
+              stroke-linecap="round"
+              stroke-linejoin="round"></g>
+            <g id="SVGRepo_iconCarrier">
+              <g clip-path="url(#clip0_15_152)">
+                <rect width="24" height="24" fill=""></rect>
+                <circle
+                  cx="10.5"
+                  cy="10.5"
+                  r="6.5"
+                  stroke="#2B5392BD"
+                  stroke-linejoin="round"></circle>
+                <path
+                  d="M19.6464 20.3536C19.8417 20.5488 20.1583 20.5488 20.3536 20.3536C20.5488 20.1583 20.5488 19.8417 20.3536 19.6464L19.6464 20.3536ZM20.3536 19.6464L15.3536 14.6464L14.6464 15.3536L19.6464 20.3536L20.3536 19.6464Z"
+                  fill="#2B5392BD"></path>
+              </g>
+              <defs>
+                <clipPath id="clip0_15_152">
+                  <rect width="24" height="24" fill=""></rect>
+                </clipPath>
+              </defs>
+            </g>
+          </svg>
+          <input
+            type="text"
+            id="busquedaMascota"
+            placeholder="Buscar por cédula..."
+            class="text-xs ml-2.5 text-[#2b5392] bg-transparent border-none focus:outline-none w-full" />
+        </div>
+        <!-- Tabla de clientes -->
+        <article class="bg-[#FBFAF8] rounded-xl p-4 mb-5">
+          <iframe
+            th:src="@{/vet/clients/table}"
+            class="w-full border-none rounded-xl overflow-hidden"
+            style="height: 100px; overflow: hidden"
+            scrolling="no">
+          </iframe>
+        </article>
+      </section>
     </main>
     <footer th:replace="fragmentos::footer"></footer>
+    <script>
+      window.addEventListener("message", (e) => {
+        const iframe = document.querySelector("iframe");
+        iframe.style.height = e.data + "px";
+      });
+    </script>
+    <script>
+      window.addEventListener("message", (event) => {
+        if (event.data?.tipo === "resize-iframe") {
+          const iframe = document.querySelector("iframe");
+          if (iframe) {
+            iframe.style.height = event.data.altura + "px";
+          }
+        }
+      });
+    </script>
   </body>
 </html>

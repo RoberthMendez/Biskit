@@ -26,6 +26,18 @@ public class VetsController {
 
   // ---- CLIENTES -----
 
+  @GetMapping("/clients/table")
+  public String tablaClientes(Model model) {
+    model.addAttribute("clients", clientsService.getClients());
+    return "vet/tabla-bootstrap";
+  }
+
+  @GetMapping("/clients/{id}")
+  public String mostrarCliente(@PathVariable("id") Integer id, Model model) {
+    model.addAttribute("client", clientsService.getClientById(id));
+    return "vet/client-info";
+  }
+
   @GetMapping("/clients")
   public String mostrarClientes(Model model) {
     model.addAttribute("clients", clientsService.getClients());
