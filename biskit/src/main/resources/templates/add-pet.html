@@ -69,14 +69,23 @@
             class="absolute inset-0 w-full h-full object-cover"
           />
 
-          <!-- Degradado azul inferior -->
+          <!-- Degradado  -->
           <div
-            class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"
+            class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"
           ></div>
 
           <!-- Texto -->
           <div class="absolute bottom-6 left-8 text-white max-w-md">
-            <p class="text-sm opacity-90 mb-2">Biskit</p>
+            <div
+              class="mb-2 flex items-center gap-2 text-xs sm:text-sm font-medium"
+            >
+              <img
+                th:src="@{/images/marca/icono.png}"
+                alt="icono"
+                class="h-5 w-5 sm:h-6 sm:w-6"
+              />
+              <span>Biskit</span>
+            </div>
             <h2 class="text-3xl font-bold leading-tight">
               Cada paciente merece atención personalizada
             </h2>
@@ -102,14 +111,13 @@
             />
             <div class="flex flex-col">
               <h2
-                id="titulo-formulario"
+                th:text="${pet.id != null} ? 'Actualizar Mascota' : 'Nuevo Paciente'"
                 class="text-xl sm:text-2xl font-bold tracking-wide text-[#4A4A4A]"
-              >
-                Nuevo Paciente
-              </h2>
-              <p class="text-[10px] sm:text-xs text-[#8D8580] font-semibold">
-                Complete la información del nuevo paciente
-              </p>
+              ></h2>
+              <p
+                th:text="${pet.id != null} ? 'Edite los datos del paciente' : 'Complete la información del nuevo paciente'"
+                class="text-[10px] sm:text-xs text-[#8D8580] font-semibold"
+              ></p>
             </div>
           </div>
           <!-- Form -->
@@ -376,9 +384,14 @@
                     ></path>
                   </g>
                 </svg>
-                Registrar Mascota
+                <span
+                  th:text="${pet.id != null} ? 'Guardar Cambios' : 'Registrar Mascota'"
+                ></span>
               </button>
-              <p class="text-sm text-[#8D8580] font-medium text-center mt-2">
+              <p
+                th:if="*{id == null}"
+                class="text-sm text-[#8D8580] font-medium text-center mt-2"
+              >
                 El estado del paciente se establecerá automáticamente como
                 <span class="text-[#2b5392] font-semibold">Activo</span>
               </p>
