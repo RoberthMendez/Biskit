@@ -507,7 +507,10 @@
                 </svg>
                 <div class="flex justify-between w-full">
                   <p class="text-xs text-[#8D8580] font-semibold">Nombre</p>
-                  <p class="text-xs text-[#282828] font-medium">Juan Pérez</p>
+                  <p
+                    class="text-xs text-[#282828] font-medium"
+                    th:text="${dueño.nombre}"
+                  ></p>
                 </div>
               </div>
               <!-- Cédula -->
@@ -565,7 +568,10 @@
                 </svg>
                 <div class="flex justify-between w-full">
                   <p class="text-xs text-[#8D8580] font-semibold">Cédula</p>
-                  <p class="text-xs text-[#282828] font-medium">1234567890</p>
+                  <p
+                    class="text-xs text-[#282828] font-medium"
+                    th:text="${dueño.cedula}"
+                  ></p>
                 </div>
               </div>
               <!-- Correo -->
@@ -600,9 +606,10 @@
                 </svg>
                 <div class="flex justify-between w-full">
                   <p class="text-xs text-[#8D8580] font-semibold">Correo</p>
-                  <p class="text-xs text-[#282828] font-medium">
-                    roberhmendez08@gmail.com
-                  </p>
+                  <p
+                    class="text-xs text-[#282828] font-medium"
+                    th:text="${dueño.correo}"
+                  ></p>
                 </div>
               </div>
               <!-- Celular -->
@@ -628,7 +635,10 @@
                 </svg>
                 <div class="flex justify-between w-full">
                   <p class="text-xs text-[#8D8580] font-semibold">Celular</p>
-                  <p class="text-xs text-[#282828] font-medium">3001234567</p>
+                  <p
+                    class="text-xs text-[#282828] font-medium"
+                    th:text="${dueño.celular}"
+                  ></p>
                 </div>
               </div>
             </div>

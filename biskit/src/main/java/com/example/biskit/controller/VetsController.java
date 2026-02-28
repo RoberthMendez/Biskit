@@ -61,7 +61,9 @@ public class VetsController {
 
   @GetMapping("/pets/{id}")
   public String mostrarMascota(@PathVariable("id") Integer id, Model model) {
+    Client dueño = clientsService.getClientByPetId(id);
     model.addAttribute("pet", petsService.getPetById(id));
+    model.addAttribute("dueño", dueño);
     return "vet/info-pet";
   }
 
