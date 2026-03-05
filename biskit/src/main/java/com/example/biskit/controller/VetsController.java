@@ -36,12 +36,6 @@ public class VetsController {
     return clientsPath + "clients";
   }
 
-  @GetMapping("/clients/table")
-  public String tablaClientes(Model model) {
-    model.addAttribute("clients", clientsService.getClients());
-    return clientsPath + "tabla-bootstrap";
-  }
-
   // ----- Mostrar Cliente (READ) -----
   @GetMapping("/clients/{id}")
   public String mostrarCliente(@PathVariable("id") Integer id, Model model) {
@@ -53,7 +47,7 @@ public class VetsController {
   // ----- Añadir Cliente (CREATE) -----
   @GetMapping("/clients/add")
   public String mostrarFormularioNuevoCliente(Model model) {
-    Client client = new Client(null, "", "", "", "");
+    Client client = new Client(null, "", "", "", "", "", null);
     model.addAttribute("client", client);
     return clientsPath + "add-client";
   }

@@ -28,4 +28,8 @@ public interface ClientsService {
 
   public void deletePetFromClient(Integer petId);
 
+  public boolean autenticarClient(String usuario, String contrasena);
+
+  public Client findByUsuario(String usuario);
+
 }

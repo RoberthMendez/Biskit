@@ -128,4 +128,18 @@ public class ClientsImpl implements ClientsService {
     }
   }
 
+  @Override
+  public boolean autenticarClient(String usuario, String contrasena) {
+    return clientsRepo.getClients().stream()
+        .anyMatch(client -> client.getUsuario().equals(usuario) && client.getContraseña().equals(contrasena));
+  }
+
+  @Override
+  public Client findByUsuario(String usuario) {
+    return clientsRepo.getClients().stream()
+        .filter(client -> client.getUsuario().equals(usuario))
+        .findFirst()
+        .orElse(null);
+  }
+
 }
