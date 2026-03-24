@@ -1,0 +1,30 @@
+<section id="proceso" class="mt-0 flex flex-col items-center px-4 sm:px-8">
+  <p
+    class="mt-10 mb-2.5 text-[0.8rem] font-semibold tracking-[1.5px] text-[#2b5392] sm:text-[0.9rem]"
+  >
+    NUESTRO PROCESO
+  </p>
+  <h2
+    class="mb-5 w-full max-w-137.5 text-center text-[1.6rem] leading-tight font-semibold text-[#4a4a4a] sm:text-[2rem] md:text-[2.35rem] md:leading-none"
+  >
+    Cómo Funciona Nuestra Hospitalización Veterinaria
+  </h2>
+  <p
+    class="mb-8 w-full max-w-160 text-center text-[0.95rem] leading-normal text-[#6d6155] sm:text-[1.05rem] md:mb-12.5 md:text-[1.1rem]"
+  >
+    Nuestro proceso de hospitalización veterinaria está diseñado para brindar la
+    mejor atención a tu mascota en cada etapa de su recuperación.
+  </p>
+  <article
+    class="proceso-linea relative flex w-full max-w-175 flex-col overflow-visible md:w-[66%] md:max-w-175"
+  >
+    @for (paso of pasos; track paso.numero) {
+      <app-paso
+        [numero]="paso.numero"
+        [titulo]="paso.titulo"
+        [descripcion]="paso.descripcion"
+        [icono]="paso.icono"
+      ></app-paso>
+    }
+  </article>
+</section>

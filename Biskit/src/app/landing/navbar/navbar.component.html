@@ -1,0 +1,156 @@
+<header
+  fragment="navbar-landing"
+  class="group sticky top-0 z-50 bg-[linear-gradient(90deg,#ecebe8_0%,#efeeeb_35%,#f2f1ee_50%,#f5f3f0_65%,#faf8f5_100%)]"
+>
+  <!-- Hidden checkbox for pure-CSS toggle -->
+  <input type="checkbox" id="nav-toggle" class="peer hidden" />
+
+  <!-- Top bar -->
+  <div class="flex h-[12.5vh] items-center">
+    <a href="/" class="flex shrink-0 items-center">
+      <div class="pl-7.5">
+        <img
+          class="h-10"
+          src="/images/marca/nombre.png"
+          alt="nombre-biskit"
+        />
+      </div>
+      <div class="pl-2.5">
+        <img
+          src="/images/marca/icono.png"
+          class="h-10"
+          alt="icono-biskit"
+        />
+      </div>
+    </a>
+
+    <!-- Hamburger toggle (label for checkbox, visible below lg) -->
+    <label
+      for="nav-toggle"
+      class="mr-7.5 ml-auto flex h-10 w-10 cursor-pointer flex-col items-center justify-center gap-1.5 lg:hidden"
+    >
+      <span
+        class="block h-0.5 w-6 origin-center rounded-full bg-[#6d6155] transition-all duration-300 group-has-checked:translate-y-2 group-has-checked:rotate-45"
+      ></span>
+      <span
+        class="block h-0.5 w-6 rounded-full bg-[#6d6155] transition-all duration-300 group-has-checked:opacity-0"
+      ></span>
+      <span
+        class="block h-0.5 w-6 origin-center rounded-full bg-[#6d6155] transition-all duration-300 group-has-checked:-translate-y-2 group-has-checked:-rotate-45"
+      ></span>
+    </label>
+
+    <!-- Desktop nav (visible from lg up) -->
+    <ul
+      class="mr-7.5 ml-auto hidden list-none items-center text-[0.85rem] font-medium lg:flex"
+    >
+      <li>
+        <a
+          href="#hero"
+          class="mx-5 flex text-[#6d6155] [transition:color_0.25s_ease] hover:text-[#2b5392]"
+          >Inicio</a
+        >
+      </li>
+      <li>
+        <a
+          href="#sobre-biskit"
+          class="mx-5 flex text-[#6d6155] [transition:color_0.25s_ease] hover:text-[#2b5392]"
+          >Nosotros</a
+        >
+      </li>
+      <li>
+        <a
+          href="#servicios"
+          class="mx-5 flex text-[#6d6155] [transition:color_0.25s_ease] hover:text-[#2b5392]"
+          >Servicios</a
+        >
+      </li>
+      <li>
+        <a
+          href="#proceso"
+          class="mx-5 flex text-[#6d6155] [transition:color_0.25s_ease] hover:text-[#2b5392]"
+          >Proceso</a
+        >
+      </li>
+      <li>
+        <a
+          href="#contacto"
+          class="mx-5 flex text-[#6d6155] [transition:color_0.25s_ease] hover:text-[#2b5392]"
+          >Contacto</a
+        >
+      </li>
+      <li>
+        <a
+          class="ml-3.75 flex items-center rounded-xl bg-[#2b5392] p-2 [transition:background-color_0.25s_ease] hover:bg-[#1a3a6b]"
+          href="/client/login"
+        >
+          <img
+            src="/images/auxiliares/usuario.png"
+            alt="usuario"
+            class="ml-1.25 h-4"
+          />
+          <p class="mr-2.5 ml-2.5 text-[#fcf6f0]">Iniciar Sesión</p>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Mobile nav dropdown (slides open via peer-checked on the checkbox) -->
+  <nav
+    class="max-h-0 overflow-hidden bg-[linear-gradient(90deg,#e0dfdb_0%,#e3e2de_35%,#e6e5e1_50%,#e9e7e4_65%,#f0eeeb_100%)] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.1)] transition-[max-height] duration-500 ease-in-out peer-checked:max-h-125 lg:hidden"
+  >
+    <ul
+      class="flex list-none flex-col items-center gap-5 py-6 text-[0.95rem] font-medium"
+    >
+      <li>
+        <a
+          href="#hero"
+          class="text-[#6d6155] [transition:color_0.25s_ease] hover:text-[#2b5392]"
+          >Inicio</a
+        >
+      </li>
+      <li>
+        <a
+          href="#sobre-biskit"
+          class="text-[#6d6155] [transition:color_0.25s_ease] hover:text-[#2b5392]"
+          >Nosotros</a
+        >
+      </li>
+      <li>
+        <a
+          href="#servicios"
+          class="text-[#6d6155] [transition:color_0.25s_ease] hover:text-[#2b5392]"
+          >Servicios</a
+        >
+      </li>
+      <li>
+        <a
+          href="#proceso"
+          class="text-[#6d6155] [transition:color_0.25s_ease] hover:text-[#2b5392]"
+          >Proceso</a
+        >
+      </li>
+      <li>
+        <a
+          href="#contacto"
+          class="text-[#6d6155] [transition:color_0.25s_ease] hover:text-[#2b5392]"
+          >Contacto</a
+        >
+      </li>
+      <li>
+        <a
+          class="flex items-center rounded-xl bg-[#2b5392] p-2 [transition:background-color_0.25s_ease] hover:bg-[#1a3a6b]"
+          href="/client/login"
+        >
+          <img
+            src="/images/auxiliares/usuario.png"
+            alt="usuario"
+            class="ml-1.25 h-4"
+          />
+          <p class="mr-2.5 ml-2.5 text-[#fcf6f0]">Iniciar Sesión</p>
+        </a>
+      </li>
+    </ul>
+  </nav>
+  <script src="/js/navbar.js"></script>
+</header>
