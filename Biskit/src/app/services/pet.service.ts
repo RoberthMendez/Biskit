@@ -17,10 +17,29 @@ export class PetService {
     return this.pets;
   }
 
+  getPetById(id: number): PetCl | undefined {
+    return this.pets.find((pet) => pet.id === id);
+  }
+
   addPet(pet: PetCl): void {
     pet.id = this.nextId++;
     this.pets.push(pet);
     this.persistPets();
+  }
+
+  updatePet(pet: PetCl): boolean {
+    if (!pet.id) {
+      return false;
+    }
+
+    const index = this.pets.findIndex((currentPet) => currentPet.id === pet.id);
+    if (index === -1) {
+      return false;
+    }
+
+    this.pets[index] = pet;
+    this.persistPets();
+    return true;
   }
 
   private loadPets(): void {

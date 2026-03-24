@@ -13,4 +13,18 @@ export const routes: Routes = [
         (m) => m.AddPetComponent,
       ),
   },
+  {
+    path: 'vet/pet/update',
+    loadComponent: () =>
+      import('./vet/pet/add-pet/add-pet.component').then(
+        (m) => m.AddPetComponent,
+      ),
+  },
+  {
+    path: 'vet/pet/update/:id',
+    loadComponent: () =>
+      import('./vet/pet/add-pet/add-pet.component').then(
+        (m) => m.AddPetComponent,
+      ),
+  },
 ];

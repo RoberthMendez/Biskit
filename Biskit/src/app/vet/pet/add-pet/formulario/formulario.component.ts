@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { Client } from '../../../../modelo/Client/client';
 import { Enfermedad } from '../../../../modelo/Pets/enfermedad';
 import { Especie } from '../../../../modelo/Pets/especie';
@@ -18,6 +19,7 @@ import { PetService } from '../../../../services/pet.service';
 export class FormularioComponent {
   errorMessage: string | null = null;
   successMessage: string | null = null;
+  editingPetId: number | null = null;
 
   formData = {
     nombre: '',
@@ -30,7 +32,12 @@ export class FormularioComponent {
     peso: 0,
   };
 
-  constructor(private readonly petService: PetService) {}
+  constructor(
+    private readonly petService: PetService,
+    private readonly route: ActivatedRoute,
+  ) {
+    this.loadPetFromRoute();
+  }
 
   onSubmit() {
     const v = this.formData;
@@ -103,7 +110,7 @@ export class FormularioComponent {
     );
 
     this.petService.addPet(pet);
-
+    console.log('Mascota registrada:', pet);
     this.successMessage = 'Mascota registrada correctamente';
 
     this.formData = {
@@ -116,7 +123,51 @@ export class FormularioComponent {
       urlFoto: '',
       peso: 0,
     };
+  }
 
-    console.log('Mascota registrada:', pet);
+  private loadPetFromRoute(): void {
+    const idParam =
+      this.route.snapshot.paramMap.get('id') ??
+      this.route.snapshot.queryParamMap.get('id');
+    if (!idParam) {
+      return;
+    }
+
+    const parsedId = Number(idParam);
+    if (Number.isNaN(parsedId)) {
+      this.errorMessage = 'El ID de la mascota no es válido';
+      return;
+    }
+
+    const pet = this.petService.getPetById(parsedId);
+    if (!pet) {
+      this.errorMessage = `No se encontró una mascota con ID ${parsedId}`;
+      return;
+    }
+
+    this.editingPetId = parsedId;
+    this.formData = {
+      nombre: pet.nombre ?? '',
+      ownerNombre: pet.owner?.nombre ?? '',
+      especie: pet.raza?.especie?.nombre ?? '',
+      razaNombre: pet.raza?.nombre ?? '',
+      enfermedadNombre: pet.enfermedad?.nombre ?? '',
+      fechaNacimiento: this.toDateInputValue(pet.fechaNacimiento),
+      urlFoto: pet.urlFoto ?? '',
+      peso: pet.peso ?? 0,
+    };
+  }
+
+  private toDateInputValue(date?: Date): string {
+    if (!date) {
+      return '';
+    }
+
+    const parsedDate = date instanceof Date ? date : new Date(date);
+    if (Number.isNaN(parsedDate.getTime())) {
+      return '';
+    }
+
+    return parsedDate.toISOString().split('T')[0];
   }
 }
