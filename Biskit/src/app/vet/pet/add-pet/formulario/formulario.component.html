@@ -1,0 +1,121 @@
+<div class="mx-auto max-w-lg p-6">
+
+  <h2 class="mb-6 text-2xl font-bold text-[#4A4A4A]">Nuevo Paciente</h2>
+
+  <!-- Error global --> 
+ <div class="mx-auto max-w-lg p-6">
+
+  <h2 class="mb-6 text-2xl font-bold text-[#4A4A4A]">Nuevo Paciente</h2>
+
+  <!-- Error global -->
+  @if (errorMessage) {
+    <p class="mb-4 rounded-xl bg-red-50 px-4 py-3 text-sm font-medium text-red-600">
+      {{ errorMessage }}
+    </p>
+  }
+
+  <form (ngSubmit)="onSubmit()" class="space-y-4">
+
+    <!-- Nombre -->
+    <div>
+      <label class="mb-1 block text-sm font-semibold text-[#4A4A4A]">
+        Nombre del paciente
+      </label>
+      <input [(ngModel)]="formData.nombre" name="nombre" type="text"
+        placeholder="Ej. Firulais, Michi..."
+        class="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm
+               outline-none focus:border-[#2b5392] focus:ring-2 focus:ring-[#2b5392]/20" />
+    </div>
+
+    <!-- Dueño -->
+    <div>
+      <label class="mb-1 block text-sm font-semibold text-[#4A4A4A]">Dueño</label>
+      <input [(ngModel)]="formData.ownerNombre" name="ownerNombre" type="text"
+        placeholder="Nombre del dueño..."
+        class="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm
+               outline-none focus:border-[#2b5392] focus:ring-2 focus:ring-[#2b5392]/20" />
+    </div>
+
+    <!-- Especie y Raza -->
+    <div class="grid grid-cols-2 gap-4">
+      <div>
+        <label class="mb-1 block text-sm font-semibold text-[#4A4A4A]">Especie</label>
+        <input [(ngModel)]="formData.especie" name="especie" type="text"
+          placeholder="Ej. Perro, Gato..."
+          class="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm
+                 outline-none focus:border-[#2b5392] focus:ring-2 focus:ring-[#2b5392]/20" />
+      </div>
+      <div>
+        <label class="mb-1 block text-sm font-semibold text-[#4A4A4A]">Raza</label>
+        <input [(ngModel)]="formData.razaNombre" name="razaNombre" type="text"
+          placeholder="Ej. Labrador..."
+          class="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm
+                 outline-none focus:border-[#2b5392] focus:ring-2 focus:ring-[#2b5392]/20" />
+      </div>
+    </div>
+
+    <!-- Fecha de nacimiento y Peso -->
+    <div class="grid grid-cols-2 gap-4">
+
+      <!-- Fecha -->
+      <div>
+        <label class="mb-1 block text-sm font-semibold text-[#4A4A4A]">
+          Fecha de nacimiento
+        </label>
+        <div class="relative">
+          <span class="pointer-events-none absolute inset-y-0 left-3 flex items-center">
+            <svg class="h-5 w-5 text-[#2b5392]" viewBox="0 0 24 24" fill="none">
+              <path d="M3 10H21M7 3V5M17 3V5M6.2 21H17.8..." stroke="#2b5392"/>
+            </svg>
+          </span>
+          <input [(ngModel)]="formData.fechaNacimiento" name="fechaNacimiento" type="date"
+            class="w-full rounded-xl border border-gray-200 bg-gray-50 py-3 pl-10 pr-3
+                   text-sm text-[#4A4A4A] outline-none
+                   focus:border-[#2b5392] focus:ring-2 focus:ring-[#2b5392]/20" />
+        </div>
+      </div>
+
+      <!-- Peso -->
+      <div>
+        <label class="mb-1 block text-sm font-semibold text-[#4A4A4A]">Peso (kg)</label>
+        <input [(ngModel)]="formData.peso" name="peso" type="number" step="0.1"
+          placeholder="Ej. 10.5"
+          class="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm
+                 outline-none focus:border-[#2b5392] focus:ring-2 focus:ring-[#2b5392]/20" />
+      </div>
+    </div>
+
+    <!-- Enfermedad -->
+    <div>
+      <label class="mb-1 block text-sm font-semibold text-[#4A4A4A]">
+        Enfermedad / Diagnóstico
+      </label>
+      <input [(ngModel)]="formData.enfermedadNombre" name="enfermedadNombre" type="text"
+        placeholder="Ej. Dermatitis, Gastritis..."
+        class="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm
+               outline-none focus:border-[#2b5392] focus:ring-2 focus:ring-[#2b5392]/20" />
+    </div>
+
+    <!-- URL Foto -->
+    <div>
+      <label class="mb-1 block text-sm font-semibold text-[#4A4A4A]">Foto (URL)</label>
+      <input [(ngModel)]="formData.urlFoto" name="urlFoto" type="text"
+        placeholder="Ej. https://ejemplo.com/foto.jpg"
+        class="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm
+               outline-none focus:border-[#2b5392] focus:ring-2 focus:ring-[#2b5392]/20" />
+    </div>
+
+    <!-- Botón -->
+    <button type="submit"
+      class="mt-4 w-full rounded-xl bg-[#2b5392] py-3 text-sm font-semibold
+             text-white transition hover:bg-[#1a3a6b]">
+      Registrar Mascota
+    </button>
+
+    <p class="text-center text-sm text-[#8D8580]">
+      El estado se establecerá automáticamente como
+      <span class="font-semibold text-[#2b5392]">Activo</span>
+    </p>
+
+  </form>
+</div>
