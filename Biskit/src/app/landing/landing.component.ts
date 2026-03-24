@@ -13,6 +13,7 @@ import { FooterComponent } from '../reusables/footer/footer.component';
 
 @Component({
   selector: 'app-landing',
+  standalone: true,
   imports: [
     NavbarComponent,
     HeroBannerComponent,
@@ -40,7 +41,9 @@ export class LandingComponent implements AfterViewInit, OnDestroy {
       return;
     }
 
-    const prefersReducedMotion = windowRef.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const prefersReducedMotion = windowRef.matchMedia(
+      '(prefers-reduced-motion: reduce)',
+    ).matches;
 
     if (prefersReducedMotion) {
       this.document.body.classList.add('hero-ready');
@@ -79,7 +82,9 @@ export class LandingComponent implements AfterViewInit, OnDestroy {
     }
 
     if (prefersReducedMotion) {
-      animationTargets.forEach((element) => element.classList.add('is-visible'));
+      animationTargets.forEach((element) =>
+        element.classList.add('is-visible'),
+      );
       return;
     }
 
@@ -98,7 +103,8 @@ export class LandingComponent implements AfterViewInit, OnDestroy {
 
         intersecting
           .sort((a, b) =>
-            a.target.compareDocumentPosition(b.target) & windowRef.Node.DOCUMENT_POSITION_FOLLOWING
+            a.target.compareDocumentPosition(b.target) &
+            windowRef.Node.DOCUMENT_POSITION_FOLLOWING
               ? -1
               : 1,
           )
