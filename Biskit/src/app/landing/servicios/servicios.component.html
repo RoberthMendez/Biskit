@@ -1,0 +1,30 @@
+<section id="servicios" class="mt-[2%] flex flex-col items-center px-4 sm:px-8">
+  <p
+    class="mt-10 mb-2.5 text-[0.8rem] font-semibold tracking-[1.5px] text-[#2b5392] sm:text-[0.9rem]"
+  >
+    NUESTROS SERVICIOS
+  </p>
+  <h2
+    class="mb-5 w-full max-w-137.5 text-center text-[1.6rem] leading-tight font-semibold text-[#4a4a4a] sm:text-[2rem] md:text-[2.35rem] md:leading-none"
+  >
+    Cuidado Integral durante la Hospitalización
+  </h2>
+  <p
+    class="w-full max-w-160 text-center text-[0.95rem] leading-normal text-[#6d6155] sm:text-[1.05rem] md:text-[1.1rem]"
+  >
+    Ofrecemos todos los servicios necesarios para que tu mascota tenga la mejor
+    atención y recuperación posible.
+  </p>
+  <!----- Tarjetas ----->
+  <article
+    class="grid w-full max-w-300 grid-cols-1 gap-6 px-0 py-10 sm:grid-cols-2 sm:gap-8 sm:px-5 lg:grid-cols-3"
+  >
+    @for (card of cards; track card.imagen) {
+      <app-card
+        [imagen]="card.imagen"
+        [titulo]="card.titulo"
+        [descripcion]="card.descripcion"
+      ></app-card>
+    }
+  </article>
+</section>

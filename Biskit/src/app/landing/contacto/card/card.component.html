@@ -1,0 +1,56 @@
+<article
+  class="group flex h-full flex-col items-center gap-2.5 rounded-2xl border border-[#ece1d6] bg-[#FBFAF8] px-4.5 py-6.5 shadow-[0_4px_14px_rgba(29,48,75,0.06),0_1px_3px_rgba(0,0,0,0.04)] transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1.25 hover:border-[#d4c4b4] hover:bg-[#fffdf9] hover:shadow-[0_10px_22px_rgba(43,83,146,0.1),0_4px_8px_rgba(0,0,0,0.05)]"
+>
+  <div
+    class="inline-flex h-13 w-13 items-center justify-center rounded-full bg-[#e9eef7] [&_svg]:h-6.5 [&_svg]:w-6.5"
+    aria-hidden="true"
+  >
+    @switch (icono) {
+      @case ("telefono") {
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 32 32"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M1 5.16715C1 19.4345 12.566 31.0005 26.8333 31.0005C27.477 31.0005 28.1152 30.977 28.7472 30.9307C29.4723 30.8775 29.8348 30.851 30.165 30.661C30.4383 30.5037 30.6975 30.2247 30.8345 29.9405C31 29.5975 31 29.1973 31 28.3972V23.7017C31 23.0287 31 22.6922 30.8892 22.4038C30.7915 22.149 30.6325 21.9222 30.4265 21.7432C30.1933 21.5405 29.877 21.4255 29.2447 21.1955L23.9 19.252C23.1642 18.9845 22.7962 18.8507 22.4472 18.8733C22.1393 18.8933 21.8432 18.9985 21.5915 19.1768C21.3062 19.379 21.1048 19.7147 20.702 20.3862L19.3333 22.6672C14.9168 20.667 11.3365 17.082 9.33333 12.6672L11.6144 11.2985C12.2858 10.8957 12.6214 10.6943 12.8237 10.4089C13.002 10.1573 13.1072 9.8611 13.1272 9.55332C13.1498 9.20427 13.016 8.83637 12.7485 8.10057L10.805 2.75584C10.575 2.12342 10.46 1.8072 10.2574 1.57399C10.0784 1.36797 9.85148 1.20907 9.5967 1.11124C9.30827 1.00049 8.9718 1.00049 8.29887 1.00049H3.60335C2.80313 1.00049 2.40302 1.00049 2.05997 1.16591C1.77583 1.30292 1.4969 1.56217 1.3395 1.83554C1.14947 2.1656 1.12292 2.52819 1.06982 3.25337C1.02355 3.88525 1 4.52345 1 5.16715Z"
+            stroke="#2B5392"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      }
+      @case ("whatsapp") {
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M19.5 12C19.5 16.14 16.14 19.5 12 19.5C10.6 19.5 9.28 19.13 8.14 18.47L4.5 19.5L5.53 15.86C4.87 14.72 4.5 13.4 4.5 12C4.5 7.86 7.86 4.5 12 4.5C16.14 4.5 19.5 7.86 19.5 12Z"
+            stroke="#2B5392"
+            stroke-width="1.6"
+            stroke-linejoin="round"
+          />
+        </svg>
+      }
+      @case ("horarios") {
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="12" cy="12" r="7" stroke="#2B5392" stroke-width="1.6" />
+          <path
+            d="M12 8V12L14.5 13.5"
+            stroke="#2B5392"
+            stroke-width="1.6"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      }
+    }
+  </div>
+  <h3
+    class="text-lg font-bold text-[#4a4a4a] transition-colors duration-300 group-hover:text-[#2b5392]"
+  >
+    {{ titulo }}
+  </h3>
+  <p class="text-[1.1rem] text-[#6d6155]">{{ descripcion }}</p>
+</article>

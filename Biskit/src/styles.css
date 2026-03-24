@@ -1,1 +1,234 @@
-/* You can add global styles to this file, and also import other style files */
+@import "tailwindcss";
+
+* {
+  font-family: "Inter", sans-serif;
+  /* border: 1px solid red; */
+}
+
+html {
+  scroll-padding-top: 13vh;
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #fcf6f0;
+}
+
+h1,
+h2,
+h3 {
+  font-family: "Playfair Display", serif;
+}
+
+a {
+  text-decoration: none;
+}
+
+/* Scroll reveal animations */
+.reveal-up {
+  opacity: 0;
+  transform: translate3d(0, 28px, 0);
+  transition:
+    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform, opacity;
+}
+
+.is-visible {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+/* Hero initial load animation */
+#hero h2,
+#hero p,
+#hero > div {
+  opacity: 0;
+  transform: translate3d(0, 24px, 0);
+}
+
+body.hero-ready #hero h2,
+body.hero-ready #hero p,
+body.hero-ready #hero > div {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+body.hero-ready #hero h2 {
+  transition:
+    opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+body.hero-ready #hero p {
+  transition:
+    opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1) 120ms,
+    transform 0.75s cubic-bezier(0.22, 1, 0.36, 1) 120ms;
+}
+
+body.hero-ready #hero > div {
+  transition:
+    opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1) 220ms,
+    transform 0.75s cubic-bezier(0.22, 1, 0.36, 1) 220ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .reveal-up,
+  .reveal-up.is-visible,
+  #hero h2,
+  #hero p,
+  #hero > div {
+    transition: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}
+
+@utility redes-link {
+  & svg path {
+    transition:
+      fill 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+      stroke 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  &:hover svg path {
+    fill: #8eb3ef;
+    stroke: #8eb3ef;
+  }
+}
+
+@utility hero-bg {
+  background-image:
+    linear-gradient(
+      to right,
+      rgba(15, 23, 42, 0.75),
+      rgba(15, 23, 42, 0.5),
+      rgba(15, 23, 42, 0.25)
+    ),
+    url("/images/landing/hero/hero.jpeg");
+}
+
+@utility proceso-linea {
+  &::before {
+    content: "";
+    position: absolute;
+    left: -29px;
+    top: 6%;
+    bottom: 12%;
+    width: 1px;
+    background-color: #4a4a4a59;
+    z-index: 0;
+  }
+  @media (min-width: 48rem) {
+    &::before {
+      left: -40px;
+    }
+  }
+}
+
+@utility paso-numero {
+  z-index: 2;
+
+  &::before {
+    content: attr(data-step);
+    position: absolute;
+    left: -48px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 38px;
+    height: 38px;
+    background-color: #2b5392;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 0.85rem;
+    font-weight: bold;
+    z-index: 3;
+  }
+  @media (min-width: 48rem) {
+    &::before {
+      left: -65px;
+      width: 50px;
+      height: 50px;
+      font-size: 1rem;
+    }
+  }
+}
+
+@utility back-link {
+  & svg path {
+    transition:
+      fill 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+      stroke 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  &:hover svg path {
+    stroke: #4a4a4a;
+  }
+}
+
+@utility custom-scroll {
+  &::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #6d615590;
+    border-radius: 3px;
+  }
+}
+
+.datepicker-cell.prev,
+.datepicker-cell.next,
+.datepicker-cell.old,
+.datepicker-cell.new,
+.datepicker-cell.disabled {
+  color: var(--color-gray-300) !important;
+}
+
+.datepicker.dropdown {
+  visibility: visible;
+  transition: visibility 0s linear 0s;
+}
+
+.datepicker.dropdown.hidden {
+  display: block !important;
+  visibility: hidden;
+  pointer-events: none;
+  transition: visibility 0s linear 180ms;
+}
+
+.datepicker.dropdown .datepicker-picker {
+  transform-origin: top left;
+  opacity: 0;
+  transform: translateY(6px) scale(0.98);
+  transition:
+    opacity 180ms ease-out,
+    transform 180ms ease-out;
+}
+
+.datepicker.dropdown:not(.hidden) .datepicker-picker {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .datepicker.dropdown,
+  .datepicker.dropdown.hidden,
+  .datepicker.dropdown .datepicker-picker {
+    transition: none;
+  }
+
+  .datepicker.dropdown .datepicker-picker,
+  .datepicker.dropdown:not(.hidden) .datepicker-picker {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+

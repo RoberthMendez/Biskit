@@ -1,0 +1,33 @@
+<section
+  id="contacto"
+  class="px-4 py-10 text-center sm:px-[6%] sm:py-12 md:px-[8%] md:py-16"
+>
+  <p
+    class="mb-3 text-[0.8rem] font-bold tracking-[2px] text-[#2b5392] sm:text-[0.85rem]"
+  >
+    CONTACTO
+  </p>
+  <h2
+    class="mb-3 text-[1.6rem] font-semibold text-[#4a4a4a] sm:text-[2rem] md:text-[2.4rem]"
+  >
+    Estamos aquí para ti y tu mascota
+  </h2>
+  <p
+    class="mx-auto mb-6 max-w-full text-sm leading-relaxed text-[#6d6155] sm:mb-7 sm:text-base md:mb-9 md:max-w-180"
+  >
+    Contáctanos para agendar una valoración o resolver cualquier duda sobre
+    nuestros servicios de hospitalización.
+  </p>
+  <app-direccion></app-direccion>
+  <div
+    class="relative z-10 mx-auto grid max-w-170 grid-cols-1 items-stretch gap-4 sm:grid-cols-2 sm:gap-5 md:gap-5.5 lg:grid-cols-3"
+  >
+    @for (contacto of contactos; track contacto.icono) {
+      <app-card
+        [icono]="contacto.icono"
+        [titulo]="contacto.titulo"
+        [descripcion]="contacto.descripcion"
+      ></app-card>
+    }
+  </div>
+</section>

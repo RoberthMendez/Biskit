@@ -1,0 +1,31 @@
+<section
+  id="por-que"
+  class="mx-4 mb-[4%] flex flex-col justify-between gap-8 sm:mx-8 md:mx-[10%] md:flex-row md:gap-10 lg:mx-[15%]"
+>
+  <div class="md:min-w-0 md:flex-1">
+    <p
+      class="titulo mb-3 text-[0.8rem] font-bold tracking-[2px] text-[#2b5392] sm:text-[0.85rem]"
+    >
+      ¿POR QUÉ BISKIT?
+    </p>
+    <h2
+      class="mb-5 w-full font-[Playfair_Display,serif] text-[1.6rem] leading-tight font-semibold text-[#4a4a4a] sm:text-[2rem] md:w-137.5 md:text-[2.35rem] md:leading-none"
+    >
+      Tu mascota en las mejores manos
+    </h2>
+    <article id="razones" class="flex max-w-full flex-col md:max-w-150">
+      @for (razon of razones; track razon.titulo) {
+        <app-razon [titulo]="razon.titulo" [icono]="razon.icono"></app-razon>
+      }
+    </article>
+  </div>
+  <div
+    class="flex w-full items-center justify-center pt-0 md:w-[45%] md:shrink-0 md:pt-[5%]"
+  >
+    <img
+      src="/images/landing/por-que/por-que.jpg"
+      alt="Imagen de por qué Biskit"
+      class="h-48 w-full rounded-[20px] object-cover shadow-2xl sm:h-56 md:h-auto md:max-h-80"
+    />
+  </div>
+</section>
