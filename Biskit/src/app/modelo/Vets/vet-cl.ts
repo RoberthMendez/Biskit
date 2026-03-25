@@ -3,7 +3,7 @@ import { Tratamiento } from '../Tratamiento/tratamiento';
 import { Especialidad } from './Especialidad/especialidad';
 
 export class VetCl {
-  public id: number;
+  public id?: number;
   public nombre: string;
   public estado: boolean;
   public correo: string;
@@ -14,15 +14,15 @@ export class VetCl {
   public tratamientos: Tratamiento[];
 
   constructor(
-    id: number,
-    nombre: string,
-    estado: boolean,
-    correo: string,
-    cedula: string,
-    urlFoto: string,
-    credenciales: Credenciales,
-    especialidad: Especialidad,
-    tratamientos: Tratamiento[],
+    id?: number,
+    nombre: string = '',
+    estado: boolean = true,
+    correo: string = '',
+    cedula: string = '',
+    urlFoto: string = '',
+    credenciales: Credenciales = new Credenciales(),
+    especialidad: Especialidad = new Especialidad(),
+    tratamientos: Tratamiento[] = [],
   ) {
     this.id = id;
     this.nombre = nombre;

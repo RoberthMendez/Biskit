@@ -23,6 +23,7 @@ export class FormularioComponent {
 
   formPet: PetCl = new PetCl();
   isEditing: boolean = false;
+  fechaNacimientoStr: string = '';
 
   errorMessage: string | null = null;
   successMessage: string | null = null;
@@ -32,6 +33,9 @@ export class FormularioComponent {
     if (this.petId) {
       this.isEditing = true;
       this.formPet = this.petService.findById(this.petId);
+      this.fechaNacimientoStr = new Date(this.formPet.fechaNacimiento)
+        .toISOString()
+        .split('T')[0];
     }
   }
 
@@ -59,7 +63,7 @@ export class FormularioComponent {
       this.errorMessage = 'Enfermedad requerida';
       return;
     }
-    if (!this.formPet.fechaNacimiento) {
+    if (!this.fechaNacimientoStr) {
       this.errorMessage = 'Fecha de nacimiento requerida';
       return;
     }
@@ -71,7 +75,7 @@ export class FormularioComponent {
     console.log('Mascotas de formulario:', this.formPet);
 
     // El input date bindea un string, hay que convertirlo a Date
-    this.formPet.fechaNacimiento = new Date(this.formPet.fechaNacimiento);
+    this.formPet.fechaNacimiento = new Date(this.fechaNacimientoStr);
 
     this.petService.savePet(this.formPet);
 

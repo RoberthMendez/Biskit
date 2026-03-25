@@ -1,12 +1,13 @@
-export class Client {
-  public id: number;
-  public nombre: string;
+import { Credenciales } from "../Credenciales/credenciales";
+import { PetCl } from "../Pets/Pet/pet-cl";
 
-  constructor(
-    id: number = 0,
-    nombre: string = '',
-  ) {
-    this.id = id;
-    this.nombre = nombre;
-  }
+export interface Client {
+  id?: number;
+  nombre: string;
+  cedula: string;
+  correo: string;
+  celular: string;
+  credenciales: Credenciales;
+  pets: PetCl[];
 }
+

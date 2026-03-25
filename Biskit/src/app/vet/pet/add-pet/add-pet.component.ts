@@ -14,7 +14,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class AddPetComponent {
 
-   petId: number | null = null;
+  petId: number | null = null;
 
   constructor(private route: ActivatedRoute) {}
 

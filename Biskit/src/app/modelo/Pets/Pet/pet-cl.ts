@@ -1,4 +1,5 @@
 import { Client } from '../../Client/client';
+import { ClientCL } from '../../Client/client-cl';
 import { Tratamiento } from '../../Tratamiento/tratamiento';
 import { Enfermedad } from '../enfermedad';
 import { Raza } from '../raza';
@@ -11,7 +12,7 @@ export class PetCl {
   public peso: number;
   public urlFoto: string;
   public enfermedad: Enfermedad;
-  public owner: Client;
+  public owner: ClientCL;
   public raza: Raza;
   public tratamientos?: Tratamiento[];
 
@@ -23,7 +24,7 @@ export class PetCl {
     peso: number = 0,
     urlFoto: string = '',
     enfermedad: Enfermedad = new Enfermedad(),
-    owner: Client = new Client(),
+    owner: Client = new ClientCL(),
     raza: Raza = new Raza(),
     tratamientos?: Tratamiento[],
   ) {

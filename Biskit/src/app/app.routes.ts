@@ -34,4 +34,11 @@ export const routes: Routes = [
         (m) => m.PetsComponent,
       ),
   },
+  {
+    path: 'vet/pets/:id',
+    loadComponent: () =>
+      import('./vet/pet/info-pet/info-pet.component').then(
+        (m) => m.InfoPetComponent,
+      ),
+  },
 ];
