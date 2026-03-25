@@ -1,0 +1,184 @@
+<!-- Botón de volver a Panel de Veterinario -->
+<div>
+  <a
+    routerLink="/vet"
+    class="back-link group mt-6 mb-2 ml-4 inline-flex h-10 items-center justify-start sm:mt-8 sm:ml-8 md:ml-12 lg:ml-20 xl:ml-28"
+  >
+    <svg
+      class="mt-1 h-9"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+      <g
+        id="SVGRepo_tracerCarrier"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      ></g>
+      <g id="SVGRepo_iconCarrier">
+        <path
+          d="M8 12L16 12"
+          stroke="#6B6B6B"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        ></path>
+        <path
+          d="M11 9L8.08704 11.913V11.913C8.03897 11.961 8.03897 12.039 8.08704 12.087V12.087L11 15"
+          stroke="#6B6B6B"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        ></path>
+      </g>
+    </svg>
+    <h2
+      class="ml-1 text-base font-bold tracking-wider text-[#4a4a4acc] underline underline-offset-6 transition-colors duration-300 group-hover:text-[#4A4A4Aee] sm:text-lg"
+    >
+      Panel de Veterinario
+    </h2>
+  </a>
+</div>
+
+<!-- Titulo -->
+<section
+  id="pets-titulo"
+  class="mx-6 mt-4 mb-7 grid grid-cols-2 sm:mx-16 md:mx-24 lg:mx-36"
+>
+  <!-- Mascotas Registradas -->
+  <div class="text-[#4a4a4a]">
+    <h1
+      class="text-2xl font-semibold tracking-wider text-[#4a4a4a] sm:text-3xl md:text-4xl"
+    >
+      Mascotas Registradas
+    </h1>
+    <p class="text-sm font-medium text-[#8d8580dd] sm:text-base">
+      Lista de todas las Mascotas de la Veterinaria
+    </p>
+  </div>
+
+  <!-- Agregar Mascota -->
+  <div class="flex items-center justify-end">
+    <a
+      routerLink="/vet/pets/add"
+      class="flex items-center gap-2 rounded-lg border border-[#2B5392] bg-transparent px-3 py-2 text-[#2B5392] transition-colors duration-200 hover:bg-[#2B5392] hover:text-[#FBFAF8]"
+    >
+      <svg
+        class="h-6 w-auto"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+        <g
+          id="SVGRepo_tracerCarrier"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        ></g>
+        <g id="SVGRepo_iconCarrier">
+          <g id="Edit / Add_Plus">
+            <path
+              id="Vector"
+              d="M6 12H12M12 12H18M12 12V18M12 12V6"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></path>
+          </g>
+        </g>
+      </svg>
+      Agregar Mascota
+    </a>
+  </div>
+</section>
+
+<!-- Buscar y Mascotas -->
+<section class="mx-4 sm:mx-16 md:mx-24 lg:mx-36">
+  <!-- Buscar -->
+  <div
+    id="pets-buscar"
+    class="mb-5 flex h-10 items-center rounded-full bg-[#efe7df80]"
+  >
+    <svg
+      class="ml-5 h-6"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+      <g
+        id="SVGRepo_tracerCarrier"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      ></g>
+      <g id="SVGRepo_iconCarrier">
+        <g clip-path="url(#clip0_15_152)">
+          <rect width="24" height="24" fill=""></rect>
+          <circle
+            cx="10.5"
+            cy="10.5"
+            r="6.5"
+            stroke="#2B5392BD"
+            stroke-linejoin="round"
+          ></circle>
+          <path
+            d="M19.6464 20.3536C19.8417 20.5488 20.1583 20.5488 20.3536 20.3536C20.5488 20.1583 20.5488 19.8417 20.3536 19.6464L19.6464 20.3536ZM20.3536 19.6464L15.3536 14.6464L14.6464 15.3536L19.6464 20.3536L20.3536 19.6464Z"
+            fill="#2B5392BD"
+          ></path>
+        </g>
+        <defs>
+          <clipPath id="clip0_15_152">
+            <rect width="24" height="24" fill=""></rect>
+          </clipPath>
+        </defs>
+      </g>
+    </svg>
+    <input
+      type="text"
+      [(ngModel)]="searchTerm"
+      placeholder="Buscar mascota..."
+      class="ml-2.5 w-full border-none bg-transparent text-xs text-[#2b5392] focus:outline-none"
+    />
+  </div>
+
+  <!-- Mensaje sin resultados -->
+  @if (filteredPets.length === 0 && pets.length > 0) {
+    <div
+      class="mx-2 my-20 flex flex-col items-center justify-center gap-4 text-center sm:mx-10"
+    >
+      <p class="mb-2 text-base text-[#8d8580dd]">
+        No se encontraron mascotas que coincidan con tu búsqueda
+      </p>
+      <button
+        (click)="searchTerm = ''"
+        class="cursor-pointer rounded-xl border border-[#6D6155]/30 bg-[#6D6155]/5 px-4 py-2 text-[#6D6155] transition-all duration-200 hover:bg-[#6D6155]/10 hover:text-[#4F453D]"
+      >
+        Limpiar búsqueda
+      </button>
+    </div>
+  }
+
+  <!-- Sin mascotas registradas -->
+  @if (pets.length === 0) {
+    <div class="mx-2 my-20 text-center sm:mx-10">
+      <p class="text-base text-[#8d8580dd]">
+        No hay mascotas registradas en el sistema
+      </p>
+    </div>
+  }
+
+  <!-- Grid de mascotas -->
+  @if (filteredPets.length > 0) {
+    <section
+      class="mx-2 mb-10 grid grid-cols-1 gap-6 sm:mx-10 sm:grid-cols-2 sm:gap-8 lg:grid-cols-3 lg:gap-10 2xl:grid-cols-4"
+    >
+      @for (pet of filteredPets; track pet.id) {
+        <app-card-pet [pet]="pet" />
+      }
+    </section>
+  }
+</section>
+
+<app-footer></app-footer>

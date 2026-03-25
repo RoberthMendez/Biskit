@@ -21,6 +21,8 @@ export class FormularioComponent {
   successMessage: string | null = null;
   editingPetId: number | null = null;
 
+  
+
   formData = {
     nombre: '',
     ownerNombre: '',
@@ -38,6 +40,9 @@ export class FormularioComponent {
   ) {
     this.loadPetFromRoute();
   }
+   onSubmit() {}
+
+  /*
 
   onSubmit() {
     const v = this.formData;
@@ -124,6 +129,7 @@ export class FormularioComponent {
       peso: 0,
     };
   }
+    */
 
   private loadPetFromRoute(): void {
     const idParam =
