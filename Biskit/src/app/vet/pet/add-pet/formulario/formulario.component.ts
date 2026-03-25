@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Raza } from '../../../../modelo/Pets/raza';
 import { PetCl } from '../../../../modelo/Pets/Pet/pet-cl';
 import { PetService } from '../../../../services/pet.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-formulario',
@@ -15,7 +16,11 @@ import { PetService } from '../../../../services/pet.service';
 export class FormularioComponent {
   @Input() petId: number | null = null;
 
-  constructor(private petService: PetService) {}
+  constructor(
+    private petService: PetService,
+    private router: Router,
+  ) {}
+
   formPet: PetCl = new PetCl();
   isEditing: boolean = false;
 
@@ -62,16 +67,19 @@ export class FormularioComponent {
       this.errorMessage = 'Peso debe ser mayor a 0';
       return;
     }
-    console.log('Antes de guardar mascota');
+
     console.log('Mascotas de formulario:', this.formPet);
 
     // El input date bindea un string, hay que convertirlo a Date
     this.formPet.fechaNacimiento = new Date(this.formPet.fechaNacimiento);
 
-    console.log('Despues de convertir fecha:');
-
     this.petService.savePet(this.formPet);
-    this.successMessage = 'Mascota guardada correctamente';
-    this.formPet = new PetCl(); // Resetea el formulario
+
+    if (this.isEditing) {
+      this.router.navigate(['/vet/pets']);
+    } else {
+      this.successMessage = 'Mascota guardada correctamente';
+      this.formPet = new PetCl(); // Resetea el formulario
+    }
   }
 }
