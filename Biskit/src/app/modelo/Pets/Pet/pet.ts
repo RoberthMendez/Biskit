@@ -1,7 +1,7 @@
 import { Tratamiento } from '../../Tratamiento/tratamiento';
 
 export interface Pet {
-  id: number;
+  id?: number;
   nombre: string;
   estado: boolean;
   fechaNacimiento: Date;

@@ -4,7 +4,7 @@ import { Enfermedad } from '../enfermedad';
 import { Raza } from '../raza';
 
 export class PetCl {
-  public id: number;
+  public id?: number;
   public nombre: string;
   public estado: boolean;
   public fechaNacimiento: Date;
@@ -16,15 +16,15 @@ export class PetCl {
   public tratamientos?: Tratamiento[];
 
   constructor(
-    id: number,
-    nombre: string,
-    estado: boolean,
-    fechaNacimiento: Date,
-    peso: number,
-    urlFoto: string,
-    enfermedad: Enfermedad,
-    owner: Client,
-    raza: Raza,
+    id?: number,
+    nombre: string = '',
+    estado: boolean = true,
+    fechaNacimiento: Date = new Date(),
+    peso: number = 0,
+    urlFoto: string = '',
+    enfermedad: Enfermedad = new Enfermedad(),
+    owner: Client = new Client(),
+    raza: Raza = new Raza(),
     tratamientos?: Tratamiento[],
   ) {
     this.id = id;

@@ -1,10 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { Client } from '../../../../modelo/Client/client';
-import { Enfermedad } from '../../../../modelo/Pets/enfermedad';
-import { Especie } from '../../../../modelo/Pets/especie';
 import { Raza } from '../../../../modelo/Pets/raza';
 import { PetCl } from '../../../../modelo/Pets/Pet/pet-cl';
 import { PetService } from '../../../../services/pet.service';
@@ -12,168 +8,70 @@ import { PetService } from '../../../../services/pet.service';
 @Component({
   selector: 'app-formulario',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [FormsModule],
   templateUrl: './formulario.component.html',
   styleUrl: './formulario.component.css',
 })
 export class FormularioComponent {
+  @Input() petId: number | null = null;
+
+  constructor(private petService: PetService) {}
+  formPet: PetCl = new PetCl();
+  isEditing: boolean = false;
+
   errorMessage: string | null = null;
   successMessage: string | null = null;
   editingPetId: number | null = null;
 
-  
-
-  formData = {
-    nombre: '',
-    ownerNombre: '',
-    especie: '',
-    razaNombre: '',
-    enfermedadNombre: '',
-    fechaNacimiento: '',
-    urlFoto: '',
-    peso: 0,
-  };
-
-  constructor(
-    private readonly petService: PetService,
-    private readonly route: ActivatedRoute,
-  ) {
-    this.loadPetFromRoute();
+  ngOnInit(): void {
+    if (this.petId) {
+      this.isEditing = true;
+      this.formPet = this.petService.findById(this.petId);
+    }
   }
-   onSubmit() {}
 
-  /*
-
-  onSubmit() {
-    const v = this.formData;
+  savePet(): void {
     this.errorMessage = null;
     this.successMessage = null;
 
-    if (!v.nombre.trim()) {
+    if (!this.formPet.nombre.trim()) {
       this.errorMessage = 'Nombre requerido';
       return;
     }
-    if (!v.ownerNombre.trim()) {
+    if (!this.formPet.owner.nombre.trim()) {
       this.errorMessage = 'Dueño requerido';
       return;
     }
-    if (!v.especie.trim()) {
+    if (!this.formPet.raza.especie.nombre.trim()) {
       this.errorMessage = 'Especie requerida';
       return;
     }
-    if (!v.razaNombre.trim()) {
+    if (!this.formPet.raza.nombre.trim()) {
       this.errorMessage = 'Raza requerida';
       return;
     }
-    if (!v.enfermedadNombre.trim()) {
+    if (!this.formPet.enfermedad.nombre.trim()) {
       this.errorMessage = 'Enfermedad requerida';
       return;
     }
-    if (!v.fechaNacimiento) {
+    if (!this.formPet.fechaNacimiento) {
       this.errorMessage = 'Fecha de nacimiento requerida';
       return;
     }
-    if (v.peso <= 0) {
+    if (this.formPet.peso <= 0) {
       this.errorMessage = 'Peso debe ser mayor a 0';
       return;
     }
+    console.log('Antes de guardar mascota');
+    console.log('Mascotas de formulario:', this.formPet);
 
-    const generatedId = Date.now();
+    // El input date bindea un string, hay que convertirlo a Date
+    this.formPet.fechaNacimiento = new Date(this.formPet.fechaNacimiento);
 
-    const owner: Client = {
-      id: generatedId,
-      nombre: v.ownerNombre.trim(),
-    };
+    console.log('Despues de convertir fecha:');
 
-    const especie: Especie = {
-      id: generatedId,
-      nombre: v.especie.trim(),
-    };
-
-    const raza: Raza = {
-      id: generatedId,
-      nombre: v.razaNombre.trim(),
-      especie,
-    };
-
-    const enfermedad: Enfermedad = {
-      id: generatedId,
-      nombre: v.enfermedadNombre.trim(),
-    };
-
-    const pet = new PetCl(
-      undefined,
-      v.nombre.trim(),
-      true,
-      new Date(v.fechaNacimiento),
-      Number(v.peso),
-      v.urlFoto.trim(),
-      enfermedad,
-      owner,
-      raza,
-      [],
-    );
-
-    this.petService.addPet(pet);
-    console.log('Mascota registrada:', pet);
-    this.successMessage = 'Mascota registrada correctamente';
-
-    this.formData = {
-      nombre: '',
-      ownerNombre: '',
-      especie: '',
-      razaNombre: '',
-      enfermedadNombre: '',
-      fechaNacimiento: '',
-      urlFoto: '',
-      peso: 0,
-    };
-  }
-    */
-
-  private loadPetFromRoute(): void {
-    const idParam =
-      this.route.snapshot.paramMap.get('id') ??
-      this.route.snapshot.queryParamMap.get('id');
-    if (!idParam) {
-      return;
-    }
-
-    const parsedId = Number(idParam);
-    if (Number.isNaN(parsedId)) {
-      this.errorMessage = 'El ID de la mascota no es válido';
-      return;
-    }
-
-    const pet = this.petService.getPetById(parsedId);
-    if (!pet) {
-      this.errorMessage = `No se encontró una mascota con ID ${parsedId}`;
-      return;
-    }
-
-    this.editingPetId = parsedId;
-    this.formData = {
-      nombre: pet.nombre ?? '',
-      ownerNombre: pet.owner?.nombre ?? '',
-      especie: pet.raza?.especie?.nombre ?? '',
-      razaNombre: pet.raza?.nombre ?? '',
-      enfermedadNombre: pet.enfermedad?.nombre ?? '',
-      fechaNacimiento: this.toDateInputValue(pet.fechaNacimiento),
-      urlFoto: pet.urlFoto ?? '',
-      peso: pet.peso ?? 0,
-    };
-  }
-
-  private toDateInputValue(date?: Date): string {
-    if (!date) {
-      return '';
-    }
-
-    const parsedDate = date instanceof Date ? date : new Date(date);
-    if (Number.isNaN(parsedDate.getTime())) {
-      return '';
-    }
-
-    return parsedDate.toISOString().split('T')[0];
+    this.petService.savePet(this.formPet);
+    this.successMessage = 'Mascota guardada correctamente';
+    this.formPet = new PetCl(); // Resetea el formulario
   }
 }

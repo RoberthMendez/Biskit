@@ -3,7 +3,6 @@ import { RouterLink } from '@angular/router';
 import { PetCl } from '../../../../modelo/Pets/Pet/pet-cl';
 import { PetService } from '../../../../services/pet.service';
 
-
 @Component({
   selector: 'app-card-pet',
   standalone: true,
@@ -12,18 +11,17 @@ import { PetService } from '../../../../services/pet.service';
   styleUrl: './card-pet.component.css',
 })
 export class CardPetComponent {
-
   @Input()
   pet!: PetCl;
 
-  constructor(private petService: PetService) {
-  }
+  constructor(private petService: PetService) {}
 
   onToggleEstado(event: Event): void {
     const checkbox = event.target as HTMLInputElement;
     this.pet.estado = checkbox.checked;
     // Actualizar base de datos
-    this.petService.updateEstado(this.pet.id, this.pet.estado);
+    if (this.pet.id != null) {
+      this.petService.updateEstado(this.pet.id, this.pet.estado);
+    }
   }
-
 }

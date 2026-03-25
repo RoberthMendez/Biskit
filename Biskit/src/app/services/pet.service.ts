@@ -230,11 +230,15 @@ export class PetService {
         this.pets[index] = pet;
       }
     } else {
-      // Busca el id de la ultima mascota y le suma 1
+      // Busca el id máximo de las mascotas y le suma 1
       const nuevoId =
-        this.pets.length > 0 ? this.pets[this.pets.length - 1].id + 1 : 1;
+        this.pets.length > 0
+          ? Math.max(...this.pets.map((p) => p.id ?? 0)) + 1
+          : 1;
       pet.id = nuevoId;
+      pet.estado = true; // Por defecto, la mascota nueva está activa
       this.pets.push(pet);
+      console.log('Mascotas en el servicio:', this.pets);
     }
   }
 
@@ -245,4 +249,9 @@ export class PetService {
     }
     return pet;
   }
+
+  imprimirMascotas(): void {
+    console.log('Mascotas en el servicio:', this.pets);
+  }
+
 }

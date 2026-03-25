@@ -27,6 +27,7 @@ export class PetsComponent {
 
   ngOnInit() {
     this.pets = this.petService.findAll();
+    this.petService.imprimirMascotas();
   }
 
 
