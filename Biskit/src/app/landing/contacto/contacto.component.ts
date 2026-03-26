@@ -19,7 +19,6 @@ interface Contacto{
   selector: 'app-contacto',
   imports: [DireccionComponent, CardComponent],
   templateUrl: './contacto.component.html',
-  styleUrl: './contacto.component.css'
 })
 export class ContactoComponent {
 

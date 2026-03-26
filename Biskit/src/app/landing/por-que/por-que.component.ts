@@ -17,7 +17,6 @@ interface Razon {
   selector: 'app-por-que',
   imports: [RazonComponent],
   templateUrl: './por-que.component.html',
-  styleUrl: './por-que.component.css'
 })
 export class PorQueComponent {
 

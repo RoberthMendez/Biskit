@@ -8,7 +8,6 @@ import { RedesComponent } from './redes/redes.component';
   selector: 'app-footer',
   imports: [MarcaComponent, CompromisoComponent, CalidadComponent, RedesComponent],
   templateUrl: './footer.component.html',
-  styleUrl: './footer.component.css'
 })
 export class FooterComponent {
 

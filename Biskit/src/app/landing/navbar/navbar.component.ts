@@ -4,7 +4,6 @@ import { Component, ElementRef, HostListener, OnDestroy, ViewChild } from '@angu
   selector: 'app-navbar',
   imports: [],
   templateUrl: './navbar.component.html',
-  styleUrl: './navbar.component.css'
 })
 export class NavbarComponent {
   @ViewChild('navToggle') navToggle?: ElementRef<HTMLInputElement>;

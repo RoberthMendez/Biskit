@@ -4,7 +4,6 @@ import { Component } from '@angular/core';
   selector: 'app-compromiso',
   imports: [],
   templateUrl: './compromiso.component.html',
-  styleUrl: './compromiso.component.css'
 })
 export class CompromisoComponent {
 

@@ -12,7 +12,6 @@ import { CardPetComponent } from './card-pet/card-pet.component';
   standalone: true,
   imports: [FooterComponent, CardPetComponent, FormsModule, RouterLink],
   templateUrl: './pets.component.html',
-  styleUrl: './pets.component.css'
 })
 export class PetsComponent {
   

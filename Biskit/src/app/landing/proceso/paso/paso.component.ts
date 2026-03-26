@@ -11,7 +11,6 @@ type IconoPaso =
   selector: 'app-paso',
   imports: [],
   templateUrl: './paso.component.html',
-  styleUrl: './paso.component.css'
 })
 export class PasoComponent {
 

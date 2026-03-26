@@ -8,7 +8,6 @@ import { PetService } from '../../../../services/pet.service';
   standalone: true,
   imports: [RouterLink],
   templateUrl: './card-pet.component.html',
-  styleUrl: './card-pet.component.css',
 })
 export class CardPetComponent {
   @Input()

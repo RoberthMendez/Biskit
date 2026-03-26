@@ -17,7 +17,6 @@ import { CardInfoTratamientosComponent } from './card-info-tratamientos/card-inf
     RouterLink,
   ],
   templateUrl: './info-pet.component.html',
-  styleUrl: './info-pet.component.css',
 })
 export class InfoPetComponent {
   pet!: PetCl;

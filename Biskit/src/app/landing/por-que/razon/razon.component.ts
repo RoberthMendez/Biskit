@@ -11,7 +11,6 @@ type IconoRazon =
   selector: 'app-razon',
   imports: [],
   templateUrl: './razon.component.html',
-  styleUrl: './razon.component.css'
 })
 export class RazonComponent {
 

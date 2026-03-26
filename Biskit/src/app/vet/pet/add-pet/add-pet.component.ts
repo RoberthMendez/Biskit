@@ -10,7 +10,6 @@ import { ActivatedRoute } from '@angular/router';
   standalone: true,
   imports: [FooterComponent, FormularioComponent, ImagenComponent, RouterLink],
   templateUrl: './add-pet.component.html',
-  styleUrl: './add-pet.component.css',
 })
 export class AddPetComponent {
 

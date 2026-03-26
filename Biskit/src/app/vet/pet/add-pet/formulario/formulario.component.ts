@@ -11,7 +11,6 @@ import { Router } from '@angular/router';
   standalone: true,
   imports: [FormsModule],
   templateUrl: './formulario.component.html',
-  styleUrl: './formulario.component.css',
 })
 export class FormularioComponent {
   @Input() petId: number | null = null;

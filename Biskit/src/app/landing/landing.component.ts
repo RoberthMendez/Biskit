@@ -27,7 +27,6 @@ import { FooterComponent } from '../reusables/footer/footer.component';
     FooterComponent,
   ],
   templateUrl: './landing.component.html',
-  styleUrl: './landing.component.css',
 })
 export class LandingComponent implements AfterViewInit, OnDestroy {
   private readonly document = inject(DOCUMENT);

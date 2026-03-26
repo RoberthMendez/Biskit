@@ -7,7 +7,6 @@ import { PetCl } from '../../../../modelo/Pets/Pet/pet-cl';
   selector: 'app-card-info-pet',
   imports: [RouterLink],
   templateUrl: './card-info-pet.component.html',
-  styleUrl: './card-info-pet.component.css'
 })
 export class CardInfoPetComponent {
   @Input() pet!: PetCl;

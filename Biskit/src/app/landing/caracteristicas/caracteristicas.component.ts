@@ -4,7 +4,6 @@ import { Component } from '@angular/core';
   selector: 'app-caracteristicas',
   imports: [],
   templateUrl: './caracteristicas.component.html',
-  styleUrl: './caracteristicas.component.css'
 })
 export class CaracteristicasComponent {
 

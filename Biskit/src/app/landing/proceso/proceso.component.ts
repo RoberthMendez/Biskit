@@ -19,7 +19,6 @@ interface Paso {
   selector: 'app-proceso',
   imports: [PasoComponent],
   templateUrl: './proceso.component.html',
-  styleUrl: './proceso.component.css'
 })
 export class ProcesoComponent {
   pasos: Paso[] = [

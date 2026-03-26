@@ -7,7 +7,6 @@ import { ClientCL } from '../../../../modelo/Client/client-cl';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './card-info-owner.component.html',
-  styleUrl: './card-info-owner.component.css'
 })
 export class CardInfoOwnerComponent {
   @Input() owner!: ClientCL;

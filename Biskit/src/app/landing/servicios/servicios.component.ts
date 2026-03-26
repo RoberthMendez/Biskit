@@ -11,7 +11,6 @@ interface Card {
   selector: 'app-servicios',
   imports: [CardComponent],
   templateUrl: './servicios.component.html',
-  styleUrl: './servicios.component.css'
 })
 export class ServiciosComponent {
 

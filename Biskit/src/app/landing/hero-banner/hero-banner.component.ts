@@ -4,7 +4,6 @@ import { Component } from '@angular/core';
   selector: 'app-hero-banner',
   imports: [],
   templateUrl: './hero-banner.component.html',
-  styleUrl: './hero-banner.component.css'
 })
 export class HeroBannerComponent {
 

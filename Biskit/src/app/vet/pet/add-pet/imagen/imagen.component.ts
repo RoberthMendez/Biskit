@@ -4,7 +4,6 @@ import { Component } from '@angular/core';
   selector: 'app-imagen',
   imports: [],
   templateUrl: './imagen.component.html',
-  styleUrl: './imagen.component.css'
 })
 export class ImagenComponent {
 
