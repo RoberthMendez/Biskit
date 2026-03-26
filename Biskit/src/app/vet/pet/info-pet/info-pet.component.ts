@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FooterComponent } from '../../../reusables/footer/footer.component';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { PetCl } from '../../../modelo/Pets/Pet/pet-cl';
 import { PetService } from '../../../services/pet.service';
 import { CardInfoPetComponent } from './card-info-pet/card-info-pet.component';
@@ -14,6 +14,7 @@ import { CardInfoTratamientosComponent } from './card-info-tratamientos/card-inf
     CardInfoPetComponent,
     CardInfoOwnerComponent,
     CardInfoTratamientosComponent,
+    RouterLink,
   ],
   templateUrl: './info-pet.component.html',
   styleUrl: './info-pet.component.css',

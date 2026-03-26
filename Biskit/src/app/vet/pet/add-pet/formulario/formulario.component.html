@@ -1,181 +1,205 @@
-<div class="mx-auto max-w-lg p-6">
-  <h2 class="mb-6 text-2xl font-bold text-[#4A4A4A]">
-    {{ isEditing ? "Editar Mascota" : "Nuevo Paciente" }}
-  </h2>
-
-  <!-- Error global -->
-  @if (errorMessage) {
-    <p
-      class="mb-4 rounded-xl bg-red-50 px-4 py-3 text-sm font-medium text-red-600"
-    >
-      {{ errorMessage }}
-    </p>
-  }
-
-  @if (successMessage) {
-    <p
-      class="mb-4 rounded-xl bg-green-50 px-4 py-3 text-sm font-medium text-green-700"
-    >
-      {{ successMessage }}
-    </p>
-  }
-
-  <form class="space-y-4">
-    <!-- Nombre -->
-    <div>
-      <label class="mb-1 block text-sm font-semibold text-[#4A4A4A]">
-        Nombre del paciente
-      </label>
-      <input
-        [(ngModel)]="formPet.nombre"
-        name="nombre"
-        type="text"
-        placeholder="Ej. Firulais, Michi..."
-        class="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm outline-none focus:border-[#2b5392] focus:ring-2 focus:ring-[#2b5392]/20"
-      />
+<article
+  class="flex flex-col gap-0 overflow-hidden rounded-b-2xl shadow-[0_10px_30px_-6px_rgba(0,0,0,0.08)]"
+>
+  <!-- ✅ Encabezado con fondo gris, ícono y título dinámico -->
+  <div
+    class="flex items-center gap-4 rounded-t-2xl bg-[#F6F7F8] px-4 py-4 sm:gap-7 sm:px-6 sm:py-5 md:px-8"
+  >
+    <img
+      src="/images/marca/icono.png "
+      alt="icono"
+      class="h-8 w-8 sm:h-10 sm:w-10"
+    />
+    <div class="flex flex-col">
+      <h2 class="text-xl font-bold tracking-wide text-[#4A4A4A] sm:text-2xl">
+        {{ isEditing ? "Actualizar Mascota" : "Nuevo Paciente" }}
+      </h2>
+      <p class="text-[10px] font-semibold text-[#8D8580] sm:text-xs">
+        {{
+          isEditing
+            ? "Edite los datos del paciente"
+            : "Complete la información del nuevo paciente"
+        }}
+      </p>
     </div>
+  </div>
 
-    <!-- Dueño -->
-    <div>
-      <label class="mb-1 block text-sm font-semibold text-[#4A4A4A]"
-        >Dueño</label
+  <!-- ✅ Cuerpo del formulario con fondo crema -->
+  <div class="w-full bg-[#FBFAF8] p-4 sm:p-6 md:p-8">
+    <!-- Error global -->
+    @if (errorMessage) {
+      <p
+        class="mb-4 rounded-xl bg-red-50 px-4 py-3 text-sm font-medium text-red-600"
       >
-      <input
-        [(ngModel)]="formPet.owner.nombre"
-        name="ownerNombre"
-        type="text"
-        placeholder="Nombre del dueño..."
-        class="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm outline-none focus:border-[#2b5392] focus:ring-2 focus:ring-[#2b5392]/20"
-      />
-    </div>
+        {{ errorMessage }}
+      </p>
+    }
 
-    <!-- Especie y Raza -->
-    <div class="grid grid-cols-2 gap-4">
-      <div>
-        <label class="mb-1 block text-sm font-semibold text-[#4A4A4A]"
-          >Especie</label
-        >
-        <input
-          [(ngModel)]="formPet.raza.especie.nombre"
-          name="especie"
-          type="text"
-          placeholder="Ej. Perro, Gato..."
-          class="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm outline-none focus:border-[#2b5392] focus:ring-2 focus:ring-[#2b5392]/20"
-        />
-      </div>
-      <div>
-        <label class="mb-1 block text-sm font-semibold text-[#4A4A4A]"
-          >Raza</label
-        >
-        <input
-          [(ngModel)]="formPet.raza.nombre"
-          name="razaNombre"
-          type="text"
-          placeholder="Ej. Labrador..."
-          class="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm outline-none focus:border-[#2b5392] focus:ring-2 focus:ring-[#2b5392]/20"
-        />
-      </div>
-    </div>
+    @if (successMessage) {
+      <p
+        class="mb-4 rounded-xl bg-green-50 px-4 py-3 text-sm font-medium text-green-700"
+      >
+        {{ successMessage }}
+      </p>
+    }
 
-    <!-- Fecha de nacimiento y Peso -->
-    <div class="grid grid-cols-2 gap-4">
-      <!-- Fecha -->
+    <form class="space-y-4">
+      <!-- Nombre -->
       <div>
         <label class="mb-1 block text-sm font-semibold text-[#4A4A4A]">
-          Fecha de nacimiento
+          Nombre del paciente
         </label>
-        <div class="relative">
-          <span
-            class="pointer-events-none absolute inset-y-0 left-3 flex items-center"
+        <input
+          [(ngModel)]="formPet.nombre"
+          name="nombre"
+          type="text"
+          placeholder="Ej. Firulais, Michi..."
+          class="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm outline-none focus:border-[#2b5392] focus:ring-2 focus:ring-[#2b5392]/20"
+        />
+      </div>
+
+      <!-- Dueño -->
+      <div>
+        <label class="mb-1 block text-sm font-semibold text-[#4A4A4A]"
+          >Dueño</label
+        >
+        <input
+          [(ngModel)]="formPet.owner.nombre"
+          name="ownerNombre"
+          type="text"
+          placeholder="Nombre del dueño..."
+          class="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm outline-none focus:border-[#2b5392] focus:ring-2 focus:ring-[#2b5392]/20"
+        />
+      </div>
+
+      <!-- Especie y Raza -->
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="mb-1 block text-sm font-semibold text-[#4A4A4A]"
+            >Especie</label
           >
-            <svg
-              class="text-body h-5 w-5"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-              <g
-                id="SVGRepo_tracerCarrier"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              ></g>
-              <g id="SVGRepo_iconCarrier">
-                <path
-                  d="M3 10H21M7 3V5M17 3V5M6.2 21H17.8C18.9201 21 19.4802 21 19.908 20.782C20.2843 20.5903 20.5903 20.2843 20.782 19.908C21 19.4802 21 18.9201 21 17.8V8.2C21 7.07989 21 6.51984 20.782 6.09202C20.5903 5.71569 20.2843 5.40973 19.908 5.21799C19.4802 5 18.9201 5 17.8 5H6.2C5.0799 5 4.51984 5 4.09202 5.21799C3.71569 5.40973 3.40973 5.71569 3.21799 6.09202C3 6.51984 3 7.07989 3 8.2V17.8C3 18.9201 3 19.4802 3.21799 19.908C3.40973 20.2843 3.71569 20.5903 4.09202 20.782C4.51984 21 5.07989 21 6.2 21Z"
-                  stroke="#2b5392"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                ></path>
-              </g>
-            </svg>
-          </span>
           <input
-            [(ngModel)]="fechaNacimientoStr"
-            name="fechaNacimiento"
-            type="date"
-            class="w-full rounded-xl border border-gray-200 bg-gray-50 py-3 pl-10 pr-3 text-sm text-[#4A4A4A] outline-none focus:border-[#2b5392] focus:ring-2 focus:ring-[#2b5392]/20"
+            [(ngModel)]="formPet.raza.especie.nombre"
+            name="especie"
+            type="text"
+            placeholder="Ej. Perro, Gato..."
+            class="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm outline-none focus:border-[#2b5392] focus:ring-2 focus:ring-[#2b5392]/20"
+          />
+        </div>
+        <div>
+          <label class="mb-1 block text-sm font-semibold text-[#4A4A4A]"
+            >Raza</label
+          >
+          <input
+            [(ngModel)]="formPet.raza.nombre"
+            name="razaNombre"
+            type="text"
+            placeholder="Ej. Labrador..."
+            class="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm outline-none focus:border-[#2b5392] focus:ring-2 focus:ring-[#2b5392]/20"
           />
         </div>
       </div>
 
-      <!-- Peso -->
+      <!-- Fecha de nacimiento y Peso -->
+      <div class="grid grid-cols-2 gap-4">
+        <!-- Fecha -->
+        <div>
+          <label class="mb-1 block text-sm font-semibold text-[#4A4A4A]">
+            Fecha de nacimiento
+          </label>
+          <div class="relative">
+            <span
+              class="pointer-events-none absolute inset-y-0 left-3 flex items-center"
+            >
+              <svg
+                class="text-body h-5 w-5"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                <g
+                  id="SVGRepo_tracerCarrier"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                ></g>
+                <g id="SVGRepo_iconCarrier">
+                  <path
+                    d="M3 10H21M7 3V5M17 3V5M6.2 21H17.8C18.9201 21 19.4802 21 19.908 20.782C20.2843 20.5903 20.5903 20.2843 20.782 19.908C21 19.4802 21 18.9201 21 17.8V8.2C21 7.07989 21 6.51984 20.782 6.09202C20.5903 5.71569 20.2843 5.40973 19.908 5.21799C19.4802 5 18.9201 5 17.8 5H6.2C5.0799 5 4.51984 5 4.09202 5.21799C3.71569 5.40973 3.40973 5.71569 3.21799 6.09202C3 6.51984 3 7.07989 3 8.2V17.8C3 18.9201 3 19.4802 3.21799 19.908C3.40973 20.2843 3.71569 20.5903 4.09202 20.782C4.51984 21 5.07989 21 6.2 21Z"
+                    stroke="#2b5392"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  ></path>
+                </g>
+              </svg>
+            </span>
+            <input
+              [(ngModel)]="fechaNacimientoStr"
+              name="fechaNacimiento"
+              type="date"
+              class="w-full rounded-xl border border-gray-200 bg-gray-50 py-3 pl-10 pr-3 text-sm text-[#4A4A4A] outline-none focus:border-[#2b5392] focus:ring-2 focus:ring-[#2b5392]/20"
+            />
+          </div>
+        </div>
+
+        <!-- Peso -->
+        <div>
+          <label class="mb-1 block text-sm font-semibold text-[#4A4A4A]"
+            >Peso (kg)</label
+          >
+          <input
+            [(ngModel)]="formPet.peso"
+            name="peso"
+            type="number"
+            step="0.1"
+            placeholder="Ej. 10.5"
+            class="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm outline-none focus:border-[#2b5392] focus:ring-2 focus:ring-[#2b5392]/20"
+          />
+        </div>
+      </div>
+
+      <!-- Enfermedad -->
       <div>
-        <label class="mb-1 block text-sm font-semibold text-[#4A4A4A]"
-          >Peso (kg)</label
-        >
+        <label class="mb-1 block text-sm font-semibold text-[#4A4A4A]">
+          Enfermedad / Diagnóstico
+        </label>
         <input
-          [(ngModel)]="formPet.peso"
-          name="peso"
-          type="number"
-          step="0.1"
-          placeholder="Ej. 10.5"
+          [(ngModel)]="formPet.enfermedad.nombre"
+          name="enfermedadNombre"
+          type="text"
+          placeholder="Ej. Dermatitis, Gastritis..."
           class="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm outline-none focus:border-[#2b5392] focus:ring-2 focus:ring-[#2b5392]/20"
         />
       </div>
-    </div>
 
-    <!-- Enfermedad -->
-    <div>
-      <label class="mb-1 block text-sm font-semibold text-[#4A4A4A]">
-        Enfermedad / Diagnóstico
-      </label>
-      <input
-        [(ngModel)]="formPet.enfermedad.nombre"
-        name="enfermedadNombre"
-        type="text"
-        placeholder="Ej. Dermatitis, Gastritis..."
-        class="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm outline-none focus:border-[#2b5392] focus:ring-2 focus:ring-[#2b5392]/20"
-      />
-    </div>
+      <!-- URL Foto -->
+      <div>
+        <label class="mb-1 block text-sm font-semibold text-[#4A4A4A]"
+          >Foto (URL)</label
+        >
+        <input
+          [(ngModel)]="formPet.urlFoto"
+          name="urlFoto"
+          type="text"
+          placeholder="Ej. https://ejemplo.com/foto.jpg"
+          class="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm outline-none focus:border-[#2b5392] focus:ring-2 focus:ring-[#2b5392]/20"
+        />
+      </div>
 
-    <!-- URL Foto -->
-    <div>
-      <label class="mb-1 block text-sm font-semibold text-[#4A4A4A]"
-        >Foto (URL)</label
+      <!-- Botón -->
+      <button
+        type="submit"
+        (click)="savePet()"
+        class="mt-4 w-full rounded-xl bg-[#2b5392] py-3 text-sm font-semibold text-white transition hover:bg-[#1a3a6b]"
       >
-      <input
-        [(ngModel)]="formPet.urlFoto"
-        name="urlFoto"
-        type="text"
-        placeholder="Ej. https://ejemplo.com/foto.jpg"
-        class="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm outline-none focus:border-[#2b5392] focus:ring-2 focus:ring-[#2b5392]/20"
-      />
-    </div>
+        {{ isEditing ? "Guardar cambios" : "Registrar Mascota" }}
+      </button>
 
-    <!-- Botón -->
-    <button
-      type="submit"
-      (click)="savePet()"
-      class="mt-4 w-full rounded-xl bg-[#2b5392] py-3 text-sm font-semibold text-white transition hover:bg-[#1a3a6b]"
-    >
-      {{ isEditing ? "Guardar cambios" : "Registrar Mascota" }}
-    </button>
-
-    <p class="text-center text-sm text-[#8D8580]">
-      El estado se establecerá automáticamente como
-      <span class="font-semibold text-[#2b5392]">Activo</span>
-    </p>
-  </form>
-</div>
+      <p class="text-center text-sm text-[#8D8580]">
+        El estado se establecerá automáticamente como
+        <span class="font-semibold text-[#2b5392]">Activo</span>
+      </p>
+    </form>
+  </div>
+</article>
