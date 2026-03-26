@@ -71,6 +71,10 @@ export class FormularioComponent {
       this.errorMessage = 'Peso debe ser mayor a 0';
       return;
     }
+    if (!this.formPet.urlFoto.trim()) {
+      this.errorMessage = 'URL de foto requerida';
+      return;
+    }
 
     console.log('Mascotas de formulario:', this.formPet);
 
