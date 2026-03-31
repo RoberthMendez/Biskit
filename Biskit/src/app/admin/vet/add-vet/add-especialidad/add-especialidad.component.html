@@ -27,11 +27,10 @@
 
     <!-- Input nombre -->
     <input
-      autofocus
       type="text"
       [(ngModel)]="nombre"
       placeholder="Ej. Cardiología"
-      (keydown)="onKeydown($event)"
+      (keyup.enter)="save()"
       class="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-[#4A4A4A] outline-none focus:border-[#2b5392] focus:ring-2 focus:ring-[#2b5392]/20 transition"
     />
 
@@ -53,32 +52,10 @@
       <button
         type="button"
         (click)="save()"
-        [disabled]="loading || !nombre.trim()"
+        [disabled]="!nombre.trim()"
         class="flex items-center gap-2 rounded-xl bg-[#2b5392] px-4 py-2 font-semibold text-white hover:bg-[#1a3a6b] transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
       >
-        @if (loading) {
-          <svg
-            class="h-4 w-4 animate-spin"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-          >
-            <circle
-              class="opacity-25"
-              cx="12"
-              cy="12"
-              r="10"
-              stroke="currentColor"
-              stroke-width="4"
-            />
-            <path
-              class="opacity-75"
-              fill="currentColor"
-              d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
-            />
-          </svg>
-        }
-        {{ loading ? "Agregando..." : "Agregar" }}
+        Agregar
       </button>
     </div>
   </div>

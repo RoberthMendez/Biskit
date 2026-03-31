@@ -72,12 +72,6 @@ export class AddEspecialidadComponent {
     }
   }
 
-  onKeydown(event: KeyboardEvent): void {
-    if (event.key === 'Enter') {
-      this.save();
-    }
-  }
-
   onBackdropClick(event: MouseEvent): void {
     if (event.target === event.currentTarget) {
       this.close.emit();
