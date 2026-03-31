@@ -30,15 +30,27 @@ export const routes: Routes = [
   {
     path: 'vet/pets',
     loadComponent: () =>
-      import('./vet/pet/pets/pets.component').then(
-        (m) => m.PetsComponent,
-      ),
+      import('./vet/pet/pets/pets.component').then((m) => m.PetsComponent),
   },
   {
     path: 'vet/pets/:id',
     loadComponent: () =>
       import('./vet/pet/info-pet/info-pet.component').then(
         (m) => m.InfoPetComponent,
+      ),
+  },
+  {
+    path: 'admin/vet/add',
+    loadComponent: () =>
+      import('./admin/vet/add-vet/add-vet.component').then(
+        (m) => m.AddVetComponent,
+      ),
+  },
+  {
+    path: 'admin/vet/update/:id',
+    loadComponent: () =>
+      import('./admin/vet/add-vet/add-vet.component').then(
+        (m) => m.AddVetComponent,
       ),
   },
 ];

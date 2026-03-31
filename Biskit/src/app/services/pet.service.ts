@@ -100,7 +100,7 @@ export class PetService {
       true,
       new Date(2018, 11, 25),
       28,
-      'https://picartpetcare.com/wp-content/uploads/2020/05/PASTOR-ALEM%C3%81N.jpg',
+      'https://www.zooplus.es/magazine/wp-content/uploads/2019/03/deutscher-sch%C3%A4ferhund-768x511.webp',
       { id: 5, nombre: 'Otitis' },
       {
         id: 2,
@@ -358,7 +358,6 @@ export class PetService {
       pet.id = nuevoId;
       pet.estado = true; // Por defecto, la mascota nueva está activa
       this.pets.push(pet);
-      console.log('Mascotas en el servicio:', this.pets);
     }
   }
 

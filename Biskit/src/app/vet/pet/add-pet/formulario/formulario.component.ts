@@ -21,7 +21,6 @@ export class FormularioComponent {
   ) {}
 
   formPet: PetCl = new PetCl();
-  isEditing: boolean = false;
   fechaNacimientoStr: string = '';
 
   errorMessage: string | null = null;
@@ -30,7 +29,6 @@ export class FormularioComponent {
 
   ngOnInit(): void {
     if (this.petId) {
-      this.isEditing = true;
       this.formPet = this.petService.findById(this.petId);
       this.fechaNacimientoStr = new Date(this.formPet.fechaNacimiento)
         .toISOString()
@@ -75,14 +73,12 @@ export class FormularioComponent {
       return;
     }
 
-    console.log('Mascotas de formulario:', this.formPet);
-
     // El input date bindea un string, hay que convertirlo a Date
     this.formPet.fechaNacimiento = new Date(this.fechaNacimientoStr);
 
     this.petService.savePet(this.formPet);
 
-    if (this.isEditing) {
+    if (this.petId) {
       this.router.navigate(['/vet/pets']);
     } else {
       this.successMessage = 'Mascota guardada correctamente';

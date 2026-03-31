@@ -1,0 +1,85 @@
+<div
+  [@backdropAnim]
+  (click)="onBackdropClick($event)"
+  class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4"
+>
+  <div
+    [@cardAnim]
+    class="w-full max-w-md rounded-2xl bg-[#FBFAF8] p-6 shadow-xl"
+  >
+    <!-- Header -->
+    <div class="mb-4 flex items-center justify-between">
+      <h3 class="text-lg font-bold text-[#4A4A4A]">Agregar Especialidad</h3>
+      <button
+        type="button"
+        (click)="close.emit()"
+        class="text-2xl font-bold leading-none text-[#8D8580] hover:text-[#4A4A4A] transition-colors"
+        aria-label="Cerrar"
+      >
+        &times;
+      </button>
+    </div>
+
+    <!-- Descripción -->
+    <p class="mb-3 text-sm text-[#8D8580]">
+      Ingresa el nombre de la nueva especialidad
+    </p>
+
+    <!-- Input nombre -->
+    <input
+      autofocus
+      type="text"
+      [(ngModel)]="nombre"
+      placeholder="Ej. Cardiología"
+      (keydown)="onKeydown($event)"
+      class="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-[#4A4A4A] outline-none focus:border-[#2b5392] focus:ring-2 focus:ring-[#2b5392]/20 transition"
+    />
+
+    <!-- Error -->
+    @if (error) {
+      <p class="mt-2 text-sm font-medium text-red-600">{{ error }}</p>
+    }
+
+    <!-- Acciones -->
+    <div class="mt-5 flex justify-end gap-2">
+      <button
+        type="button"
+        (click)="close.emit()"
+        [disabled]="loading"
+        class="rounded-xl border border-gray-200 bg-white px-4 py-2 font-semibold text-[#4A4A4A] hover:bg-gray-100 transition-colors disabled:opacity-50"
+      >
+        Cancelar
+      </button>
+      <button
+        type="button"
+        (click)="save()"
+        [disabled]="loading || !nombre.trim()"
+        class="flex items-center gap-2 rounded-xl bg-[#2b5392] px-4 py-2 font-semibold text-white hover:bg-[#1a3a6b] transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+      >
+        @if (loading) {
+          <svg
+            class="h-4 w-4 animate-spin"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <circle
+              class="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              stroke-width="4"
+            />
+            <path
+              class="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+            />
+          </svg>
+        }
+        {{ loading ? "Agregando..." : "Agregar" }}
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,50 @@
+<main>
+  <a
+    routerLink=""
+    class="back-link group mt-8 mb-2 ml-5 inline-flex h-10 items-center justify-start sm:ml-8 md:ml-16 lg:ml-28"
+  >
+    <svg
+      class="mt-1 h-9"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+      <g
+        id="SVGRepo_tracerCarrier"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      ></g>
+      <g id="SVGRepo_iconCarrier">
+        <path
+          d="M8 12L16 12"
+          stroke="#6B6B6B"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        ></path>
+        <path
+          d="M11 9L8.08704 11.913V11.913C8.03897 11.961 8.03897 12.039 8.08704 12.087V12.087L11 15"
+          stroke="#6B6B6B"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        ></path>
+      </g>
+    </svg>
+    <h2
+      class="ml-1 text-lg font-bold tracking-wider text-[#4a4a4acc] underline underline-offset-6 transition-colors duration-300 group-hover:text-[#4A4A4Aee]"
+    >
+      Panel de Administrador
+    </h2>
+  </a>
+  <section
+    class="mx-4 mt-5 mb-10 grid grid-cols-1 items-center gap-6 sm:mx-8 md:mx-12 md:grid-cols-2 md:gap-8 lg:mx-20 lg:gap-12 xl:mx-28"
+  >
+    <!---- Formulario ------>
+    <app-formulario [vetId]="vetId"></app-formulario>
+    <!----- CARD DE IMAGEN ----->
+    <app-imagen></app-imagen>
+  </section>
+</main>
+<app-footer></app-footer>
