@@ -6,7 +6,8 @@
 <td class="px-4 py-5 text-center lg:px-8 lg:py-7">
   <div class="flex items-center justify-end gap-3">
     <a
-      [href]="'/vet/clients/update/' + client.id"
+      [routerLink]="['/vet/clients/update', client.id]"
+      (click)="$event.stopPropagation()"
       class="flex items-center justify-center gap-2 rounded-lg border border-[#2B5392] bg-transparent px-3 py-2 text-[#2B5392] transition-colors duration-200 hover:bg-[#2B5392] hover:text-[#FBFAF8] lg:px-4"
     >
       <svg

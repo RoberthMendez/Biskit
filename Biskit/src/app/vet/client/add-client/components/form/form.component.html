@@ -1,0 +1,111 @@
+<article
+  class="flex flex-col gap-0 overflow-hidden rounded-b-2xl shadow-[0_10px_30px_-6px_rgba(0,0,0,0.08)]"
+>
+  <div
+    class="flex items-center gap-4 rounded-t-2xl bg-[#F6F7F8] px-4 py-4 sm:gap-7 sm:px-6 sm:py-5 md:px-8"
+  >
+    <img
+      src="/images/marca/icono.png"
+      alt="icono"
+      class="h-8 w-8 sm:h-10 sm:w-10"
+    />
+
+    <div class="flex flex-col">
+      <h2 class="text-xl font-bold tracking-wide text-[#4A4A4A] sm:text-2xl">
+        {{ clientId ? "Actualizar Cliente" : "Nuevo Cliente" }}
+      </h2>
+
+      <p class="text-[10px] font-semibold text-[#8D8580] sm:text-xs">
+        {{
+          clientId
+            ? "Edite los datos del cliente"
+            : "Complete la información del nuevo cliente"
+        }}
+      </p>
+    </div>
+  </div>
+
+  <div class="w-full bg-[#FBFAF8] p-4 sm:p-6 md:p-8">
+    @if (errorMessage) {
+      <p
+        class="mb-4 rounded-xl bg-red-50 px-4 py-3 text-sm font-medium text-red-600"
+      >
+        {{ errorMessage }}
+      </p>
+    }
+
+    @if (successMessage) {
+      <p
+        class="mb-4 rounded-xl bg-green-50 px-4 py-3 text-sm font-medium text-green-700"
+      >
+        {{ successMessage }}
+      </p>
+    }
+
+    <form class="space-y-4">
+      <div>
+        <label class="mb-1 block text-sm font-semibold text-[#4A4A4A]">
+          Nombre completo
+        </label>
+        <input
+          [(ngModel)]="formClient.nombre"
+          name="nombre"
+          type="text"
+          placeholder="Ej. Ana María López García"
+          class="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm outline-none focus:border-[#2b5392] focus:ring-2 focus:ring-[#2b5392]/20"
+        />
+      </div>
+
+      <div>
+        <label class="mb-1 block text-sm font-semibold text-[#4A4A4A]">
+          Cédula
+        </label>
+        <input
+          [(ngModel)]="formClient.cedula"
+          name="cedula"
+          type="text"
+          placeholder="Ej. 1011322781"
+          class="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm outline-none focus:border-[#2b5392] focus:ring-2 focus:ring-[#2b5392]/20"
+        />
+      </div>
+
+      <div>
+        <label class="mb-1 block text-sm font-semibold text-[#4A4A4A]">
+          Correo electrónico
+        </label>
+        <input
+          [(ngModel)]="formClient.correo"
+          name="correo"
+          type="email"
+          placeholder="Ej. correo@ejemplo.com"
+          class="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm outline-none focus:border-[#2b5392] focus:ring-2 focus:ring-[#2b5392]/20"
+        />
+      </div>
+
+      <div>
+        <label class="mb-1 block text-sm font-semibold text-[#4A4A4A]">
+          Teléfono
+        </label>
+        <input
+          [(ngModel)]="formClient.celular"
+          name="celular"
+          type="tel"
+          placeholder="Ej. 310 813 7245"
+          class="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm outline-none focus:border-[#2b5392] focus:ring-2 focus:ring-[#2b5392]/20"
+        />
+      </div>
+
+      <button
+        type="submit"
+        (click)="saveClient()"
+        class="mt-4 w-full rounded-xl bg-[#2b5392] py-3 text-sm font-semibold text-white transition hover:bg-[#1a3a6b]"
+      >
+        {{ clientId ? "Guardar cambios" : "Registrar Cliente" }}
+      </button>
+
+      <p class="text-center text-sm text-[#8D8580]">
+        Los datos del cliente se guardarán automáticamente en el sistema.
+      </p>
+    </form>
+  </div>
+</article>
