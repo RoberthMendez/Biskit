@@ -79,4 +79,11 @@ export const routes: Routes = [
         (m) => m.AddClientComponent,
       ),
   },
+  {
+    path: 'vet/clients/:id',
+    loadComponent: () =>
+      import('./vet/client/info-client/info-client.component').then(
+        (m) => m.InfoClientComponent,
+      ),
+  },
 ];

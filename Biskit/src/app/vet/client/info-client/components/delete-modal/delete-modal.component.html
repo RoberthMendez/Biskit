@@ -1,0 +1,32 @@
+<article
+  class="fixed inset-0 z-100 flex items-center justify-center bg-black/40 backdrop-blur-sm"
+>
+  <div
+    class="animate-fadeIn w-[90%] max-w-md justify-center space-y-4 rounded-2xl bg-[#FBFAF8] px-8 py-10 text-center shadow-xl"
+  >
+    <h2 class="text-xl font-extrabold tracking-wide text-[#4A4A4A]">
+      Confirmar Eliminación
+    </h2>
+
+    <p class="text-center text-[#8d8580]">
+      ¿Estás seguro de que deseas eliminar este cliente? Esta acción no se puede
+      deshacer.
+    </p>
+
+    <div class="flex justify-end gap-4">
+      <button
+        (click)="close.emit()"
+        class="cursor-pointer rounded-lg border border-[#2B5392] px-4 py-2 text-[#2B5392] transition hover:bg-[#2B5392] hover:text-white"
+      >
+        Cancelar
+      </button>
+
+      <button
+        (click)="confirm.emit()"
+        class="cursor-pointer rounded-lg border border-[#B22222] px-4 py-2 text-[#B22222] transition hover:bg-[#B22222] hover:text-white"
+      >
+        Eliminar
+      </button>
+    </div>
+  </div>
+</article>

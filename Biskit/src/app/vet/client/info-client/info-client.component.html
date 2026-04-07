@@ -1,1 +1,47 @@
-<p>info-client works!</p>
+<!-- BACK -->
+<button
+  type="button"
+  (click)="goToClients()"
+  class="back-link group mt-6 mb-2 ml-4 inline-flex h-10 cursor-pointer items-center justify-start sm:mt-8 sm:ml-8 md:ml-12 lg:ml-20 xl:ml-28"
+>
+  <!-- SVG igual -->
+  <svg class="mt-1 h-9" viewBox="0 0 24 24" fill="none">
+    <path d="M8 12L16 12" stroke="#6B6B6B" stroke-width="2" />
+    <path d="M11 9L8 12L11 15" stroke="#6B6B6B" stroke-width="2" />
+  </svg>
+
+  <h2
+    class="ml-1 text-base font-bold tracking-wider text-[#4a4a4acc] underline underline-offset-6 transition-colors duration-300 group-hover:text-[#4A4A4Aee] sm:text-lg"
+  >
+    Lista de Clientes
+  </h2>
+</button>
+
+<main
+  id="info-client-main"
+  class="mx-4 mt-2 mb-10 flex flex-col gap-2 sm:mx-8 md:mx-12 lg:mx-20 xl:mx-35"
+>
+  <!-- CLIENT INFO -->
+  <section
+    class="info-client-top my-3 flex h-auto flex-col gap-6 rounded-2xl bg-[#FBFAF8] px-4 py-8 shadow-[0_10px_30px_-6px_rgba(0,0,0,0.08)] transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1 hover:shadow-[0_16px_40px_-8px_rgba(0,0,0,0.12)] lg:gap-8 lg:px-6 lg:py-10 xl:gap-12 xl:px-8 xl:py-15"
+  >
+    <app-client-header
+      [client]="client"
+      (deleteClient)="openDeleteModal($event)"
+    ></app-client-header>
+
+    <app-client-details [client]="client"></app-client-details>
+  </section>
+
+  <!-- PETS -->
+  <app-pets-section [pets]="client.pets"></app-pets-section>
+
+  <!-- MODAL -->
+  @if (showModal) {
+    <app-delete-modal
+      (close)="closeModal()"
+      (confirm)="confirmDelete()"
+    ></app-delete-modal>
+  }
+</main>
+<app-footer></app-footer>

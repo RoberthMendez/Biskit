@@ -1,0 +1,33 @@
+<section
+  class="info-client-pets my-3 flex h-auto flex-col gap-4 rounded-2xl bg-[#FBFAF8] px-4 py-6 shadow-[0_10px_30px_-6px_rgba(0,0,0,0.08)] transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1 hover:shadow-[0_16px_40px_-8px_rgba(0,0,0,0.12)] sm:px-6 sm:py-10 md:px-8 md:py-10"
+>
+  <div class="mx-4 flex flex-col sm:mx-8 md:mx-15">
+    <h1 class="text-2xl font-semibold text-[#4a4a4a] sm:text-3xl md:text-4xl">
+      Mascotas Registradas
+    </h1>
+    <p class="text-sm font-medium text-[#8d8580dd] sm:text-base">
+      Lista de las mascotas del cliente
+    </p>
+  </div>
+
+  <!-- TABLE -->
+  @if (pets.length > 0) {
+    <app-pets-table [pets]="pets"></app-pets-table>
+  }
+
+  <!-- CARDS -->
+  @if (pets.length > 0) {
+    <div class="space-y-4 lg:hidden">
+      <app-pet-card *ngFor="let pet of pets" [pet]="pet"></app-pet-card>
+    </div>
+  }
+
+  <!-- EMPTY -->
+  @if (pets.length === 0) {
+    <div class="py-12 text-center">
+      <p class="text-lg text-[#8D8580]">
+        No hay mascotas registradas para este cliente.
+      </p>
+    </div>
+  }
+</section>

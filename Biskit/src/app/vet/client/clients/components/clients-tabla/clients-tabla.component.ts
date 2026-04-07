@@ -1,13 +1,14 @@
 // clients-table.component.ts
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { ClientFilaComponent } from '../client-fila/client-fila.component';
 
 @Component({
   standalone: true,
   selector: 'app-clients-tabla',
   templateUrl: './clients-tabla.component.html',
-  imports: [CommonModule, ClientFilaComponent]
+  imports: [CommonModule, RouterLink, ClientFilaComponent],
 })
 export class ClientsTableComponent {
   @Input() clients: any[] = [];
