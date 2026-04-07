@@ -1,0 +1,18 @@
+<div class="relative">
+  <input
+    [id]="inputId"
+    [type]="type"
+    [name]="inputName"
+    [value]="value"
+    required
+    placeholder=" "
+    class="peer w-full border-0 border-b border-gray-300 bg-transparent px-0 pt-6 pb-2 text-gray-900 outline-none focus:border-gray-800 focus:ring-0"
+  />
+
+  <label
+    [for]="inputId"
+    class="absolute top-2 left-0 cursor-text text-sm text-gray-500 transition-all peer-placeholder-shown:top-6 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:top-1 peer-focus:text-sm peer-focus:text-gray-600"
+  >
+    {{ label }}
+  </label>
+</div>

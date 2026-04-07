@@ -53,4 +53,17 @@ export const routes: Routes = [
         (m) => m.AddVetComponent,
       ),
   },
+  {
+    path: 'login',
+    loadComponent: () =>
+      import('./login/login.component').then((m) => m.LoginComponent),
+  },
+  {
+    path: 'vet/clients',
+    loadComponent: () =>
+      import('./vet/client/clients/clients.component').then(
+        (m) => m.ClientsComponent,
+      ),
+  }
+  
 ];

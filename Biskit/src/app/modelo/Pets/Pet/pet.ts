@@ -1,3 +1,4 @@
+import { Client } from '../../Client/client';
 import { Tratamiento } from '../../Tratamiento/tratamiento';
 
 export interface Pet {
@@ -9,7 +10,7 @@ export interface Pet {
   URLFoto: string;
   enfermedad: string;
   specie: string;
-  owner: string;
+  owner: Client;
   raza: string;
   tratamientos: Tratamiento[];
 }

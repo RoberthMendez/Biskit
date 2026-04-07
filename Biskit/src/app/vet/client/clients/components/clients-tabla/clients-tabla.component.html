@@ -1,0 +1,50 @@
+<article class="hidden w-full justify-center md:flex">
+  <div
+    class="w-full overflow-hidden rounded-xl border border-[#EAE6E1] bg-[#FBFAF8]"
+  >
+    <div class="custom-scroll max-h-166 overflow-x-auto overflow-y-auto">
+      <table
+        class="w-full min-w-175 text-left text-sm backdrop-blur-sm lg:text-base xl:text-lg"
+      >
+        <thead class="bg-[#FBFAF8]">
+          <tr class="text-[#2B5392]">
+            <th
+              class="sticky top-0 z-20 bg-[#FBFAF8] px-4 py-4 font-semibold shadow-[inset_0_-1px_0_0_rgba(43,83,146,0.25)] lg:px-8 lg:py-6"
+            >
+              Nombre
+            </th>
+            <th
+              class="sticky top-0 z-20 bg-[#FBFAF8] px-4 py-4 font-semibold shadow-[inset_0_-1px_0_0_rgba(43,83,146,0.25)] lg:px-8 lg:py-6"
+            >
+              Cédula
+            </th>
+            <th
+              class="sticky top-0 z-20 bg-[#FBFAF8] px-4 py-4 font-semibold shadow-[inset_0_-1px_0_0_rgba(43,83,146,0.25)] lg:px-8 lg:py-6"
+            >
+              Correo
+            </th>
+            <th
+              class="sticky top-0 z-20 bg-[#FBFAF8] px-4 py-4 font-semibold shadow-[inset_0_-1px_0_0_rgba(43,83,146,0.25)] lg:px-8 lg:py-6"
+            >
+              Celular
+            </th>
+            <th
+              class="sticky top-0 z-20 bg-[#FBFAF8] px-4 py-4 text-center font-semibold shadow-[inset_0_-1px_0_0_rgba(43,83,146,0.25)] lg:px-8 lg:py-6"
+            >
+              Acciones
+            </th>
+          </tr>
+        </thead>
+
+        <tbody class="text-[#4A4A4A]">
+          <tr
+            app-client-fila
+            *ngFor="let client of clients"
+            [client]="client"
+            (delete)="delete.emit($event)"
+          ></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</article>

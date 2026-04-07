@@ -1,0 +1,24 @@
+<!-- clients.component.html -->
+
+<app-clients-header></app-clients-header>
+
+<section class="mx-4 mb-10 sm:mx-16 md:mx-24 lg:mx-36">
+  <app-clients-buscador></app-clients-buscador>
+
+  <!-- Tabla -->
+  <app-clients-tabla [clients]="clients" (delete)="openDelete($event)">
+  </app-clients-tabla>
+
+  <!-- Cards -->
+  <app-clients-cards [clients]="clients" (delete)="openDelete($event)">
+  </app-clients-cards>
+</section>
+
+<app-delete-modal
+  [visible]="showModal"
+  (confirm)="confirmDelete()"
+  (cancel)="closeModal()"
+>
+</app-delete-modal>
+
+<app-footer></app-footer>
