@@ -3,7 +3,6 @@
 >
   <article class="h-full">
     <div class="relative overflow-hidden rounded-2xl">
-
       <!-- Botón de Editar -->
       <a
         [routerLink]="['/vet/pets/update', pet.id]"
@@ -17,7 +16,11 @@
           xmlns="http://www.w3.org/2000/svg"
         >
           <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-          <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+          <g
+            id="SVGRepo_tracerCarrier"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          ></g>
           <g id="SVGRepo_iconCarrier">
             <path
               d="M21.2799 6.40005L11.7399 15.94C10.7899 16.89 7.96987 17.33 7.33987 16.7C6.70987 16.07 7.13987 13.25 8.08987 12.3L17.6399 2.75002C17.8754 2.49308 18.1605 2.28654 18.4781 2.14284C18.7956 1.99914 19.139 1.92124 19.4875 1.9139C19.8359 1.90657 20.1823 1.96991 20.5056 2.10012C20.8289 2.23033 21.1225 2.42473 21.3686 2.67153C21.6147 2.91833 21.8083 3.21243 21.9376 3.53609C22.0669 3.85976 22.1294 4.20626 22.1211 4.55471C22.1128 4.90316 22.0339 5.24635 21.8894 5.5635C21.7448 5.88065 21.5375 6.16524 21.2799 6.40005V6.40005Z"
@@ -47,10 +50,12 @@
 
         <!-- Toggle Activo / Inactivo -->
         <label
+          #toggleSwitch
           (click)="$event.stopPropagation()"
           class="toggle-switch absolute bottom-3 left-1/2 z-20 flex w-fit -translate-x-1/2 cursor-pointer items-center rounded-full bg-[#FBFAF8] px-1 py-1 shadow-sm"
         >
           <input
+            #toggleInput
             [id]="'interruptor-' + pet.id"
             type="checkbox"
             [checked]="pet.estado === true"
@@ -62,12 +67,12 @@
             class="toggle-pill absolute top-1 bottom-1 rounded-full bg-[#EDEDED] transition-all duration-300 ease-in-out"
           ></span>
           <span
-            class="toggle-inactive relative z-10 rounded-full px-3 py-1 text-xs font-semibold tracking-wide text-[#5F5F5F] transition-all duration-300 ease-in-out peer-checked:font-normal peer-checked:text-[#6B6B6B]"
+            class="select-none toggle-inactive relative z-10 rounded-full px-3 py-1 text-xs font-semibold tracking-wide text-[#5F5F5F] transition-all duration-300 ease-in-out peer-checked:font-normal peer-checked:text-[#6B6B6B]"
           >
             Inactivo
           </span>
           <span
-            class="toggle-active relative z-10 rounded-full px-3 py-1 text-xs font-normal tracking-wide text-[#6B6B6B] transition-all duration-300 ease-in-out peer-checked:font-medium peer-checked:text-[#2BAB60]"
+            class="select-none toggle-active relative z-10 rounded-full px-3 py-1 text-xs font-normal tracking-wide text-[#6B6B6B] transition-all duration-300 ease-in-out peer-checked:font-medium peer-checked:text-[#2BAB60]"
           >
             Activo
           </span>
@@ -88,13 +93,23 @@
     </div>
 
     <!-- Edad y Peso -->
-    <div class="mx-2 my-3 flex items-center justify-center gap-3 sm:mx-4 sm:gap-5">
-
+    <div
+      class="mx-2 my-3 flex items-center justify-center gap-3 sm:mx-4 sm:gap-5"
+    >
       <!-- Edad -->
       <aside class="flex flex-col items-center gap-1">
-        <svg class="h-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg
+          class="h-4"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
           <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-          <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+          <g
+            id="SVGRepo_tracerCarrier"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          ></g>
           <g id="SVGRepo_iconCarrier">
             <path
               d="M14 22H10C6.22876 22 4.34315 22 3.17157 20.8284C2 19.6569 2 17.7712 2 14V12C2 8.22876 2 6.34315 3.17157 5.17157C4.34315 4 6.22876 4 10 4H14C17.7712 4 19.6569 4 20.8284 5.17157C22 6.34315 22 8.22876 22 12V14C22 17.7712 22 19.6569 20.8284 20.8284C20.1752 21.4816 19.3001 21.7706 18 21.8985"
@@ -102,8 +117,18 @@
               stroke-width="1.5"
               stroke-linecap="round"
             ></path>
-            <path d="M7 4V2.5" stroke="#2B5392" stroke-width="1.5" stroke-linecap="round"></path>
-            <path d="M17 4V2.5" stroke="#2B5392" stroke-width="1.5" stroke-linecap="round"></path>
+            <path
+              d="M7 4V2.5"
+              stroke="#2B5392"
+              stroke-width="1.5"
+              stroke-linecap="round"
+            ></path>
+            <path
+              d="M17 4V2.5"
+              stroke="#2B5392"
+              stroke-width="1.5"
+              stroke-linecap="round"
+            ></path>
             <path
               d="M21.5 9H16.625H10.75M2 9H5.875"
               stroke="#2B5392"
@@ -114,23 +139,43 @@
         </svg>
         <p class="text-xs font-semibold text-[#8D8580]">EDAD</p>
         <p class="text-xs font-medium text-[#282828]">
-          {{ pet.getEdad() }} {{ pet.getEdad() === 1 ? 'año' : 'años' }}
+          {{ getEdad(pet.fechaNacimiento) }}
+          {{ getEdad(pet.fechaNacimiento) === 1 ? "año" : "años" }}
         </p>
       </aside>
 
       <!-- Peso -->
       <aside class="flex flex-col items-center gap-1">
-        <svg class="h-4" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" fill="#000000">
+        <svg
+          class="h-4"
+          viewBox="0 0 512 512"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="#000000"
+        >
           <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-          <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+          <g
+            id="SVGRepo_tracerCarrier"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          ></g>
           <g id="SVGRepo_iconCarrier">
             <rect
-              x="48" y="48" width="416" height="416" rx="96"
-              fill="none" stroke="#2B5392" stroke-linejoin="round" stroke-width="32"
+              x="48"
+              y="48"
+              width="416"
+              height="416"
+              rx="96"
+              fill="none"
+              stroke="#2B5392"
+              stroke-linejoin="round"
+              stroke-width="32"
             ></rect>
             <path
               d="M388.94,151.56c-24.46-22.28-68.72-51.4-132.94-51.4s-108.48,29.12-132.94,51.4A34.66,34.66,0,0,0,120,199.64l33.32,39.21a26.07,26.07,0,0,0,33.6,5.21c15.92-9.83,40.91-21.64,69.1-21.64s53.18,11.81,69.1,21.64a26.07,26.07,0,0,0,33.6-5.21L392,199.64A34.66,34.66,0,0,0,388.94,151.56Z"
-              fill="none" stroke="#2B5392" stroke-linejoin="round" stroke-width="32"
+              fill="none"
+              stroke="#2B5392"
+              stroke-linejoin="round"
+              stroke-width="32"
             ></path>
           </g>
         </svg>
@@ -143,9 +188,18 @@
 
     <!-- Diagnóstico -->
     <div class="mx-2 flex flex-col items-center justify-center gap-1 sm:mx-4">
-      <svg class="h-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg
+        class="h-4"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
         <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+        <g
+          id="SVGRepo_tracerCarrier"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        ></g>
         <g id="SVGRepo_iconCarrier">
           <path
             fill-rule="evenodd"
@@ -156,7 +210,9 @@
         </g>
       </svg>
       <p class="text-xs font-semibold text-[#8D8580]">DIAGNÓSTICO</p>
-      <p class="text-xs font-medium text-[#282828]">{{ pet.enfermedad.nombre }}</p>
+      <p class="text-xs font-medium text-[#282828]">
+        {{ pet.enfermedad.nombre }}
+      </p>
     </div>
   </article>
 </aside>

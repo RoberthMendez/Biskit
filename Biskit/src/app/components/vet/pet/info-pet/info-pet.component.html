@@ -50,7 +50,7 @@
       <app-card-info-pet [pet]="pet" (estadoChange)="onEstadoChange($event)" />
 
       <!-- Tratamientos y Dueño -->
-      <aside class="flex flex-col gap-5 lg:col-span-2">
+      <aside class="flex flex-col gap-5 lg:col-span-2 justify-center">
         <app-card-info-tratamientos [pet]="pet" />
         <app-card-info-owner [owner]="pet.owner" />
       </aside>
