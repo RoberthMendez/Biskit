@@ -1,7 +1,12 @@
 import { Injectable } from '@angular/core';
-import { PetCl } from '../models/Pets/Pet/pet-cl';
+import { Pet } from '../models/Pets/pet';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+
+// interface UpdateEstadoResponse {
+//   ok?: boolean;
+//   message?: string;
+// }
 
 @Injectable({
   providedIn: 'root',
@@ -11,22 +16,26 @@ export class PetService {
     private http: HttpClient
   ) {}
 
-  findAll(): Observable<PetCl[]> {
-    return this.http.get<PetCl[]>('http://localhost:8080/vet/pets');
+  findAll(): Observable<Pet[]> {
+    return this.http.get<Pet[]>('http://localhost:8080/vet/pets');
   }
 
-  findById(id: number): Observable<PetCl> {
-    return this.http.get<PetCl>(`http://localhost:8080/vet/pets/${id}`);
+  findById(id: number): Observable<Pet> {
+    return this.http.get<Pet>(`http://localhost:8080/vet/pets/${id}`);
   }
 
-  updateEstado(id: number, estado: boolean): void {
-    let petUpdate = new PetCl();
-    petUpdate.id = id;
-    petUpdate.estado = estado;
-    this.http.patch(`http://localhost:8080/vet/pets/${id}/update-estado`, petUpdate).subscribe();
-  }
+  // updateEstadoRequest(id: number, estado: boolean): Observable<UpdateEstadoResponse> {
+  //   let petUpdate = new Pet();
+  //   petUpdate.id = id;
+  //   petUpdate.estado = estado;
+  //   return this.http.patch<UpdateEstadoResponse>(`http://localhost:8080/vet/pets/${id}/update-estado`, petUpdate);
+  // }
 
-  savePet(pet: PetCl): void {
+  // updateEstado(id: number, estado: boolean): void {
+  //   this.updateEstadoRequest(id, estado).subscribe();
+  // }
+
+  savePet(pet: Pet): void {
     if (pet.id) {
       this.http.put(`http://localhost:8080/vet/pets/update/${pet.id}`, pet).subscribe();
     } else {

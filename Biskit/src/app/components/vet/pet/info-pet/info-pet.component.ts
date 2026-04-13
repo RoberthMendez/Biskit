@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FooterComponent } from '../../../reusables/footer/footer.component';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { PetCl } from '../../../../models/Pets/Pet/pet-cl';
+import { Pet } from '../../../../models/Pets/pet';
 import { PetService } from '../../../../services/pet.service';
 import { TratamientoService } from '../../../../services/tratamiento.service';
 import { CardInfoPetComponent } from './card-info-pet/card-info-pet.component';
@@ -21,7 +21,7 @@ import { mergeMap } from 'rxjs';
   templateUrl: './info-pet.component.html',
 })
 export class InfoPetComponent {
-  pet!: PetCl;
+  pet!: Pet;
 
   constructor(
     private petService: PetService,
@@ -50,7 +50,7 @@ export class InfoPetComponent {
   onEstadoChange(nuevoEstado: boolean): void {
     // Aquí puedes llamar al servicio para persistir el cambio:
     if (this.pet.id != null) {
-    this.petService.updateEstado(this.pet.id, nuevoEstado);
+      // this.petService.updateEstado(this.pet.id, nuevoEstado);
     }
   }
 }

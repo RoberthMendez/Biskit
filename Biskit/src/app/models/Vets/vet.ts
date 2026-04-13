@@ -2,7 +2,7 @@ import { Credenciales } from '../Credenciales/credenciales';
 import { Tratamiento } from '../Tratamiento/tratamiento';
 import { Especialidad } from './Especialidad/especialidad';
 
-export class VetCl {
+export class Vet {
   public id?: number;
   public nombre: string;
   public estado: boolean;

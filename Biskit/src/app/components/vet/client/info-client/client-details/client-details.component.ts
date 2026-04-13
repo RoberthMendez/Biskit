@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { ClientCL } from '../../../../../models/Client/client-cl';
+import { Client } from '../../../../../models/Client/client';
 
 @Component({
   selector: 'app-client-details',
@@ -7,5 +7,5 @@ import { ClientCL } from '../../../../../models/Client/client-cl';
   templateUrl: './client-details.component.html',
 })
 export class ClientDetailsComponent {
-  @Input() client!: ClientCL;
+  @Input() client!: Client;
 }

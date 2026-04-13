@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { VetCl } from '../models/Vets/vet-cl';
+import { Vet } from '../models/Vets/vet';
 import { CredencialesService } from './credenciales.service';
 
 @Injectable({
@@ -13,8 +13,8 @@ export class VetService {
 
   //Base de datos falsa
 
-  vets: VetCl[] = [
-    new VetCl(
+  vets: Vet[] = [
+    new Vet(
       1,
       'Juan Pérez',
       true,
@@ -25,7 +25,7 @@ export class VetService {
       { id: 1, nombre: 'Cirugía' },
       []
     ),
-    new VetCl(
+    new Vet(
       2,
       'Ana Gómez',
       true,
@@ -36,7 +36,7 @@ export class VetService {
       { id: 2, nombre: 'Medicina Interna' },
       []
     ),
-    new VetCl(
+    new Vet(
       3,
       'Carlos López',
       true,
@@ -47,7 +47,7 @@ export class VetService {
       { id: 3, nombre: 'Dermatología' },
       []
     ),
-    new VetCl(
+    new Vet(
       4,
       'María Rodríguez',
       true,
@@ -58,7 +58,7 @@ export class VetService {
       { id: 4, nombre: 'Cardiología' },
       []
     ),
-    new VetCl(
+    new Vet(
       5,
       'Luis Fernández',
       true,
@@ -69,7 +69,7 @@ export class VetService {
       { id: 5, nombre: 'Neurología' },
       []
     ),
-    new VetCl(
+    new Vet(
       6,
       'Sofía Martínez',
       true,
@@ -80,7 +80,7 @@ export class VetService {
       { id: 6, nombre: 'Pediatría' },
       []
     ),
-    new VetCl(
+    new Vet(
       7,
       'Diego Gómez',
       true,
@@ -91,7 +91,7 @@ export class VetService {
       { id: 7, nombre: 'Ortopedia' },
       []
     ),
-    new VetCl(
+    new Vet(
       8,
       'Laura Sánchez',
       true,
@@ -104,11 +104,11 @@ export class VetService {
     )
   ];
 
-  findAll(): VetCl[] {
+  findAll(): Vet[] {
     return this.vets;
   }
 
-  findById(id: number): VetCl {
+  findById(id: number): Vet {
     const vet = this.vets.find(v => v.id === id);
     if (!vet) {
       throw new Error(`Veterinario con id ${id} no encontrado`);
@@ -116,7 +116,7 @@ export class VetService {
     return vet;
   }
 
-  saveVet(vet: VetCl): void {
+  saveVet(vet: Vet): void {
     if (vet.id) {
       const index = this.vets.findIndex(v => v.id === vet.id);
       if (index !== -1) {
@@ -135,7 +135,7 @@ export class VetService {
     }
   }
 
-  getVetById(id: number): VetCl {
+  getVetById(id: number): Vet {
     const vet = this.vets.find(v => v.id === id);
     if (!vet) {
       throw new Error(`Veterinario con id ${id} no encontrado`);

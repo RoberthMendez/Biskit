@@ -10,7 +10,7 @@ import {
 import { CommonModule } from '@angular/common';
 import { VetService } from '../../../../../services/vet.service';
 import { Router } from '@angular/router';
-import { VetCl } from '../../../../../models/Vets/vet-cl';
+import { Vet } from '../../../../../models/Vets/vet';
 import { AddEspecialidadComponent } from '../add-especialidad/add-especialidad.component';
 import { Especialidad } from '../../../../../models/Vets/Especialidad/especialidad';
 import { EspecialidadesService } from '../../../../../services/especialidades.service';
@@ -42,7 +42,7 @@ export class FormularioComponent {
     private elRef: ElementRef,
   ) {}
 
-  formVet: VetCl = new VetCl();
+  formVet: Vet = new Vet();
   especialidades: Especialidad[] = [];
 
   especialidadSearch = '';
@@ -142,7 +142,7 @@ export class FormularioComponent {
       this.router.navigate(['']);
     } else {
       this.successMessage = 'Veterinario guardado correctamente';
-      this.formVet = new VetCl(); //Resetear el formulario
+      this.formVet = new Vet(); //Resetear el formulario
     }
   }
 }

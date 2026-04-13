@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PetCl } from '../../../../../../models/Pets/Pet/pet-cl';
+import { Pet } from '../../../../../../models/Pets/pet';
 
 @Component({
   selector: 'app-pet-card',
@@ -8,5 +8,5 @@ import { PetCl } from '../../../../../../models/Pets/Pet/pet-cl';
   templateUrl: './pet-card.component.html',
 })
 export class PetCardComponent {
-  @Input() pet!: PetCl;
+  @Input() pet!: Pet;
 }

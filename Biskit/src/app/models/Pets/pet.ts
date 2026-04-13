@@ -1,10 +1,9 @@
-import { Client } from '../../Client/client';
-import { ClientCL } from '../../Client/client-cl';
-import { Tratamiento } from '../../Tratamiento/tratamiento';
-import { Enfermedad } from '../enfermedad';
-import { Raza } from '../raza';
+import { Client } from '../Client/client';
+import { Tratamiento } from '../Tratamiento/tratamiento';
+import { Enfermedad } from './enfermedad';
+import { Raza } from './raza';
 
-export class PetCl {
+export class Pet {
   public id?: number;
   public nombre: string;
   public estado: boolean;
@@ -12,7 +11,7 @@ export class PetCl {
   public peso: number;
   public urlFoto: string;
   public enfermedad: Enfermedad;
-  public owner: ClientCL;
+  public owner: Client;
   public raza: Raza;
   public tratamientos?: Tratamiento[];
 
@@ -24,7 +23,7 @@ export class PetCl {
     peso: number = 0,
     urlFoto: string = '',
     enfermedad: Enfermedad = new Enfermedad(),
-    owner: Client = new ClientCL(),
+    owner: Client = new Client(),
     raza: Raza = new Raza(),
     tratamientos?: Tratamiento[],
   ) {
@@ -56,3 +55,5 @@ export class PetCl {
     return edad;
   }
 }
+
+export { Pet as PeT };

@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Raza } from '../../../../../models/Pets/raza';
-import { PetCl } from '../../../../../models/Pets/Pet/pet-cl';
+import { Pet } from '../../../../../models/Pets/pet';
 import { PetService } from '../../../../../services/pet.service';
 import { TratamientoService } from '../../../../../services/tratamiento.service';
 import { Router } from '@angular/router';
@@ -23,7 +23,7 @@ export class FormularioComponent {
     private router: Router,
   ) {}
 
-  formPet: PetCl = new PetCl();
+  formPet: Pet = new Pet();
   fechaNacimientoStr: string = '';
 
   errorMessage: string | null = null;
@@ -96,7 +96,7 @@ export class FormularioComponent {
       this.router.navigate(['/vet/pets']);
     } else {
       this.successMessage = 'Mascota guardada correctamente';
-      this.formPet = new PetCl(); // Resetea el formulario
+      this.formPet = new Pet(); // Resetea el formulario
     }
   }
 }

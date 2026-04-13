@@ -1,11 +1,25 @@
-import { Droga } from "../Droga/droga";
-import { PetCl } from "../Pets/Pet/pet-cl";
-import { VetCl } from "../Vets/vet-cl";
+import { Droga } from '../Droga/droga';
+import { Pet } from '../Pets/pet';
+import { Vet } from '../Vets/vet';
 
-export interface Tratamiento {
+export class Tratamiento {
     id?: number;
     fecha: Date;
-    pet: PetCl;
-    vet: VetCl;
+    pet: Pet;
+    vet: Vet;
     drogas: Droga[];
+
+    constructor(
+        id?: number,
+        fecha: Date = new Date(),
+        pet: Pet = new Pet(),
+        vet: Vet = new Vet(),
+        drogas: Droga[] = [],
+    ) {
+        this.id = id;
+        this.fecha = fecha;
+        this.pet = pet;
+        this.vet = vet;
+        this.drogas = drogas;
+    }
 }

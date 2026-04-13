@@ -1,7 +1,7 @@
 // clients.component.ts
 import { Component } from '@angular/core';
 import { ClientService } from '../../../../services/client.service';
-import { ClientCL } from '../../../../models/Client/client-cl';
+import { Client } from '../../../../models/Client/client';
 import { ClientsHeaderComponent } from './clients-header/clients-header.component';
 import { ClientsSearchComponent } from './clients-buscador/clients-buscador.component';
 import { ClientsTableComponent } from './clients-tabla/clients-tabla.component';
@@ -17,7 +17,7 @@ import { FooterComponent } from '../../../reusables/footer/footer.component';
 })
 export class ClientsComponent {
 
-  clients: ClientCL[] = [];
+  clients: Client[] = [];
   selectedId: number | null = null;
   showModal = false;
 

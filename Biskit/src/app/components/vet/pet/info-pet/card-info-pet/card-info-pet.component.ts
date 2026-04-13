@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { PetCl } from '../../../../../models/Pets/Pet/pet-cl';
+import { Pet } from '../../../../../models/Pets/pet';
 
 @Component({
   selector: 'app-card-info-pet',
@@ -9,7 +9,7 @@ import { PetCl } from '../../../../../models/Pets/Pet/pet-cl';
   templateUrl: './card-info-pet.component.html',
 })
 export class CardInfoPetComponent {
-  @Input() pet!: PetCl;
+  @Input() pet!: Pet;
   @Output() estadoChange = new EventEmitter<boolean>();
 
   onToggleEstado(event: Event): void {

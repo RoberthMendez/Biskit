@@ -2,8 +2,7 @@ import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PetsTableComponent } from './pets-table/pets-table.component';
 import { PetCardComponent } from './pet-card/pet-card.component';
-import { Pet } from '../../../../../models/Pets/Pet/pet';
-import { PetCl } from '../../../../../models/Pets/Pet/pet-cl';
+import { Pet } from '../../../../../models/Pets/pet';
 
 @Component({
   selector: 'app-pets-section',
@@ -11,5 +10,5 @@ import { PetCl } from '../../../../../models/Pets/Pet/pet-cl';
   templateUrl: './pets-section.component.html',
 })
 export class PetsSectionComponent {
-  @Input() pets: PetCl[] = [];
+  @Input() pets: Pet[] = [];
 }

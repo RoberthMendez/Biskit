@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ClientCL } from '../../../../models/Client/client-cl';
+import { Client } from '../../../../models/Client/client';
 import { ClientService } from '../../../../services/client.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ClientHeaderComponent } from './client-header/client-header.component';
@@ -20,7 +20,7 @@ import { FooterComponent } from '../../../reusables/footer/footer.component';
   ],
 })
 export class InfoClientComponent {
-  client!: ClientCL;
+  client!: Client;
 
   constructor(
     private clientService: ClientService,
@@ -31,7 +31,7 @@ export class InfoClientComponent {
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
     this.client =
-      this.clientService.findById(id ? Number(id) : 0) || new ClientCL();
+      this.clientService.findById(id ? Number(id) : 0) || new Client();
   }
 
   goToClients(): void {

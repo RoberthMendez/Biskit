@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { ClientCL } from '../../../../../models/Client/client-cl';
+import { Client } from '../../../../../models/Client/client';
 
 @Component({
   selector: 'app-client-actions',
@@ -8,7 +8,7 @@ import { ClientCL } from '../../../../../models/Client/client-cl';
   imports: [RouterLink],
 })
 export class ClientActionsComponent {
-  @Input() client!: ClientCL;
+  @Input() client!: Client;
   @Output() deleteClient = new EventEmitter<number>();
 
   onDelete(): void {

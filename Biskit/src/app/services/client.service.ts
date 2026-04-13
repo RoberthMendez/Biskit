@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Client } from '../models/Client/client';
-import { ClientCL } from '../models/Client/client-cl';
-import { PetCl } from '../models/Pets/Pet/pet-cl';
+import { Pet } from '../models/Pets/pet';
 
 @Injectable({
   providedIn: 'root',
@@ -21,8 +20,8 @@ export class ClientService {
     razaNombre: string,
     especieId: number,
     especieNombre: string,
-  ): PetCl {
-    return new PetCl(
+  ): Pet {
+    return new Pet(
       id,
       nombre,
       true,
@@ -30,7 +29,7 @@ export class ClientService {
       peso,
       urlFoto,
       { id: enfermedadId, nombre: enfermedadNombre },
-      undefined as unknown as ClientCL,
+      undefined as unknown as Client,
       {
         id: razaId,
         nombre: razaNombre,
@@ -40,7 +39,7 @@ export class ClientService {
     );
   }
 
-  private linkPetsToOwner(client: ClientCL): ClientCL {
+  private linkPetsToOwner(client: Client): Client {
     client.pets.forEach((pet) => {
       pet.owner = client;
     });
@@ -48,9 +47,9 @@ export class ClientService {
     return client;
   }
 
-  clients: ClientCL[] = [
+  clients: Client[] = [
     this.linkPetsToOwner(
-      new ClientCL(
+      new Client(
         1,
         'Juan Pérez',
         '123456789',
@@ -102,7 +101,7 @@ export class ClientService {
     ),
 
     this.linkPetsToOwner(
-      new ClientCL(
+      new Client(
         2,
         'Ana Gómez',
         '987654321',
@@ -167,7 +166,7 @@ export class ClientService {
     ),
 
     this.linkPetsToOwner(
-      new ClientCL(
+      new Client(
         3,
         'Carlos Ruiz',
         '5553434554',
@@ -245,7 +244,7 @@ export class ClientService {
     ),
 
     this.linkPetsToOwner(
-      new ClientCL(
+      new Client(
         4,
         'Camila Rojas',
         '486928398',
@@ -300,7 +299,7 @@ export class ClientService {
     this.clients.push(client);
   }
 
-  getClients(): ClientCL[] {
+  getClients(): Client[] {
     return this.clients;
   }
 
@@ -308,7 +307,7 @@ export class ClientService {
     this.clients = this.clients.filter((client) => client.id !== clientId);
   }
 
-  findById(clientId: number): ClientCL {
+  findById(clientId: number): Client {
     const client = this.clients.find((c) => c.id === clientId);
     if (!client) {
       throw new Error('Cliente no encontrado');
@@ -316,7 +315,7 @@ export class ClientService {
     return client;
   }
 
-  saveClient(client: ClientCL): void {
+  saveClient(client: Client): void {
     if (client.id) {
       const index = this.clients.findIndex((c) => c.id === client.id);
       if (index !== -1) {

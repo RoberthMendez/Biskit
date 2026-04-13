@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { TratamientoCl } from '../models/Tratamiento/tratamiento-cl';
+import { Tratamiento } from '../models/Tratamiento/tratamiento';
 import { HttpClient } from '@angular/common/http';
 
 
@@ -13,8 +13,8 @@ export class TratamientoService {
     private http: HttpClient
   ) { }
 
-  findTratamientosPet(petId: number): Observable<TratamientoCl[]> {
-    return this.http.get<TratamientoCl[]>(`http://localhost:8080/vet/pets/tratamientos/${petId}`);
+  findTratamientosPet(petId: number): Observable<Tratamiento[]> {
+    return this.http.get<Tratamiento[]>(`http://localhost:8080/vet/pets/tratamientos/${petId}`);
   }
 
 }

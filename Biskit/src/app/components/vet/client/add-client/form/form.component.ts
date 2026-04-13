@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ClientCL } from '../../../../../models/Client/client-cl';
+import { Client } from '../../../../../models/Client/client';
 import { ClientService } from '../../../../../services/client.service';
 
 @Component({
@@ -18,7 +18,7 @@ export class ClientFormComponent {
     private router: Router,
   ) {}
 
-  formClient: ClientCL = new ClientCL();
+  formClient: Client = new Client();
 
   errorMessage: string | null = null;
   successMessage: string | null = null;
@@ -57,7 +57,7 @@ export class ClientFormComponent {
       this.router.navigate(['/vet/clients']);
     } else {
       this.successMessage = 'Cliente guardado correctamente';
-      this.formClient = new ClientCL();
+      this.formClient = new Client();
     }
   }
 }

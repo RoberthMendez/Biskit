@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ClientActionsComponent } from '../client-actions/client-actions.component';
-import { ClientCL } from '../../../../../models/Client/client-cl';
+import { Client } from '../../../../../models/Client/client';
 
 @Component({
   selector: 'app-client-header',
@@ -8,7 +8,7 @@ import { ClientCL } from '../../../../../models/Client/client-cl';
   templateUrl: './client-header.component.html',
 })
 export class ClientHeaderComponent {
-  @Input() client!: ClientCL;
+  @Input() client!: Client;
   @Output() deleteClient = new EventEmitter<number>();
 
   onDelete(clientId: number): void {
