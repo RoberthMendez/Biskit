@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Client } from '../../../../models/Client/client';
 import { ClientService } from '../../../../services/client.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { map, switchMap } from 'rxjs';
 import { ClientHeaderComponent } from './client-header/client-header.component';
 import { ClientDetailsComponent } from './client-details/client-details.component';
 import { PetsSectionComponent } from './pets-section/pets-section.component';
@@ -28,17 +29,26 @@ export class InfoClientComponent {
   ) {}
 
   ngOnInit(): void {
+    
     const id = this.route.snapshot.paramMap.get('id');
-    this.clientService.findById(id ? Number(id) : 0).subscribe(
-      (client) => {
+    const clientId = id ? Number(id) : 0;
+
+    this.clientService
+      .findById(clientId)
+      .pipe(
+        switchMap((client) =>
+          this.clientService.getPetsByClientId(client.id ?? clientId).pipe(
+            map((pets) => ({
+              client,
+              pets: pets ?? [],
+            }))
+          )
+        )
+      )
+      .subscribe(({ client, pets }) => {
         this.client = client;
-      }
-    );
-    this.clientService.getPetsByClientId(id ? Number(id) : 0).subscribe(
-      (pets) => {
-        this.client.pets = pets ?? [];
-      }
-    );
+        this.client.pets = pets;
+      });
   }
 
   goToClients(): void {
@@ -60,8 +70,11 @@ export class InfoClientComponent {
 
   confirmDelete() {
     if (this.selectedDeleteId != null) {
-      // this.clientService.deleteClient(this.selectedDeleteId);
-      this.router.navigate(['/vet/clients']);
+      this.clientService.deleteClient(this.selectedDeleteId).subscribe(
+        () => {
+          this.router.navigate(['/vet/clients']);
+        }
+      );
       return;
     }
 

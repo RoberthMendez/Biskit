@@ -55,8 +55,16 @@ export class ClientsComponent {
 
   confirmDelete() {
     if (this.selectedId !== null) {
-      // this.clientService.deleteClient(this.selectedId);
-      // this.clients = this.clientService.getClients();
+       this.clientService.deleteClient(this.selectedId).subscribe(
+        () => {
+          this.clientService.findAll().subscribe(
+            (clients) => {
+              this.clients = clients;
+              this.onSearch(this.searchTerm); 
+            }
+          );
+        }
+      );
     }
     this.showModal = false;
   }

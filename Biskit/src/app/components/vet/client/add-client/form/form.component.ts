@@ -56,13 +56,17 @@ export class ClientFormComponent {
       return;
     }
 
-    this.clientService.saveClient(this.formClient);
+    this.clientService.saveClient(this.formClient).subscribe(
+      () => {
+        this.successMessage = this.clientId
+          ? 'Cambios guardados correctamente'
+          : 'Cliente guardado correctamente';
 
-    if (this.clientId) {
-      this.successMessage = 'Cambios guardados correctamente';
-    } else {
-      this.successMessage = 'Cliente guardado correctamente';
-      this.formClient = new Client();
-    }
+        setTimeout(() => {
+          this.router.navigate(['/vet/clients']);
+        }, 600);
+      }
+    );
+
   }
 }
