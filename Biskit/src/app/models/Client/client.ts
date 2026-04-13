@@ -7,8 +7,8 @@ export class Client {
   cedula: string;
   correo: string;
   celular: string;
-  credenciales: Credenciales;
-  pets: Pet[];
+  credenciales?: Credenciales;
+  pets?: Pet[];
 
   constructor(
     id?: number,
@@ -16,16 +16,16 @@ export class Client {
     cedula: string = '',
     correo: string = '',
     celular: string = '',
-    credenciales: Credenciales = new Credenciales(),
-    pets: Pet[] = [],
+    credenciales?: Credenciales ,
+    pets?: Pet[],
   ) {
-    this.id = id;
+    this.id = id; 
     this.nombre = nombre;
     this.cedula = cedula;
     this.correo = correo;
     this.celular = celular;
-    this.credenciales = credenciales;
-    this.pets = pets;
+    this.credenciales = credenciales ?? new Credenciales();
+    this.pets = pets ?? [];
   }
 }
 

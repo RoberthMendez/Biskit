@@ -26,7 +26,11 @@ export class ClientFormComponent {
 
   ngOnInit(): void {
     if (this.clientId) {
-      this.formClient = this.clientService.findById(this.clientId);
+      this.clientService.findById(this.clientId).subscribe(
+        (client) => {
+          this.formClient = client;
+        }
+      );
     }
   }
 

@@ -18,7 +18,8 @@ import { DeleteModalComponent } from './delete-modal/delete-modal.component';
   ],
 })
 export class InfoClientComponent {
-  client!: Client;
+
+  client: Client = new Client();
 
   constructor(
     private clientService: ClientService,
@@ -28,8 +29,16 @@ export class InfoClientComponent {
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
-    this.client =
-      this.clientService.findById(id ? Number(id) : 0) || new Client();
+    this.clientService.findById(id ? Number(id) : 0).subscribe(
+      (client) => {
+        this.client = client;
+      }
+    );
+    this.clientService.getPetsByClientId(id ? Number(id) : 0).subscribe(
+      (pets) => {
+        this.client.pets = pets ?? [];
+      }
+    );
   }
 
   goToClients(): void {

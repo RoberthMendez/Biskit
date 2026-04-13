@@ -34,7 +34,7 @@
   </section>
 
   <!-- PETS -->
-  <app-pets-section [pets]="client.pets"></app-pets-section>
+  <app-pets-section [pets]="client.pets ?? []"></app-pets-section>
 
   <!-- MODAL -->
   @if (showModal) {

@@ -10,5 +10,7 @@ import { Pet } from '../../../../../models/Pets/pet';
   templateUrl: './pets-section.component.html',
 })
 export class PetsSectionComponent {
+
   @Input() pets: Pet[] = [];
+  
 }

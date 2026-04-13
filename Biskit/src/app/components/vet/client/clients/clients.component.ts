@@ -20,8 +20,14 @@ export class ClientsComponent {
   selectedId: number | null = null;
   showModal = false;
 
-  constructor(private clientService: ClientService) {
-    this.clients = this.clientService.getClients();
+  constructor(private clientService: ClientService) {}
+
+  ngOnInit(){
+    this.clientService.findAll().subscribe(
+      (clients) => {
+        this.clients = clients;
+      }
+    )
   }
 
   openDelete(id: number) {
@@ -32,7 +38,7 @@ export class ClientsComponent {
   confirmDelete() {
     if (this.selectedId !== null) {
       this.clientService.deleteClient(this.selectedId);
-      this.clients = this.clientService.getClients();
+      // this.clients = this.clientService.getClients();
     }
     this.showModal = false;
   }

@@ -55,7 +55,8 @@
 
           <!-- EDAD -->
           <td class="px-8 py-7">
-            {{ getEdadTexto(pet.getEdad()) }}
+            {{ getEdad(pet.fechaNacimiento) }}
+            {{ getEdad(pet.fechaNacimiento) === 1 ? "año" : "años" }}
           </td>
 
           <!-- PESO -->

@@ -44,9 +44,8 @@
     <div>
       <p class="mb-1 text-xs text-[#8D8580] sm:text-sm">Edad</p>
       <p class="font-medium text-[#4A4A4A]">
-        {{
-          pet.getEdad() === 1 ? pet.getEdad() + " año" : pet.getEdad() + " años"
-        }}
+        {{ getEdad(pet.fechaNacimiento) }}
+        {{ getEdad(pet.fechaNacimiento) === 1 ? "año" : "años" }}
       </p>
     </div>
     <div>
