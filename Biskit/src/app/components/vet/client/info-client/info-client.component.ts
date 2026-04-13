@@ -60,7 +60,7 @@ export class InfoClientComponent {
 
   confirmDelete() {
     if (this.selectedDeleteId != null) {
-      this.clientService.deleteClient(this.selectedDeleteId);
+      // this.clientService.deleteClient(this.selectedDeleteId);
       this.router.navigate(['/vet/clients']);
       return;
     }

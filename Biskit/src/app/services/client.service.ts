@@ -9,10 +9,15 @@ import { Observable } from 'rxjs';
 })
 export class ClientService {
 
-  constructor( private http: HttpClient) {}
+  constructor( private http: HttpClient ) {}
 
-  private clients: Client[] = [];
-
+  saveClient(client: Client): void {
+    if (client.id)
+      this.http.put(`http://localhost:8080/vet/clients/update/${client.id}`, client).subscribe();
+    else
+      this.http.post('http://localhost:8080/vet/clients/add', client).subscribe();
+  }
+  
   findAll(): Observable<Client[]> {
     return this.http.get<Client[]>('http://localhost:8080/vet/clients');
   }
@@ -25,28 +30,5 @@ export class ClientService {
     return this.http.get<Pet[]>(`http://localhost:8080/vet/clients/${clientId}/pets`);
   }
 
-  addClient(client: Client): void {
-    this.clients.push(client);
-  }
 
-  deleteClient(clientId: number): void {
-    this.clients = this.clients.filter((client) => client.id !== clientId);
-  }
-
-  saveClient(client: Client): void {
-    if (client.id) {
-      const index = this.clients.findIndex((c) => c.id === client.id);
-      if (index !== -1) {
-        this.clients[index] = client;
-      }
-    } else {
-      // Busca el id máximo de los clientes y le suma 1
-      const nuevoId =
-        this.clients.length > 0
-          ? Math.max(...this.clients.map((c) => c.id || 0)) + 1
-          : 1;
-      client.id = nuevoId;
-      this.clients.push(client);
-    }
-  }
 }

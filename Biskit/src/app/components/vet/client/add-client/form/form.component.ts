@@ -35,6 +35,7 @@ export class ClientFormComponent {
   }
 
   saveClient(): void {
+
     this.errorMessage = null;
     this.successMessage = null;
 
@@ -58,7 +59,7 @@ export class ClientFormComponent {
     this.clientService.saveClient(this.formClient);
 
     if (this.clientId) {
-      this.router.navigate(['/vet/clients']);
+      this.successMessage = 'Cambios guardados correctamente';
     } else {
       this.successMessage = 'Cliente guardado correctamente';
       this.formClient = new Client();

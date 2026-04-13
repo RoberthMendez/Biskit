@@ -55,7 +55,7 @@ export class ClientsComponent {
 
   confirmDelete() {
     if (this.selectedId !== null) {
-      this.clientService.deleteClient(this.selectedId);
+      // this.clientService.deleteClient(this.selectedId);
       // this.clients = this.clientService.getClients();
     }
     this.showModal = false;
