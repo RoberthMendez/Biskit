@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Credenciales } from '../modelo/Credenciales/credenciales';
+import { Credenciales } from '../models/Credenciales/credenciales';
 
 @Injectable({
   providedIn: 'root'

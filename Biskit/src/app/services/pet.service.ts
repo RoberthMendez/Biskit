@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { PetCl } from '../modelo/Pets/Pet/pet-cl';
+import { PetCl } from '../models/Pets/Pet/pet-cl';
 
 @Injectable({
   providedIn: 'root',

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Client } from '../modelo/Client/client';
-import { ClientCL } from '../modelo/Client/client-cl';
-import { PetCl } from '../modelo/Pets/Pet/pet-cl';
+import { Client } from '../models/Client/client';
+import { ClientCL } from '../models/Client/client-cl';
+import { PetCl } from '../models/Pets/Pet/pet-cl';
 
 @Injectable({
   providedIn: 'root',

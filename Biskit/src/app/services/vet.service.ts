@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { VetCl } from '../modelo/Vets/vet-cl';
+import { VetCl } from '../models/Vets/vet-cl';
 import { CredencialesService } from './credenciales.service';
 
 @Injectable({
