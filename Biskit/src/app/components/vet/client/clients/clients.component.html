@@ -3,15 +3,33 @@
 <app-clients-header></app-clients-header>
 
 <section class="mx-4 mb-10 sm:mx-16 md:mx-24 lg:mx-36">
-  <app-clients-buscador></app-clients-buscador>
+  <app-clients-buscador (search)="onSearch($event)"></app-clients-buscador>
 
-  <!-- Tabla -->
-  <app-clients-tabla [clients]="clients" (delete)="openDelete($event)">
-  </app-clients-tabla>
+  <!-- Mensaje cuando no hay clientes -->
+  @if (filteredClients.length === 0) {
+    <div class="mx-2 my-20 text-center sm:mx-10">
+      <p class="text-base text-[#8d8580dd]">
+        No hay clientes registradas en el sistema
+      </p>
+    </div>
+  }
 
-  <!-- Cards -->
-  <app-clients-cards [clients]="clients" (delete)="openDelete($event)">
-  </app-clients-cards>
+  <!-- Tabla y Cards cuando hay clientes -->
+  @if (filteredClients.length > 0) {
+    <!-- Tabla -->
+    <app-clients-tabla
+      [clients]="filteredClients"
+      (delete)="openDelete($event)"
+    >
+    </app-clients-tabla>
+
+    <!-- Cards -->
+    <app-clients-cards
+      [clients]="filteredClients"
+      (delete)="openDelete($event)"
+    >
+    </app-clients-cards>
+  }
 </section>
 
 <app-delete-modal

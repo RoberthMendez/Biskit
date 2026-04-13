@@ -18,7 +18,9 @@
   <!-- CARDS -->
   @if (pets.length > 0) {
     <div class="space-y-4 lg:hidden">
-      <app-pet-card *ngFor="let pet of pets" [pet]="pet"></app-pet-card>
+      @for (pet of pets; track $index) {
+        <app-pet-card [pet]="pet"></app-pet-card>
+      }
     </div>
   }
 

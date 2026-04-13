@@ -17,6 +17,8 @@ import { DeleteModalComponent } from './delete-modal/delete-modal.component';
 export class ClientsComponent {
 
   clients: Client[] = [];
+  filteredClients: Client[] = [];
+  searchTerm: string = '';
   selectedId: number | null = null;
   showModal = false;
 
@@ -26,8 +28,24 @@ export class ClientsComponent {
     this.clientService.findAll().subscribe(
       (clients) => {
         this.clients = clients;
+        this.filteredClients = clients;
       }
     )
+  }
+
+  onSearch(searchTerm: string) {
+    this.searchTerm = searchTerm.toLowerCase();
+    
+    if (this.searchTerm === '') {
+      this.filteredClients = this.clients;
+    } else {
+      this.filteredClients = this.clients.filter(client =>
+        client.nombre.toLowerCase().includes(this.searchTerm) ||
+        client.cedula.toLowerCase().includes(this.searchTerm) ||
+        client.correo.toLowerCase().includes(this.searchTerm) ||
+        client.celular.toLowerCase().includes(this.searchTerm)
+      );
+    }
   }
 
   openDelete(id: number) {

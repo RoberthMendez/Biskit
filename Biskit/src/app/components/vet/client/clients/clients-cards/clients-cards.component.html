@@ -1,8 +1,10 @@
 <div class="flex flex-col gap-3 md:hidden">
-  <app-client-card
-    *ngFor="let client of clients"
-    [client]="client"
-    (delete)="delete.emit($event)"
-  >
-  </app-client-card>
+  @for (client of clients; track $index) {
+    <app-client-card
+      [client]="client"
+      (delete)="delete.emit($event)"
+      [routerLink]="['/vet/clients', client.id]"
+    >
+    </app-client-card>
+  }
 </div>

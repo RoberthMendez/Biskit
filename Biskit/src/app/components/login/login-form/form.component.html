@@ -49,10 +49,11 @@
   </div>
 
   <!-- Error -->
-  <p
-    *ngIf="error"
-    class="absolute -bottom-24 left-0 w-full rounded-md border border-[#B22222] bg-[#FEE2E2] px-5 py-4 text-[#B22222]"
-  >
-    {{ error }}
-  </p>
+  @if (error) {
+    <p
+      class="absolute -bottom-24 left-0 w-full rounded-md border border-[#B22222] bg-[#FEE2E2] px-5 py-4 text-[#B22222]"
+    >
+      {{ error }}
+    </p>
+  }
 </form>

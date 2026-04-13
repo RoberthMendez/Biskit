@@ -25,69 +25,70 @@
 
       <!-- BODY -->
       <tbody class="text-[#4A4A4A]">
-        <tr
-          *ngFor="let pet of pets"
-          class="info-client-pet-row group border-b border-[#EAE6E1] transition-colors duration-200 hover:bg-[#F2F6FC]"
-        >
-          <!-- FOTO -->
-          <td class="flex px-8 py-7">
-            <img
-              [src]="pet.urlFoto"
-              alt="Mascota"
-              class="h-16 w-16 shrink-0 rounded-full object-cover ring ring-[#2B5392]/10 transition-transform duration-200 group-hover:scale-105"
-            />
-          </td>
+        @for (pet of pets; track $index) {
+          <tr
+            class="info-client-pet-row group border-b border-[#EAE6E1] transition-colors duration-200 hover:bg-[#F2F6FC]"
+          >
+            <!-- FOTO -->
+            <td class="flex px-8 py-7">
+              <img
+                [src]="pet.urlFoto"
+                alt="Mascota"
+                class="h-16 w-16 shrink-0 rounded-full object-cover ring ring-[#2B5392]/10 transition-transform duration-200 group-hover:scale-105"
+              />
+            </td>
 
-          <!-- NOMBRE -->
-          <td class="px-8 py-7 font-semibold">
-            {{ pet.nombre }}
-          </td>
+            <!-- NOMBRE -->
+            <td class="px-8 py-7 font-semibold">
+              {{ pet.nombre }}
+            </td>
 
-          <!-- ESPECIE -->
-          <td class="px-8 py-7 font-medium">
-            {{ pet.raza?.especie?.nombre }}
-          </td>
+            <!-- ESPECIE -->
+            <td class="px-8 py-7 font-medium">
+              {{ pet.raza?.especie?.nombre }}
+            </td>
 
-          <!-- RAZA -->
-          <td class="px-8 py-7">
-            {{ pet.raza?.nombre }}
-          </td>
+            <!-- RAZA -->
+            <td class="px-8 py-7">
+              {{ pet.raza?.nombre }}
+            </td>
 
-          <!-- EDAD -->
-          <td class="px-8 py-7">
-            {{ getEdad(pet.fechaNacimiento) }}
-            {{ getEdad(pet.fechaNacimiento) === 1 ? "año" : "años" }}
-          </td>
+            <!-- EDAD -->
+            <td class="px-8 py-7">
+              {{ getEdad(pet.fechaNacimiento) }}
+              {{ getEdad(pet.fechaNacimiento) === 1 ? "año" : "años" }}
+            </td>
 
-          <!-- PESO -->
-          <td class="px-8 py-7">{{ pet.peso }} kg</td>
+            <!-- PESO -->
+            <td class="px-8 py-7">{{ pet.peso }} kg</td>
 
-          <!-- ENFERMEDAD -->
-          <td class="px-8 py-7">
-            {{ pet.enfermedad?.nombre }}
-          </td>
+            <!-- ENFERMEDAD -->
+            <td class="px-8 py-7">
+              {{ pet.enfermedad?.nombre }}
+            </td>
 
-          <!-- ESTADO -->
-          <td class="px-8 py-7 text-center">
-            <!-- ACTIVO -->
-            @if (pet.estado === true) {
-              <span
-                class="rounded-lg bg-[#ebfaf1] px-4 py-3 text-sm font-semibold text-[#2bab60]"
-              >
-                ACTIVO
-              </span>
-            }
+            <!-- ESTADO -->
+            <td class="px-8 py-7 text-center">
+              <!-- ACTIVO -->
+              @if (pet.estado === true) {
+                <span
+                  class="rounded-lg bg-[#ebfaf1] px-4 py-3 text-sm font-semibold text-[#2bab60]"
+                >
+                  ACTIVO
+                </span>
+              }
 
-            <!-- INACTIVO -->
-            @if (pet.estado === false) {
-              <span
-                class="rounded-lg bg-[#ededed] px-4 py-3 text-sm font-semibold text-[#8c8c8c]"
-              >
-                INACTIVO
-              </span>
-            }
-          </td>
-        </tr>
+              <!-- INACTIVO -->
+              @if (pet.estado === false) {
+                <span
+                  class="rounded-lg bg-[#ededed] px-4 py-3 text-sm font-semibold text-[#8c8c8c]"
+                >
+                  INACTIVO
+                </span>
+              }
+            </td>
+          </tr>
+        }
       </tbody>
     </table>
   </div>
