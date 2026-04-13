@@ -7,5 +7,5 @@ export interface Droga {
   precioVenta: number;
   unidadesDisponibles: number;
   unidadesVendidas: number;
-  tratamientos: Tratamiento[];
+  tratamientos?: Tratamiento[];
 }

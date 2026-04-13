@@ -1,5 +1,6 @@
 import { Client } from '../../Client/client';
 import { Tratamiento } from '../../Tratamiento/tratamiento';
+import { Raza } from '../raza';
 
 export interface Pet {
   id?: number;
@@ -9,8 +10,7 @@ export interface Pet {
   peso: number;
   URLFoto: string;
   enfermedad: string;
-  specie: string;
   owner: Client;
-  raza: string;
+  raza: Raza;
   tratamientos: Tratamiento[];
 }

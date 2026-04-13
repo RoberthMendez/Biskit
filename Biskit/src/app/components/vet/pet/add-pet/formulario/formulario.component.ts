@@ -4,7 +4,9 @@ import { FormsModule } from '@angular/forms';
 import { Raza } from '../../../../../models/Pets/raza';
 import { PetCl } from '../../../../../models/Pets/Pet/pet-cl';
 import { PetService } from '../../../../../services/pet.service';
+import { TratamientoService } from '../../../../../services/tratamiento.service';
 import { Router } from '@angular/router';
+import { mergeMap } from 'rxjs';
 
 @Component({
   selector: 'app-formulario',
@@ -17,6 +19,7 @@ export class FormularioComponent {
 
   constructor(
     private petService: PetService,
+    private tratamientoService: TratamientoService,
     private router: Router,
   ) {}
 
@@ -29,7 +32,18 @@ export class FormularioComponent {
 
   ngOnInit(): void {
     if (this.petId) {
-      this.formPet = this.petService.findById(this.petId);
+      this.petService.findById(this.petId).pipe(
+            mergeMap(
+              (pet) => {
+                this.formPet = pet;
+                return this.tratamientoService.findTratamientosPet(pet.id ?? 0);
+              }
+            )
+          ).subscribe(
+            (tratamientos) => {
+              this.formPet.tratamientos = tratamientos;
+            }
+          );
       this.fechaNacimientoStr = new Date(this.formPet.fechaNacimiento)
         .toISOString()
         .split('T')[0];
