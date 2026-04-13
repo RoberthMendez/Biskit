@@ -6,12 +6,34 @@
 }
 
 html {
+  min-height: 100%;
   scroll-padding-top: 13vh;
   scroll-behavior: smooth;
 }
 
 body {
+  min-height: 100vh;
+  margin: 0;
   background-color: #fcf6f0;
+}
+
+app-root {
+  display: block;
+  min-height: 100vh;
+}
+
+.app-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-content {
+  flex: 1 0 auto;
+}
+
+app-footer {
+  flex-shrink: 0;
 }
 
 h1,

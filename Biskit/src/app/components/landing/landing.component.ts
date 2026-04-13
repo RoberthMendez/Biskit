@@ -9,7 +9,6 @@ import { PorQueComponent } from './por-que/por-que.component';
 import { ProcesoComponent } from './proceso/proceso.component';
 import { ServiciosComponent } from './servicios/servicios.component';
 import { SobreBiskitComponent } from './sobre-biskit/sobre-biskit.component';
-import { FooterComponent } from '../reusables/footer/footer.component';
 
 @Component({
   selector: 'app-landing',
@@ -24,7 +23,6 @@ import { FooterComponent } from '../reusables/footer/footer.component';
     PorQueComponent,
     CtaComponent,
     ContactoComponent,
-    FooterComponent,
   ],
   templateUrl: './landing.component.html',
 })

@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { FooterComponent } from '../../../reusables/footer/footer.component';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Pet } from '../../../../models/Pets/pet';
 import { PetService } from '../../../../services/pet.service';
@@ -12,7 +11,6 @@ import { mergeMap } from 'rxjs';
 @Component({
   selector: 'app-info-pet',
   imports: [
-    FooterComponent,
     CardInfoPetComponent,
     CardInfoOwnerComponent,
     CardInfoTratamientosComponent,

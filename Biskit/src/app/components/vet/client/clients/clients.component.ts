@@ -7,13 +7,12 @@ import { ClientsSearchComponent } from './clients-buscador/clients-buscador.comp
 import { ClientsTableComponent } from './clients-tabla/clients-tabla.component';
 import { ClientsCardsComponent } from './clients-cards/clients-cards.component';
 import { DeleteModalComponent } from './delete-modal/delete-modal.component';
-import { FooterComponent } from '../../../reusables/footer/footer.component';
 
 @Component({
   standalone: true,
   selector: 'app-clients',
   templateUrl: './clients.component.html',
-  imports: [ClientsHeaderComponent, ClientsSearchComponent, ClientsTableComponent, ClientsCardsComponent, DeleteModalComponent, FooterComponent]
+  imports: [ClientsHeaderComponent, ClientsSearchComponent, ClientsTableComponent, ClientsCardsComponent, DeleteModalComponent]
 })
 export class ClientsComponent {
 

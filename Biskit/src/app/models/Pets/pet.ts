@@ -39,21 +39,6 @@ export class Pet {
     this.tratamientos = tratamientos ?? [];
   }
 
-  getEdad(): number {
-    if (!this.fechaNacimiento) {
-      return 0;
-    }
-    const hoy = new Date();
-    const edad = hoy.getFullYear() - this.fechaNacimiento.getFullYear();
-    const mes = hoy.getMonth() - this.fechaNacimiento.getMonth();
-    if (
-      mes < 0 ||
-      (mes === 0 && hoy.getDate() < this.fechaNacimiento.getDate())
-    ) {
-      return edad - 1;
-    }
-    return edad;
-  }
 }
 
 export { Pet as PeT };

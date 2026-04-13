@@ -6,7 +6,6 @@ import { ClientHeaderComponent } from './client-header/client-header.component';
 import { ClientDetailsComponent } from './client-details/client-details.component';
 import { PetsSectionComponent } from './pets-section/pets-section.component';
 import { DeleteModalComponent } from './delete-modal/delete-modal.component';
-import { FooterComponent } from '../../../reusables/footer/footer.component';
 
 @Component({
   selector: 'app-info-client',
@@ -16,7 +15,6 @@ import { FooterComponent } from '../../../reusables/footer/footer.component';
     ClientDetailsComponent,
     PetsSectionComponent,
     DeleteModalComponent,
-    FooterComponent,
   ],
 })
 export class InfoClientComponent {

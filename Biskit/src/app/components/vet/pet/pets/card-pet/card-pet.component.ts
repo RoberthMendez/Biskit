@@ -30,6 +30,21 @@ export class CardPetComponent {
     queueMicrotask(() => this.updateTogglePillFromView());
   }
 
+  getEdad(fechaNacimiento: string | Date): number {
+
+    if (!fechaNacimiento) 
+      return 0;
+    
+    const nacimiento = new Date(fechaNacimiento);
+    const hoy = new Date();
+    let edad = hoy.getFullYear() - nacimiento.getFullYear();
+    const m = hoy.getMonth() - nacimiento.getMonth();
+
+    if (m < 0 || (m === 0 && hoy.getDate() < nacimiento.getDate())) edad--;
+      return edad;
+      
+  }
+
   private updateTogglePill(toggle: HTMLElement): void {
     const input = toggle.querySelector('input') as HTMLInputElement | null;
     const pill = toggle.querySelector('.toggle-pill') as HTMLElement | null;
