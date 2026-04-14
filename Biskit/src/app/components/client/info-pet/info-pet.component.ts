@@ -6,9 +6,9 @@ import { PetCardComponent } from './pet-card/pet-card.component';
 import { RouterLink } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { PetService } from '../../../services/pet.service';
-import { mergeMap } from 'rxjs/internal/operators/mergeMap';
+import { mergeMap } from 'rxjs';
 import { TratamientoService } from '../../../services/tratamiento.service';
-import { Tratamiento } from '../../../models/Tratamiento/tratamiento';
+import { ClientService } from '../../../services/client.service';
 
 @Component({
   selector: 'app-info-pet',
@@ -23,14 +23,21 @@ export class InfoPetComponent {
   constructor(
     private route: ActivatedRoute,
     private petService: PetService,
+    private clientService: ClientService,
     private tratamientoService: TratamientoService,
   ) {}
 
   ngOnInit(): void {
     const petId = this.route.snapshot.paramMap.get('petId');
-    this.petService
-      .findById(petId ? Number(petId) : 0)
+    const clientId = this.route.snapshot.paramMap.get('clientId');
+
+    this.clientService
+      .findById(clientId ? Number(clientId) : 0)
       .pipe(
+        mergeMap((client) => {
+          this.client = client;
+          return this.petService.findById(petId ? Number(petId) : 0);
+        }),
         mergeMap((pet) => {
           this.pet = pet;
           return this.tratamientoService.findTratamientosPet(pet.id ?? 0);

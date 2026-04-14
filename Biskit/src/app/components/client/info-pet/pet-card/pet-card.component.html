@@ -7,7 +7,7 @@
       <img
         [src]="pet.urlFoto"
         [alt]="'Foto de ' + pet.nombre"
-        class="h-48 w-full object-cover object-center transition-transform duration-500 group-hover:scale-[1.04] sm:h-56 md:h-65"
+        class="h-48 w-full object-cover object-center transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.04] sm:h-56 md:h-65"
       />
 
       <app-pet-status-badge [estado]="pet.estado"></app-pet-status-badge>
