@@ -59,6 +59,7 @@
             [id]="'interruptor-' + pet.id"
             type="checkbox"
             [checked]="pet.estado === true"
+            (click)="$event.stopPropagation()"
             (change)="onToggleEstado($event)"
             class="peer hidden"
           />

@@ -60,6 +60,7 @@
             [id]="'interruptor-' + pet.id"
             type="checkbox"
             [checked]="pet.estado === true"
+            (click)="$event.stopPropagation()"
             (change)="onToggleEstado($event)"
             class="peer hidden"
           />
@@ -83,12 +84,12 @@
       <!-- Nombre y Raza -->
       <div class="mx-2 mt-3 flex flex-col gap-1 sm:mx-4">
         <h3
-          class="truncate text-center text-lg leading-none font-bold tracking-wider text-[#4a4a4a] sm:text-xl"
+          class="truncate text-center text-lg leading-tight font-bold tracking-wider text-[#4a4a4a] sm:text-xl"
         >
           {{ pet.nombre }}
         </h3>
         <p
-          class="truncate text-center text-xs leading-none font-medium text-[#6D6155]"
+          class="truncate text-center text-xs leading-tight font-medium text-[#6D6155]"
         >
           {{ pet.raza.especie.nombre }} · {{ pet.raza.nombre }}
         </p>

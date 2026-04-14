@@ -12,35 +12,31 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class PetService {
-  constructor(
-    private http: HttpClient
-  ) {}
 
+  constructor( private http: HttpClient ) {}
+
+  // ----- Crear y Actualizar Mascota (CREATE/UPDATE) -----
+  savePet(pet: Pet): Observable<Pet> {
+    if (pet.id)
+      return this.http.put<Pet>(`http://localhost:8080/vet/pets/update/${pet.id}`, pet);
+    else
+      return this.http.post<Pet>('http://localhost:8080/vet/pets/add', pet);
+  }
+
+  // ----- Mostrar Mascotas (READ) -----
   findAll(): Observable<Pet[]> {
     return this.http.get<Pet[]>('http://localhost:8080/vet/pets');
   }
 
+  // ----- Mostrar Mascota (READ) -----
   findById(id: number): Observable<Pet> {
     return this.http.get<Pet>(`http://localhost:8080/vet/pets/${id}`);
   }
 
-  // updateEstadoRequest(id: number, estado: boolean): Observable<UpdateEstadoResponse> {
-  //   let petUpdate = new Pet();
-  //   petUpdate.id = id;
-  //   petUpdate.estado = estado;
-  //   return this.http.patch<UpdateEstadoResponse>(`http://localhost:8080/vet/pets/${id}/update-estado`, petUpdate);
-  // }
-
-  // updateEstado(id: number, estado: boolean): void {
-  //   this.updateEstadoRequest(id, estado).subscribe();
-  // }
-
-  savePet(pet: Pet): void {
-    if (pet.id) {
-      this.http.put(`http://localhost:8080/vet/pets/update/${pet.id}`, pet).subscribe();
-    } else {
-      this.http.post('http://localhost:8080/vet/pets/add', pet).subscribe();
-    }
+  updateEstado(id: number, estado: boolean): Observable<void> {
+    console.log(`Enviando solicitud para actualizar estado de la mascota con ID ${id} a ${estado}`);
+    return this.http.patch<void>(`http://localhost:8080/vet/pets/update-estado/${id}`, { estado });
   }
+
 
 }

@@ -44,9 +44,15 @@ export class InfoPetComponent {
   }
 
   onEstadoChange(nuevoEstado: boolean): void {
-    // Aquí puedes llamar al servicio para persistir el cambio:
     if (this.pet.id != null) {
-      // this.petService.updateEstado(this.pet.id, nuevoEstado);
+      this.pet.estado = nuevoEstado;
+
+      this.petService.updateEstado(this.pet.id, nuevoEstado).subscribe({
+        error: (error) => {
+          console.error('Error al cambiar estado:', error);
+          this.pet.estado = !nuevoEstado;
+        },
+      });
     }
   }
 }
