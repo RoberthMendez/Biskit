@@ -2,6 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CredencialesService } from '../../../services/credenciales.service';
+import { Credenciales } from '../../../models/Credenciales/credenciales';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login-form',
@@ -10,7 +12,10 @@ import { CredencialesService } from '../../../services/credenciales.service';
   templateUrl: './form.component.html',
 })
 export class LoginFormComponent {
-  constructor(private credencialesService: CredencialesService) {}
+  constructor(
+    private credencialesService: CredencialesService,
+    private router: Router,
+  ) {}
 
   usuario = '';
   contrasena = '';
@@ -23,14 +28,30 @@ export class LoginFormComponent {
       return;
     }
 
-    const isValid = this.credencialesService.checkCredenciales(this.usuario, this.contrasena);
+    const credenciales: Credenciales = {
+      usuario: this.usuario,
+      password: this.contrasena,
+    };
 
-    if (!isValid) {
-      this.error = 'Usuario o contrasena incorrectos.';
-      return;
-    }
+    this.credencialesService.authenticate(credenciales).subscribe({
+      next: (response) => {
+        if (response.tipo === 'VETERINARIO') {
+          this.router.navigate(['/vet/pets']);
+          return;
+        }
+
+        if (response.tipo === 'CREDENCIALES_INVALIDAS') {
+          this.error = 'Usuario o contrasena incorrectos.';
+          return;
+        }
+
+        console.log('Autenticación exitosa:', response);
+      },
+      error: (error) => {
+        this.error = 'Usuario o contrasena incorrectos.';
+      },
+    });
 
     this.error = null;
   }
 }
-
