@@ -33,16 +33,10 @@ export class PetService {
     return this.http.get<Pet>(`http://localhost:8080/vet/pets/${id}`);
   }
 
-  // updateEstadoRequest(id: number, estado: boolean): Observable<UpdateEstadoResponse> {
-  //   let petUpdate = new Pet();
-  //   petUpdate.id = id;
-  //   petUpdate.estado = estado;
-  //   return this.http.patch<UpdateEstadoResponse>(`http://localhost:8080/vet/pets/${id}/update-estado`, petUpdate);
-  // }
-
-  // updateEstado(id: number, estado: boolean): void {
-  //   this.updateEstadoRequest(id, estado).subscribe();
-  // }
+  updateEstado(id: number, estado: boolean): Observable<void> {
+    console.log(`Enviando solicitud para actualizar estado de la mascota con ID ${id} a ${estado}`);
+    return this.http.patch<void>(`http://localhost:8080/vet/pets/update-estado/${id}`, { estado });
+  }
 
 
 }

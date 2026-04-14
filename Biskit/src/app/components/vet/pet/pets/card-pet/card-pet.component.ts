@@ -81,18 +81,12 @@ export class CardPetComponent {
   }
 
   private cambiarEstadoMascota(id: number, nuevoEstado: boolean): void {
-    // this.petService.updateEstadoRequest(id, nuevoEstado).subscribe({
-    //   next: (data) => {
-    //     if (data && data.ok === false) {
-    //       console.error('Error al cambiar estado:', data.message);
-    //       this.revertirCheckbox(nuevoEstado);
-    //     }
-    //   },
-    //   error: (error) => {
-    //     console.error('Error al cambiar estado:', error);
-    //     this.revertirCheckbox(nuevoEstado);
-    //   },
-    // });
+    this.petService.updateEstado(id, nuevoEstado).subscribe({
+      error: (error) => {
+        console.error('Error al cambiar estado:', error);
+        this.revertirCheckbox(nuevoEstado);
+      },
+    });
   }
 
   onToggleEstado(event: Event): void {

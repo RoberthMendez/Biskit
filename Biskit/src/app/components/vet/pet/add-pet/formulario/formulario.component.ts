@@ -386,25 +386,19 @@ export class FormularioComponent implements OnInit {
     }
 
     this.formPet.fechaNacimiento = new Date(this.fechaNacimientoStr);
+
     this.petService.savePet(this.formPet).subscribe(
       () => {
-        if(this.petId) {
-          setTimeout(() => {
-            this.router.navigate(['/vet/clients']);
-          }, 600);
-        } else {
-          this.successMessage = 'Mascota guardada correctamente';
-          this.resetForm();
-        }
+        this.successMessage = this.petId
+          ? 'Cambios guardados correctamente'
+          : 'Mascota guardada correctamente';
+
+        setTimeout(() => {
+          this.router.navigate(['/vet/pets']);
+        }, 600);
       }
     )
 
-    if (this.petId) {
-      this.router.navigate(['/vet/pets']);
-    } else {
-      this.successMessage = 'Mascota guardada correctamente';
-      this.resetForm();
-    }
   }
 
   private resetForm(): void {
