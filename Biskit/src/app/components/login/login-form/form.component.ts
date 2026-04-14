@@ -35,6 +35,15 @@ export class LoginFormComponent {
 
     this.credencialesService.authenticate(credenciales).subscribe({
       next: (response) => {
+        if (response.tipo === 'CLIENTE') {
+          if (response.id) {
+            this.router.navigate(['/client', response.id]);
+          } else {
+            this.error = 'No se pudo obtener el id del cliente.';
+          }
+          return;
+        }
+
         if (response.tipo === 'VETERINARIO') {
           this.router.navigate(['/vet/pets']);
           return;

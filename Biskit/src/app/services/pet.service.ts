@@ -34,7 +34,6 @@ export class PetService {
   }
 
   updateEstado(id: number, estado: boolean): Observable<void> {
-    console.log(`Enviando solicitud para actualizar estado de la mascota con ID ${id} a ${estado}`);
     return this.http.patch<void>(`http://localhost:8080/vet/pets/update-estado/${id}`, { estado });
   }
 

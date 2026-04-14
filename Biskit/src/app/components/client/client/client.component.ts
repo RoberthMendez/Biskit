@@ -2,7 +2,8 @@ import { Component, Input } from '@angular/core';
 import { Client } from '../../../models/Client/client';
 import { ClientService } from '../../../services/client.service';
 import { ActivatedRoute } from '@angular/router';
-import { mergeMap } from 'rxjs/internal/operators/mergeMap';
+import { of } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 import { Pet } from '../../../models/Pets/pet';
 import { ClientInfoComponent } from './components/client-info/client-info.component';
 import { PetsSectionComponent } from './components/pets-section/pets-section.component';
@@ -22,14 +23,17 @@ export class ClientComponent {
   ) {}
 
   ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id');
-
-    this.clientService
-      .findById(id ? Number(id) : 0)
+    this.route.paramMap
       .pipe(
-        mergeMap((client) => {
+        map((params) => Number(params.get('id') ?? 0)),
+        switchMap((id) => this.clientService.findById(id)),
+        switchMap((client) => {
           this.client = client;
-          return this.clientService.getPetsByClientId(client.id ?? 0);
+          const clientId = client.id;
+          if (!clientId) {
+            return of([] as Pet[]);
+          }
+          return this.clientService.getPetsByClientId(clientId);
         }),
       )
       .subscribe((pets) => {
