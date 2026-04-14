@@ -1,0 +1,25 @@
+<aside class="flex flex-col items-center lg:col-span-2">
+  <article
+    class="mx-auto flex w-full flex-col rounded-2xl bg-[#FBFAF8] p-6 shadow-[0_10px_30px_-6px_rgba(0,0,0,0.08)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_16px_40px_-8px_rgba(0,0,0,0.12)]"
+  >
+    <!-- Título -->
+    <div class="mx-3 mt-2 mb-6 flex items-center gap-1">
+      <h3
+        class="ml-2 text-lg font-black tracking-wider text-[#4a4a4a] sm:text-xl md:text-2xl"
+      >
+        Tratamientos de {{ pet.nombre }}
+      </h3>
+    </div>
+
+    <!-- Lista -->
+    <div class="custom-scroll grid grid-cols-1 overflow-auto md:grid-cols-2">
+      @if (pet.tratamientos?.length === 0) {
+        <p class="text-sm text-[#8D8580]">No hay tratamientos</p>
+      }
+
+      @for (t of pet.tratamientos; track t.id) {
+        <app-treatment-item [t]="t"></app-treatment-item>
+      }
+    </div>
+  </article>
+</aside>

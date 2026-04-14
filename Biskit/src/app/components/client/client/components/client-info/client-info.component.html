@@ -1,0 +1,40 @@
+<section
+  class="flex flex-col justify-center gap-6 sm:gap-8 md:gap-12 h-auto px-4 sm:px-6 md:px-8 py-8 sm:py-10 md:py-15 my-3 bg-[#FBFAF8] rounded-2xl shadow-[0_10px_30px_-6px_rgba(0,0,0,0.08)] hover:shadow-[0_16px_40px_-8px_rgba(0,0,0,0.12)] hover:-translate-y-1 transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]"
+>
+  <!-- Nombre -->
+  <article
+    class="flex flex-col sm:flex-row mx-4 sm:mx-8 md:mx-15 justify-center gap-4 sm:gap-6"
+  >
+    <div class="flex flex-col text-center gap-1">
+      <h1 class="text-2xl sm:text-3xl md:text-4xl font-semibold text-[#4a4a4a]">
+        Hola, {{ client?.nombre }}
+      </h1>
+      <p class="text-[#8d8580dd] font-medium text-sm sm:text-base">
+        Aquí puedes ver tu información personal
+      </p>
+    </div>
+  </article>
+
+  <!-- Datos -->
+  <article
+    class="flex flex-col sm:flex-row justify-evenly gap-4 sm:gap-6 md:gap-12 lg:gap-20 xl:gap-32 mx-4 sm:mx-8 md:mx-15"
+  >
+    <app-client-detail-item
+      icon="cedula"
+      label="Cédula"
+      [value]="client.cedula"
+    ></app-client-detail-item>
+
+    <app-client-detail-item
+      icon="telefono"
+      label="Teléfono"
+      [value]="client.celular"
+    ></app-client-detail-item>
+
+    <app-client-detail-item
+      icon="correo"
+      label="Correo"
+      [value]="client.correo"
+    ></app-client-detail-item>
+  </article>
+</section>

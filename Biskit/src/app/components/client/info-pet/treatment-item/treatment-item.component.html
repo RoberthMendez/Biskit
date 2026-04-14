@@ -1,0 +1,20 @@
+<a
+  [routerLink]="['/client/pets/tratamiento', t.id]"
+  class="mx-5 mb-5 flex gap-2 rounded-lg p-2 transition hover:bg-blue-50"
+>
+  <div class="w-0.5 bg-[#2B5392]"></div>
+
+  <div class="flex flex-col gap-1">
+    <!-- Fecha -->
+    <p class="text-sm font-semibold text-[#8D8580]">
+      {{ t.fecha | date: "dd-MM-yyyy" }}
+    </p>
+
+    <!-- Drogas -->
+    @for (d of t.drogas; track d.nombre) {
+      <p class="text-sm font-medium text-[#282828]">
+        {{ d.nombre }}
+      </p>
+    }
+  </div>
+</a>

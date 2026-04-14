@@ -1,0 +1,39 @@
+<main>
+  <!-- Botón volver -->
+  <a
+    [routerLink]="['/client', client.id, 'pets']"
+    class="back-link group mt-8 mb-2 ml-5 inline-flex h-10 items-center justify-start sm:ml-8 md:ml-16 lg:ml-28"
+  >
+    <!-- SVG igual -->
+    <svg class="mt-1 h-9" viewBox="0 0 24 24" fill="none">
+      <path
+        d="M8 12L16 12"
+        stroke="#6B6B6B"
+        stroke-width="2"
+        stroke-linecap="round"
+      />
+      <path
+        d="M11 9L8.08704 11.913C8.03897 11.961 8.03897 12.039 8.08704 12.087L11 15"
+        stroke="#6B6B6B"
+        stroke-width="2"
+        stroke-linecap="round"
+      />
+    </svg>
+
+    <h2
+      class="ml-1 text-lg font-bold tracking-wider text-[#4a4a4acc] underline underline-offset-6 transition-colors duration-300 group-hover:text-[#4A4A4Aee]"
+    >
+      Lista de Mascotas
+    </h2>
+  </a>
+
+  <section
+    class="mx-5 mt-5 mb-10 grid grid-cols-1 gap-6 sm:mx-8 sm:gap-8 md:mx-30 md:grid-cols-2 lg:mx-40 lg:grid-cols-3"
+  >
+    <!-- Card mascota -->
+    <app-pet-card [pet]="pet"></app-pet-card>
+
+    <!-- Tratamientos -->
+    <app-treatments-section [pet]="pet"></app-treatments-section>
+  </section>
+</main>

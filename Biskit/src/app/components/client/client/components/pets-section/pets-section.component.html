@@ -1,0 +1,30 @@
+<section class="flex flex-col items-center gap-6">
+  <article class="text-[#4a4a4a] text-center">
+    <h1 class="text-2xl sm:text-3xl md:text-4xl font-semibold tracking-wider">
+      Tus Mascotas
+    </h1>
+    <p class="text-[#8d8580dd] font-medium text-sm sm:text-base">
+      Aquí puedes ver toda la información de tus mascotas y sus tratamientos
+    </p>
+  </article>
+
+  <!-- Sin mascotas -->
+  @if (!pets || pets.length === 0) {
+    <article class="mx-2 sm:mx-10 my-20 text-center">
+      <p class="text-[#8d8580dd] text-base">
+        No hay mascotas registradas en el sistema
+      </p>
+    </article>
+  }
+
+  <!-- Con mascotas -->
+  @if (pets && pets.length > 0) {
+    <article
+      class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 sm:mx-10 mb-10 gap-6 sm:gap-8 lg:gap-10"
+    >
+      @for (pet of pets; track $index) {
+        <app-pet-card [pet]="pet" [client]="client"></app-pet-card>
+      }
+    </article>
+  }
+</section>

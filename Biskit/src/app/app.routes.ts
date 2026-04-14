@@ -4,7 +4,9 @@ export const routes: Routes = [
   {
     path: '',
     loadComponent: () =>
-      import('./components/landing/landing.component').then((m) => m.LandingComponent),
+      import('./components/landing/landing.component').then(
+        (m) => m.LandingComponent,
+      ),
   },
   {
     path: 'vet/pets/add',
@@ -30,7 +32,9 @@ export const routes: Routes = [
   {
     path: 'vet/pets',
     loadComponent: () =>
-      import('./components/vet/pet/pets/pets.component').then((m) => m.PetsComponent),
+      import('./components/vet/pet/pets/pets.component').then(
+        (m) => m.PetsComponent,
+      ),
   },
   {
     path: 'vet/pets/:id',
@@ -56,7 +60,9 @@ export const routes: Routes = [
   {
     path: 'login',
     loadComponent: () =>
-      import('./components/login/login.component').then((m) => m.LoginComponent),
+      import('./components/login/login.component').then(
+        (m) => m.LoginComponent,
+      ),
   },
   {
     path: 'vet/clients',
@@ -84,6 +90,20 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./components/vet/client/info-client/info-client.component').then(
         (m) => m.InfoClientComponent,
+      ),
+  },
+  {
+    path: 'client/:id',
+    loadComponent: () =>
+      import('./components/client/client/client.component').then(
+        (m) => m.ClientComponent,
+      ),
+  },
+  {
+    path: 'client/:clientId/pet/:petId',
+    loadComponent: () =>
+      import('./components/client/info-pet/info-pet.component').then(
+        (m) => m.InfoPetComponent,
       ),
   },
 ];

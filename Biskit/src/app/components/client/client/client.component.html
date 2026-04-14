@@ -1,0 +1,9 @@
+<main
+  class="flex flex-col gap-8 mx-4 mb-10 sm:mx-8 md:mx-12 lg:mx-20 xl:mx-60 mt-2"
+>
+  <!-- Info cliente -->
+  <app-client-info [client]="client"></app-client-info>
+
+  <!-- Mascotas -->
+  <app-pets-section [client]="client" [pets]="pets"></app-pets-section>
+</main>

@@ -1,0 +1,36 @@
+<!-- Nombre -->
+<div class="mx-2 mt-3 flex flex-col gap-1 sm:mx-4">
+  <h3
+    class="truncate text-center text-lg font-bold tracking-wider text-[#4a4a4a] sm:text-xl"
+  >
+    {{ pet.nombre }}
+  </h3>
+  <p class="truncate text-center text-xs font-medium text-[#6D6155]">
+    {{ pet.raza.especie.nombre }} · {{ pet.raza.nombre }}
+  </p>
+</div>
+
+<!-- Edad y Peso -->
+<div class="mx-2 my-3 flex items-center justify-center gap-3 sm:mx-4 sm:gap-5">
+  <aside class="flex flex-col items-center gap-1">
+    <p class="text-xs font-semibold text-[#8D8580]">EDAD</p>
+    <p class="text-xs font-medium text-[#282828]">
+      {{ edad }}
+    </p>
+  </aside>
+
+  <aside class="flex flex-col items-center gap-1">
+    <p class="text-xs font-semibold text-[#8D8580]">PESO</p>
+    <p class="text-xs font-medium text-[#282828]">{{ pet.peso }} Kg</p>
+  </aside>
+</div>
+
+<hr class="mx-2 my-5 border-t border-[#6D6155] opacity-40 sm:mx-4" />
+
+<!-- Diagnóstico -->
+<div class="mx-2 flex flex-col items-center justify-center gap-1 sm:mx-4">
+  <p class="text-xs font-semibold text-[#8D8580]">DIAGNÓSTICO</p>
+  <p class="text-xs font-medium text-[#282828]">
+    {{ pet.enfermedad.nombre }}
+  </p>
+</div>

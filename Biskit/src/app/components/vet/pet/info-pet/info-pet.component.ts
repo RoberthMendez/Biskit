@@ -29,20 +29,18 @@ export class InfoPetComponent {
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
-    
-    this.petService.findById(id ? Number(id) : 0).pipe(
-      mergeMap(
-        (pet) => {
+
+    this.petService
+      .findById(id ? Number(id) : 0)
+      .pipe(
+        mergeMap((pet) => {
           this.pet = pet;
           return this.tratamientoService.findTratamientosPet(pet.id ?? 0);
-        }
+        }),
       )
-    ).subscribe(
-      (tratamientos) => {
+      .subscribe((tratamientos) => {
         this.pet.tratamientos = tratamientos;
-      }
-    );
-
+      });
   }
 
   onEstadoChange(nuevoEstado: boolean): void {
