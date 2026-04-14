@@ -1,6 +1,6 @@
 import { Droga } from '../Droga/droga';
 import { Pet } from '../Pets/pet';
-import { Vet } from '../Vets/vet';
+import { Vet } from '../Vets/vet-cl';
 
 export class Tratamiento {
     id?: number;

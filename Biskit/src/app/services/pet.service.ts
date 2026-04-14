@@ -12,14 +12,23 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class PetService {
-  constructor(
-    private http: HttpClient
-  ) {}
 
+  constructor( private http: HttpClient ) {}
+
+  // ----- Crear y Actualizar Mascota (CREATE/UPDATE) -----
+  savePet(pet: Pet): Observable<Pet> {
+    if (pet.id)
+      return this.http.put<Pet>(`http://localhost:8080/vet/pets/update/${pet.id}`, pet);
+    else
+      return this.http.post<Pet>('http://localhost:8080/vet/pets/add', pet);
+  }
+
+  // ----- Mostrar Mascotas (READ) -----
   findAll(): Observable<Pet[]> {
     return this.http.get<Pet[]>('http://localhost:8080/vet/pets');
   }
 
+  // ----- Mostrar Mascota (READ) -----
   findById(id: number): Observable<Pet> {
     return this.http.get<Pet>(`http://localhost:8080/vet/pets/${id}`);
   }
@@ -35,12 +44,5 @@ export class PetService {
   //   this.updateEstadoRequest(id, estado).subscribe();
   // }
 
-  savePet(pet: Pet): void {
-    if (pet.id) {
-      this.http.put(`http://localhost:8080/vet/pets/update/${pet.id}`, pet).subscribe();
-    } else {
-      this.http.post('http://localhost:8080/vet/pets/add', pet).subscribe();
-    }
-  }
 
 }

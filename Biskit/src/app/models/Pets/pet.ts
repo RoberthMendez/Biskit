@@ -8,7 +8,7 @@ export class Pet {
   public nombre: string;
   public estado: boolean;
   public fechaNacimiento: Date;
-  public peso: number;
+  public peso: number | null;
   public urlFoto: string;
   public enfermedad: Enfermedad;
   public owner: Client;
@@ -20,7 +20,7 @@ export class Pet {
     nombre: string = '',
     estado: boolean = true,
     fechaNacimiento: Date = new Date(),
-    peso: number = 0,
+    peso: number | null = null,
     urlFoto: string = '',
     enfermedad: Enfermedad = new Enfermedad(),
     owner: Client = new Client(),
