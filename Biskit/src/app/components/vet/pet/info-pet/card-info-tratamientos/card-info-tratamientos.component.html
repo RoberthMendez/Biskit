@@ -1,5 +1,5 @@
 <article
-  class="info-pet-tratamientos pb-6 mx-auto flex w-full flex-col rounded-2xl bg-[#FBFAF8] p-4 shadow-[0_10px_30px_-6px_rgba(0,0,0,0.08)] transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1 hover:shadow-[0_16px_40px_-8px_rgba(0,0,0,0.12)]"
+  class="info-pet-tratamientos mx-auto flex w-full flex-col rounded-2xl bg-[#FBFAF8] p-5 shadow-[0_10px_30px_-6px_rgba(0,0,0,0.08)] transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1 hover:shadow-[0_16px_40px_-8px_rgba(0,0,0,0.12)]"
 >
   <!-- Título -->
   <div class="mx-3 mt-2 mb-6 flex w-full items-center justify-between">
@@ -95,12 +95,15 @@
 
   <!-- Lista de Tratamientos -->
   <div
-    class="custom-scroll mb-4 grid grid-cols-1 justify-center overflow-auto sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2"
+    class="custom-scroll mb-4 grid grid-cols-1 justify-center sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2"
+    [class.max-h-[12rem]]="(pet.tratamientos?.length ?? 0) > 4"
+    [class.overflow-y-auto]="(pet.tratamientos?.length ?? 0) > 4"
+    [class.overflow-visible]="(pet.tratamientos?.length ?? 0) <= 4"
   >
-    @for (tratamiento of pet.tratamientos; track tratamiento.id) {
+    @for (tratamiento of sortedTratamientos; track tratamiento.id) {
       <a
         [routerLink]="['/vet/pets/tratamiento', tratamiento.id]"
-        class="mx-5 mb-5 flex gap-2 rounded-lg p-2 transition hover:bg-blue-50"
+        class="mx-4 mb-2 flex gap-2 rounded-lg p-2 transition hover:bg-blue-50"
       >
         <div class="w-0.5 bg-[#2B5392]"></div>
         <div class="flex flex-col gap-1">

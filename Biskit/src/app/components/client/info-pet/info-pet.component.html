@@ -28,12 +28,17 @@
   </a>
 
   <section
-    class="mx-5 mt-5 mb-10 grid grid-cols-1 gap-6 sm:mx-8 sm:gap-8 md:mx-30 md:grid-cols-2 lg:mx-40 lg:grid-cols-3"
+    class="mx-auto mt-5 mb-10 grid w-full max-w-6xl grid-cols-1 items-center gap-8 px-5 sm:px-8 md:grid-cols-2 lg:grid-cols-3"
   >
     <!-- Card mascota -->
     <app-pet-card [pet]="pet"></app-pet-card>
 
     <!-- Tratamientos -->
-    <app-treatments-section [pet]="pet"></app-treatments-section>
+    <aside class="flex w-full lg:col-span-2">
+      <app-treatments-section
+        [pet]="pet"
+        class="w-full min-h-40"
+      ></app-treatments-section>
+    </aside>
   </section>
 </main>

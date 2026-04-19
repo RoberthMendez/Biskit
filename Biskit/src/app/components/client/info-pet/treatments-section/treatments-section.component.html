@@ -1,9 +1,10 @@
-<aside class="flex flex-col items-center lg:col-span-2">
-  <article
-    class="mx-auto flex w-full flex-col rounded-2xl bg-[#FBFAF8] p-6 shadow-[0_10px_30px_-6px_rgba(0,0,0,0.08)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_16px_40px_-8px_rgba(0,0,0,0.12)]"
-  >
-    <!-- Título -->
-    <div class="mx-3 mt-2 mb-6 flex w-full items-center justify-start gap-1">
+<article
+  class="flex w-full flex-col rounded-2xl bg-[#FBFAF8] p-6 shadow-[0_10px_30px_-6px_rgba(0,0,0,0.08)] transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1 hover:shadow-[0_16px_40px_-8px_rgba(0,0,0,0.12)]"
+>
+  <!-- Título -->
+  <div class="mx-3 mt-2 mb-6 flex w-full items-center justify-between">
+    <!-- Ícono y título -->
+    <div class="flex items-center gap-1">
       <svg
         class="h-6 w-auto shrink-0 sm:h-8"
         fill="#2B5392"
@@ -51,23 +52,29 @@
         </g>
       </svg>
       <h3
-        class="ml-2 truncate text-lg leading-none font-black tracking-wider text-[#4a4a4a] sm:text-xl md:text-2xl"
+        class="ml-2 text-lg leading-none font-black tracking-wider text-[#4a4a4a] sm:text-xl md:text-2xl"
       >
         Tratamientos de {{ pet.nombre }}
       </h3>
     </div>
+  </div>
+  <!-- Lista de Tratamientos -->
+  <div
+    class="custom-scroll mb-4 grid grid-cols-1 justify-center sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2"
+    [class.min-h-20]="pet.tratamientos?.length === 0"
+    [class.place-content-center]="pet.tratamientos?.length === 0"
+    [class.max-h-[23rem]]="(pet.tratamientos?.length ?? 0) > 4"
+    [class.overflow-y-auto]="(pet.tratamientos?.length ?? 0) > 4"
+    [class.overflow-visible]="(pet.tratamientos?.length ?? 0) <= 4"
+  >
+    @if (pet.tratamientos?.length === 0) {
+      <p class="col-span-full mx-5 text-center text-sm text-[#8D8580] italic">
+        Sin tratamientos registrados.
+      </p>
+    }
 
-    <!-- Lista -->
-    <div
-      class="custom-scroll grid grid-cols-1 justify-center overflow-auto sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2"
-    >
-      @if (pet.tratamientos?.length === 0) {
-        <p class="text-sm text-[#8D8580]">No hay tratamientos</p>
-      }
-
-      @for (t of pet.tratamientos; track t.id) {
-        <app-treatment-item [t]="t"></app-treatment-item>
-      }
-    </div>
-  </article>
-</aside>
+    @for (t of sortedTratamientos; track t.id) {
+      <app-treatment-item [t]="t"></app-treatment-item>
+    }
+  </div>
+</article>

@@ -11,4 +11,15 @@ import { Tratamiento } from '../../../../models/Tratamiento/tratamiento';
 })
 export class TreatmentsSectionComponent {
   @Input() pet!: Pet;
+
+  protected get sortedTratamientos(): Tratamiento[] {
+    return [...(this.pet.tratamientos ?? [])].sort(
+      (a, b) => this.getTimestamp(b.fecha) - this.getTimestamp(a.fecha),
+    );
+  }
+
+  private getTimestamp(value: Date | string): number {
+    const parsed = value instanceof Date ? value.getTime() : new Date(value).getTime();
+    return Number.isNaN(parsed) ? 0 : parsed;
+  }
 }
