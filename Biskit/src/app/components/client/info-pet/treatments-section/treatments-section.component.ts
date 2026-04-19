@@ -11,7 +11,8 @@ import { Tratamiento } from '../../../../models/Tratamiento/tratamiento';
 })
 export class TreatmentsSectionComponent {
   @Input() pet!: Pet;
-
+  @Input() clientId?: number;
+  
   protected get sortedTratamientos(): Tratamiento[] {
     return [...(this.pet.tratamientos ?? [])].sort(
       (a, b) => this.getTimestamp(b.fecha) - this.getTimestamp(a.fecha),

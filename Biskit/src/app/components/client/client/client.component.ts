@@ -14,7 +14,7 @@ import { PetsSectionComponent } from './components/pets-section/pets-section.com
   imports: [ClientInfoComponent, PetsSectionComponent],
 })
 export class ClientComponent {
-  @Input() client!: Client;
+  @Input() client: Client = new Client();
   @Input() pets: Pet[] = [];
 
   constructor(

@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { Client } from '../../../../../models/Client/client';
 import { ClientDetailItemComponent } from '../client-detail-item/client-detail-item.component';
 
 @Component({
@@ -8,5 +9,5 @@ import { ClientDetailItemComponent } from '../client-detail-item/client-detail-i
   imports: [ClientDetailItemComponent],
 })
 export class ClientInfoComponent {
-  @Input() client: any;
+  @Input() client: Client = new Client();
 }

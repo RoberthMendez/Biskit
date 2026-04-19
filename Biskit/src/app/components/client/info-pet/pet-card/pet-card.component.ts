@@ -9,7 +9,7 @@ import { PetBasicInfoComponent } from '../pet-basic-info/pet-basic-info.componen
   imports: [PetStatusBadgeComponent, PetBasicInfoComponent],
 })
 export class PetCardComponent {
-  @Input() pet!: Pet;
+  @Input() pet: Pet = new Pet();
 
   getEdad(fechaNacimiento: string | Date): number {
     if (!fechaNacimiento) return 0;

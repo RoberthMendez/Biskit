@@ -11,4 +11,6 @@ import { Tratamiento } from '../../../../models/Tratamiento/tratamiento';
 })
 export class TreatmentItemComponent {
   @Input() t!: Tratamiento;
+  @Input() clientId?: number;
+  @Input() petId?: number;
 }

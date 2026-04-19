@@ -1,5 +1,9 @@
 <a
-  [routerLink]="['/client/pets/tratamiento', t.id]"
+  [routerLink]="
+    clientId != null && petId != null
+      ? ['/client', clientId, 'pet', petId, 'tratamiento', t.id]
+      : null
+  "
   class="mx-5 mb-3.25 flex gap-2 rounded-lg p-2 transition hover:bg-blue-50"
 >
   <div class="w-0.5 bg-[#2B5392]"></div>

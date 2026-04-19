@@ -17,8 +17,8 @@ import { ClientService } from '../../../services/client.service';
   imports: [PetCardComponent, TreatmentsSectionComponent, RouterLink],
 })
 export class InfoPetComponent {
-  @Input() client!: Client;
-  @Input() pet!: Pet;
+  @Input() client: Client = new Client();
+  @Input() pet: Pet = new Pet();
 
   constructor(
     private route: ActivatedRoute,
@@ -43,8 +43,13 @@ export class InfoPetComponent {
           return this.tratamientoService.findTratamientosPet(pet.id ?? 0);
         }),
       )
-      .subscribe((tratamientos) => {
-        this.pet.tratamientos = tratamientos;
+      .subscribe({
+        next: (tratamientos) => {
+          this.pet.tratamientos = tratamientos;
+        },
+        error: () => {
+          this.pet.tratamientos = [];
+        },
       });
   }
 }
