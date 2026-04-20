@@ -16,8 +16,8 @@ export class EnfermedadesService {
   }
 
   // ----- Agregar una nueva enfermedad (CREATE) -----
-  add(nombre: string): Observable<Enfermedad> {
-    return this.http.post<Enfermedad>('http://localhost:8080/enfermedades/add', { nombre });
+  addEnfermedad(enfermedad: Enfermedad): Observable<Enfermedad> {
+    return this.http.post<Enfermedad>('http://localhost:8080/enfermedades/add', enfermedad);
   }
 
 }

@@ -1,12 +1,12 @@
 import { Especie } from './especie';
 
 export class Raza {
-  public id: number;
+  public id: number | null;
   public nombre: string;
   public especie: Especie;
 
   constructor(
-    id: number = 0,
+    id: number | null = null,
     nombre: string = '',
     especie: Especie = new Especie(),
   ) {

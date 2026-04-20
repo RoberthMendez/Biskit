@@ -14,7 +14,7 @@ export class RazasService {
     return this.http.get<Raza[]>('http://localhost:8080/razas');
   }
 
-  add(nombre: string, especieId: number): Observable<Raza> {
-    return this.http.post<Raza>('http://localhost:8080/razas', {nombre, especieId});
+  addRaza(raza: Raza): Observable<Raza> {
+    return this.http.post<Raza>('http://localhost:8080/razas/add', raza);
   }
 }

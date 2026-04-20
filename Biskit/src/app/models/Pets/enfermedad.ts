@@ -1,9 +1,9 @@
 export class Enfermedad {
-  public id: number;
+  public id: number | null;
   public nombre: string;
 
   constructor(
-    id: number = 0,
+    id: number | null = null,
     nombre: string = '',
   ) {
     this.id = id;

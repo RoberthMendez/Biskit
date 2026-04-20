@@ -65,6 +65,7 @@ export class FormularioComponent implements OnInit {
     raza: false,
     enfermedad: false,
   };
+  showRazaModalEspecieDropdown: boolean = false;
 
   // ── Modales ──────────────────────────────────────────────────────────────────
   showAddRazaModal: boolean = false;
@@ -72,12 +73,17 @@ export class FormularioComponent implements OnInit {
 
   newRazaNombre: string = '';
   newEnfermedadNombre: string = '';
+  razaModalEspecieSearch: string = '';
 
   addRazaError: string | null = null;
+  addRazaSuccess: string | null = null;
   addEnfermedadError: string | null = null;
+  addEnfermedadSuccess: string | null = null;
 
   savingRaza: boolean = false;
   savingEnfermedad: boolean = false;
+  private closeRazaModalTimeout: ReturnType<typeof setTimeout> | null = null;
+  private closeEnfermedadModalTimeout: ReturnType<typeof setTimeout> | null = null;
 
   // ─────────────────────────────────────────────────────────────────────────────
 
@@ -163,6 +169,11 @@ export class FormularioComponent implements OnInit {
     return this.especies.filter((e) => e.nombre.toLowerCase().includes(q));
   }
 
+  get especiesFiltradasModalRaza(): Especie[] {
+    const q = this.razaModalEspecieSearch.toLowerCase();
+    return this.especies.filter((e) => e.nombre.toLowerCase().includes(q));
+  }
+
   get razasFiltradaPorBusqueda(): Raza[] {
     const q = this.razaSearch.toLowerCase();
     return this.razasFiltradas.filter((r) =>
@@ -200,12 +211,19 @@ export class FormularioComponent implements OnInit {
     );
 
     if (!target || !openKey) {
+      if (!target?.closest('[data-dropdown="raza-modal-especie"]')) {
+        this.showRazaModalEspecieDropdown = false;
+      }
       return;
     }
 
     // Solo mantenemos abierto si el click ocurrió dentro del dropdown activo.
     if (!target.closest(`[data-dropdown="${openKey}"]`)) {
       this.closeAllDropdowns();
+    }
+
+    if (!target.closest('[data-dropdown="raza-modal-especie"]')) {
+      this.showRazaModalEspecieDropdown = false;
     }
   }
 
@@ -230,17 +248,58 @@ export class FormularioComponent implements OnInit {
     this.dropdownOpen.especie = false;
   }
 
-  selectRaza(raza: Raza): void {
+  selectRaza(raza: Raza | null): void {
+    if (!raza) {
+      this.errorMessage = 'No fue posible seleccionar la raza creada.';
+      return;
+    }
+
+    if (raza.especie?.id) {
+      this.selectedEspecieId = raza.especie.id;
+      this.especieSearch = raza.especie.nombre ?? '';
+      this.filterRazasByEspecie(raza.especie.id);
+    }
+
     this.razaSearch = raza.nombre;
     this.selectedRazaId = raza.id ?? null;
     this.formPet.raza = raza;
     this.dropdownOpen.raza = false;
   }
 
-  selectEnfermedad(enfermedad: Enfermedad): void {
-    this.enfermedadSearch = enfermedad.nombre;
+  onRazaModalEspecieChange(especieId: number | null): void {
+    this.selectedEspecieId = especieId;
+
+    const especieSeleccionada = this.especies.find((e) => e.id === especieId);
+    this.especieSearch = especieSeleccionada?.nombre ?? '';
+    this.razaModalEspecieSearch = especieSeleccionada?.nombre ?? '';
+    this.filterRazasByEspecie(especieId);
+
+    if (this.addRazaError === 'Selecciona una especie antes de agregar la raza') {
+      this.addRazaError = null;
+    }
+  }
+
+  openRazaModalEspecieDropdown(): void {
+    this.showRazaModalEspecieDropdown = true;
+  }
+
+  selectRazaModalEspecie(especie: Especie): void {
+    this.onRazaModalEspecieChange(especie.id ?? null);
+    this.showRazaModalEspecieDropdown = false;
+  }
+
+  selectEnfermedad(enfermedad: Enfermedad | null): void {
+    if (!enfermedad) {
+      this.errorMessage = 'No fue posible seleccionar la enfermedad creada.';
+      return;
+    }
+
+    this.enfermedadSearch = enfermedad.nombre ?? '';
     this.selectedEnfermedadId = enfermedad.id ?? null;
-    this.formPet.enfermedad = { id: enfermedad.id, nombre: enfermedad.nombre } as any;
+    this.formPet.enfermedad = {
+      id: enfermedad.id ?? null,
+      nombre: enfermedad.nombre ?? '',
+    } as any;
     this.dropdownOpen.enfermedad = false;
   }
 
@@ -263,21 +322,37 @@ export class FormularioComponent implements OnInit {
 
   // ─── Modal: Agregar Raza ──────────────────────────────────────────────────────
   openAddRazaModal(): void {
-    this.newRazaNombre = '';
-    this.addRazaError = !this.selectedEspecieId
-      ? 'Selecciona una especie antes de agregar la raza'
-      : null;
+    if (this.closeRazaModalTimeout) {
+      clearTimeout(this.closeRazaModalTimeout);
+      this.closeRazaModalTimeout = null;
+    }
+
+    this.newRazaNombre = this.razaSearch;
+    this.razaModalEspecieSearch = this.especieSearch;
+    this.addRazaError = null;
+    this.addRazaSuccess = null;
     this.showAddRazaModal = true;
+    this.showRazaModalEspecieDropdown = false;
     this.dropdownOpen.raza = false;
   }
 
   closeAddRazaModal(): void {
+    if (this.closeRazaModalTimeout) {
+      clearTimeout(this.closeRazaModalTimeout);
+      this.closeRazaModalTimeout = null;
+    }
+
     this.showAddRazaModal = false;
     this.addRazaError = null;
+    this.addRazaSuccess = null;
     this.newRazaNombre = '';
+    this.razaModalEspecieSearch = '';
+    this.showRazaModalEspecieDropdown = false;
+    this.savingRaza = false;
   }
 
   saveNewRaza(): void {
+
     if (!this.selectedEspecieId) {
       this.addRazaError = 'Selecciona una especie antes de agregar la raza';
       return;
@@ -288,25 +363,51 @@ export class FormularioComponent implements OnInit {
     }
 
     this.addRazaError = null;
+    this.addRazaSuccess = null;
     this.savingRaza = true;
 
+    const raza: Raza = new Raza(
+      null,
+      this.newRazaNombre.trim(),
+      new Especie(this.selectedEspecieId, this.especieSearch.trim()),
+    );
+
     this.razasService
-      .add(this.newRazaNombre.trim(), this.selectedEspecieId)
+      .addRaza(raza)
       .subscribe({
-        next: (raza: Raza) => {
-          this.razas = [...this.razas, raza];
-          this.razasFiltradas = [...this.razasFiltradas, raza];
-          this.selectRaza(raza);
-          this.closeAddRazaModal();
-          window.scrollTo({ top: 0, behavior: 'auto' });
-          this.errorMessage = null;
-          this.successMessage = 'Raza agregada correctamente';
+        next: (razaCreada: Raza | null) => {
+          const especieSeleccionada = this.especies.find(
+            (e) => e.id === this.selectedEspecieId,
+          );
+
+          const especieRaza = razaCreada?.especie?.id
+            ? razaCreada.especie
+            : new Especie(
+                this.selectedEspecieId ?? 0,
+                especieSeleccionada?.nombre ?? this.especieSearch.trim(),
+              );
+
+          const razaPersistida: Raza = new Raza(
+            razaCreada?.id ?? null,
+            razaCreada?.nombre ?? raza.nombre,
+            especieRaza,
+          );
+
+          this.razas = [...this.razas, razaPersistida];
+          this.filterRazasByEspecie(this.selectedEspecieId);
+          this.selectRaza(razaPersistida);
+
+          this.addRazaError = null;
+          this.addRazaSuccess = 'Raza agregada correctamente';
           this.savingRaza = false;
+
+          this.closeRazaModalTimeout = setTimeout(() => {
+            this.closeAddRazaModal();
+          }, 600);
         },
         error: () => {
-          window.scrollTo({ top: 0, behavior: 'auto' });
-          this.errorMessage = 'No fue posible guardar la raza.';
           this.addRazaError = 'Ocurrió un error al guardar la raza';
+          this.addRazaSuccess = null;
           this.savingRaza = false;
         },
       });
@@ -314,16 +415,29 @@ export class FormularioComponent implements OnInit {
 
   // ─── Modal: Agregar Enfermedad ────────────────────────────────────────────────
   openAddEnfermedadModal(): void {
-    this.newEnfermedadNombre = '';
+    if (this.closeEnfermedadModalTimeout) {
+      clearTimeout(this.closeEnfermedadModalTimeout);
+      this.closeEnfermedadModalTimeout = null;
+    }
+
+    this.newEnfermedadNombre = this.enfermedadSearch;
     this.addEnfermedadError = null;
+    this.addEnfermedadSuccess = null;
     this.showAddEnfermedadModal = true;
     this.dropdownOpen.enfermedad = false;
   }
 
   closeAddEnfermedadModal(): void {
+    if (this.closeEnfermedadModalTimeout) {
+      clearTimeout(this.closeEnfermedadModalTimeout);
+      this.closeEnfermedadModalTimeout = null;
+    }
+
     this.showAddEnfermedadModal = false;
     this.addEnfermedadError = null;
+    this.addEnfermedadSuccess = null;
     this.newEnfermedadNombre = '';
+    this.savingEnfermedad = false;
   }
 
   saveNewEnfermedad(): void {
@@ -335,21 +449,29 @@ export class FormularioComponent implements OnInit {
     this.addEnfermedadError = null;
     this.savingEnfermedad = true;
 
+    const enfermedad: Enfermedad = new Enfermedad(null, this.newEnfermedadNombre.trim());
+
     this.enfermedadesService
-      .add(this.newEnfermedadNombre.trim())
+      .addEnfermedad(enfermedad)
       .subscribe({
-        next: (enfermedad: Enfermedad) => {
-          this.enfermedades = [...this.enfermedades, enfermedad];
-          this.selectEnfermedad(enfermedad);
-          this.closeAddEnfermedadModal();
-          window.scrollTo({ top: 0, behavior: 'auto' });
-          this.errorMessage = null;
-          this.successMessage = 'Enfermedad agregada correctamente';
+        next: (enfermedadCreada: Enfermedad | null) => {
+          const enfermedadPersistida = new Enfermedad(
+            enfermedadCreada?.id ?? null,
+            enfermedadCreada?.nombre ?? enfermedad.nombre,
+          );
+
+          this.enfermedades = [...this.enfermedades, enfermedadPersistida];
+          this.selectEnfermedad(enfermedadPersistida);
+          this.addEnfermedadError = null;
+          this.addEnfermedadSuccess = 'Enfermedad agregada correctamente';
           this.savingEnfermedad = false;
+
+          this.closeEnfermedadModalTimeout = setTimeout(() => {
+            this.closeAddEnfermedadModal();
+          }, 600);
         },
         error: () => {
-          window.scrollTo({ top: 0, behavior: 'auto' });
-          this.errorMessage = 'No fue posible guardar la enfermedad.';
+          this.addEnfermedadSuccess = null;
           this.addEnfermedadError = 'Ocurrió un error al guardar la enfermedad';
           this.savingEnfermedad = false;
         },
