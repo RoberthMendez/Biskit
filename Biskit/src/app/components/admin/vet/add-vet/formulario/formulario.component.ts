@@ -53,11 +53,21 @@ export class FormularioComponent {
   successMessage: string | null = null;
 
   ngOnInit(): void {
+
     if (this.vetId) {
       this.formVet = this.vetService.findById(this.vetId);
       this.especialidadSearch = this.formVet.especialidad.nombre;
     }
-    this.especialidades = this.especialidadesService.getAll();
+    
+    this.especialidadesService.findAll().subscribe({
+      next: (especialidades) => {
+        this.especialidades = especialidades;
+      },
+      error: () => {
+        this.especialidades = [];
+      }
+    });
+
   }
 
   get filteredEspecialidades(): Especialidad[] {
@@ -98,13 +108,15 @@ export class FormularioComponent {
 
   // ── Modal agregar especialidad ────────────────────────────
 
-  openAddModal(): void {
+  openAddModal(event?: MouseEvent): void {
+    event?.preventDefault();
+    event?.stopPropagation();
     this.dropdownVisible = false;
     this.showAddModal = true;
   }
 
   onEspecialidadCreated(esp: Especialidad): void {
-    // Añadir a la lista local y seleccionarla automáticamente
+    this.especialidades = [...this.especialidades, esp];
     this.selectEspecialidad(esp);
     this.showAddModal = false;
   }

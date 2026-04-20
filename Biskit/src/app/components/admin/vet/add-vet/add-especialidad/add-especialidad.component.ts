@@ -1,7 +1,15 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  Output,
+  EventEmitter,
+  ViewChild,
+  ElementRef,
+  AfterViewInit,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { trigger, transition, style, animate } from '@angular/animations';
+import { HttpErrorResponse } from '@angular/common/http';
 import { EspecialidadesService } from '../../../../../services/especialidades.service';
 import { Especialidad } from '../../../../../models/Vets/Especialidad/especialidad';
 
@@ -35,7 +43,7 @@ import { Especialidad } from '../../../../../models/Vets/Especialidad/especialid
     ]),
   ],
 })
-export class AddEspecialidadComponent {
+export class AddEspecialidadComponent implements AfterViewInit {
   /** Cierra el modal sin hacer nada. */
   @Output() close = new EventEmitter<void>();
 
@@ -45,10 +53,21 @@ export class AddEspecialidadComponent {
   nombre = '';
   error = '';
   loading = false;
+  @ViewChild('nombreInput') nombreInput?: ElementRef<HTMLInputElement>;
 
   constructor(private especialidadesService: EspecialidadesService) {}
 
-  async save(): Promise<void> {
+  ngAfterViewInit(): void {
+    // Enfocar el input al abrir el modal para evitar perder la primera tecla.
+    setTimeout(() => this.nombreInput?.nativeElement.focus());
+  }
+
+  save(): void {
+    
+    if (this.loading) {
+      return;
+    }
+
     const trimmed = this.nombre.trim();
     if (!trimmed) {
       this.error = 'Ingresa el nombre de la especialidad';
@@ -58,18 +77,34 @@ export class AddEspecialidadComponent {
     this.error = '';
     this.loading = true;
 
-    try {
-      const nuevaEspecialidad = new Especialidad(undefined, trimmed);
-      this.especialidadesService.addEspecialidad(nuevaEspecialidad);
-      // El servicio muta el objeto y le asigna el id internamente,
-      // así que ya tiene id después de la llamada
-      this.especialidadCreated.emit(nuevaEspecialidad);
-    } catch (err: unknown) {
-      this.error =
-        err instanceof Error ? err.message : 'Error al agregar la especialidad';
-    } finally {
-      this.loading = false;
-    }
+    const nuevaEspecialidad = new Especialidad(undefined, trimmed);
+
+    this.especialidadesService.addEspecialidad(nuevaEspecialidad).subscribe({
+      next: (creada) => {
+        const especialidadCreada = new Especialidad(
+          creada?.id,
+          creada?.nombre ?? trimmed,
+        );
+        this.especialidadCreated.emit(especialidadCreada);
+        this.nombre = '';
+        this.loading = false;
+      },
+      error: (err: unknown) => {
+        if (err instanceof HttpErrorResponse) {
+          this.error =
+            err.error?.message ||
+            err.error?.error ||
+            err.message ||
+            'Error al agregar la especialidad';
+        } else {
+          this.error =
+            err instanceof Error
+              ? err.message
+              : 'Error al agregar la especialidad';
+        }
+        this.loading = false;
+      },
+    });
   }
 
   onBackdropClick(event: MouseEvent): void {

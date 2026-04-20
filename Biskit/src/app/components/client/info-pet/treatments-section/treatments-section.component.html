@@ -74,7 +74,11 @@
     }
 
     @for (t of sortedTratamientos; track t.id) {
-      <app-treatment-item [t]="t"></app-treatment-item>
+      <app-treatment-item
+        [t]="t"
+        [clientId]="clientId"
+        [petId]="petId"
+      ></app-treatment-item>
     }
   </div>
 </article>

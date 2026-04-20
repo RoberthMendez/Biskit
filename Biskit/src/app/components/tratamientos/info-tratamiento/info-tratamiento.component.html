@@ -1,1 +1,573 @@
-<p>info-tratamiento works!</p>
+<main>
+  <section class="relative">
+    <div class="relative overflow-hidden h-128 md:h-200">
+      @if (pet?.urlFoto) {
+        <img
+          [src]="pet?.urlFoto"
+          [alt]="(pet?.nombre || '') + ' foto'"
+          class="absolute inset-0 w-full h-full object-cover object-center"
+          style="
+            -webkit-mask-image: linear-gradient(
+              to bottom,
+              rgba(0, 0, 0, 1) 0%,
+              rgba(0, 0, 0, 1) 35%,
+              rgba(0, 0, 0, 0) 100%
+            );
+            mask-image: linear-gradient(
+              to bottom,
+              rgba(0, 0, 0, 1) 0%,
+              rgba(0, 0, 0, 1) 35%,
+              rgba(0, 0, 0, 0) 100%
+            );
+          "
+        />
+      } @else {
+        <div
+          class="absolute inset-0 bg-slate-300 flex items-center justify-center"
+        >
+          <svg
+            class="h-24 w-24 text-white/80"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M7.5 10.5C8.88071 10.5 10 9.15685 10 7.5C10 5.84315 8.88071 4.5 7.5 4.5C6.11929 4.5 5 5.84315 5 7.5C5 9.15685 6.11929 10.5 7.5 10.5Z"
+            />
+            <path
+              d="M16.5 10.5C17.8807 10.5 19 9.15685 19 7.5C19 5.84315 17.8807 4.5 16.5 4.5C15.1193 4.5 14 5.84315 14 7.5C14 9.15685 15.1193 10.5 16.5 10.5Z"
+            />
+            <path
+              d="M5.5 16.5C6.60457 16.5 7.5 15.3807 7.5 14C7.5 12.6193 6.60457 11.5 5.5 11.5C4.39543 11.5 3.5 12.6193 3.5 14C3.5 15.3807 4.39543 16.5 5.5 16.5Z"
+            />
+            <path
+              d="M18.5 16.5C19.6046 16.5 20.5 15.3807 20.5 14C20.5 12.6193 19.6046 11.5 18.5 11.5C17.3954 11.5 16.5 12.6193 16.5 14C16.5 15.3807 17.3954 16.5 18.5 16.5Z"
+            />
+            <path
+              d="M12 20.5C9.51472 20.5 7.5 18.8807 7.5 16.8838C7.5 15.4829 8.64176 14.5 10.05 14.5C10.9334 14.5 11.7112 14.8928 12 15.4915C12.2888 14.8928 13.0666 14.5 13.95 14.5C15.3582 14.5 16.5 15.4829 16.5 16.8838C16.5 18.8807 14.4853 20.5 12 20.5Z"
+            />
+          </svg>
+        </div>
+      }
+
+      <a
+        [routerLink]="backLink"
+        class="back-link group absolute top-8 left-5 sm:left-8 md:left-16 lg:left-28 z-10 inline-flex justify-start items-center h-10"
+      >
+        <svg
+          class="h-9 mt-1"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+          <g
+            id="SVGRepo_tracerCarrier"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          ></g>
+          <g id="SVGRepo_iconCarrier">
+            <path
+              d="M8 12L16 12"
+              stroke="#FFFFFF"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></path>
+            <path
+              d="M11 9L8.08704 11.913V11.913C8.03897 11.961 8.03897 12.039 8.08704 12.087V12.087L11 15"
+              stroke="#FFFFFF"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></path>
+          </g>
+        </svg>
+        <h2
+          class="underline underline-offset-6 font-bold tracking-wider text-lg ml-1 text-[#ffffffcc] group-hover:text-[#4A4A4Aee] transition-colors duration-300"
+        >
+          Mascota
+        </h2>
+      </a>
+    </div>
+
+    <div
+      class="container mx-auto px-4 pb-12 max-w-5xl relative z-20 -mt-32 md:-mt-48"
+    >
+      <!-- Header con información de la mascota -->
+      <div class="mb-6 flex items-end justify-between gap-4">
+        <div class="text-left">
+          <p
+            class="text-sm font-medium text-blue-500 uppercase tracking-[0.3em] mb-2"
+          >
+            Paciente
+          </p>
+          <h1 class="text-3xl md:text-4xl font-bold text-gray-900">
+            {{ pet?.nombre }}
+          </h1>
+          <p class="text-gray-600 mt-2 capitalize text-base md:text-lg">
+            <span>{{ pet?.raza?.especie?.nombre }}</span>
+            @if (pet?.raza) {
+              <span> · {{ pet?.raza?.nombre }}</span>
+            }
+          </p>
+        </div>
+
+        @if (!isClientView) {
+          <div class="flex items-center gap-2 shrink-0 self-end">
+            <!-- Editar -->
+            <a
+              [routerLink]="['/vet/pets/tratamiento/update', tratamiento?.id]"
+              class="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 text-slate-700 font-semibold px-4 py-2.5 hover:bg-slate-100 hover:text-slate-800 transition-colors duration-200"
+            >
+              <svg
+                class="h-4 w-4"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M21.2799 6.40005L11.7399 15.94C10.7899 16.89 7.96987 17.33 7.33987 16.7C6.70987 16.07 7.13987 13.25 8.08987 12.3L17.6399 2.75002C17.8754 2.49308 18.1605 2.28654 18.4781 2.14284C18.7956 1.99914 19.139 1.92124 19.4875 1.9139C19.8359 1.90657 20.1823 1.96991 20.5056 2.10012C20.8289 2.23033 21.1225 2.42473 21.3686 2.67153C21.6147 2.91833 21.8083 3.21243 21.9376 3.53609C22.0669 3.85976 22.1294 4.20626 22.1211 4.55471C22.1128 4.90316 22.0339 5.24635 21.8894 5.5635C21.7448 5.88065 21.5375 6.16524 21.2799 6.40005Z"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M11 4H6C4.93913 4 3.92178 4.42142 3.17163 5.17157C2.42149 5.92172 2 6.93913 2 8V18C2 19.0609 2.42149 20.0783 3.17163 20.8284C3.92178 21.5786 4.93913 22 6 22H17C19.21 22 20 20.2 20 18V13"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+              Editar
+            </a>
+
+            <!-- Eliminar -->
+            <button
+              (click)="eliminarTratamiento()"
+              type="button"
+              class="inline-flex items-center gap-2 rounded-xl border border-rose-200 bg-rose-50 text-rose-700 font-semibold px-4 py-2.5 hover:bg-rose-100 hover:text-rose-800 transition-colors duration-200 hover:cursor-pointer"
+            >
+              <svg
+                class="h-4 w-4"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M3 6H5H21"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M8 6V4C8 3.46957 8.21071 2.96086 8.58579 2.58579C8.96086 2.21071 9.46957 2 10 2H14C14.5304 2 15.0391 2.21071 15.4142 2.58579C15.7893 2.96086 16 3.46957 16 4V6M19 6L18.1327 19.1425C18.0579 20.1891 17.187 21 16.1378 21H7.86224C6.81296 21 5.94208 20.1891 5.86732 19.1425L5 6H19Z"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+              Eliminar
+            </button>
+          </div>
+        }
+      </div>
+
+      <!-- Datos del paciente -->
+      <div class="bg-white rounded-2xl shadow-lg p-5 mb-6">
+        <div class="flex items-start gap-3 mb-6">
+          <div
+            class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center shrink-0"
+          >
+            <svg
+              class="h-8 w-8"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+              <g
+                id="SVGRepo_tracerCarrier"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              ></g>
+              <g id="SVGRepo_iconCarrier">
+                <path
+                  d="M4.41003 16.75C4.17003 19.64 6.35003 22 9.25003 22H14.04C17.3 22 19.54 19.37 19 16.15C18.43 12.77 15.17 10 11.74 10C8.02003 10 4.72003 13.04 4.41003 16.75Z"
+                  stroke="#2B5392"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                ></path>
+                <path
+                  d="M10.47 7.5C11.8507 7.5 12.97 6.38071 12.97 5C12.97 3.61929 11.8507 2.5 10.47 2.5C9.08926 2.5 7.96997 3.61929 7.96997 5C7.96997 6.38071 9.08926 7.5 10.47 7.5Z"
+                  stroke="#2B5392"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                ></path>
+                <path
+                  d="M17.3 8.69995C18.4046 8.69995 19.3 7.80452 19.3 6.69995C19.3 5.59538 18.4046 4.69995 17.3 4.69995C16.1955 4.69995 15.3 5.59538 15.3 6.69995C15.3 7.80452 16.1955 8.69995 17.3 8.69995Z"
+                  stroke="#2B5392"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                ></path>
+                <path
+                  d="M21 12.7C21.8284 12.7 22.5 12.0284 22.5 11.2C22.5 10.3715 21.8284 9.69995 21 9.69995C20.1716 9.69995 19.5 10.3715 19.5 11.2C19.5 12.0284 20.1716 12.7 21 12.7Z"
+                  stroke="#2B5392"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                ></path>
+                <path
+                  d="M3.96997 10.7C5.07454 10.7 5.96997 9.80452 5.96997 8.69995C5.96997 7.59538 5.07454 6.69995 3.96997 6.69995C2.8654 6.69995 1.96997 7.59538 1.96997 8.69995C1.96997 9.80452 2.8654 10.7 3.96997 10.7Z"
+                  stroke="#2B5392"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                ></path>
+              </g>
+            </svg>
+          </div>
+
+          <div>
+            <h2 class="text-2xl font-bold text-[#2F3B4B]">
+              Datos del paciente
+            </h2>
+            <p class="text-[#5E6A76]">
+              Información clínica al momento del tratamiento
+            </p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div
+            class="bg-[#F5F4F3] rounded-2xl p-5 flex flex-col items-center justify-center gap-2"
+          >
+            <svg
+              class="h-6 w-6"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M14 22H10C6.22876 22 4.34315 22 3.17157 20.8284C2 19.6569 2 17.7712 2 14V12C2 8.22876 2 6.34315 3.17157 5.17157C4.34315 4 6.22876 4 10 4H14C17.7712 4 19.6569 4 20.8284 5.17157C22 6.34315 22 8.22876 22 12V14C22 17.7712 22 19.6569 20.8284 20.8284C20.1752 21.4816 19.3001 21.7706 18 21.8985"
+                stroke="#2B5392"
+                stroke-width="1.5"
+                stroke-linecap="round"
+              ></path>
+              <path
+                d="M7 4V2.5"
+                stroke="#2B5392"
+                stroke-width="1.5"
+                stroke-linecap="round"
+              ></path>
+              <path
+                d="M17 4V2.5"
+                stroke="#2B5392"
+                stroke-width="1.5"
+                stroke-linecap="round"
+              ></path>
+              <path
+                d="M21.5 9H16.625H10.75M2 9H5.875"
+                stroke="#2B5392"
+                stroke-width="1.5"
+                stroke-linecap="round"
+              ></path>
+            </svg>
+            <p class="text-3xl font-bold text-[#2F3B4B]">
+              {{ getEdad() }}
+            </p>
+            <p
+              class="text-xs uppercase tracking-[0.2em] text-[#5E6A76] font-medium"
+            >
+              Edad
+            </p>
+          </div>
+
+          <div
+            class="bg-[#F5F4F3] rounded-2xl p-5 flex flex-col items-center justify-center gap-2"
+          >
+            <svg
+              class="h-6 w-6"
+              viewBox="0 0 512 512"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+            >
+              <rect
+                x="48"
+                y="48"
+                width="416"
+                height="416"
+                rx="96"
+                stroke="#2B5392"
+                stroke-linejoin="round"
+                stroke-width="32"
+              ></rect>
+              <path
+                d="M388.94,151.56c-24.46-22.28-68.72-51.4-132.94-51.4s-108.48,29.12-132.94,51.4A34.66,34.66,0,0,0,120,199.64l33.32,39.21a26.07,26.07,0,0,0,33.6,5.21c15.92-9.83,40.91-21.64,69.1-21.64s53.18,11.81,69.1,21.64a26.07,26.07,0,0,0,33.6-5.21L392,199.64A34.66,34.66,0,0,0,388.94,151.56Z"
+                stroke="#2B5392"
+                stroke-linejoin="round"
+                stroke-width="32"
+              ></path>
+            </svg>
+            <p class="text-3xl font-bold text-[#2F3B4B]">{{ pet?.peso }} kg</p>
+            <p
+              class="text-xs uppercase tracking-[0.2em] text-[#5E6A76] font-medium"
+            >
+              Peso
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fecha y Hora -->
+      <div
+        class="bg-white rounded-2xl shadow-lg p-5 mb-6 flex flex-wrap items-center gap-4"
+      >
+        <div class="flex items-center gap-3 flex-1 min-w-50">
+          <div
+            class="w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center shrink-0"
+          >
+            <svg
+              class="h-6 w-6"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <rect
+                x="3"
+                y="5"
+                width="18"
+                height="16"
+                rx="2"
+                stroke="#2B5392"
+                stroke-width="1.8"
+              />
+              <path
+                d="M3 9H21"
+                stroke="#2B5392"
+                stroke-width="1.8"
+                stroke-linecap="round"
+              />
+              <path
+                d="M8 3V7"
+                stroke="#2B5392"
+                stroke-width="1.8"
+                stroke-linecap="round"
+              />
+              <path
+                d="M16 3V7"
+                stroke="#2B5392"
+                stroke-width="1.8"
+                stroke-linecap="round"
+              />
+            </svg>
+          </div>
+
+          <div>
+            <p
+              class="text-xs text-gray-500 uppercase tracking-wider font-medium"
+            >
+              Fecha del tratamiento
+            </p>
+
+            <p class="text-gray-900 font-semibold">
+              {{ tratamiento?.fecha | date: "dd MMMM yyyy" }}
+            </p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <div
+            class="w-12 h-12 rounded-xl bg-green-100 flex items-center justify-center shrink-0"
+          >
+            <svg
+              class="h-6 w-6"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <circle
+                cx="12"
+                cy="13"
+                r="8"
+                stroke="#2BAB60"
+                stroke-width="1.8"
+              />
+              <path
+                d="M12 9V13L14.5 15"
+                stroke="#2BAB60"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M9 3H15"
+                stroke="#2BAB60"
+                stroke-width="1.8"
+                stroke-linecap="round"
+              />
+            </svg>
+          </div>
+
+          <div>
+            <p
+              class="text-xs text-gray-500 uppercase tracking-wider font-medium"
+            >
+              Hora
+            </p>
+
+            <p class="text-gray-900 font-semibold">4 hrs</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- GRID -->
+      <div class="grid md:grid-cols-2 gap-6">
+        <!-- Medicamentos -->
+        <div
+          class="bg-white rounded-2xl shadow-md overflow-hidden md:col-span-2"
+        >
+          <div class="bg-blue-50 px-6 py-4 flex items-center gap-3">
+            <div
+              class="w-9 h-9 rounded-full bg-blue-100 flex items-center justify-center shrink-0"
+            >
+              <svg
+                class="h-5 w-5"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M8.5 7.5C10.433 5.567 13.567 5.567 15.5 7.5C17.433 9.433 17.433 12.567 15.5 14.5L12.5 17.5C10.567 19.433 7.433 19.433 5.5 17.5C3.567 15.567 3.567 12.433 5.5 10.5L8.5 7.5Z"
+                  stroke="#2B5392"
+                  stroke-width="1.8"
+                />
+                <path
+                  d="M8 15.5L15.5 8"
+                  stroke="#2B5392"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                />
+              </svg>
+            </div>
+
+            <div>
+              <h2 class="text-lg font-bold text-gray-900">
+                Medicamentos aplicados
+              </h2>
+
+              <p class="text-xs text-gray-500">
+                <span>{{ tratamiento?.drogas?.length }}</span>
+                medicamentos registrados
+              </p>
+            </div>
+          </div>
+
+          <div class="p-6">
+            <div class="grid sm:grid-cols-2 gap-3">
+              @for (droga of tratamiento?.drogas; track droga.id) {
+                <div class="bg-gray-100 rounded-xl p-4 relative">
+                  <p class="font-semibold text-gray-900">{{ droga.nombre }}</p>
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+
+        <!-- Veterinario -->
+        <div class="bg-white rounded-2xl shadow-md overflow-hidden">
+          <div class="bg-blue-50 px-6 py-4">
+            <h2 class="text-lg font-bold text-gray-900">
+              Veterinario Responsable
+            </h2>
+          </div>
+
+          <div class="p-6 flex items-center gap-4">
+            <div
+              class="w-30 h-30 rounded-full overflow-hidden bg-blue-100 flex items-center justify-center shrink-0"
+            >
+              @if (veterinario?.urlFoto) {
+                <img
+                  [src]="veterinario?.urlFoto"
+                  [alt]="'Foto de ' + (veterinario?.nombre || '')"
+                  class="w-full h-full object-cover"
+                />
+              }
+            </div>
+
+            <div class="flex flex-col gap-3">
+              <div>
+                <p class="text-lg font-bold text-gray-900">
+                  {{ veterinario?.nombre }}
+                </p>
+                <p class="text-sm text-gray-500">
+                  {{
+                    veterinario?.especialidad?.nombre
+                      ? "Especializado en " +
+                        (veterinario?.especialidad?.nombre || "")
+                      : "Especialidad no registrada"
+                  }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Propietario -->
+        <div
+          class="bg-white rounded-2xl shadow-md overflow-hidden flex flex-col"
+        >
+          <div class="bg-blue-50 px-6 py-4">
+            <h2 class="text-lg font-bold text-gray-900">Propietario</h2>
+          </div>
+
+          <div class="p-6 h-full flex flex-col">
+            <div class="space-y-3">
+              <div class="flex justify-between">
+                <span class="text-gray-500">Nombre</span>
+                <span class="font-medium text-gray-900">
+                  {{ owner?.nombre || "No registrado" }}
+                </span>
+              </div>
+
+              <div class="flex justify-between">
+                <span class="text-gray-500">Teléfono</span>
+                <span class="font-medium text-gray-900">
+                  {{ owner?.celular || "No registrado" }}
+                </span>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              class="inline-flex items-center justify-center gap-2 rounded-xl bg-[#2B5392] text-white font-semibold px-4 py-2.5 hover:bg-[#234577] transition-colors duration-200 self-start mt-auto"
+            >
+              <svg
+                class="h-5 w-5"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M8 10H16M8 14H13M7 20L4 21V6C4 4.89543 4.89543 4 6 4H18C19.1046 4 20 4.89543 20 6V16C20 17.1046 19.1046 18 18 18H9L7 20Z"
+                  stroke="white"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+              Chatear
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>

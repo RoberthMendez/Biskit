@@ -40,7 +40,7 @@ export class InfoPetComponent {
         }),
         mergeMap((pet) => {
           this.pet = pet;
-          return this.tratamientoService.findTratamientosPet(pet.id ?? 0);
+          return this.tratamientoService.findTratamientosByPetId(pet.id ?? 0);
         }),
       )
       .subscribe({

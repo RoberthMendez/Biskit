@@ -13,8 +13,10 @@ export class TratamientoService {
     private http: HttpClient
   ) { }
 
-  findTratamientosPet(petId: number): Observable<Tratamiento[]> {
+  findTratamientosByPetId(petId: number): Observable<Tratamiento[]> {
     return this.http.get<Tratamiento[]>(`http://localhost:8080/vet/pets/tratamientos/${petId}`);
   }
+
+  
 
 }

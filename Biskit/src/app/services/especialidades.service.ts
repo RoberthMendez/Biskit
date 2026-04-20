@@ -1,11 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Especialidad } from '../models/Vets/Especialidad/especialidad';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class EspecialidadesService {
-  constructor() {}
+
+  constructor(private http: HttpClient) {}
 
   especialidades: Especialidad[] = [
     new Especialidad(1, 'Medicina General'),
@@ -20,16 +23,13 @@ export class EspecialidadesService {
     new Especialidad(10, 'Medicina interna'),
   ];
 
-  getAll(): Especialidad[] {
-    return this.especialidades;
+  
+  findAll(): Observable<Especialidad[]> {
+    return this.http.get<Especialidad[]>('http://localhost:8080/vet/especialidades');
   }
 
-  addEspecialidad(especialidad: Especialidad): void {
-    especialidad.id =
-      this.especialidades.length > 0
-        ? Math.max(...this.especialidades.map((e) => e.id || 0)) + 1
-        : 1;
-    this.especialidades.push(especialidad);
+  addEspecialidad(especialidad: Especialidad): Observable<Especialidad> {
+    return this.http.post<Especialidad>('http://localhost:8080/vet/especialidades/add', especialidad);
   }
 
   

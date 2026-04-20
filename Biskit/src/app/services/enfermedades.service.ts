@@ -10,10 +10,12 @@ export class EnfermedadesService {
 
   constructor( private http: HttpClient) { }
 
+  // ----- Obtener todas las enfermedades (READ) -----
   findAll(): Observable<Enfermedad[]> {
     return this.http.get<Enfermedad[]>('http://localhost:8080/enfermedades');
   }
 
+  // ----- Agregar una nueva enfermedad (CREATE) -----
   add(nombre: string): Observable<Enfermedad> {
     return this.http.post<Enfermedad>('http://localhost:8080/enfermedades/add', { nombre });
   }

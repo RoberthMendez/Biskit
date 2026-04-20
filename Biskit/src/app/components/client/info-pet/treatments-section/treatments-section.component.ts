@@ -12,6 +12,7 @@ import { Tratamiento } from '../../../../models/Tratamiento/tratamiento';
 export class TreatmentsSectionComponent {
   @Input() pet!: Pet;
   @Input() clientId?: number;
+  @Input() petId?: number;
   
   protected get sortedTratamientos(): Tratamiento[] {
     return [...(this.pet.tratamientos ?? [])].sort(

@@ -27,10 +27,13 @@
 
     <!-- Input nombre -->
     <input
+      #nombreInput
       type="text"
       [(ngModel)]="nombre"
       placeholder="Ej. Cardiología"
-      (keyup.enter)="save()"
+      (keydown.enter)="save()"
+      [disabled]="loading"
+      autocomplete="off"
       class="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-[#4A4A4A] outline-none focus:border-[#2b5392] focus:ring-2 focus:ring-[#2b5392]/20 transition"
     />
 
@@ -45,15 +48,15 @@
         type="button"
         (click)="close.emit()"
         [disabled]="loading"
-        class="rounded-xl border border-gray-200 bg-white px-4 py-2 font-semibold text-[#4A4A4A] hover:bg-gray-100 transition-colors disabled:opacity-50"
+        class="rounded-xl border cursor-pointer border-gray-200 bg-white px-4 py-2 font-semibold text-[#4A4A4A] hover:bg-gray-100 transition-colors disabled:opacity-50"
       >
         Cancelar
       </button>
       <button
         type="button"
         (click)="save()"
-        [disabled]="!nombre.trim()"
-        class="flex items-center gap-2 rounded-xl bg-[#2b5392] px-4 py-2 font-semibold text-white hover:bg-[#1a3a6b] transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+        [disabled]="loading || !nombre.trim()"
+        class="flex cursor-pointer items-center gap-2 rounded-xl bg-[#2b5392] px-4 py-2 font-semibold text-white hover:bg-[#1a3a6b] transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
       >
         Agregar
       </button>

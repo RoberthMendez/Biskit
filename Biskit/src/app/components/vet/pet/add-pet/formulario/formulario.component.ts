@@ -120,7 +120,7 @@ export class FormularioComponent implements OnInit {
               ? new Date(pet.fechaNacimiento).toISOString().split('T')[0]
               : '';
 
-            return this.tratamientoService.findTratamientosPet(pet.id ?? 0);
+            return this.tratamientoService.findTratamientosByPetId(pet.id ?? 0);
           }),
         )
         .subscribe((tratamientos) => {
