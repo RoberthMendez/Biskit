@@ -56,8 +56,9 @@ export class ClientFormComponent {
       return;
     }
 
-    this.clientService.saveClient(this.formClient).subscribe(
-      () => {
+    this.clientService.saveClient(this.formClient).subscribe({
+      next: () => {
+        window.scrollTo({ top: 0, behavior: 'auto' });
         this.successMessage = this.clientId
           ? 'Cambios guardados correctamente'
           : 'Cliente guardado correctamente';
@@ -65,8 +66,14 @@ export class ClientFormComponent {
         setTimeout(() => {
           this.router.navigate(['/vet/clients']);
         }, 600);
-      }
-    );
+      },
+      error: () => {
+        window.scrollTo({ top: 0, behavior: 'auto' });
+        this.errorMessage = this.clientId
+          ? 'No fue posible guardar los cambios del cliente.'
+          : 'No fue posible guardar el cliente.';
+      },
+    });
 
   }
 }

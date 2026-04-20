@@ -55,7 +55,15 @@ export class FormularioComponent {
   ngOnInit(): void {
 
     if (this.vetId) {
-      this.formVet = this.vetService.findById(this.vetId);
+      this.vetService.findById(this.vetId).subscribe({
+        next: (vet) => {
+          this.formVet = vet;
+          this.especialidadSearch = vet.especialidad.nombre;
+        },
+        error: () => {
+          this.formVet = new Vet();
+        }
+      });
       this.especialidadSearch = this.formVet.especialidad.nombre;
     }
     
@@ -118,6 +126,9 @@ export class FormularioComponent {
   onEspecialidadCreated(esp: Especialidad): void {
     this.especialidades = [...this.especialidades, esp];
     this.selectEspecialidad(esp);
+    window.scrollTo({ top: 0, behavior: 'auto' });
+    this.errorMessage = null;
+    this.successMessage = 'Especialidad agregada correctamente';
     this.showAddModal = false;
   }
 
@@ -148,13 +159,28 @@ export class FormularioComponent {
       return;
     }
 
-    this.vetService.saveVet(this.formVet);
+    this.vetService.saveVet(this.formVet).subscribe({
+      next: () => {
+        window.scrollTo({ top: 0, behavior: 'auto' });
 
-    if (this.vetId) {
-      this.router.navigate(['']);
-    } else {
-      this.successMessage = 'Veterinario guardado correctamente';
-      this.formVet = new Vet(); //Resetear el formulario
-    }
+        if (this.vetId) {
+          this.successMessage = 'Cambios guardados correctamente';
+          setTimeout(() => {
+            this.router.navigate(['']);
+          }, 600);
+          return;
+        }
+
+        this.successMessage = 'Veterinario guardado correctamente';
+        this.formVet = new Vet(); //Resetear el formulario
+        this.especialidadSearch = '';
+      },
+      error: () => {
+        window.scrollTo({ top: 0, behavior: 'auto' });
+        this.errorMessage = this.vetId
+          ? 'No fue posible guardar los cambios del veterinario.'
+          : 'No fue posible guardar el veterinario.';
+      },
+    });
   }
 }

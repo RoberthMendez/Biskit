@@ -7,12 +7,10 @@
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
-          "skipTests": true,
-          "style": "none"
+          "skipTests": true
         },
         "@schematics/angular:directive": {
-          "skipTests": true,
-          "style": "none"
+          "skipTests": true
         },
         "@schematics/angular:service": {
           "skipTests": true
@@ -57,6 +55,14 @@
           },
           "configurations": {
             "production": {
+              "optimization": {
+                "scripts": true,
+                "styles": {
+                  "minify": false,
+                  "inlineCritical": false
+                },
+                "fonts": true
+              },
               "budgets": [
                 {
                   "type": "initial",

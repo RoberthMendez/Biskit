@@ -298,9 +298,14 @@ export class FormularioComponent implements OnInit {
           this.razasFiltradas = [...this.razasFiltradas, raza];
           this.selectRaza(raza);
           this.closeAddRazaModal();
+          window.scrollTo({ top: 0, behavior: 'auto' });
+          this.errorMessage = null;
+          this.successMessage = 'Raza agregada correctamente';
           this.savingRaza = false;
         },
         error: () => {
+          window.scrollTo({ top: 0, behavior: 'auto' });
+          this.errorMessage = 'No fue posible guardar la raza.';
           this.addRazaError = 'Ocurrió un error al guardar la raza';
           this.savingRaza = false;
         },
@@ -337,9 +342,14 @@ export class FormularioComponent implements OnInit {
           this.enfermedades = [...this.enfermedades, enfermedad];
           this.selectEnfermedad(enfermedad);
           this.closeAddEnfermedadModal();
+          window.scrollTo({ top: 0, behavior: 'auto' });
+          this.errorMessage = null;
+          this.successMessage = 'Enfermedad agregada correctamente';
           this.savingEnfermedad = false;
         },
         error: () => {
+          window.scrollTo({ top: 0, behavior: 'auto' });
+          this.errorMessage = 'No fue posible guardar la enfermedad.';
           this.addEnfermedadError = 'Ocurrió un error al guardar la enfermedad';
           this.savingEnfermedad = false;
         },
@@ -387,8 +397,9 @@ export class FormularioComponent implements OnInit {
 
     this.formPet.fechaNacimiento = new Date(this.fechaNacimientoStr);
 
-    this.petService.savePet(this.formPet).subscribe(
-      () => {
+    this.petService.savePet(this.formPet).subscribe({
+      next: () => {
+        window.scrollTo({ top: 0, behavior: 'auto' });
         this.successMessage = this.petId
           ? 'Cambios guardados correctamente'
           : 'Mascota guardada correctamente';
@@ -396,8 +407,14 @@ export class FormularioComponent implements OnInit {
         setTimeout(() => {
           this.router.navigate(['/vet/pets']);
         }, 600);
-      }
-    )
+      },
+      error: () => {
+        window.scrollTo({ top: 0, behavior: 'auto' });
+        this.errorMessage = this.petId
+          ? 'No fue posible guardar los cambios de la mascota.'
+          : 'No fue posible guardar la mascota.';
+      },
+    });
 
   }
 

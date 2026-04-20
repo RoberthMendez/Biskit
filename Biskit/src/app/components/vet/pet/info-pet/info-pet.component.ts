@@ -28,10 +28,16 @@ export class InfoPetComponent {
   ) {}
 
   ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id');
+    const id = this.route.snapshot.paramMap.get('petId');
+    const petId = Number(id);
+
+    if (!id || Number.isNaN(petId)) {
+      console.error('Parametro petId invalido en la ruta:', id);
+      return;
+    }
 
     this.petService
-      .findById(id ? Number(id) : 0)
+      .findById(petId)
       .pipe(
         mergeMap((pet) => {
           this.pet = pet;

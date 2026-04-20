@@ -110,19 +110,18 @@ body.hero-ready #hero > div {
   }
 }
 
-@utility redes-link {
-  & svg path {
-    transition:
-      fill 0.35s cubic-bezier(0.4, 0, 0.2, 1),
-      stroke 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-  &:hover svg path {
-    fill: #8eb3ef;
-    stroke: #8eb3ef;
-  }
+.redes-link svg path {
+  transition:
+    fill 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    stroke 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-@utility hero-bg {
+.redes-link:hover svg path {
+  fill: #8eb3ef;
+  stroke: #8eb3ef;
+}
+
+.hero-bg {
   background-image:
     linear-gradient(
       to right,
@@ -133,76 +132,73 @@ body.hero-ready #hero > div {
     url("/images/landing/hero/hero.jpeg");
 }
 
-@utility proceso-linea {
-  &::before {
-    content: "";
-    position: absolute;
-    left: -29px;
-    top: 6%;
-    bottom: 12%;
-    width: 1px;
-    background-color: #4a4a4a59;
-    z-index: 0;
-  }
-  @media (min-width: 48rem) {
-    &::before {
-      left: -40px;
-    }
+.proceso-linea::before {
+  content: "";
+  position: absolute;
+  left: -29px;
+  top: 6%;
+  bottom: 12%;
+  width: 1px;
+  background-color: #4a4a4a59;
+  z-index: 0;
+}
+
+@media (min-width: 48rem) {
+  .proceso-linea::before {
+    left: -40px;
   }
 }
 
-@utility paso-numero {
+.paso-numero {
   z-index: 2;
+}
 
-  &::before {
-    content: attr(data-step);
-    position: absolute;
-    left: -48px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 38px;
-    height: 38px;
-    background-color: #2b5392;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 0.85rem;
-    font-weight: bold;
-    z-index: 3;
-  }
-  @media (min-width: 48rem) {
-    &::before {
-      left: -65px;
-      width: 50px;
-      height: 50px;
-      font-size: 1rem;
-    }
+.paso-numero::before {
+  content: attr(data-step);
+  position: absolute;
+  left: -48px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 38px;
+  height: 38px;
+  background-color: #2b5392;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 0.85rem;
+  font-weight: bold;
+  z-index: 3;
+}
+
+@media (min-width: 48rem) {
+  .paso-numero::before {
+    left: -65px;
+    width: 50px;
+    height: 50px;
+    font-size: 1rem;
   }
 }
 
-@utility back-link {
-  & svg path {
-    transition:
-      fill 0.35s cubic-bezier(0.4, 0, 0.2, 1),
-      stroke 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-  &:hover svg path {
-    stroke: #4a4a4a;
-  }
+.back-link svg path {
+  transition:
+    fill 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    stroke 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-@utility custom-scroll {
-  &::-webkit-scrollbar {
-    width: 5px;
-    height: 5px;
-  }
+.back-link:hover svg path {
+  stroke: #4a4a4a;
+}
 
-  &::-webkit-scrollbar-thumb {
-    background-color: #6d615590;
-    border-radius: 3px;
-  }
+.custom-scroll::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+.custom-scroll::-webkit-scrollbar-thumb {
+  background-color: #6d615590;
+  border-radius: 3px;
 }
 
 .datepicker-cell.prev,

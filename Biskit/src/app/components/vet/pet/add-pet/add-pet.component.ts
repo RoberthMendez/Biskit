@@ -17,7 +17,9 @@ export class AddPetComponent {
   constructor(private route: ActivatedRoute) {}
 
   ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id');
+
+    const id = this.route.snapshot.paramMap.get('petId');
     this.petId = id ? Number(id) : null;
+    
   }
 }

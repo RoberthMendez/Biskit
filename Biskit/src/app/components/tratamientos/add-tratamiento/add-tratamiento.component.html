@@ -1,0 +1,333 @@
+<main>
+  <a
+    routerLink="/vet/pets"
+    class="back-link group mt-6 mb-2 ml-5 inline-flex h-10 items-center justify-start sm:ml-8 md:ml-16 lg:ml-20"
+  >
+    <svg
+      class="mt-1 h-9"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M8 12L16 12"
+        stroke="#6B6B6B"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      ></path>
+      <path
+        d="M11 9L8.08704 11.913C8.03897 11.961 8.03897 12.039 8.08704 12.087L11 15"
+        stroke="#6B6B6B"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      ></path>
+    </svg>
+
+    <h2
+      class="ml-1 text-lg font-bold tracking-wider text-[#4a4a4acc] underline underline-offset-6 transition-colors duration-300 group-hover:text-[#4A4A4Aee]"
+    >
+      Lista de Mascotas
+    </h2>
+  </a>
+
+  <section
+    class="mx-4 mt-5 mb-10 grid grid-cols-1 items-center gap-6 sm:mx-8 md:mx-12 md:grid-cols-2 md:gap-8 lg:mx-20 lg:gap-12 xl:mx-28"
+  >
+    <article class="relative order-last h-100 overflow-hidden rounded-[20px]">
+      <img
+        src="/images/add-tratamiento/tratamiento.jpg"
+        alt="Tratamiento"
+        class="absolute inset-0 h-full w-full object-cover"
+      />
+
+      <div
+        class="absolute inset-0 bg-linear-to-t from-black/70 via-black/30 to-transparent"
+      ></div>
+
+      <div class="absolute bottom-0 left-0 z-10 p-6 text-[#FBFAF8]">
+        <div class="mb-2 flex items-center gap-2 text-sm font-medium">
+          <img src="/images/marca/icono.png" alt="Biskit" class="h-6 w-6" />
+          <span>Biskit</span>
+        </div>
+
+        <h2 class="mb-2 text-2xl leading-tight font-black tracking-wide">
+          {{ isEditMode ? "Editar Tratamiento" : "Registrar Tratamiento" }}
+        </h2>
+
+        <p class="text-sm text-[#FBFAF8]/80">
+          {{
+            isEditMode
+              ? "Modifica la información del tratamiento"
+              : "Completa la información del tratamiento"
+          }}
+        </p>
+      </div>
+    </article>
+
+    <article
+      class="flex flex-col overflow-visible rounded-b-2xl shadow-[0_10px_30px_-6px_rgba(0,0,0,0.08)]"
+    >
+      <div class="flex items-center gap-7 rounded-t-2xl bg-[#F6F7F8] px-8 py-5">
+        <img src="/images/marca/icono.png" alt="Biskit" class="h-10 w-10" />
+
+        <div class="flex flex-col">
+          <h2 class="text-2xl font-bold tracking-wide text-[#4A4A4A]">
+            {{ isEditMode ? "Actualizar Tratamiento" : "Nuevo Tratamiento" }}
+          </h2>
+
+          <p class="text-xs font-semibold text-[#8D8580]">
+            {{
+              isEditMode
+                ? "Modifica la información del tratamiento"
+                : "Complete la información del tratamiento"
+            }}
+          </p>
+        </div>
+      </div>
+
+      <div class="w-full bg-[#FBFAF8] p-8">
+        <form class="space-y-5" (ngSubmit)="guardarTratamiento()">
+          <input type="hidden" name="id" [value]="tratamiento.id ?? ''" />
+
+          @if (errorMessage) {
+            <div
+              class="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700"
+            >
+              {{ errorMessage }}
+            </div>
+          }
+          @if (successMessage) {
+            <p
+              class="rounded-xl bg-green-50 px-4 py-3 text-sm font-medium text-green-700"
+            >
+              {{ successMessage }}
+            </p>
+          }
+
+          <div class="relative">
+            <label
+              for="mascotaSearch"
+              class="mb-2 block text-base font-semibold text-[#4A4A4A]"
+              >Mascota</label
+            >
+            <div class="rounded-xl border border-gray-200 bg-gray-50 px-4 py-3">
+              <input
+                type="text"
+                id="mascotaSearch"
+                name="mascotaSearch"
+                [(ngModel)]="petSearchText"
+                (focus)="openPetDropdown()"
+                (blur)="closePetDropdown()"
+                placeholder="Buscar mascota..."
+                autocomplete="off"
+                required
+                class="w-full bg-transparent text-[#4A4A4A] outline-none"
+              />
+            </div>
+
+            <input
+              type="hidden"
+              name="petId"
+              [value]="tratamiento.pet.id ?? ''"
+            />
+
+            @if (petDropdownOpen) {
+              <div
+                class="custom-scroll absolute z-10 mt-1 max-h-60 w-full overflow-y-auto rounded-xl border border-gray-200 bg-white shadow-lg"
+              >
+                @for (pet of filteredPets; track pet.id ?? pet.nombre) {
+                  <div
+                    class="cursor-pointer border-b border-gray-100 px-4 py-3 hover:bg-blue-50"
+                    (mousedown)="selectPet(pet)"
+                  >
+                    <p class="text-sm font-semibold text-gray-800">
+                      {{ pet.nombre }}
+                    </p>
+                    <p class="text-xs text-gray-500">
+                      {{ pet.raza.especie.nombre || "Sin especie" }} -
+                      {{ pet.raza.nombre || "Sin raza" }}
+                    </p>
+                  </div>
+                } @empty {
+                  <div class="px-4 py-3 text-sm text-gray-500">
+                    No se encontraron mascotas.
+                  </div>
+                }
+              </div>
+            }
+          </div>
+
+          <div class="relative">
+            <label
+              for="vetSearch"
+              class="mb-2 block text-base font-semibold text-[#4A4A4A]"
+              >Veterinario</label
+            >
+
+            <div class="rounded-xl border border-gray-200 bg-gray-50 px-4 py-3">
+              <input
+                type="text"
+                id="vetSearch"
+                name="vetSearch"
+                [(ngModel)]="vetSearchText"
+                (focus)="openVetDropdown()"
+                (blur)="closeVetDropdown()"
+                placeholder="Buscar veterinario..."
+                autocomplete="off"
+                required
+                class="w-full bg-transparent text-[#4A4A4A] outline-none"
+              />
+            </div>
+
+            <input
+              type="hidden"
+              name="vetId"
+              [value]="tratamiento.vet.id ?? ''"
+            />
+
+            @if (vetDropdownOpen) {
+              <div
+                class="custom-scroll absolute z-10 mt-1 max-h-60 w-full overflow-y-auto rounded-xl border border-gray-200 bg-white shadow-lg"
+              >
+                @for (vet of filteredVets; track vet.id ?? vet.nombre) {
+                  <div
+                    class="cursor-pointer border-b border-gray-100 px-4 py-3 hover:bg-blue-50"
+                    (mousedown)="selectVet(vet)"
+                  >
+                    <p class="text-sm font-semibold text-gray-800">
+                      {{ vet.nombre }}
+                    </p>
+                  </div>
+                } @empty {
+                  <div class="px-4 py-3 text-sm text-gray-500">
+                    No se encontraron veterinarios.
+                  </div>
+                }
+              </div>
+            }
+          </div>
+
+          <div>
+            <label
+              for="fecha"
+              class="mb-2 block text-base font-semibold text-[#4A4A4A]"
+              >Fecha</label
+            >
+
+            <div class="rounded-xl border border-gray-200 bg-gray-50 px-4 py-3">
+              <input
+                type="date"
+                id="fecha"
+                name="fecha"
+                [(ngModel)]="fechaForm"
+                required
+                class="w-full bg-transparent text-[#4A4A4A] outline-none"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label class="mb-2 block text-base font-semibold text-[#4A4A4A]"
+              >Drogas</label
+            >
+
+            <div class="space-y-3">
+              @for (drugRow of drugRows; track $index; let index = $index) {
+                <div
+                  class="relative flex items-center gap-2 rounded-xl border border-gray-200 bg-gray-50 px-4 py-3"
+                >
+                  <div class="flex-1">
+                    <input
+                      type="text"
+                      name="drugSearch{{ index }}"
+                      [(ngModel)]="drugRow.searchText"
+                      (focus)="openDrugDropdown(index)"
+                      (blur)="closeDrugDropdown(index)"
+                      placeholder="Buscar droga"
+                      autocomplete="off"
+                      required
+                      class="w-full bg-transparent text-[#4A4A4A] outline-none"
+                    />
+                  </div>
+
+                  <input
+                    type="hidden"
+                    name="drogasIds"
+                    [value]="drugRow.selectedDrug?.id ?? ''"
+                  />
+
+                  @if (drugRows.length > 1) {
+                    <button
+                      type="button"
+                      (click)="eliminarDroga(index)"
+                      class="px-2 font-bold text-red-500 cursor-pointer"
+                    >
+                      ✕
+                    </button>
+                  }
+
+                  @if (drugRow.open) {
+                    <div
+                      class="custom-scroll absolute top-full right-0 left-0 z-20 mt-1 max-h-60 overflow-y-auto rounded-xl border border-gray-200 bg-white shadow-lg"
+                    >
+                      @for (
+                        drug of filteredDrogas(index);
+                        track drug.id ?? drug.nombre
+                      ) {
+                        <div
+                          class="cursor-pointer border-b border-gray-100 px-4 py-3 hover:bg-blue-50"
+                          (mousedown)="selectDrug(index, drug)"
+                        >
+                          <p class="text-sm font-semibold text-gray-800">
+                            {{ drug.nombre }}
+                          </p>
+                        </div>
+                      } @empty {
+                        <div class="px-4 py-3 text-sm text-gray-500">
+                          No se encontraron drogas.
+                        </div>
+                      }
+                    </div>
+                  }
+                </div>
+              }
+            </div>
+
+            <button
+              type="button"
+              (click)="agregarDroga()"
+              class="mt-4 ml-2 cursor-pointer text-sm font-semibold text-[#2B5392] hover:underline"
+            >
+              + Agregar otra droga
+            </button>
+          </div>
+
+          <button
+            type="submit"
+            [disabled]="saving"
+            class="mt-6 flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-[#2b5392] py-3 text-base font-semibold text-[#FBFAF8] shadow-md transition hover:bg-[#1a3a6b] disabled:cursor-not-allowed disabled:opacity-70"
+          >
+            <svg
+              class="h-6 w-6 sm:h-7 sm:w-7"
+              fill="#FBFAF8"
+              viewBox="0 0 14 14"
+              role="img"
+              focusable="false"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M 5.1437726,1 C 3.8705419,1 3.6677179,2.73201 3.9942398,3.6074767 4.2014407,4.1664121 4.8325467,4.7063497 5.4802212,4.4766355 6.317792,4.0625461 6.5544419,3.0007815 6.3213426,2.1775701 6.2083061,1.6291807 5.7708219,1 5.1437726,1 Z M 8.7045202,1 C 8.0774706,1 7.639987,1.6291807 7.5269501,2.1775701 7.2938514,3.0007815 7.530503,4.0625461 8.3680716,4.4766355 9.0157459,4.7063497 9.6468518,4.1664121 9.8540529,3.6074767 10.180575,2.73201 9.9777512,1 8.7045202,1 Z M 1.4974872,3.775701 C 0.99453653,4.2786516 1.0603984,5.7259965 1.9741226,6.3271028 2.566345,6.6306959 3.1674111,6.238153 3.3759918,5.7663552 3.7282343,5.0962718 3.6314374,4.1437972 3.0115058,3.6635514 2.4181204,3.2675013 1.9623141,3.3108741 1.4974872,3.775701 Z M 10.974123,3.6635514 c -0.432609,0.2497664 -0.716729,1.4327204 -0.364486,2.1028038 0.208581,0.4717982 0.837684,0.8643407 1.429906,0.5607476 C 12.953267,5.7259965 13.000929,4.288489 12.488141,3.775701 12.010882,3.3762084 11.445922,3.3911577 10.974123,3.6635514 Z M 6.9928142,4.9252337 c -2.2297852,0 -4.0373832,1.807598 -4.0373832,4.0373831 C 2.955431,11.192402 4.763029,13 6.9928142,13 9.222599,13 11.030197,11.192402 11.030197,8.9626168 c 0,-2.2297851 -1.807598,-4.0373831 -4.0373828,-4.0373831 z m -0.8971963,1.3457944 1.7943926,0 0,1.7943925 1.7943925,0 0,1.7943924 -1.7943925,0.02804 0,1.766356 -1.7943926,0 0,-1.794393 -1.7943925,0 0,-1.7943924 1.7943925,0 z"
+              ></path>
+            </svg>
+            <span>{{
+              isEditMode ? "Guardar Cambios" : "Registrar Tratamiento"
+            }}</span>
+          </button>
+        </form>
+      </div>
+    </article>
+  </section>
+</main>
