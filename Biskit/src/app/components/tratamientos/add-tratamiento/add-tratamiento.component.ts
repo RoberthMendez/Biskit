@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Pet } from '../../../models/Pets/pet';
 import { Vet } from '../../../models/Vets/vet-cl';
 import { Droga } from '../../../models/Droga/droga';
@@ -280,12 +281,33 @@ export class AddTratamientoComponent implements OnInit {
           this.router.navigate(['/vet/pets', petId]);
         }, 600);
       },
-      error: () => {
+      error: (error: HttpErrorResponse) => {
         this.saving = false;
         window.scrollTo({ top: 0, behavior: 'auto' });
-        this.errorMessage = 'No fue posible guardar el tratamiento.';
+        this.errorMessage = this.manejarError(error);
       },
     });
+  }
+
+  private manejarError(error: HttpErrorResponse): string {
+
+    if (error.status === 400 && error.error) {
+      return (
+        error.error.detalle ||
+        error.error.mensaje ||
+        'Error en la solicitud.'
+      );
+    }
+
+    if (error.status === 500) {
+      return 'Ocurrió un error interno en el servidor.';
+    }
+
+    if (error.status === 0) {
+      return 'No se pudo conectar con el servidor.';
+    }
+
+    return 'No fue posible guardar el tratamiento.';
   }
 
   private createDrugRow(): DrugRowState {
