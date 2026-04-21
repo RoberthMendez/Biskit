@@ -44,7 +44,7 @@ export const routes: Routes = [
       ),
   },
   {
-    path: 'vet/pets/:petId/add-tratamiento',
+    path: 'vet/pets/:petId/tratamiento/add',
     loadComponent: () =>
       import('./components/tratamientos/add-tratamiento/add-tratamiento.component').then(
         (m) => m.AddTratamientoComponent,
@@ -55,6 +55,13 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./components/tratamientos/info-tratamiento/info-tratamiento.component').then(
         (m) => m.InfoTratamientoComponent,
+      ),
+  },
+  {
+    path: 'vet/pets/:petId/tratamiento/update/:tratamientoId',
+    loadComponent: () =>
+      import('./components/tratamientos/add-tratamiento/add-tratamiento.component').then(
+        (m) => m.AddTratamientoComponent,
       ),
   },
   {

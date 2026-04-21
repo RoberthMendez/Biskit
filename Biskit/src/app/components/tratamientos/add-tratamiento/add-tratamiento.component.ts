@@ -41,7 +41,12 @@ export class AddTratamientoComponent implements OnInit {
   saving = false;
   errorMessage = '';
   successMessage = '';
+  backLink: (string | number)[] = ['/vet/pets'];
+  backLabel = 'Lista de Mascotas';
   private preselectedPetId: number | null = null;
+  private editTratamientoId: number | null = null;
+  private loadedTratamiento: Tratamiento | null = null;
+  private requestedPetPrefill = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -56,6 +61,7 @@ export class AddTratamientoComponent implements OnInit {
 
     const petIdParam = this.route.snapshot.paramMap.get('petId');
     this.preselectedPetId = petIdParam ? Number(petIdParam) : null;
+    this.updateBackLink();
 
     const tratamientoIdParam =
       this.route.snapshot.queryParamMap.get('tratamientoId') ??
@@ -65,7 +71,12 @@ export class AddTratamientoComponent implements OnInit {
       const tratamientoId = Number(tratamientoIdParam);
       if (!Number.isNaN(tratamientoId)) {
         this.tratamiento.id = tratamientoId;
+        this.editTratamientoId = tratamientoId;
       }
+    }
+
+    if (this.editTratamientoId != null) {
+      this.loadTratamientoForEdit(this.editTratamientoId);
     }
 
     this.loadingPets = true;
@@ -73,6 +84,7 @@ export class AddTratamientoComponent implements OnInit {
     this.vetService.findAll().subscribe({
       next: (vets) => {
         this.vets = vets;
+        this.syncEditFormData();
       },
       error: () => {
         this.errorMessage = 'No fue posible cargar los veterinarios disponibles.';
@@ -83,6 +95,7 @@ export class AddTratamientoComponent implements OnInit {
       next: (pets) => {
         this.pets = pets;
         this.loadingPets = false;
+        this.syncEditFormData();
         this.syncPetSelectionFromQuery();
       },
       error: () => {
@@ -94,6 +107,7 @@ export class AddTratamientoComponent implements OnInit {
     this.drogasService.findAll().subscribe({
       next: (drogas) => {
         this.drogas = drogas;
+        this.syncEditFormData();
       },
       error: () => {
         this.errorMessage = 'No fue posible cargar las drogas disponibles.';
@@ -149,7 +163,7 @@ export class AddTratamientoComponent implements OnInit {
 
   selectPet(pet: Pet): void {
     this.tratamiento.pet = pet;
-    this.petSearchText = pet.nombre;
+    this.petSearchText = pet.nombre || '';
     this.petDropdownOpen = false;
   }
 
@@ -278,19 +292,123 @@ export class AddTratamientoComponent implements OnInit {
     return new DrugRowState();
   }
 
+  private createDrugRowWithSelection(drug: Droga): DrugRowState {
+    const row = new DrugRowState();
+    row.selectedDrug = drug;
+    row.searchText = drug.nombre;
+    return row;
+  }
+
+  private updateBackLink(): void {
+    if (this.preselectedPetId != null && !Number.isNaN(this.preselectedPetId)) {
+      this.backLink = ['/vet/pets', this.preselectedPetId];
+      this.backLabel = 'Información de la Mascota';
+      return;
+    }
+
+    this.backLink = ['/vet/pets'];
+    this.backLabel = 'Lista de Mascotas';
+  }
+
+  private loadTratamientoForEdit(tratamientoId: number): void {
+    this.tratamientoService.findById(tratamientoId).subscribe({
+      next: (tratamiento) => {
+        this.loadedTratamiento = tratamiento;
+        this.syncEditFormData();
+      },
+      error: () => {
+        this.errorMessage = 'No fue posible cargar el tratamiento a editar.';
+      },
+    });
+  }
+
+  private syncEditFormData(): void {
+    if (!this.loadedTratamiento) {
+      return;
+    }
+
+    const currentTratamiento = this.loadedTratamiento;
+    this.tratamiento.id = currentTratamiento.id;
+    this.fechaForm = this.toDateInputValue(currentTratamiento.fecha);
+
+    const petId = currentTratamiento.pet?.id;
+    if (petId != null) {
+      const selectedPet = this.findPetInCatalog(petId);
+      if (selectedPet) {
+        this.selectPet(selectedPet);
+      } else {
+        this.selectPet(currentTratamiento.pet);
+        this.loadPetForPrefill(Number(petId));
+      }
+    }
+
+    const vetId = currentTratamiento.vet?.id;
+    if (vetId != null) {
+      const selectedVet =
+        this.vets.find((candidate) => candidate.id === vetId) ?? currentTratamiento.vet;
+      this.selectVet(selectedVet);
+    }
+
+    const selectedDrogas = (currentTratamiento.drogas ?? [])
+      .map((drug) => this.drogas.find((candidate) => candidate.id === drug.id) ?? drug)
+      .filter((drug) => drug.id != null);
+
+    this.drugRows = selectedDrogas.length
+      ? selectedDrogas.map((drug) => this.createDrugRowWithSelection(drug))
+      : [this.createDrugRow()];
+  }
+
   private syncPetSelectionFromQuery(): void {
     if (this.preselectedPetId == null) {
       return;
     }
 
-    const pet = this.pets.find((candidate) => candidate.id === this.preselectedPetId);
+    const pet = this.findPetInCatalog(this.preselectedPetId);
 
     if (pet) {
       this.selectPet(pet);
     }
   }
 
+  private findPetInCatalog(petId: number | string): Pet | undefined {
+    const numericPetId = Number(petId);
+    if (Number.isNaN(numericPetId)) {
+      return undefined;
+    }
+
+    return this.pets.find((candidate) => Number(candidate.id) === numericPetId);
+  }
+
+  private loadPetForPrefill(petId: number): void {
+    if (this.requestedPetPrefill || Number.isNaN(petId)) {
+      return;
+    }
+
+    this.requestedPetPrefill = true;
+    this.petService.findById(petId).subscribe({
+      next: (pet) => {
+        this.selectPet(pet);
+      },
+      error: () => {
+        this.requestedPetPrefill = false;
+      },
+    });
+  }
+
   private getTodayDateString(): string {
     return new Date().toISOString().slice(0, 10);
+  }
+
+  private toDateInputValue(value: Date | string | null | undefined): string {
+    if (!value) {
+      return this.getTodayDateString();
+    }
+
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) {
+      return this.getTodayDateString();
+    }
+
+    return date.toISOString().slice(0, 10);
   }
 }

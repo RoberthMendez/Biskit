@@ -15,8 +15,6 @@ export class TratamientoService {
   // ----- Crear y Actualizar Tratamiento (CREATE/UPDATE) -----
   saveTratamiento(tratamientoDto: TratamientoDto): Observable<Tratamiento> {
 
-    console.log('Tratamiento a guardar:', tratamientoDto);
-
     if (tratamientoDto.id)
       return this.http.put<Tratamiento>(`http://localhost:8080/tratamientos/update/${tratamientoDto.id}`, tratamientoDto);
     else
