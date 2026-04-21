@@ -1,93 +1,71 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-
-interface Especie {
-  id: number;
-  nombre: string;
-}
-
-interface Raza {
-  id: number;
-  nombre: string;
-  especie: Especie;
-}
-
-interface Pet {
-  id: number;
-  nombre: string;
-  peso: number;
-  fechaNacimiento: Date;
-  urlFoto: string | null;
-  raza: Raza | null;
-}
-
-interface Droga {
-  id: number;
-  nombre: string;
-}
-
-interface Tratamiento {
-  id: number;
-  fecha: Date;
-  drogas: Droga[];
-}
-
-interface Especialidad {
-  id: number;
-  nombre: string;
-}
-
-interface Veterinario {
-  id: number;
-  nombre: string;
-  urlFoto: string | null;
-  especialidad: Especialidad;
-}
-
-interface Owner {
-  id: number;
-  nombre: string;
-  celular: string;
-}
+import { Pet } from '../../../models/Pets/pet';
+import { Tratamiento } from '../../../models/Tratamiento/tratamiento';
+import { Vet } from '../../../models/Vets/vet-cl';
+import { Client } from '../../../models/Client/client';
+import { TratamientoService } from '../../../services/tratamiento.service';
+import { PetService } from '../../../services/pet.service';
 
 @Component({
   selector: 'app-info-tratamiento',
   standalone: true,
-  imports: [CommonModule, RouterLink],
-  templateUrl: './info-tratamiento.component.html'
+  imports: [
+    CommonModule,
+    RouterLink,
+  ],
+  templateUrl: './info-tratamiento.component.html',
 })
 export class InfoTratamientoComponent implements OnInit {
   
-  pet: Pet | null = null;
   tratamiento: Tratamiento | null = null;
-  veterinario: Veterinario | null = null;
-  owner: Owner | null = null;
+  veterinario: Vet | null = null;
+  pet: Pet | null = null;
+  owner: Client | null = null;
   isClientView = false;
   backLink: (string | number)[] = [];
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(
+    private route: ActivatedRoute, 
+    private tratamientoService: TratamientoService,
+    private petService: PetService
+  ) {}
 
   ngOnInit(): void {
 
-    const clientId = this.route.snapshot.paramMap.get('clientId');
-    const petId = this.route.snapshot.paramMap.get('petId');
+    const petId = Number(this.route.snapshot.paramMap.get('petId'));
+    const tratamientoId = Number(this.route.snapshot.paramMap.get('tratamientoId'));
 
-    if (clientId && petId) {
-      this.isClientView = true;
-      this.backLink = ['/client', clientId, 'pet', petId];
-      return;
+
+    if (tratamientoId) {
+      this.tratamientoService.findById(tratamientoId).subscribe({
+        next: (tratamiento) => {
+          this.tratamiento = tratamiento;
+          this.veterinario = tratamiento.vet;
+        },
+        error: (error) => {
+          console.error('Error al cargar tratamiento:', error);
+        }
+      });
     }
 
-    if (petId) {
+    if(petId) {
+      this.petService.findById(petId).subscribe({
+        next: (pet) => {
+          this.pet = pet;
+          this.owner = pet.owner;
+        },
+        error: (error) => {
+          console.error('Error al cargar mascota:', error);
+        }
+      });
       this.isClientView = false;
       this.backLink = ['/vet/pets', petId];
       return;
     }
 
     this.backLink = ['/vet/pets'];
-
-    
 
   }
 
@@ -103,6 +81,19 @@ export class InfoTratamientoComponent implements OnInit {
     }
 
     return age.toString();
+  }
+
+  getFechaTratamiento(): string {
+    if (!this.tratamiento?.fecha) return 'Sin fecha';
+
+    const parsedDate = new Date(this.tratamiento.fecha);
+    if (Number.isNaN(parsedDate.getTime())) return 'Sin fecha';
+
+    return new Intl.DateTimeFormat('es-ES', {
+      day: '2-digit',
+      month: 'long',
+      year: 'numeric',
+    }).format(parsedDate);
   }
 
   eliminarTratamiento(): void {
