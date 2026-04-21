@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Pet } from '../../../../models/Pets/pet';
 import { PetService } from '../../../../services/pet.service';
 import { CardPetComponent } from './card-pet/card-pet.component';
@@ -14,19 +14,22 @@ import { CardPetComponent } from './card-pet/card-pet.component';
 })
 export class PetsComponent {
   
-  pets: Pet[] = [];
+  public pets: Pet[] = [];
+  public vetId: number = 0;
 
-  // Búsqueda de mascota
-  searchTerm: string = '';
+  public searchTerm: string = '';
 
-  constructor(private petService: PetService) {}
+  constructor(private petService: PetService, private route: ActivatedRoute) {}
 
   ngOnInit() {
+    
+    this.vetId = Number(this.route.snapshot.paramMap.get('vetId'));
     this.petService.findAll().subscribe(
       (pets) => {
         this.pets = pets;
       }
     );
+
   }
 
   get filteredPets(): Pet[] {

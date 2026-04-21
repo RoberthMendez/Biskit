@@ -175,7 +175,7 @@
       class="mx-2 mb-10 grid grid-cols-1 gap-6 sm:mx-10 sm:grid-cols-2 sm:gap-8 lg:grid-cols-3 lg:gap-10 2xl:grid-cols-4"
     >
       @for (pet of filteredPets; track pet.id) {
-        <app-card-pet [pet]="pet" />
+        <app-card-pet [pet]="pet" [vetId]="vetId" />
       }
     </section>
   }

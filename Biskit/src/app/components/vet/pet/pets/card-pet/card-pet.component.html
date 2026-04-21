@@ -1,5 +1,5 @@
 <article
-  [routerLink]="['/vet/pets', pet.id]"
+  [routerLink]="['/vet/', vetId, 'pets', pet.id]"
   class="card-mascota group mx-auto h-auto w-full max-w-xs cursor-pointer rounded-2xl bg-[#FBFAF8] pb-3 shadow-[0_10px_30px_-6px_rgba(0,0,0,0.08)] transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1 hover:shadow-[0_16px_40px_-8px_rgba(0,0,0,0.12)]"
 >
   <div class="h-full">
@@ -7,7 +7,7 @@
       <div class="relative">
         <!-- Botón Editar -->
         <a
-          [routerLink]="['/vet/pets/update', pet.id]"
+          [routerLink]="['/vet/', vetId, 'pets', 'update', pet.id]"
           (click)="$event.stopPropagation()"
           class="group/editar absolute top-4 left-4 z-10 rounded-lg border border-white/30 bg-white/20 p-2 text-white shadow-sm backdrop-blur-md transition-all duration-200 hover:bg-white/30"
         >

@@ -30,6 +30,7 @@ export class AddTratamientoComponent implements OnInit {
   pets: Pet[] = [];
   vets: Vet[] = [];
   drogas: Droga[] = [];
+  vetId!: number;
 
   tratamiento: Tratamiento = new Tratamiento();
   fechaForm = this.getTodayDateString();
@@ -48,6 +49,7 @@ export class AddTratamientoComponent implements OnInit {
   private editTratamientoId: number | null = null;
   private loadedTratamiento: Tratamiento | null = null;
   private requestedPetPrefill = false;
+  private requestedVetPrefill = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -60,6 +62,7 @@ export class AddTratamientoComponent implements OnInit {
 
   ngOnInit(): void {
 
+    this.vetId = Number(this.route.snapshot.paramMap.get('vetId'));
     const petIdParam = this.route.snapshot.paramMap.get('petId');
     this.preselectedPetId = petIdParam ? Number(petIdParam) : null;
     this.updateBackLink();
@@ -86,6 +89,7 @@ export class AddTratamientoComponent implements OnInit {
       next: (vets) => {
         this.vets = vets;
         this.syncEditFormData();
+        this.syncVetSelectionFromRoute();
       },
       error: () => {
         this.errorMessage = 'No fue posible cargar los veterinarios disponibles.';
@@ -278,7 +282,7 @@ export class AddTratamientoComponent implements OnInit {
           : 'Tratamiento guardado correctamente';
 
         setTimeout(() => {
-          this.router.navigate(['/vet/pets', petId]);
+          this.router.navigate(['/vet/', this.vetId, 'pets', petId]);
         }, 600);
       },
       error: (error: HttpErrorResponse) => {
@@ -323,12 +327,12 @@ export class AddTratamientoComponent implements OnInit {
 
   private updateBackLink(): void {
     if (this.preselectedPetId != null && !Number.isNaN(this.preselectedPetId)) {
-      this.backLink = ['/vet/pets', this.preselectedPetId];
+      this.backLink = ['/vet/', this.vetId, 'pets', this.preselectedPetId];
       this.backLabel = 'Información de la Mascota';
       return;
     }
 
-    this.backLink = ['/vet/pets'];
+    this.backLink = ['/vet/', this.vetId, 'pets'];
     this.backLabel = 'Lista de Mascotas';
   }
 
@@ -392,6 +396,21 @@ export class AddTratamientoComponent implements OnInit {
     }
   }
 
+  private syncVetSelectionFromRoute(): void {
+    if (this.isEditMode || Number.isNaN(this.vetId)) {
+      return;
+    }
+
+    const vet = this.findVetInCatalog(this.vetId);
+
+    if (vet) {
+      this.selectVet(vet);
+      return;
+    }
+
+    this.loadVetForPrefill(this.vetId);
+  }
+
   private findPetInCatalog(petId: number | string): Pet | undefined {
     const numericPetId = Number(petId);
     if (Number.isNaN(numericPetId)) {
@@ -399,6 +418,15 @@ export class AddTratamientoComponent implements OnInit {
     }
 
     return this.pets.find((candidate) => Number(candidate.id) === numericPetId);
+  }
+
+  private findVetInCatalog(vetId: number | string): Vet | undefined {
+    const numericVetId = Number(vetId);
+    if (Number.isNaN(numericVetId)) {
+      return undefined;
+    }
+
+    return this.vets.find((candidate) => Number(candidate.id) === numericVetId);
   }
 
   private loadPetForPrefill(petId: number): void {
@@ -413,6 +441,22 @@ export class AddTratamientoComponent implements OnInit {
       },
       error: () => {
         this.requestedPetPrefill = false;
+      },
+    });
+  }
+
+  private loadVetForPrefill(vetId: number): void {
+    if (this.requestedVetPrefill || Number.isNaN(vetId)) {
+      return;
+    }
+
+    this.requestedVetPrefill = true;
+    this.vetService.findById(vetId).subscribe({
+      next: (vet) => {
+        this.selectVet(vet);
+      },
+      error: () => {
+        this.requestedVetPrefill = false;
       },
     });
   }

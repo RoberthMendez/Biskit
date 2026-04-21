@@ -19,7 +19,9 @@ import { mergeMap } from 'rxjs';
   templateUrl: './info-pet.component.html',
 })
 export class InfoPetComponent {
+
   pet!: Pet;
+  vetId!: number;
 
   constructor(
     private petService: PetService,
@@ -28,8 +30,10 @@ export class InfoPetComponent {
   ) {}
 
   ngOnInit(): void {
+
     const id = this.route.snapshot.paramMap.get('petId');
     const petId = Number(id);
+    this.vetId = Number(this.route.snapshot.paramMap.get('vetId'));
 
     if (!id || Number.isNaN(petId)) {
       console.error('Parametro petId invalido en la ruta:', id);

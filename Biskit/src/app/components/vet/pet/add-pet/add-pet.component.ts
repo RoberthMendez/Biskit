@@ -13,6 +13,7 @@ import { ActivatedRoute } from '@angular/router';
 export class AddPetComponent {
 
   petId: number | null = null;
+  vetId!: number;
 
   constructor(private route: ActivatedRoute) {}
 
@@ -20,6 +21,7 @@ export class AddPetComponent {
 
     const id = this.route.snapshot.paramMap.get('petId');
     this.petId = id ? Number(id) : null;
+    this.vetId = Number(this.route.snapshot.paramMap.get('vetId'));
     
   }
 }

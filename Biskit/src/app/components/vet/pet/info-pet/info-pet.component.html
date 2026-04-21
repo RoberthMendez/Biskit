@@ -1,7 +1,7 @@
 <main>
   <!-- Botón volver -->
   <a
-    routerLink="/vet/pets"
+    [routerLink]="['vet/', vetId, 'pets']"
     class="back-link group mt-8 mb-2 ml-5 inline-flex h-10 items-center justify-start sm:ml-8 md:ml-16 lg:ml-28"
   >
     <svg
@@ -47,11 +47,15 @@
   >
     @if (pet) {
       <!-- Card de la Mascota -->
-      <app-card-info-pet [pet]="pet" (estadoChange)="onEstadoChange($event)" />
+      <app-card-info-pet
+        [pet]="pet"
+        [vetId]="vetId"
+        (estadoChange)="onEstadoChange($event)"
+      />
 
       <!-- Tratamientos y Dueño -->
       <aside class="flex flex-col gap-5 lg:col-span-2 justify-center">
-        <app-card-info-tratamientos [pet]="pet" />
+        <app-card-info-tratamientos [pet]="pet" [vetId]="vetId" />
         <app-card-info-owner [owner]="pet.owner" />
       </aside>
     }

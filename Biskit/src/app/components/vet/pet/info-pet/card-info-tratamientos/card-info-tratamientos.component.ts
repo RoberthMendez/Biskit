@@ -12,7 +12,10 @@ import { Droga } from '../../../../../models/Droga/droga';
   templateUrl: './card-info-tratamientos.component.html',
 })
 export class CardInfoTratamientosComponent {
+  
   @Input() pet!: Pet;
+
+  @Input() vetId!: number;
 
   protected get sortedTratamientos(): Tratamiento[] {
     return [...(this.pet.tratamientos ?? [])].sort(

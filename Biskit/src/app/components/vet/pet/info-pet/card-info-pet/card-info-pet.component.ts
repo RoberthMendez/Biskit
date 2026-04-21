@@ -13,6 +13,9 @@ export class CardInfoPetComponent implements AfterViewInit, OnChanges {
   @Input()
   pet!: Pet;
 
+  @Input()
+  vetId!: number;
+
   @Output()
   estadoChange = new EventEmitter<boolean>();
 
@@ -69,21 +72,6 @@ export class CardInfoPetComponent implements AfterViewInit, OnChanges {
     }
   }
 
-  private revertirCheckbox(nuevoEstado: boolean): void {
-    const checkbox = this.toggleInputRef?.nativeElement;
-    if (!checkbox) {
-      return;
-    }
-
-    checkbox.checked = !nuevoEstado;
-    this.pet.estado = checkbox.checked;
-    this.updateTogglePillFromView();
-  }
-
-  private cambiarEstadoMascota(_id: number, _nuevoEstado: boolean): void {
-    // Si falla persistencia en backend, descomentar y usar revertirCheckbox(_nuevoEstado).
-  }
-
   onToggleEstado(event: Event): void {
     const checkbox = event.target as HTMLInputElement;
     this.pet.estado = checkbox.checked;
@@ -94,9 +82,6 @@ export class CardInfoPetComponent implements AfterViewInit, OnChanges {
 
     this.estadoChange.emit(this.pet.estado);
 
-    if (this.pet.id != null) {
-      this.cambiarEstadoMascota(this.pet.id, this.pet.estado);
-    }
   }
 
 }

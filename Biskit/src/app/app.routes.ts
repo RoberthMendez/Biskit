@@ -16,77 +16,77 @@ export const routes: Routes = [
       ),
   },
   {
-    path: 'vet/pets',
+    path: 'vet/:vetId/pets',
     loadComponent: () =>
       import('./components/vet/pet/pets/pets.component').then(
         (m) => m.PetsComponent,
       ),
   },
   {
-    path: 'vet/pets/add',
+    path: 'vet/:vetId/pets/add',
     loadComponent: () =>
       import('./components/vet/pet/add-pet/add-pet.component').then(
         (m) => m.AddPetComponent,
       ),
   },
   {
-    path: 'vet/pets/update/:petId',
+    path: 'vet/:vetId/pets/update/:petId',
     loadComponent: () =>
       import('./components/vet/pet/add-pet/add-pet.component').then(
         (m) => m.AddPetComponent,
       ),
   },
   {
-    path: 'vet/pets/:petId',
+    path: 'vet/:vetId/pets/:petId',
     loadComponent: () =>
       import('./components/vet/pet/info-pet/info-pet.component').then(
         (m) => m.InfoPetComponent,
       ),
   },
   {
-    path: 'vet/pets/:petId/tratamiento/add',
+    path: 'vet/:vetId/pets/:petId/tratamiento/add',
     loadComponent: () =>
       import('./components/tratamientos/add-tratamiento/add-tratamiento.component').then(
         (m) => m.AddTratamientoComponent,
       ),
   },
   {
-    path: 'vet/pets/:petId/tratamiento/:tratamientoId',
+    path: 'vet/:vetId/pets/:petId/tratamiento/:tratamientoId',
     loadComponent: () =>
       import('./components/tratamientos/info-tratamiento/info-tratamiento.component').then(
         (m) => m.InfoTratamientoComponent,
       ),
   },
   {
-    path: 'vet/pets/:petId/tratamiento/update/:tratamientoId',
+    path: 'vet/:vetId/pets/:petId/tratamiento/update/:tratamientoId',
     loadComponent: () =>
       import('./components/tratamientos/add-tratamiento/add-tratamiento.component').then(
         (m) => m.AddTratamientoComponent,
       ),
   },
   {
-    path: 'vet/clients',
+    path: 'vet/:vetId/clients',
     loadComponent: () =>
       import('./components/vet/client/clients/clients.component').then(
         (m) => m.ClientsComponent,
       ),
   },
   {
-    path: 'vet/clients/add',
+    path: 'vet/:vetId/clients/add',
     loadComponent: () =>
       import('./components/vet/client/add-client/add-client.component').then(
         (m) => m.AddClientComponent,
       ),
   },
   {
-    path: 'vet/clients/update/:id',
+    path: 'vet/:vetId/clients/update/:id',
     loadComponent: () =>
       import('./components/vet/client/add-client/add-client.component').then(
         (m) => m.AddClientComponent,
       ),
   },
   {
-    path: 'vet/clients/:id',
+    path: 'vet/:vetId/clients/:id',
     loadComponent: () =>
       import('./components/vet/client/info-client/info-client.component').then(
         (m) => m.InfoClientComponent,
