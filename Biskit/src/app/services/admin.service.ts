@@ -11,4 +11,8 @@ export class AdminService {
   getLastTreatmentCount(){
     return this.http.get<number>('http://localhost:8080/vet/admin/ultimos-tratamientos-count');
   }
+
+  getTreatmentsDrugCount(id: number){
+    return this.http.get<number>(`http://localhost:8080/admin/drug/${id}/tratamientos-count`);
+  }
 }
