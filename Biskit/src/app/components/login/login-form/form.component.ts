@@ -45,7 +45,12 @@ export class LoginFormComponent {
         }
 
         if (response.tipo === 'VETERINARIO') {
-          this.router.navigate(['/vet', response.id, 'pets']);
+          this.router.navigate(['/vet', response.id]);
+          return;
+        }
+
+        if (response.tipo === 'ADMIN') {
+          this.router.navigate(['/admin', response.id]);
           return;
         }
 

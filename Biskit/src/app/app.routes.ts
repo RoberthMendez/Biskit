@@ -127,4 +127,18 @@ export const routes: Routes = [
         (m) => m.AddVetComponent,
       ),
   },
+  {
+    path: 'admin/:id',
+    loadComponent: () =>
+      import('./components/admin/dashboard/dashboard.component').then(
+        (m) => m.DashboardComponent,
+      ),
+  },
+  {
+    path: 'vet/:id',
+    loadComponent: () =>
+      import('./components/vet/dashboard/dashboard.component').then(
+        (m) => m.DashboardComponent,
+      ),
+  }
 ];
