@@ -13,8 +13,8 @@ export class AdminService {
     return this.http.get<number>('http://localhost:8080/admin/ultimos-tratamientos-count');
   }
 
-  getTreatmentsDrugCount(id: number): Observable<number> {
-    return this.http.get<number>(`http://localhost:8080/admin/droga/${id}/tratamientos-count`);
+  getTreatmentsDrugMonthCount(id: number): Observable<number> {
+    return this.http.get<number>(`http://localhost:8080/admin/droga/${id}/tratamientos-mes-count`);
   }
 
   getNumVeterinariosActivos(): Observable<number> {

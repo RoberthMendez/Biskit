@@ -14,7 +14,7 @@ export class DashboardComponent {
 
   public numTratamientos: number = 0;
   public drogas: Droga[] = [];
-  public tratamientosPorMedicamento: { drug: Droga, count: number }[] = [];
+  public tratamientosPorMedicamentoMes: { drug: Droga, count: number }[] = [];
   public numVeterinariosActivos: number = 0; // Agregado para el número de veterinarios activos
   public numVeterinariosInactivos: number = 0; // Agregado para el número de veterinarios inactivos
 
@@ -27,7 +27,7 @@ export class DashboardComponent {
     console.log('Dashboard atributos:', {
       numTratamientos: this.numTratamientos,
       drogas: this.drogas,
-      tratamientosPorMedicamento: this.tratamientosPorMedicamento,
+      tratamientosPorMedicamentoMes : this.tratamientosPorMedicamentoMes,
       numVeterinariosActivos: this.numVeterinariosActivos,
       numVeterinariosInactivos: this.numVeterinariosInactivos
     });
@@ -52,7 +52,7 @@ export class DashboardComponent {
             return of({ drug: droga, count: 0 });
           }
 
-          return this.adminService.getTreatmentsDrugCount(droga.id).pipe(
+          return this.adminService.getTreatmentsDrugMonthCount(droga.id).pipe(
             map((count) => ({ drug: droga, count })),
             catchError(() => of({ drug: droga, count: 0 })) 
           );
@@ -62,7 +62,7 @@ export class DashboardComponent {
       })
     ).subscribe({
       next: (tratamientosPorMedicamento) => {
-        this.tratamientosPorMedicamento = tratamientosPorMedicamento;
+        this.tratamientosPorMedicamentoMes = tratamientosPorMedicamento;
         // Llama al método para registrar el estado después de obtener los conteos por medicamento BORRAR DESPUÉS
         this.logDashboardState();
       }
