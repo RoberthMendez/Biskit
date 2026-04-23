@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -8,11 +9,11 @@ export class AdminService {
 
   constructor(private http: HttpClient) { }
 
-  getLastTreatmentCount(){
-    return this.http.get<number>('http://localhost:8080/vet/admin/ultimos-tratamientos-count');
+  getLastTreatmentCount(): Observable<number> {
+    return this.http.get<number>('http://localhost:8080/admin/ultimos-tratamientos-count');
   }
 
-  getTreatmentsDrugCount(id: number){
-    return this.http.get<number>(`http://localhost:8080/admin/drug/${id}/tratamientos-count`);
+  getTreatmentsDrugCount(id: number): Observable<number> {
+    return this.http.get<number>(`http://localhost:8080/admin/droga/${id}/tratamientos-count`);
   }
 }
