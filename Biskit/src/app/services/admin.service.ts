@@ -7,6 +7,7 @@ import { DrogaTratamientosCountDto } from '../models/dtos/droga-tratamientos-cou
 import { TratamientoMesDto } from '../models/dtos/tratamiento-mes-dto';
 import { TopDrogaDto } from '../models/dtos/top-droga-dto';
 import { TopEnfermedadDto } from '../models/dtos/top-enfermedad-dto';
+import { StockDrogaDto } from '../models/dtos/stock-droga-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -53,5 +54,9 @@ export class AdminService {
 
   getTop5Enfermedades(): Observable<TopEnfermedadDto[]>{
     return this.http.get<TopEnfermedadDto[]>('http://localhost:8080/admin/top5-enfermedades');
+  }
+
+  getDrogasBajasEnStock(): Observable<StockDrogaDto[]> {
+    return this.http.get<StockDrogaDto[]>('http://localhost:8080/admin/drogas-bajas-stock');
   }
 }

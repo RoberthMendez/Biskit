@@ -9,6 +9,7 @@ import { DrogaTratamientosCountDto } from '../../../models/dtos/droga-tratamient
 import { TratamientoMesDto } from '../../../models/dtos/tratamiento-mes-dto';
 import { TopDrogaDto } from '../../../models/dtos/top-droga-dto';
 import { TopEnfermedadDto } from '../../../models/dtos/top-enfermedad-dto';
+import { StockDrogaDto } from '../../../models/dtos/stock-droga-dto';
 
 @Component({
   selector: 'app-dashboard',
@@ -27,12 +28,8 @@ export class DashboardComponent {
   public ventasTotales: number = 0;
   public gananciasTotales: number = 0;
   public top5Drogas: TopDrogaDto[] = [];
-
-
   public top5Enfermedades: TopEnfermedadDto[] = [];
-
-
-  public drogasBajasEnStock: Droga[] = [];
+  public drogasBajasEnStock: StockDrogaDto[] = [];
 
   constructor(
     private adminService: AdminService
@@ -150,6 +147,15 @@ export class DashboardComponent {
         next: (topEnfermedades) => {
           this.top5Enfermedades = topEnfermedades;
           this.logDashboardState(); // Llama al método para registrar el estado después de obtener el top 5 de enfermedades BORRAR DESPUÉS
+        }
+      }
+    );
+
+    this.adminService.getDrogasBajasEnStock().subscribe(
+      {
+        next: (drogasBajasStock) => {
+          this.drogasBajasEnStock = drogasBajasStock;
+          this.logDashboardState(); // Llama al método para registrar el estado después de obtener las drogas bajas en stock BORRAR DESPUÉS
         }
       }
     );

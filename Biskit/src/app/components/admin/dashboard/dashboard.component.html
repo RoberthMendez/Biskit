@@ -30,3 +30,9 @@
     #{{ item.top }}: {{ item.enfermedadNombre }} : {{ item.countPets }}
   </li>
 </ul>
+<p>Drogas bajas en stock:</p>
+<ul>
+  <li *ngFor="let item of drogasBajasEnStock">
+    Reponer {{ item.drogaNombre }}, Stock actual: {{ item.stockActual }} !!!!!
+  </li>
+</ul>
