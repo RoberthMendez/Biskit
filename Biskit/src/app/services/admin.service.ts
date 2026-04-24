@@ -6,6 +6,7 @@ import { Enfermedad } from '../models/Pets/enfermedad';
 import { DrogaTratamientosCountDto } from '../models/dtos/droga-tratamientos-count-dto';
 import { TratamientoMesDto } from '../models/dtos/tratamiento-mes-dto';
 import { TopDrogaDto } from '../models/dtos/top-droga-dto';
+import { TopEnfermedadDto } from '../models/dtos/top-enfermedad-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -48,5 +49,9 @@ export class AdminService {
 
   getTop5Drogas(): Observable<TopDrogaDto[]>{
     return this.http.get<TopDrogaDto[]>('http://localhost:8080/admin/top5-drogas');
+  }
+
+  getTop5Enfermedades(): Observable<TopEnfermedadDto[]>{
+    return this.http.get<TopEnfermedadDto[]>('http://localhost:8080/admin/top5-enfermedades');
   }
 }

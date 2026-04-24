@@ -8,6 +8,7 @@ import { Enfermedad } from '../../../models/Pets/enfermedad';
 import { DrogaTratamientosCountDto } from '../../../models/dtos/droga-tratamientos-count-dto';
 import { TratamientoMesDto } from '../../../models/dtos/tratamiento-mes-dto';
 import { TopDrogaDto } from '../../../models/dtos/top-droga-dto';
+import { TopEnfermedadDto } from '../../../models/dtos/top-enfermedad-dto';
 
 @Component({
   selector: 'app-dashboard',
@@ -25,12 +26,12 @@ export class DashboardComponent {
   public numMascotasInactivas: number = 0; 
   public ventasTotales: number = 0;
   public gananciasTotales: number = 0;
-
-
   public top5Drogas: TopDrogaDto[] = [];
 
 
-  public top5Enfermedades: { enfermedadNombre: string, top: number }[] = [];
+  public top5Enfermedades: TopEnfermedadDto[] = [];
+
+
   public drogasBajasEnStock: Droga[] = [];
 
   constructor(
@@ -48,7 +49,8 @@ export class DashboardComponent {
       ventasTotales: this.ventasTotales,
       gananciasTotales: this.gananciasTotales,
       top5Drogas: this.top5Drogas,
-      top5Enfermedades: this.top5Enfermedades
+      top5Enfermedades: this.top5Enfermedades,
+      drogasBajasEnStock: this.drogasBajasEnStock
     });
   }
 
@@ -139,6 +141,15 @@ export class DashboardComponent {
         next: (topDrogas) => {
           this.top5Drogas = topDrogas;
           this.logDashboardState(); // Llama al método para registrar el estado después de obtener el top 5 de drogas BORRAR DESPUÉS
+        }
+      }
+    );
+
+    this.adminService.getTop5Enfermedades().subscribe(
+      {
+        next: (topEnfermedades) => {
+          this.top5Enfermedades = topEnfermedades;
+          this.logDashboardState(); // Llama al método para registrar el estado después de obtener el top 5 de enfermedades BORRAR DESPUÉS
         }
       }
     );

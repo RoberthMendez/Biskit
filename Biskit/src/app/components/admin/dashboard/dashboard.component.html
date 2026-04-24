@@ -27,6 +27,6 @@
 <p>Top 5 enfermedades:</p>
 <ul>
   <li *ngFor="let item of top5Enfermedades">
-    {{ item.enfermedadNombre }} : {{ item.top }}
+    #{{ item.top }}: {{ item.enfermedadNombre }} : {{ item.countPets }}
   </li>
 </ul>
