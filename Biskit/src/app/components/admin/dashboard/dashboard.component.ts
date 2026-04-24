@@ -1,24 +1,32 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { AdminService } from '../../../services/admin.service';
 import { Droga } from '../../../models/Droga/droga';
 import { DrogasService } from '../../../services/drogas.service';
 import { catchError, forkJoin, map, of, switchMap } from 'rxjs';
+import { Enfermedad } from '../../../models/Pets/enfermedad';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [],
-  templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.css'
+  standalone: true,
+  imports: [CommonModule],
+  templateUrl: './dashboard.component.html'
 })
 export class DashboardComponent {
 
-  public numTratamientos: number = 0;
+  public numUltimosTratamientos: number = 0;
   public drogas: Droga[] = [];
   public tratamientosPorMedicamentoMes: { drug: Droga, count: number }[] = [];
-  public numVeterinariosActivos: number = 0; // Agregado para el número de veterinarios activos
-  public numVeterinariosInactivos: number = 0; // Agregado para el número de veterinarios inactivos
-  public numMascotas: number = 0; // Agregado para el número de mascotas
-  public numMascotasInactivas: number = 0; // Agregado para el número de mascotas inactivas
+  public numVeterinariosActivos: number = 0;
+  public numVeterinariosInactivos: number = 0; 
+  public numMascotas: number = 0; 
+  public numMascotasInactivas: number = 0; 
+
+
+  public ventasTotales: number = 0;
+  public gananciasTotales: number = 0;
+  public top5Drogas: { drug: Droga, top: number }[] = [];
+  public top5Enfermedades: { enfermedad: Enfermedad, top: number }[] = [];
 
   constructor(
     private adminService: AdminService,
@@ -27,13 +35,17 @@ export class DashboardComponent {
   // Agrega un método para registrar el estado actual del dashboard BORRAR DESPUÉS
   private logDashboardState(): void {
     console.log('Dashboard atributos:', {
-      numTratamientos: this.numTratamientos,
+      numUltimosTratamientos: this.numUltimosTratamientos,
       drogas: this.drogas,
       tratamientosPorMedicamentoMes : this.tratamientosPorMedicamentoMes,
       numVeterinariosActivos: this.numVeterinariosActivos,
       numVeterinariosInactivos: this.numVeterinariosInactivos,
       numMascotas: this.numMascotas,
-      numMascotasInactivas: this.numMascotasInactivas
+      numMascotasInactivas: this.numMascotasInactivas,
+      ventasTotales: this.ventasTotales,
+      gananciasTotales: this.gananciasTotales,
+      top5Drogas: this.top5Drogas,
+      top5Enfermedades: this.top5Enfermedades
     });
   }
 
@@ -42,7 +54,7 @@ export class DashboardComponent {
     this.logDashboardState();
 
     this.adminService.getLastTreatmentCount().subscribe(count => {
-      this.numTratamientos = count;
+      this.numUltimosTratamientos = count;
       // Llama al método para registrar el estado después de obtener el conteo de tratamientos BORRAR DESPUÉS
       this.logDashboardState();
     });
@@ -116,6 +128,25 @@ export class DashboardComponent {
         }
       }
     );
+
+    this.adminService.getVentasTotales().subscribe(
+      {
+        next: (ventas) => {
+          this.ventasTotales = ventas;
+          this.logDashboardState(); // Llama al método para registrar el estado después de obtener las ventas totales BORRAR DESPUÉS
+        }
+      }
+    );
+
+    this.adminService.getGananciasTotales().subscribe(
+      {
+        next: (ganancias) => {
+          this.gananciasTotales = ganancias;
+          this.logDashboardState(); // Llama al método para registrar el estado después de obtener las ganancias totales BORRAR DESPUÉS
+        }
+      }
+    );
+    
 
   }
 }

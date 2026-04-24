@@ -1,1 +1,26 @@
 <p>dashboard works!</p>
+<p>Últimos tratamientos: {{ numUltimosTratamientos }}</p>
+<p>Tratamientos por medicamento (último mes):</p>
+<ul>
+  <li *ngFor="let item of tratamientosPorMedicamentoMes">
+    {{ item.drug.nombre }} - {{ item.count }}
+  </li>
+</ul>
+<p>Veterinarios activos: {{ numVeterinariosActivos }}</p>
+<p>Veterinarios inactivos: {{ numVeterinariosInactivos }}</p>
+<p>Mascotas totales: {{ numMascotas }}</p>
+<p>Mascotas inactivas: {{ numMascotasInactivas }}</p>
+<p>Ventas totales: {{ ventasTotales }}</p>
+<p>Ganancias totales: {{ gananciasTotales }}</p>
+<p>Top 5 drogas:</p>
+<ul>
+  <li *ngFor="let item of top5Drogas">
+    {{ item.drug.nombre }} - {{ item.top }}
+  </li>
+</ul>
+<p>Top 5 enfermedades:</p>
+<ul>
+  <li *ngFor="let item of top5Enfermedades">
+    {{ item.enfermedad.nombre }} - {{ item.top }}
+  </li>
+</ul>
