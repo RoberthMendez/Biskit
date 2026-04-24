@@ -17,6 +17,8 @@ export class DashboardComponent {
   public tratamientosPorMedicamentoMes: { drug: Droga, count: number }[] = [];
   public numVeterinariosActivos: number = 0; // Agregado para el número de veterinarios activos
   public numVeterinariosInactivos: number = 0; // Agregado para el número de veterinarios inactivos
+  public numMascotas: number = 0; // Agregado para el número de mascotas
+  public numMascotasInactivas: number = 0; // Agregado para el número de mascotas inactivas
 
   constructor(
     private adminService: AdminService,
@@ -29,7 +31,9 @@ export class DashboardComponent {
       drogas: this.drogas,
       tratamientosPorMedicamentoMes : this.tratamientosPorMedicamentoMes,
       numVeterinariosActivos: this.numVeterinariosActivos,
-      numVeterinariosInactivos: this.numVeterinariosInactivos
+      numVeterinariosInactivos: this.numVeterinariosInactivos,
+      numMascotas: this.numMascotas,
+      numMascotasInactivas: this.numMascotasInactivas
     });
   }
 
@@ -91,6 +95,24 @@ export class DashboardComponent {
         next: (count) => {
           this.numVeterinariosActivos = count;
           this.logDashboardState(); // Llama al método para registrar el estado después de obtener el conteo de veterinarios activos BORRAR DESPUÉS
+        }
+      }
+    );
+
+    this.adminService.getNumMascotas().subscribe(
+      {
+        next: (count) => {
+          this.numMascotas = count;
+          this.logDashboardState(); // Llama al método para registrar el estado después de obtener el conteo de mascotas BORRAR DESPUÉS
+        }
+      }
+    );
+
+    this.adminService.getNumMascotasInactivas().subscribe(
+      {
+        next: (count) => {
+          this.numMascotasInactivas = count;
+          this.logDashboardState(); // Llama al método para registrar el estado después de obtener el conteo de mascotas inactivas BORRAR DESPUÉS
         }
       }
     );
