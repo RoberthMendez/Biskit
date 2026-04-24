@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Droga } from '../models/Droga/droga';
 import { Enfermedad } from '../models/Pets/enfermedad';
+import { DrogaTratamientosCountDto } from '../models/dtos/droga-tratamientos-count-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -15,8 +16,8 @@ export class AdminService {
     return this.http.get<number>('http://localhost:8080/admin/ultimos-tratamientos-count');
   }
 
-  getTreatmentsDrugMonthCount(id: number): Observable<number> {
-    return this.http.get<number>(`http://localhost:8080/admin/droga/${id}/tratamientos-mes-count`);
+  getNumTratamientosPorDrogaUltimoMes(): Observable<DrogaTratamientosCountDto[]> {
+    return this.http.get<DrogaTratamientosCountDto[]>('http://localhost:8080/admin/droga-tratamientos-mes-count');
   }
 
   getNumVeterinariosActivos(): Observable<number> {

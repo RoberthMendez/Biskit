@@ -2,8 +2,8 @@
 <p>Últimos tratamientos: {{ numUltimosTratamientos }}</p>
 <p>Tratamientos por medicamento (último mes):</p>
 <ul>
-  <li *ngFor="let item of tratamientosPorMedicamentoMes">
-    {{ item.drug.nombre }} - {{ item.count }}
+  <li *ngFor="let item of drogaTratamientosMesCount">
+    {{ item.drogaNombre }} - {{ item.count }}
   </li>
 </ul>
 <p>Veterinarios activos: {{ numVeterinariosActivos }}</p>
@@ -15,12 +15,12 @@
 <p>Top 5 drogas:</p>
 <ul>
   <li *ngFor="let item of top5Drogas">
-    {{ item.drug.nombre }} - {{ item.top }}
+    {{ item.drogaNombre }} - {{ item.top }}
   </li>
 </ul>
 <p>Top 5 enfermedades:</p>
 <ul>
   <li *ngFor="let item of top5Enfermedades">
-    {{ item.enfermedad.nombre }} - {{ item.top }}
+    {{ item.enfermedadNombre }} - {{ item.top }}
   </li>
 </ul>
