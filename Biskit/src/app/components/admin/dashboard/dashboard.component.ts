@@ -6,6 +6,7 @@ import { DrogasService } from '../../../services/drogas.service';
 import { catchError, count, forkJoin, map, of, switchMap } from 'rxjs';
 import { Enfermedad } from '../../../models/Pets/enfermedad';
 import { DrogaTratamientosCountDto } from '../../../models/dtos/droga-tratamientos-count-dto';
+import { TratamientoMesDto } from '../../../models/dtos/tratamiento-mes-dto';
 
 @Component({
   selector: 'app-dashboard',
@@ -15,7 +16,7 @@ import { DrogaTratamientosCountDto } from '../../../models/dtos/droga-tratamient
 })
 export class DashboardComponent {
 
-  public numUltimosTratamientos: number = 0;
+  public tratamientosMes: TratamientoMesDto[] = [];
   public drogaTratamientosMesCount: DrogaTratamientosCountDto[] = [];
   public numVeterinariosActivos: number = 0;
   public numVeterinariosInactivos: number = 0; 
@@ -35,7 +36,7 @@ export class DashboardComponent {
   // Agrega un método para registrar el estado actual del dashboard BORRAR DESPUÉS
   private logDashboardState(): void {
     console.log('Dashboard atributos:', {
-      numUltimosTratamientos: this.numUltimosTratamientos,
+      tratamientosMes: this.tratamientosMes,
       drogaTratamientosMesCount : this.drogaTratamientosMesCount,
       numVeterinariosActivos: this.numVeterinariosActivos,
       numVeterinariosInactivos: this.numVeterinariosInactivos,
@@ -52,8 +53,8 @@ export class DashboardComponent {
     // Llama al método para registrar el estado inicial del dashboard BORRAR DESPUÉS
     this.logDashboardState();
 
-    this.adminService.getLastTreatmentCount().subscribe(count => {
-      this.numUltimosTratamientos = count;
+    this.adminService.getLastTreatmentCount().subscribe(tratamientosMes => {
+      this.tratamientosMes = tratamientosMes;
       // Llama al método para registrar el estado después de obtener el conteo de tratamientos BORRAR DESPUÉS
       this.logDashboardState();
     });

@@ -1,5 +1,11 @@
 <p>dashboard works!</p>
-<p>Últimos tratamientos: {{ numUltimosTratamientos }}</p>
+<p>Tratamientos de cada mes</p>
+<ul>
+  <li *ngFor="let item of tratamientosMes">
+    {{ item.mes }} : {{ item.numTratamientos }}
+  </li>
+</ul>
+
 <p>Tratamientos por medicamento (último mes):</p>
 <ul>
   <li *ngFor="let item of drogaTratamientosMesCount">
