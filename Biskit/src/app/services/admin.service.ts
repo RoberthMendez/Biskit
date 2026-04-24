@@ -5,6 +5,7 @@ import { Droga } from '../models/Droga/droga';
 import { Enfermedad } from '../models/Pets/enfermedad';
 import { DrogaTratamientosCountDto } from '../models/dtos/droga-tratamientos-count-dto';
 import { TratamientoMesDto } from '../models/dtos/tratamiento-mes-dto';
+import { TopDrogaDto } from '../models/dtos/top-droga-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -45,11 +46,7 @@ export class AdminService {
     return this.http.get<number>('http://localhost:8080/admin/ganancias-totales');
   }
 
-  getTop5Drogas(): Observable<{ drug: Droga, top: number }[]> {
-    return this.http.get<{ drug: Droga, top: number }[]>('http://localhost:8080/admin/top5-drogas');
-  }
-
-  getTop5Enfermedades(): Observable<{ enfermedad: Enfermedad, top: number }[]> {
-    return this.http.get<{ enfermedad: Enfermedad, top: number }[]>('http://localhost:8080/admin/top5-enfermedades');
+  getTop5Drogas(): Observable<TopDrogaDto[]>{
+    return this.http.get<TopDrogaDto[]>('http://localhost:8080/admin/top5-drogas');
   }
 }

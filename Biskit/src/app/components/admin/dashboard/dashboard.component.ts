@@ -7,6 +7,7 @@ import { catchError, count, forkJoin, map, of, switchMap } from 'rxjs';
 import { Enfermedad } from '../../../models/Pets/enfermedad';
 import { DrogaTratamientosCountDto } from '../../../models/dtos/droga-tratamientos-count-dto';
 import { TratamientoMesDto } from '../../../models/dtos/tratamiento-mes-dto';
+import { TopDrogaDto } from '../../../models/dtos/top-droga-dto';
 
 @Component({
   selector: 'app-dashboard',
@@ -26,7 +27,9 @@ export class DashboardComponent {
   public gananciasTotales: number = 0;
 
 
-  public top5Drogas: { drogaNombre: string, top: number }[] = [];
+  public top5Drogas: TopDrogaDto[] = [];
+
+
   public top5Enfermedades: { enfermedadNombre: string, top: number }[] = [];
   public drogasBajasEnStock: Droga[] = [];
 
@@ -131,6 +134,13 @@ export class DashboardComponent {
       }
     );
     
-
+    this.adminService.getTop5Drogas().subscribe(
+      {
+        next: (topDrogas) => {
+          this.top5Drogas = topDrogas;
+          this.logDashboardState(); // Llama al método para registrar el estado después de obtener el top 5 de drogas BORRAR DESPUÉS
+        }
+      }
+    );
   }
 }
