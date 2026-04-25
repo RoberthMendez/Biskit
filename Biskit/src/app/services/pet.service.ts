@@ -37,5 +37,20 @@ export class PetService {
     return this.http.patch<void>(`http://localhost:8080/vet/pets/update-estado/${id}`, { estado });
   }
 
+    // ----- Total de Mascotas -----
+  countPets(): Observable<number> {
+    return this.http.get<number>(`http://localhost:8080/vet/pets/count`);
+  }
+
+  // ----- Total de Mascotas Activas -----
+  countPetsActivos(): Observable<number> {
+    return this.http.get<number>(`http://localhost:8080/vet/pets/count/activos`);
+  }
+
+  // ----- Total de Mascotas Inactivas -----
+  countPetsInactivos(): Observable<number> {
+    return this.http.get<number>(`http://localhost:8080/vet/pets/count/inactivos`);
+  }
+
 
 }

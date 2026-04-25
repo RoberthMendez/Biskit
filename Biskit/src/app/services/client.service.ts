@@ -39,5 +39,9 @@ export class ClientService {
     return this.http.delete<void>(`http://localhost:8080/vet/clients/delete/${id}`);
   }
 
+  // ----- Total de Clientes -----
+  countClients(): Observable<number> {
+    return this.http.get<number>(`http://localhost:8080/client/count`);
+  }
 
 }
