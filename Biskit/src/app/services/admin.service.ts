@@ -16,12 +16,20 @@ export class AdminService {
 
   constructor(private http: HttpClient) { }
 
+  getAdminById(id: string): Observable<any> {
+    return this.http.get(`http://localhost:8080/admin/${id}`);
+  }
+
   getLastTreatmentCount(): Observable<TratamientoMesDto[]> {
     return this.http.get<TratamientoMesDto[]>('http://localhost:8080/admin/ultimos-tratamientos-count');
   }
 
   getNumTratamientosPorDrogaUltimoMes(): Observable<DrogaTratamientosCountDto[]> {
     return this.http.get<DrogaTratamientosCountDto[]>('http://localhost:8080/admin/droga-tratamientos-mes-count');
+  }
+
+  getNumVeterinarios(): Observable<number> {
+    return this.http.get<number>('http://localhost:8080/admin/vets-count');
   }
 
   getNumVeterinariosActivos(): Observable<number> {
@@ -34,6 +42,10 @@ export class AdminService {
 
   getNumMascotas(): Observable<number> {
     return this.http.get<number>('http://localhost:8080/admin/mascotas-count');
+  }
+
+  getNumMascotasActivas(): Observable<number> {
+    return this.http.get<number>('http://localhost:8080/admin/mascotas-activas-count');
   }
 
   getNumMascotasInactivas(): Observable<number> {

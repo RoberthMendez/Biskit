@@ -1,71 +1,76 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { AdminService } from '../../../services/admin.service';
-import { Droga } from '../../../models/Droga/droga';
-import { DrogasService } from '../../../services/drogas.service';
-import { catchError, count, forkJoin, map, of, switchMap } from 'rxjs';
-import { Enfermedad } from '../../../models/Pets/enfermedad';
 import { DrogaTratamientosCountDto } from '../../../models/dtos/droga-tratamientos-count-dto';
 import { TratamientoMesDto } from '../../../models/dtos/tratamiento-mes-dto';
 import { TopDrogaDto } from '../../../models/dtos/top-droga-dto';
 import { TopEnfermedadDto } from '../../../models/dtos/top-enfermedad-dto';
 import { StockDrogaDto } from '../../../models/dtos/stock-droga-dto';
+import { Admin } from '../../../models/Admin/admin';
+import { ActivatedRoute } from '@angular/router';
+import { CardKPIComponent } from "./card-kpi/card-kpi.component";
+import { CardDonaComponent } from "./card-dona/card-dona.component";
+import { CardBarrasComponent } from "./card-barras/card-barras.component";
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, CardKPIComponent, CardDonaComponent, CardBarrasComponent],
   templateUrl: './dashboard.component.html'
 })
 export class DashboardComponent {
 
   public tratamientosMes: TratamientoMesDto[] = [];
   public drogaTratamientosMesCount: DrogaTratamientosCountDto[] = [];
+  public numVeterinarios: number = 0;
   public numVeterinariosActivos: number = 0;
   public numVeterinariosInactivos: number = 0; 
   public numMascotas: number = 0; 
+  public numMascotasActivas: number = 0;
   public numMascotasInactivas: number = 0; 
   public ventasTotales: number = 0;
   public gananciasTotales: number = 0;
   public top5Drogas: TopDrogaDto[] = [];
   public top5Enfermedades: TopEnfermedadDto[] = [];
   public drogasBajasEnStock: StockDrogaDto[] = [];
+  public admin: Admin = new Admin();
 
   constructor(
-    private adminService: AdminService
+    private adminService: AdminService,
+    private route: ActivatedRoute
   ) { }
-  // Agrega un método para registrar el estado actual del dashboard BORRAR DESPUÉS
-  private logDashboardState(): void {
-    console.log('Dashboard atributos:', {
-      tratamientosMes: this.tratamientosMes,
-      drogaTratamientosMesCount : this.drogaTratamientosMesCount,
-      numVeterinariosActivos: this.numVeterinariosActivos,
-      numVeterinariosInactivos: this.numVeterinariosInactivos,
-      numMascotas: this.numMascotas,
-      numMascotasInactivas: this.numMascotasInactivas,
-      ventasTotales: this.ventasTotales,
-      gananciasTotales: this.gananciasTotales,
-      top5Drogas: this.top5Drogas,
-      top5Enfermedades: this.top5Enfermedades,
-      drogasBajasEnStock: this.drogasBajasEnStock
-    });
-  }
 
   ngOnInit() {
-    // Llama al método para registrar el estado inicial del dashboard BORRAR DESPUÉS
-    this.logDashboardState();
 
-    this.adminService.getLastTreatmentCount().subscribe(tratamientosMes => {
-      this.tratamientosMes = tratamientosMes;
-      // Llama al método para registrar el estado después de obtener el conteo de tratamientos BORRAR DESPUÉS
-      this.logDashboardState();
+    const adminId = this.route.snapshot.paramMap.get('id');
+    if (adminId)
+      this.adminService.getAdminById(adminId).subscribe({
+        next: (admin) => {
+          this.admin = admin;
+        }
+      });
+    else
+      console.error('No se pudo obtener el ID del administrador desde la ruta.');
+
+    this.adminService.getLastTreatmentCount().subscribe({
+      next: (tratamientosMes) => {
+        this.tratamientosMes = tratamientosMes;
+      }
     });
 
     this.adminService.getNumTratamientosPorDrogaUltimoMes().subscribe(
       {
         next: (data) => {
           this.drogaTratamientosMesCount = [...data].sort((a, b) => b.count - a.count);
-          this.logDashboardState();
+        
+        }
+      }
+    );
+
+    this.adminService.getNumVeterinarios().subscribe(
+      {
+        next: (count) => {
+          this.numVeterinarios = count;
         }
       }
     );
@@ -74,7 +79,6 @@ export class DashboardComponent {
       {
         next: (count) => {
           this.numVeterinariosActivos = count;
-          this.logDashboardState(); // Llama al método para registrar el estado después de obtener el conteo de veterinarios activos BORRAR DESPUÉS
         }
       }
     );
@@ -83,7 +87,6 @@ export class DashboardComponent {
       {
         next: (count) => {
           this.numVeterinariosInactivos = count;
-          this.logDashboardState(); // Llama al método para registrar el estado después de obtener el conteo de veterinarios inactivos BORRAR DESPUÉS
         }
       }
     );
@@ -92,7 +95,6 @@ export class DashboardComponent {
       {
         next: (count) => {
           this.numVeterinariosActivos = count;
-          this.logDashboardState(); // Llama al método para registrar el estado después de obtener el conteo de veterinarios activos BORRAR DESPUÉS
         }
       }
     );
@@ -101,7 +103,14 @@ export class DashboardComponent {
       {
         next: (count) => {
           this.numMascotas = count;
-          this.logDashboardState(); // Llama al método para registrar el estado después de obtener el conteo de mascotas BORRAR DESPUÉS
+        }
+      }
+    );
+
+    this.adminService.getNumMascotasActivas().subscribe(
+      {
+        next: (count) => {
+          this.numMascotasActivas = count;
         }
       }
     );
@@ -110,7 +119,6 @@ export class DashboardComponent {
       {
         next: (count) => {
           this.numMascotasInactivas = count;
-          this.logDashboardState(); // Llama al método para registrar el estado después de obtener el conteo de mascotas inactivas BORRAR DESPUÉS
         }
       }
     );
@@ -119,7 +127,6 @@ export class DashboardComponent {
       {
         next: (ventas) => {
           this.ventasTotales = ventas;
-          this.logDashboardState(); // Llama al método para registrar el estado después de obtener las ventas totales BORRAR DESPUÉS
         }
       }
     );
@@ -128,7 +135,6 @@ export class DashboardComponent {
       {
         next: (ganancias) => {
           this.gananciasTotales = ganancias;
-          this.logDashboardState(); // Llama al método para registrar el estado después de obtener las ganancias totales BORRAR DESPUÉS
         }
       }
     );
@@ -137,7 +143,6 @@ export class DashboardComponent {
       {
         next: (topDrogas) => {
           this.top5Drogas = topDrogas;
-          this.logDashboardState(); // Llama al método para registrar el estado después de obtener el top 5 de drogas BORRAR DESPUÉS
         }
       }
     );
@@ -146,7 +151,6 @@ export class DashboardComponent {
       {
         next: (topEnfermedades) => {
           this.top5Enfermedades = topEnfermedades;
-          this.logDashboardState(); // Llama al método para registrar el estado después de obtener el top 5 de enfermedades BORRAR DESPUÉS
         }
       }
     );
@@ -155,9 +159,10 @@ export class DashboardComponent {
       {
         next: (drogasBajasStock) => {
           this.drogasBajasEnStock = drogasBajasStock;
-          this.logDashboardState(); // Llama al método para registrar el estado después de obtener las drogas bajas en stock BORRAR DESPUÉS
         }
       }
     );
   }
 }
+
+
