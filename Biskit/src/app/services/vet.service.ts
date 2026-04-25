@@ -29,32 +29,10 @@ export class VetService {
     return this.http.get<Vet>(`http://localhost:8080/vets/${id}`);
   }
 
-  // saveVet(vet: Vet): void {
-  //   if (vet.id) {
-  //     const index = this.vets.findIndex(v => v.id === vet.id);
-  //     if (index !== -1) {
-  //       this.vets[index] = vet;
-  //     }
-  //   } else {
-  //     // Busca el id máximo de los veterinarios y le suma 1
-  //     const nuevoId = this.vets.length > 0 ? Math.max(...this.vets.map(v => v.id ?? 0)) + 1 : 1;
-  //     vet.id = nuevoId;
-  //     vet.estado = true; // Por defecto, el nuevo veterinario estará activo
-
-  //     vet.credenciales = { usuario: vet.correo, password: vet.cedula }; // Credenciales por defecto
-  //     this.credencialesService.addCredenciales(vet.credenciales);
-      
-  //     this.vets.push(vet);
-  //   }
-  // }
-
-  // getVetById(id: number): Vet {
-  //   const vet = this.vets.find(v => v.id === id);
-  //   if (!vet) {
-  //     throw new Error(`Veterinario con id ${id} no encontrado`);
-  //   }
-  //   return vet;
-  // }
+  // ----- Numero de Tratamientos Realizados por un Veterinario -----
+  countTratamientosByVet(vetId: number): Observable<number> {
+    return this.http.get<number>(`http://localhost:8080/vets/${vetId}/tratamientos/count`);
+  }
 
 
 }
