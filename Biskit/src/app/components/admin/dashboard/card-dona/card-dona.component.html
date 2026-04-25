@@ -1,0 +1,76 @@
+<article
+  class="bg-[#FBFAF8] pt-6 pb-8 px-6 rounded-2xl border border-[#E0E0E0] flex items-center flex-col justify-center gap-7"
+>
+  <p class="text-[#8d8580dd] text-sm text-center font-medium items-center flex">
+    {{ titulo }}
+  </p>
+  <!-- Dona -->
+  <div class="relative">
+    <p-chart type="doughnut" [data]="dataDona" [options]="options"> </p-chart>
+
+    <!-- Total en centro -->
+    <div
+      class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none"
+    >
+      <span class="text-sm text-[#8d8580dd]">Total {{ titulo }}</span>
+      <span class="text-3xl font-bold text-[#4a4a4a]">{{ total }}</span>
+    </div>
+  </div>
+  @if (titulo === "Mascotas") {
+    <a
+      href="admin/pets"
+      class="py-2 px-4 flex items-center flex-row gap-2 rounded-xl bg-[#2b5392] [transition:background-color_0.25s_ease] hover:bg-[#1a3a6b]"
+    >
+      <svg
+        class="h-5 w-5"
+        viewBox="0 0 20 20"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="#fcf6f0"
+      >
+        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+        <g
+          id="SVGRepo_tracerCarrier"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        ></g>
+        <g id="SVGRepo_iconCarrier">
+          <rect x="0" fill="none" width="20" height="20"></rect>
+          <g>
+            <path
+              d="M11.9 8.4c1.3 0 2.1-1.9 2.1-3.1 0-1-.5-2.2-1.5-2.2-1.3 0-2.1 1.9-2.1 3.1 0 1 .5 2.2 1.5 2.2zm-3.8 0c1 0 1.5-1.2 1.5-2.2C9.6 4.9 8.8 3 7.5 3 6.5 3 6 4.2 6 5.2c-.1 1.3.7 3.2 2.1 3.2zm7.4-1c-1.3 0-2.2 1.8-2.2 3.1 0 .9.4 1.8 1.3 1.8 1.3 0 2.2-1.8 2.2-3.1 0-.9-.5-1.8-1.3-1.8zm-8.7 3.1c0-1.3-1-3.1-2.2-3.1-.9 0-1.3.9-1.3 1.8 0 1.3 1 3.1 2.2 3.1.9 0 1.3-.9 1.3-1.8zm3.2-.2c-2 0-4.7 3.2-4.7 5.4 0 1 .7 1.3 1.5 1.3 1.2 0 2.1-.8 3.2-.8 1 0 1.9.8 3 .8.8 0 1.7-.2 1.7-1.3 0-2.2-2.7-5.4-4.7-5.4z"
+            ></path>
+          </g>
+        </g>
+      </svg>
+      <p class="text-[#fcf6f0] font-medium">Ver Mascotas</p>
+    </a>
+  } @else if (titulo === "Veterinarios") {
+    <a
+      href="admin/vets"
+      class="py-2 px-4 flex items-center flex-row gap-2 rounded-xl bg-[#2b5392] [transition:background-color_0.25s_ease] hover:bg-[#1a3a6b]"
+    >
+      <svg
+        class="h-5 w-6"
+        fill="#fcf6f0"
+        viewBox="0 0 50 50"
+        version="1.2"
+        baseProfile="tiny"
+        xmlns="http://www.w3.org/2000/svg"
+        overflow="inherit"
+      >
+        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+        <g
+          id="SVGRepo_tracerCarrier"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        ></g>
+        <g id="SVGRepo_iconCarrier">
+          <path
+            d="M42.924 13h-4.924v-5.226c0-3.736-2.948-6.774-6.694-6.774h-12.611c-3.748 0-6.695 3.038-6.695 6.774v5.226h-4.925c-3.356 0-6.075 2.591-6.075 5.937v23.007c0 3.345 2.719 6.056 6.075 6.056h35.849c3.355 0 6.076-2.711 6.076-6.057v-23.006c0-3.346-2.721-5.937-6.076-5.937zm-26.924-5.226c0-1.399 1.292-2.774 2.695-2.774h12.611c1.399 0 2.694 1.375 2.694 2.774v5.226h-18v-5.226zm20 27.226h-7v7h-8v-7h-7v-8h7v-7h8v7h7v8z"
+          ></path>
+        </g>
+      </svg>
+      <p class="text-[#fcf6f0] font-medium">Ver Veterinarios</p>
+    </a>
+  }
+</article>

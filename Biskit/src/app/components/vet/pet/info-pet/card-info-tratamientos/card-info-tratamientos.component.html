@@ -101,7 +101,14 @@
   >
     @for (tratamiento of sortedTratamientos; track tratamiento.id) {
       <a
-        [routerLink]="['/vet/pets/', pet.id, 'tratamiento', tratamiento.id]"
+        [routerLink]="[
+          '/vet/',
+          vetId,
+          'pets',
+          pet.id,
+          'tratamiento',
+          tratamiento.id,
+        ]"
         class="cursor-pointer mx-4 mb-2 flex items-stretch gap-2 rounded-lg p-2 transition hover:bg-blue-50"
       >
         <div

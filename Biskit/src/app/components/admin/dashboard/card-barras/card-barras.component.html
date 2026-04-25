@@ -1,0 +1,29 @@
+<article
+  class="bg-[#FBFAF8] py-8 rounded-2xl border border-[#E0E0E0] flex flex-col items-center gap-5"
+>
+  <div class="flex flex-col gap-5 w-[90%]">
+    <div class="flex justify-between items-start">
+      <div>
+        <p
+          class="text-xs font-semibold tracking-widest uppercase text-[#8d8580] mb-1"
+        >
+          Resumen mensual
+        </p>
+        <h3 class="text-xl font-semibold">Tratamientos Realizados</h3>
+      </div>
+      <span
+        class="bg-[#e8eef7] text-[#2b5392] text-xs font-medium px-3 py-1.5 rounded-full"
+      >
+        Últimos 6 meses
+      </span>
+    </div>
+
+    <p-chart
+      type="bar"
+      [data]="dataBarras"
+      [options]="options"
+      styleClass="w-full"
+      height="420px"
+    />
+  </div>
+</article>

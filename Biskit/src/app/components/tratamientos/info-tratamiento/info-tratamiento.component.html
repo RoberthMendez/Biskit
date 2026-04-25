@@ -86,7 +86,9 @@
           >
             <a
               [routerLink]="[
-                '/vet/pets',
+                '/vet/',
+                veterinario?.id,
+                'pets',
                 pet?.id,
                 'tratamiento',
                 'update',

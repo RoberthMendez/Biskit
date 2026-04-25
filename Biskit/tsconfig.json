@@ -5,6 +5,17 @@
   "compilerOptions": {
     "outDir": "./dist/out-tsc",
     "rootDir": "./src",
+    "paths": {
+      "primeng": [
+        "./node_modules/primeng"
+      ],
+      "primeng/*": [
+        "./node_modules/primeng/*"
+      ],
+      "chart.js": [
+        "./node_modules/chart.js/dist/chart.js"
+      ]
+    },
     "strict": true,
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
