@@ -33,6 +33,7 @@ export class PetService {
     return this.http.get<Pet>(`http://localhost:8080/vet/pets/${id}`);
   }
 
+  // ----- Actualizar Estado de Mascota (PATCH) -----
   updateEstado(id: number, estado: boolean): Observable<void> {
     return this.http.patch<void>(`http://localhost:8080/vet/pets/update-estado/${id}`, { estado });
   }

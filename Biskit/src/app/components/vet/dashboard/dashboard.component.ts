@@ -3,6 +3,7 @@ import { VetService } from '../../../services/vet.service';
 import { PetService } from '../../../services/pet.service';
 import { ClientService } from '../../../services/client.service';
 import { ActivatedRoute } from '@angular/router';
+import { Vet } from '../../../models/Vets/vet-cl';
 
 @Component({
   selector: 'app-dashboard',
@@ -11,6 +12,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class DashboardComponent {
   vetId: number = 0;
+  vet!: Vet;
   numTratamientosByVet: number = 0;
   numPets: number = 0;
   numPetsActivos: number = 0;
@@ -27,6 +29,12 @@ export class DashboardComponent {
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
     this.vetId = id ? Number(id) : 0;
+
+    this.vetService.findById(this.vetId).subscribe({
+      next: (vet) => {
+        this.vet = vet;
+      },
+    });
 
     this.vetService.countTratamientosByVet(this.vetId).subscribe({
       next: (count) => {

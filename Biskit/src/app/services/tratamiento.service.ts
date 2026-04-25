@@ -37,4 +37,10 @@ export class TratamientoService {
     return this.http.delete<void>(`http://localhost:8080/tratamientos/delete/${id}`);
   }
 
+    // ----- Mostrar Tratamientos por ID de Vet (READ) -----
+    findTratamientosByVet(vetId: number): Observable<Tratamiento[]> {
+      return this.http.get<Tratamiento[]>(`http://localhost:8080/tratamientos/vet/${vetId}`);
+    }
+
+
 }

@@ -1,0 +1,12 @@
+<h2>
+    Veterinarios
+</h2>
+
+<!-- Ciclo Provicional para ver Veterinarios -->
+  @if (filteredVets.length > 0) {
+    @for (vet of filteredVets; track vet.id) {
+        <h1> Nombre: {{ vet.nombre }}</h1>
+        <h2> Cédula: {{ vet.cedula }}</h2>
+        <h2> Correo: {{ vet.correo }}</h2>
+      }
+  }

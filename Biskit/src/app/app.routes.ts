@@ -113,7 +113,7 @@ export const routes: Routes = [
         (m) => m.InfoTratamientoComponent,
       ),
   },
-    {
+  {
     path: 'admin/vet/add',
     loadComponent: () =>
       import('./components/admin/vet/add-vet/add-vet.component').then(
@@ -128,10 +128,24 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'admin/vets',
+    loadComponent: () =>
+      import('./components/admin/vet/vets/vets.component').then(
+        (m) => m.VetsComponent,
+      ),
+  },
+  {
     path: 'admin/:id',
     loadComponent: () =>
       import('./components/admin/dashboard/dashboard.component').then(
         (m) => m.DashboardComponent,
+      ),
+  },
+  {
+    path: 'admin/vets/:vetId',
+    loadComponent: () =>
+      import('./components/admin/vet/info-vet/info-vet.component').then(
+        (m) => m.InfoVetComponent,
       ),
   },
   {
@@ -140,5 +154,5 @@ export const routes: Routes = [
       import('./components/vet/dashboard/dashboard.component').then(
         (m) => m.DashboardComponent,
       ),
-  }
+  },
 ];

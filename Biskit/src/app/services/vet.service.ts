@@ -3,6 +3,7 @@ import { Vet } from '../models/Vets/vet-cl';
 import { CredencialesService } from './credenciales.service';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { Pet } from '../models/Pets/pet';
 
 @Injectable({
   providedIn: 'root'
@@ -29,10 +30,25 @@ export class VetService {
     return this.http.get<Vet>(`http://localhost:8080/vets/${id}`);
   }
 
+  // ----- Eliminar Veterinario (DELETE) -----
+  deleteVet(id: number): Observable<void> {
+    return this.http.delete<void>(`http://localhost:8080/vets/delete/${id}`);
+  }
+
+  // ----- Actualizar Estado de Mascota (PATCH) -----
+  updateEstado(id: number, estado: boolean): Observable<void> {
+    return this.http.patch<void>(`http://localhost:8080/vets/update-estado/${id}`, { estado });
+  }
+
+
   // ----- Numero de Tratamientos Realizados por un Veterinario -----
   countTratamientosByVet(vetId: number): Observable<number> {
     return this.http.get<number>(`http://localhost:8080/vets/${vetId}/tratamientos/count`);
   }
 
+  // ----- Mascotas Tratadas por un Veterinario -----
+  getPetsTreatedByVet(vetId: number): Observable<Pet[]> {
+    return this.http.get<Pet[]>(`http://localhost:8080/vets/${vetId}/pets`);
+  }
 
 }

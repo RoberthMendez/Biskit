@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Pet } from '../../../../models/Pets/pet';
 import { PetService } from '../../../../services/pet.service';
+import { VetService } from '../../../../services/vet.service';
 import { CardPetComponent } from './card-pet/card-pet.component';
 
 
@@ -16,10 +17,11 @@ export class PetsComponent {
   
   public pets: Pet[] = [];
   public vetId: number = 0;
+  public petsTreatedByVet: Pet[] = [];
 
   public searchTerm: string = '';
 
-  constructor(private petService: PetService, private route: ActivatedRoute) {}
+  constructor(private petService: PetService, private vetService: VetService, private route: ActivatedRoute) {}
 
   ngOnInit() {
     
@@ -27,6 +29,12 @@ export class PetsComponent {
     this.petService.findAll().subscribe(
       (pets) => {
         this.pets = pets;
+      }
+    );
+
+    this.vetService.getPetsTreatedByVet(this.vetId).subscribe(
+      (pets) => {
+        this.petsTreatedByVet = pets;
       }
     );
 
