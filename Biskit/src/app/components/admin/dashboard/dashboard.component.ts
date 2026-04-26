@@ -20,6 +20,8 @@ import { CardTop5Component } from "./card-top5/card-top5.component";
 })
 export class DashboardComponent {
 
+  public adminId: string = '';
+
   public ventasTotales: number = 0;
   public gananciasTotales: number = 0;
   public numMascotas: number = 0; 
@@ -43,6 +45,7 @@ export class DashboardComponent {
   ngOnInit() {
 
     const adminId = this.route.snapshot.paramMap.get('id');
+    this.adminId = adminId ?? '';
     if (adminId)
       this.adminService.getAdminById(adminId).subscribe({
         next: (admin) => {

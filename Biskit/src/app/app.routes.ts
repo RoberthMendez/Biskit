@@ -128,10 +128,17 @@ export const routes: Routes = [
       ),
   },
   {
-    path: 'admin/vets',
+    path: 'admin/:idAdmin/vets',
     loadComponent: () =>
       import('./components/admin/vet/vets/vets.component').then(
         (m) => m.VetsComponent,
+      ),
+  },
+  {
+    path: 'admin/:idAdmin/pets',
+    loadComponent: () =>
+      import('./components/vet/pet/pets/pets.component').then(
+        (m) => m.PetsComponent,
       ),
   },
   {

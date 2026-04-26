@@ -26,11 +26,13 @@
     </article>
     <app-card-dona
       [titulo]="'MASCOTAS'"
+      [idAdmin]="adminId"
       [total]="numMascotas"
       [data]="[numMascotasActivas, numMascotasInactivas]"
     ></app-card-dona>
     <app-card-dona
       [titulo]="'VETERINARIOS'"
+      [idAdmin]="adminId"
       [total]="numVeterinarios"
       [data]="[numVeterinariosActivos, numVeterinariosInactivos]"
     ></app-card-dona>

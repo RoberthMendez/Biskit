@@ -1,16 +1,19 @@
+import { RouterModule } from '@angular/router';
 import { Component, Input, SimpleChanges } from '@angular/core';
 import { ChartModule } from 'primeng/chart';
 
 @Component({
   selector: 'app-card-dona',
   standalone: true,
-  imports: [ChartModule],
+  imports: [ChartModule, RouterModule],
   templateUrl: './card-dona.component.html'
 })
 export class CardDonaComponent {
 
   dataDona: any;
   options: any;
+
+  @Input() idAdmin: string = '';
 
   @Input() titulo: string = '';
 
