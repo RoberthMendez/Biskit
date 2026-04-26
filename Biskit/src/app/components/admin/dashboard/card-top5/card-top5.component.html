@@ -1,0 +1,61 @@
+<article
+  class="bg-[#FBFAF8] pt-6 pb-8 px-10 rounded-2xl border border-[#E0E0E0] flex items-center flex-col justify-center gap-2"
+>
+  <!-- Titulo -->
+  <div class="flex justify-start w-full items-start">
+    <div>
+      <p
+        class="text-xs font-semibold tracking-widest uppercase text-[#8d8580] mb-1"
+      >
+        TOP 5
+      </p>
+      <h3 class="text-lg font-semibold">
+        @if (titulo === "Drogas") {
+          Drogas más vendidas
+        } @else if (titulo === "Enfermedades") {
+          Enfermedades más comunes
+        }
+      </h3>
+    </div>
+  </div>
+  <!-- Lista de Top 5 -->
+  <!-- Titulo Columna -->
+  <div class="flex justify-end w-full">
+    <p class="text-[#4A4A4A]/40 font-normal text-xs mr-0.4">
+      {{ tituloColumna }}
+    </p>
+  </div>
+  <!-- Top 5 -->
+  <div class="flex flex-col divide-y divide-[#ece9e4] w-full">
+    @for (puesto of top; track puesto.top; let i = $index) {
+      <div class="flex flex-row items-stretch w-full gap-4 py-2.5">
+        <span
+          class="text-[#4A4A4A]/40 font-semibold text-xs self-center w-4 shrink-0"
+        >
+          0{{ i + 1 }}
+        </span>
+        <div
+          class="w-1 shrink-0 bg-[#2b5392]"
+          [style.opacity]="1 - i * 0.2"
+        ></div>
+        <div class="flex-1 items-center flex">
+          <span
+            class="text-sm font-medium tracking-widest uppercase text-[#4A4A4A]"
+            [style.color]="i === 0 ? '#2b5392' : null"
+            >{{ puesto.nombre }}</span
+          >
+        </div>
+        <div
+          class="bg-[#f0f0ee] px-3 py-1.5 rounded-lg flex items-center justify-center shrink-0"
+          [style.backgroundColor]="i === 0 ? '#e8eef7' : null"
+        >
+          <span
+            class="text-sm font-semibold tracking-widest uppercase text-[#4A4A4A]"
+            [style.color]="i === 0 ? '#2b5392' : null"
+            >{{ puesto.count }}</span
+          >
+        </div>
+      </div>
+    }
+  </div>
+</article>

@@ -1,7 +1,9 @@
 <article
   class="bg-[#FBFAF8] pt-6 pb-8 px-6 rounded-2xl border border-[#E0E0E0] flex items-center flex-col justify-center gap-7"
 >
-  <p class="text-[#8d8580dd] text-sm text-center font-medium items-center flex">
+  <p
+    class="text-[#8d8580dd] text-sm text-center font-semibold items-center flex"
+  >
     {{ titulo }}
   </p>
   <!-- Dona -->
@@ -12,11 +14,11 @@
     <div
       class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none"
     >
-      <span class="text-sm text-[#8d8580dd]">Total {{ titulo }}</span>
+      <span class="text-sm text-[#8d8580dd]">TOTAL {{ titulo }}</span>
       <span class="text-3xl font-bold text-[#4a4a4a]">{{ total }}</span>
     </div>
   </div>
-  @if (titulo === "Mascotas") {
+  @if (titulo === "MASCOTAS") {
     <a
       href="admin/pets"
       class="py-2 px-4 flex items-center flex-row gap-2 rounded-xl bg-[#2b5392] [transition:background-color_0.25s_ease] hover:bg-[#1a3a6b]"
@@ -44,7 +46,7 @@
       </svg>
       <p class="text-[#fcf6f0] font-medium">Ver Mascotas</p>
     </a>
-  } @else if (titulo === "Veterinarios") {
+  } @else if (titulo === "VETERINARIOS") {
     <a
       href="admin/vets"
       class="py-2 px-4 flex items-center flex-row gap-2 rounded-xl bg-[#2b5392] [transition:background-color_0.25s_ease] hover:bg-[#1a3a6b]"

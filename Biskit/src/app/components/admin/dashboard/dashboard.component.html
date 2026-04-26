@@ -25,12 +25,12 @@
       ></app-card-kpi>
     </article>
     <app-card-dona
-      [titulo]="'Mascotas'"
+      [titulo]="'MASCOTAS'"
       [total]="numMascotas"
       [data]="[numMascotasActivas, numMascotasInactivas]"
     ></app-card-dona>
     <app-card-dona
-      [titulo]="'Veterinarios'"
+      [titulo]="'VETERINARIOS'"
       [total]="numVeterinarios"
       [data]="[numVeterinariosActivos, numVeterinariosInactivos]"
     ></app-card-dona>
@@ -39,6 +39,16 @@
   <section class="flex justify-around items-center">
     <app-card-barras class="w-full" [tratamientos]="tratamientosMes">
     </app-card-barras>
+  </section>
+  <section class="flex justify-around items-center">
+    <app-card-top5 class="w-[45%]" [top]="top5Drogas" [titulo]="'Drogas'">
+    </app-card-top5>
+    <app-card-top5
+      class="w-[45%]"
+      [top]="top5Enfermedades"
+      [titulo]="'Enfermedades'"
+    >
+    </app-card-top5>
   </section>
 </main>
 

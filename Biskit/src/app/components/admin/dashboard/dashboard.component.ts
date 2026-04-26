@@ -3,35 +3,35 @@ import { Component } from '@angular/core';
 import { AdminService } from '../../../services/admin.service';
 import { DrogaTratamientosCountDto } from '../../../models/dtos/droga-tratamientos-count-dto';
 import { TratamientoMesDto } from '../../../models/dtos/tratamiento-mes-dto';
-import { TopDrogaDto } from '../../../models/dtos/top-droga-dto';
-import { TopEnfermedadDto } from '../../../models/dtos/top-enfermedad-dto';
+import { TopDto } from '../../../models/dtos/top-dto';
 import { StockDrogaDto } from '../../../models/dtos/stock-droga-dto';
 import { Admin } from '../../../models/Admin/admin';
 import { ActivatedRoute } from '@angular/router';
 import { CardKPIComponent } from "./card-kpi/card-kpi.component";
 import { CardDonaComponent } from "./card-dona/card-dona.component";
 import { CardBarrasComponent } from "./card-barras/card-barras.component";
+import { CardTop5Component } from "./card-top5/card-top5.component";
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, CardKPIComponent, CardDonaComponent, CardBarrasComponent],
+  imports: [CommonModule, CardKPIComponent, CardDonaComponent, CardBarrasComponent, CardTop5Component],
   templateUrl: './dashboard.component.html'
 })
 export class DashboardComponent {
 
-  public tratamientosMes: TratamientoMesDto[] = [];
-  public drogaTratamientosMesCount: DrogaTratamientosCountDto[] = [];
-  public numVeterinarios: number = 0;
-  public numVeterinariosActivos: number = 0;
-  public numVeterinariosInactivos: number = 0; 
+  public ventasTotales: number = 0;
+  public gananciasTotales: number = 0;
   public numMascotas: number = 0; 
   public numMascotasActivas: number = 0;
   public numMascotasInactivas: number = 0; 
-  public ventasTotales: number = 0;
-  public gananciasTotales: number = 0;
-  public top5Drogas: TopDrogaDto[] = [];
-  public top5Enfermedades: TopEnfermedadDto[] = [];
+  public numVeterinarios: number = 0;
+  public numVeterinariosActivos: number = 0;
+  public numVeterinariosInactivos: number = 0;
+  public tratamientosMes: TratamientoMesDto[] = [];
+  public top5Drogas: TopDto[] = [];
+  public top5Enfermedades: TopDto[] = [];
+  public drogaTratamientosMesCount: DrogaTratamientosCountDto[] = []; 
   public drogasBajasEnStock: StockDrogaDto[] = [];
   public admin: Admin = new Admin();
 
