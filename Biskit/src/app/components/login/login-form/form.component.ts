@@ -62,7 +62,13 @@ export class LoginFormComponent {
         console.log('Autenticación exitosa:', response);
       },
       error: (error) => {
-        this.error = 'Usuario o contrasena incorrectos.';
+        const tipo = error.error?.tipo;
+
+        if (tipo === 'VETERINARIO_INACTIVO') {
+          this.error = 'Cuenta de veterinario inactiva.';
+        } else {
+          this.error = 'Usuario o contrasena incorrectos.';
+        }
       },
     });
 
