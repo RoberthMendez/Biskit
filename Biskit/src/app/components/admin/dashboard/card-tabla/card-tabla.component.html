@@ -1,0 +1,31 @@
+<article
+  class="bg-[#FBFAF8] pt-6 pb-8 px-10 rounded-2xl border border-[#E0E0E0] flex items-center flex-col justify-center gap-6"
+>
+  <!-- Titulo -->
+  <div class="flex justify-between items-start w-full">
+    <div>
+      <p
+        class="text-xs font-semibold tracking-widest uppercase text-[#8d8580] mb-1"
+      >
+        Resumen
+      </p>
+      <h3 class="text-xl font-semibold">Tratamientos por Droga</h3>
+    </div>
+    <span
+      class="bg-[#e8eef7] text-[#2b5392] text-xs font-medium px-3 py-1.5 rounded-full flex self-center"
+    >
+      Últimos 30 días
+    </span>
+  </div>
+  <!-- Tabla -->
+  <app-tabla
+    class="w-full"
+    [maxHeight]="'30rem'"
+    [columnas]="[
+      { header: 'Droga', key: 'drogaNombre' },
+      { header: 'Tratamientos', key: 'count' },
+    ]"
+    [datos]="datos"
+  >
+  </app-tabla>
+</article>

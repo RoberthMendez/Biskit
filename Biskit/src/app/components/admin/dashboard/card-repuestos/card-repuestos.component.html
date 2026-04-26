@@ -1,0 +1,72 @@
+<article
+  class="bg-[#FBFAF8] pt-6 pb-8 px-10 rounded-2xl border border-[#E0E0E0] flex items-center flex-col justify-center gap-6"
+>
+  <div class="flex justify-start w-full items-start">
+    <div>
+      <p
+        class="text-xs font-semibold tracking-widest uppercase text-[#8d8580] mb-1"
+      >
+        INVENTARIO
+      </p>
+      <h3 class="text-lg font-semibold">Drogas por Reponer</h3>
+    </div>
+  </div>
+  @if (drogas.length === 0) {
+    <div
+      class="flex flex-col items-center justify-center gap-2 py-8 text-[#8d8580]"
+    >
+      <svg class="w-8 h-8 opacity-40" viewBox="0 0 24 24" fill="none">
+        <path
+          stroke="currentColor"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+        />
+      </svg>
+      <p class="text-sm">Todo el stock está en orden</p>
+    </div>
+  } @else {
+    <div
+      class="flex flex-col gap-2.5 w-[90%] max-h-120 overflow-y-scroll custom-scroll"
+    >
+      @for (droga of drogas; track droga.drogaNombre) {
+        <div
+          class="flex items-center gap-3 rounded-xl px-4 py-3"
+          [class.bg-[#fdf0ee]]="sinStock(droga)"
+          [class.bg-[#fdf7ee]]="!sinStock(droga)"
+        >
+          <div
+            class="w-2 h-2 rounded-full shrink-0"
+            [class.bg-[#c0392b]]="sinStock(droga)"
+            [class.bg-[#e67e22]]="!sinStock(droga)"
+          ></div>
+
+          <div class="flex-1 min-w-0">
+            <p class="text-sm font-medium text-[#2b3a4a] truncate">
+              {{ droga.drogaNombre }}
+            </p>
+            <p
+              class="text-xs"
+              [class.text-[#c0392b]]="sinStock(droga)"
+              [class.text-[#e67e22]]="!sinStock(droga)"
+            >
+              {{ sinStock(droga) ? "Sin stock" : "Stock bajo" }}
+            </p>
+          </div>
+
+          <span
+            class="text-xs font-medium px-3 py-1 rounded-full border shrink-0"
+            [class.bg-white]="true"
+            [class.text-[#c0392b]]="sinStock(droga)"
+            [class.border-[#e8a09a]]="sinStock(droga)"
+            [class.text-[#e67e22]]="!sinStock(droga)"
+            [class.border-[#f0c09a]]="!sinStock(droga)"
+          >
+            {{ droga.stockActual }} unid.
+          </span>
+        </div>
+      }
+    </div>
+  }
+</article>
