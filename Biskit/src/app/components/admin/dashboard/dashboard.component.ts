@@ -11,11 +11,13 @@ import { CardKPIComponent } from "./card-kpi/card-kpi.component";
 import { CardDonaComponent } from "./card-dona/card-dona.component";
 import { CardBarrasComponent } from "./card-barras/card-barras.component";
 import { CardTop5Component } from "./card-top5/card-top5.component";
+import { CardTablaComponent } from "./card-tabla/card-tabla.component";
+import { CardRepuestosComponent } from "./card-repuestos/card-repuestos.component";
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, CardKPIComponent, CardDonaComponent, CardBarrasComponent, CardTop5Component],
+  imports: [CommonModule, CardKPIComponent, CardDonaComponent, CardBarrasComponent, CardTop5Component, CardTablaComponent, CardRepuestosComponent],
   templateUrl: './dashboard.component.html'
 })
 export class DashboardComponent {

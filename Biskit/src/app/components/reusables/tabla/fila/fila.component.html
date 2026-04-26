@@ -1,0 +1,13 @@
+@for (celda of celdas; track $index; let i = $index) {
+  <td
+    class="px-5 py-4 lg:px-10 lg:py-5"
+    [style.fontWeight]="i === 0 ? '600' : i === 1 ? '500' : '400'"
+    [class.text-left]="alineaciones[i] === 'left'"
+    [class.text-center]="alineaciones[i] === 'center'"
+    [class.text-right]="alineaciones[i] === 'right'"
+    [class.tabular-nums]="alineaciones[i] === 'right'"
+    [class.whitespace-nowrap]="true"
+  >
+    {{ celda }}
+  </td>
+}

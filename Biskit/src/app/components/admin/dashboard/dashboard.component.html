@@ -13,8 +13,8 @@
     </p>
   </section>
   <!-- Ventas, Mascotas y Veterinarios -->
-  <section class="flex justify-around items-center">
-    <article class="flex flex-col gap-4">
+  <section class="flex justify-around items-center gap-10">
+    <article class="flex flex-col gap-8">
       <app-card-kpi
         [titulo]="'VENTAS TOTALES'"
         [valor]="ventasTotales"
@@ -25,12 +25,14 @@
       ></app-card-kpi>
     </article>
     <app-card-dona
+      class="w-[30%]"
       [titulo]="'MASCOTAS'"
       [idAdmin]="adminId"
       [total]="numMascotas"
       [data]="[numMascotasActivas, numMascotasInactivas]"
     ></app-card-dona>
     <app-card-dona
+      class="w-[30%]"
       [titulo]="'VETERINARIOS'"
       [idAdmin]="adminId"
       [total]="numVeterinarios"
@@ -42,15 +44,23 @@
     <app-card-barras class="w-full" [tratamientos]="tratamientosMes">
     </app-card-barras>
   </section>
-  <section class="flex justify-around items-center">
-    <app-card-top5 class="w-[45%]" [top]="top5Drogas" [titulo]="'Drogas'">
+  <!-- Tops 5 -->
+  <section class="flex justify-around items-center gap-10">
+    <app-card-top5 class="w-1/2" [top]="top5Drogas" [titulo]="'Drogas'">
     </app-card-top5>
     <app-card-top5
-      class="w-[45%]"
+      class="w-1/2"
       [top]="top5Enfermedades"
       [titulo]="'Enfermedades'"
     >
     </app-card-top5>
+  </section>
+  <!--  -->
+  <section class="flex justify-around items-start gap-10">
+    <app-card-tabla class="w-1/2" [datos]="drogaTratamientosMesCount">
+    </app-card-tabla>
+    <app-card-repuestos class="w-1/2" [drogas]="drogasBajasEnStock">
+    </app-card-repuestos>
   </section>
 </main>
 
