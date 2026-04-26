@@ -66,6 +66,10 @@ export class LoginFormComponent {
 
         if (tipo === 'VETERINARIO_INACTIVO') {
           this.error = 'Cuenta de veterinario inactiva.';
+        } else if (error.status === 0) {
+          this.error = 'No se pudo conectar con el servidor.';
+        } else if (error.status === 500) {
+          this.error = 'Error interno del servidor';
         } else {
           this.error = 'Usuario o contrasena incorrectos.';
         }
