@@ -239,4 +239,11 @@ export const routes: Routes = [
         (m) => m.DashboardComponent,
       ),
   },
+  {
+    path: 'error',
+    loadComponent: () =>
+      import('./components/error/error.component').then(
+        (m) => m.ErrorComponent,
+      ),
+  },
 ];

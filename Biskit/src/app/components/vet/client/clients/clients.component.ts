@@ -13,15 +13,21 @@ import {
   TablaFilaClickEvent,
 } from '../../../reusables/tabla/tabla.types';
 import { ActivatedRoute, Router } from '@angular/router';
+import { VetService } from '../../../../services/vet.service';
 
 @Component({
   standalone: true,
   selector: 'app-clients',
   templateUrl: './clients.component.html',
-  imports: [ClientsHeaderComponent, ClientsSearchComponent, TablaComponent, ClientsCardsComponent, DeleteModalComponent]
+  imports: [
+    ClientsHeaderComponent,
+    ClientsSearchComponent,
+    TablaComponent,
+    ClientsCardsComponent,
+    DeleteModalComponent,
+  ],
 })
 export class ClientsComponent {
-
   clients: Client[] = [];
   filteredClients: Client[] = [];
   searchTerm: string = '';
@@ -64,6 +70,7 @@ export class ClientsComponent {
 
   constructor(
     private clientService: ClientService,
+    private vetService: VetService,
     private route: ActivatedRoute,
     private router: Router,
   ) {}
@@ -71,6 +78,7 @@ export class ClientsComponent {
   ngOnInit(){
     const routePath = this.route.snapshot.routeConfig?.path ?? '';
     this.isAdminView = routePath.startsWith('admin/');
+    const vetIdParam = this.route.snapshot.paramMap.get('vetId');
 
     const contextParam = this.isAdminView ? 'idAdmin' : 'vetId';
     this.vetId = this.route.snapshot.paramMap.get(contextParam);
@@ -79,25 +87,38 @@ export class ClientsComponent {
       this.basePath = `/${this.isAdminView ? 'admin' : 'vet'}/${this.vetId}`;
     }
 
-    this.clientService.findAll().subscribe(
-      (clients) => {
-        this.clients = clients;
-        this.filteredClients = clients;
-      }
-    )
+    if (vetIdParam) {
+      this.vetService.existsById(Number(vetIdParam)).subscribe({
+        next: () => {
+          this.vetId = vetIdParam;
+        },
+        error: (error) => {
+          const mensaje = error.error?.detalle || 'Veterinario no encontrado';
+          this.router.navigate(['/error'], {
+            queryParams: { mensaje },
+          });
+        },
+      });
+    }
+
+    this.clientService.findAll().subscribe((clients) => {
+      this.clients = clients;
+      this.filteredClients = clients;
+    });
   }
 
   onSearch(searchTerm: string) {
     this.searchTerm = searchTerm.toLowerCase();
-    
+
     if (this.searchTerm === '') {
       this.filteredClients = this.clients;
     } else {
-      this.filteredClients = this.clients.filter(client =>
-        client.nombre.toLowerCase().includes(this.searchTerm) ||
-        client.cedula.toLowerCase().includes(this.searchTerm) ||
-        client.correo.toLowerCase().includes(this.searchTerm) ||
-        client.celular.toLowerCase().includes(this.searchTerm)
+      this.filteredClients = this.clients.filter(
+        (client) =>
+          client.nombre.toLowerCase().includes(this.searchTerm) ||
+          client.cedula.toLowerCase().includes(this.searchTerm) ||
+          client.correo.toLowerCase().includes(this.searchTerm) ||
+          client.celular.toLowerCase().includes(this.searchTerm),
       );
     }
   }

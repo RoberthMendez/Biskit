@@ -5,7 +5,7 @@ import { Pet } from '../../../../models/Pets/pet';
 import { PetService } from '../../../../services/pet.service';
 import { VetService } from '../../../../services/vet.service';
 import { CardPetComponent } from './card-pet/card-pet.component';
-
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-pets',
@@ -14,7 +14,6 @@ import { CardPetComponent } from './card-pet/card-pet.component';
   templateUrl: './pets.component.html',
 })
 export class PetsComponent {
-  
   public pets: Pet[] = [];
   public vetId: number = 0;
   public basePath = '';
@@ -24,7 +23,12 @@ export class PetsComponent {
 
   public searchTerm: string = '';
 
-  constructor(private petService: PetService, private vetService: VetService, private route: ActivatedRoute) {}
+  constructor(
+    private petService: PetService,
+    private vetService: VetService,
+    private route: ActivatedRoute,
+    private router: Router,
+  ) {}
 
   ngOnInit() {
     const routePath = this.route.snapshot.routeConfig?.path ?? '';
@@ -41,13 +45,24 @@ export class PetsComponent {
     );
 
     if (!this.isAdminView) {
-      this.vetService.getPetsTreatedByVet(this.vetId).subscribe(
-        (pets) => {
+      this.vetService.getPetsTreatedByVet(this.vetId).subscribe({
+        next: (pets) => {
           this.petsTreatedByVet = pets;
-        }
-      );
-    }
+        },
+      error: (error: HttpErrorResponse) => {
+        const mensaje = error.error?.detalle || 'Error al obtener mascotas';
 
+        this.router.navigate(['/error'], {
+          queryParams: { mensaje },
+        });
+      },
+      });
+    }
+    
+    this.petService.findAll().subscribe((pets) => {
+      this.pets = pets;
+    });
+    
   }
 
   get filteredPets(): Pet[] {
@@ -56,5 +71,4 @@ export class PetsComponent {
     if (!term) return source;
     return source.filter((pet) => pet.nombre.toLowerCase().includes(term));
   }
-
 }
