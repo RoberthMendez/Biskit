@@ -44,4 +44,9 @@ export class ClientService {
     return this.http.get<number>(`http://localhost:8080/client/count`);
   }
 
+  // ----- Verificar existencia de Cliente por ID -----
+  existsById(id: number): Observable<void> {
+    return this.http.get<void>(`http://localhost:8080/client/${id}/exists`);
+  }
+
 }
