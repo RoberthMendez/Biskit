@@ -16,6 +16,9 @@ export class CardInfoPetComponent implements AfterViewInit, OnChanges {
   @Input()
   vetId!: number;
 
+  @Input()
+  basePath = '';
+
   @Output()
   estadoChange = new EventEmitter<boolean>();
 

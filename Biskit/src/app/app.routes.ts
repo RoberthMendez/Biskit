@@ -107,31 +107,17 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'admin/:id',
+    loadComponent: () =>
+      import('./components/admin/dashboard/dashboard.component').then(
+        (m) => m.DashboardComponent,
+      ),
+  },
+  {
     path: 'client/:clientId/pet/:petId/tratamiento/:tratamientoId',
     loadComponent: () =>
       import('./components/tratamientos/info-tratamiento/info-tratamiento.component').then(
         (m) => m.InfoTratamientoComponent,
-      ),
-  },
-  {
-    path: 'admin/vet/add',
-    loadComponent: () =>
-      import('./components/admin/vet/add-vet/add-vet.component').then(
-        (m) => m.AddVetComponent,
-      ),
-  },
-  {
-    path: 'admin/vet/update/:id',
-    loadComponent: () =>
-      import('./components/admin/vet/add-vet/add-vet.component').then(
-        (m) => m.AddVetComponent,
-      ),
-  },
-  {
-    path: 'admin/:idAdmin/vets/update/:id',
-    loadComponent: () =>
-      import('./components/admin/vet/add-vet/add-vet.component').then(
-        (m) => m.AddVetComponent,
       ),
   },
   {
@@ -142,6 +128,48 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'admin/:idAdmin/clients',
+    loadComponent: () =>
+      import('./components/vet/client/clients/clients.component').then(
+        (m) => m.ClientsComponent,
+      ),
+  },
+  {
+    path: 'admin/:idAdmin/clients/add',
+    loadComponent: () =>
+      import('./components/vet/client/add-client/add-client.component').then(
+        (m) => m.AddClientComponent,
+      ),
+  },
+  {
+    path: 'admin/:idAdmin/clients/update/:id',
+    loadComponent: () =>
+      import('./components/vet/client/add-client/add-client.component').then(
+        (m) => m.AddClientComponent,
+      ),
+  },
+  {
+    path: 'admin/:idAdmin/clients/:id',
+    loadComponent: () =>
+      import('./components/vet/client/info-client/info-client.component').then(
+        (m) => m.InfoClientComponent,
+      ),
+  },
+  {
+    path: 'admin/:idAdmin/vets/add',
+    loadComponent: () =>
+      import('./components/admin/vet/add-vet/add-vet.component').then(
+        (m) => m.AddVetComponent,
+      ),
+  },
+  {
+    path: 'admin/:idAdmin/vets/update/:idVet',
+    loadComponent: () =>
+      import('./components/admin/vet/add-vet/add-vet.component').then(
+        (m) => m.AddVetComponent,
+      ),
+  },
+  {
     path: 'admin/:idAdmin/pets',
     loadComponent: () =>
       import('./components/vet/pet/pets/pets.component').then(
@@ -149,10 +177,45 @@ export const routes: Routes = [
       ),
   },
   {
-    path: 'admin/:id',
+    path: 'admin/:idAdmin/pets/add',
     loadComponent: () =>
-      import('./components/admin/dashboard/dashboard.component').then(
-        (m) => m.DashboardComponent,
+      import('./components/vet/pet/add-pet/add-pet.component').then(
+        (m) => m.AddPetComponent,
+      ),
+  },
+  {
+    path: 'admin/:idAdmin/pets/update/:petId',
+    loadComponent: () =>
+      import('./components/vet/pet/add-pet/add-pet.component').then(
+        (m) => m.AddPetComponent,
+      ),
+  },
+  {
+    path: 'admin/:idAdmin/pets/:petId',
+    loadComponent: () =>
+      import('./components/vet/pet/info-pet/info-pet.component').then(
+        (m) => m.InfoPetComponent,
+      ),
+  },
+  {
+    path: 'admin/:idAdmin/pets/:petId/tratamiento/add',
+    loadComponent: () =>
+      import('./components/tratamientos/add-tratamiento/add-tratamiento.component').then(
+        (m) => m.AddTratamientoComponent,
+      ),
+  },
+  {
+    path: 'admin/:idAdmin/pets/:petId/tratamiento/:tratamientoId',
+    loadComponent: () =>
+      import('./components/tratamientos/info-tratamiento/info-tratamiento.component').then(
+        (m) => m.InfoTratamientoComponent,
+      ),
+  },
+  {
+    path: 'admin/:idAdmin/pets/:petId/tratamiento/update/:tratamientoId',
+    loadComponent: () =>
+      import('./components/tratamientos/add-tratamiento/add-tratamiento.component').then(
+        (m) => m.AddTratamientoComponent,
       ),
   },
   {

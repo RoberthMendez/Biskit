@@ -5,7 +5,7 @@
     <div class="relative overflow-hidden rounded-2xl">
       <!-- Botón de Editar -->
       <a
-        [routerLink]="['/vet/', vetId, 'pets', 'update', pet.id]"
+        [routerLink]="basePath + '/pets/update/' + pet.id"
         (click)="$event.stopPropagation()"
         class="group/editar absolute top-4 left-4 z-10 rounded-lg border border-white/30 bg-white/20 p-2 text-white shadow-sm backdrop-blur-md transition-all duration-200 hover:bg-white/30"
       >

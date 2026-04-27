@@ -8,7 +8,7 @@ import {
   TablaColumnaInput,
   TablaFilaClickEvent,
 } from '../../../reusables/tabla/tabla.types';
-import { DeleteModalComponent } from '../info-vet/delete-modal/delete-modal.component';
+import { DeleteModalComponent } from '../../../reusables/delete-modal/delete-modal.component';
 import { HeaderComponent } from './header/header.component';
 import { BarraBusquedaComponent } from './barra-busqueda/barra-busqueda.component';
 
@@ -25,6 +25,7 @@ export class VetsComponent {
 
   public showModal = false;
   public selectedDeleteId: number | null = null;
+  public deleteSuccessMessage = '';
 
   public readonly columnasVet: TablaColumnaInput[] = [
     {
@@ -164,12 +165,14 @@ export class VetsComponent {
 
   public openDeleteModal(vetId: number): void {
     this.selectedDeleteId = vetId;
+    this.deleteSuccessMessage = '';
     this.showModal = true;
   }
 
   public closeModal(): void {
     this.showModal = false;
     this.selectedDeleteId = null;
+    this.deleteSuccessMessage = '';
   }
 
   public confirmDelete(): void {
@@ -182,7 +185,7 @@ export class VetsComponent {
     this.vetService.deleteVet(vetId).subscribe({
       next: () => {
         this.vets = this.vets.filter((vet) => vet.id !== vetId);
-        this.closeModal();
+        this.deleteSuccessMessage = 'Veterinario eliminado correctamente';
       },
       error: () => {
         this.closeModal();

@@ -22,6 +22,7 @@ export class InfoPetComponent {
 
   pet!: Pet;
   vetId!: number;
+  basePath = '';
 
   constructor(
     private petService: PetService,
@@ -33,7 +34,10 @@ export class InfoPetComponent {
 
     const id = this.route.snapshot.paramMap.get('petId');
     const petId = Number(id);
-    this.vetId = Number(this.route.snapshot.paramMap.get('vetId'));
+    const routePath = this.route.snapshot.routeConfig?.path ?? '';
+    const contextParam = routePath.startsWith('admin/') ? 'idAdmin' : 'vetId';
+    this.vetId = Number(this.route.snapshot.paramMap.get(contextParam));
+    this.basePath = `/${routePath.startsWith('admin/') ? 'admin' : 'vet'}/${this.vetId}`;
 
     if (!id || Number.isNaN(petId)) {
       console.error('Parametro petId invalido en la ruta:', id);

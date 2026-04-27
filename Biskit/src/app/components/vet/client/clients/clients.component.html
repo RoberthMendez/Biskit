@@ -1,6 +1,10 @@
 <!-- clients.component.html -->
 
-<app-clients-header></app-clients-header>
+<app-clients-header
+  [backRoute]="isAdminView ? ['/admin', vetId ?? ''] : ['/vet', vetId ?? '']"
+  [addRoute]="[basePath, 'clients', 'add']"
+  [panelTitle]="isAdminView ? 'Panel de Administrador' : 'Panel de Veterinario'"
+></app-clients-header>
 
 <section class="mx-4 mb-10 sm:mx-16 md:mx-24 lg:mx-36">
   <app-clients-buscador (search)="onSearch($event)"></app-clients-buscador>
@@ -36,7 +40,9 @@
 
 <app-delete-modal
   [visible]="showModal"
+  [entityLabel]="'cliente'"
+  [successMessage]="deleteSuccessMessage"
   (confirm)="confirmDelete()"
-  (cancel)="closeModal()"
+  (close)="closeModal()"
 >
 </app-delete-modal>

@@ -12,6 +12,7 @@ import { ClientService } from '../../../../../services/client.service';
 })
 export class ClientFormComponent {
   @Input() clientId: number | null = null;
+  @Input() returnRoute: string | Array<string | number> = '/vet/clients';
 
   constructor(
     private clientService: ClientService,
@@ -64,7 +65,7 @@ export class ClientFormComponent {
           : 'Cliente guardado correctamente';
 
         setTimeout(() => {
-          this.router.navigate(['/vet/clients']);
+          this.router.navigate(Array.isArray(this.returnRoute) ? this.returnRoute : [this.returnRoute]);
         }, 600);
       },
       error: () => {

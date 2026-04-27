@@ -4,7 +4,7 @@ import { CaracteristicasComponent } from './caracteristicas/caracteristicas.comp
 import { ContactoComponent } from './contacto/contacto.component';
 import { CtaComponent } from './cta/cta.component';
 import { HeroBannerComponent } from './hero-banner/hero-banner.component';
-import { NavbarComponent } from './navbar/navbar.component';
+import { NavbarComponent, type NavbarOption } from '../reusables/navbar/navbar.component';
 import { PorQueComponent } from './por-que/por-que.component';
 import { ProcesoComponent } from './proceso/proceso.component';
 import { ServiciosComponent } from './servicios/servicios.component';
@@ -27,6 +27,15 @@ import { SobreBiskitComponent } from './sobre-biskit/sobre-biskit.component';
   templateUrl: './landing.component.html',
 })
 export class LandingComponent implements AfterViewInit, OnDestroy {
+  public readonly navbarOptions: NavbarOption[] = [
+    { label: 'Inicio', route: '#hero' },
+    { label: 'Nosotros', route: '#sobre-biskit' },
+    { label: 'Servicios', route: '#servicios' },
+    { label: 'Proceso', route: '#proceso' },
+    { label: 'Contacto', route: '#contacto' },
+    { label: 'Iniciar Sesión', route: '/login', variant: 'button' },
+  ];
+
   private readonly document = inject(DOCUMENT);
   private observer: IntersectionObserver | null = null;
   private timeoutIds: number[] = [];

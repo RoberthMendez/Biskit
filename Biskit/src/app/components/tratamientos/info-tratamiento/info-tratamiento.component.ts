@@ -7,6 +7,7 @@ import { Vet } from '../../../models/Vets/vet-cl';
 import { Client } from '../../../models/Client/client';
 import { TratamientoService } from '../../../services/tratamiento.service';
 import { PetService } from '../../../services/pet.service';
+import { DeleteModalComponent } from '../../reusables/delete-modal/delete-modal.component';
 
 @Component({
   selector: 'app-info-tratamiento',
@@ -14,6 +15,7 @@ import { PetService } from '../../../services/pet.service';
   imports: [
     CommonModule,
     RouterLink,
+    DeleteModalComponent,
   ],
   templateUrl: './info-tratamiento.component.html',
 })
@@ -24,8 +26,12 @@ export class InfoTratamientoComponent implements OnInit {
   pet: Pet | null = null;
   owner: Client | null = null;
   isClientView = false;
-  backLink: (string | number)[] = [];
+  basePath = '';
+  backLink = '';
+  editLink = '';
   showDeleteModal = false;
+  deleteSuccessMessage = '';
+  shouldNavigateAfterDelete = false;
 
   constructor(
     private route: ActivatedRoute, 
@@ -36,6 +42,7 @@ export class InfoTratamientoComponent implements OnInit {
 
   ngOnInit(): void {
 
+    const routePath = this.route.snapshot.routeConfig?.path ?? '';
     const petIdParam = this.route.snapshot.paramMap.get('petId');
     const tratamientoIdParam = this.route.snapshot.paramMap.get('tratamientoId');
     const clientIdParam = this.route.snapshot.paramMap.get('clientId');
@@ -44,9 +51,25 @@ export class InfoTratamientoComponent implements OnInit {
     const tratamientoId = tratamientoIdParam !== null ? Number(tratamientoIdParam) : null;
     const clientId = clientIdParam !== null ? Number(clientIdParam) : null;
 
-    if (clientId !== null && !Number.isNaN(clientId)) {
-      this.backLink = ['/client', clientId, 'pet', String(petId)];
+    this.isClientView = routePath.startsWith('client/');
+
+    if (this.isClientView && clientId !== null && !Number.isNaN(clientId)) {
+      this.backLink = `/client/${clientId}/pet/${petId}`;
       this.isClientView = true;
+    }
+
+    if (!this.isClientView) {
+      const contextParam = routePath.startsWith('admin/') ? 'idAdmin' : 'vetId';
+      const contextId = Number(this.route.snapshot.paramMap.get(contextParam));
+      this.basePath = `/${routePath.startsWith('admin/') ? 'admin' : 'vet'}/${contextId}`;
+
+      if (petId !== null && !Number.isNaN(petId)) {
+        this.backLink = `${this.basePath}/pets/${petId}`;
+      }
+
+      if (petId !== null && tratamientoId !== null && !Number.isNaN(tratamientoId)) {
+        this.editLink = `${this.basePath}/pets/${petId}/tratamiento/update/${tratamientoId}`;
+      }
     }
 
     if (tratamientoId !== null && !Number.isNaN(tratamientoId)) {
@@ -71,9 +94,6 @@ export class InfoTratamientoComponent implements OnInit {
           console.error('Error al cargar mascota:', error);
         }
       });
-      if (!this.isClientView) {
-        this.backLink = ['/vet/pets', petId];
-      }
       return;
     }
 
@@ -121,11 +141,22 @@ export class InfoTratamientoComponent implements OnInit {
   }
 
   openDeleteModal(): void {
+    this.deleteSuccessMessage = '';
+    this.shouldNavigateAfterDelete = false;
     this.showDeleteModal = true;
   }
 
   closeDeleteModal(): void {
+    const shouldNavigate = this.shouldNavigateAfterDelete;
+    const petId = this.pet?.id;
+
     this.showDeleteModal = false;
+    this.deleteSuccessMessage = '';
+    this.shouldNavigateAfterDelete = false;
+
+    if (shouldNavigate && petId != null) {
+      this.router.navigateByUrl(this.backLink);
+    }
   }
 
   confirmDeleteTratamiento(): void {
@@ -139,8 +170,9 @@ export class InfoTratamientoComponent implements OnInit {
 
     this.tratamientoService.deleteTratamiento(tratamientoId).subscribe({
       next: () => {
-        this.closeDeleteModal();
-        this.router.navigate(['/vet/pets', petId]);
+        this.shouldNavigateAfterDelete = true;
+        this.deleteSuccessMessage =
+          'Tratamiento eliminado correctamente';
       },
       error: (error) => {
         console.error('Error al eliminar tratamiento:', error);

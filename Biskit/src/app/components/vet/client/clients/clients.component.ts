@@ -5,7 +5,7 @@ import { Client } from '../../../../models/Client/client';
 import { ClientsHeaderComponent } from './clients-header/clients-header.component';
 import { ClientsSearchComponent } from './clients-buscador/clients-buscador.component';
 import { ClientsCardsComponent } from './clients-cards/clients-cards.component';
-import { DeleteModalComponent } from './delete-modal/delete-modal.component';
+import { DeleteModalComponent } from '../../../reusables/delete-modal/delete-modal.component';
 import { TablaComponent } from '../../../reusables/tabla/tabla.component';
 import {
   TablaActionClickEvent,
@@ -28,6 +28,9 @@ export class ClientsComponent {
   selectedId: number | null = null;
   showModal = false;
   vetId: string | null = null;
+  basePath = '/vet';
+  isAdminView = false;
+  deleteSuccessMessage = '';
 
   public readonly columnasClient: TablaColumnaInput[] = [
     { header: 'Nombre', key: 'nombre', align: 'left' },
@@ -66,7 +69,15 @@ export class ClientsComponent {
   ) {}
 
   ngOnInit(){
-    this.vetId = this.route.snapshot.paramMap.get('vetId');
+    const routePath = this.route.snapshot.routeConfig?.path ?? '';
+    this.isAdminView = routePath.startsWith('admin/');
+
+    const contextParam = this.isAdminView ? 'idAdmin' : 'vetId';
+    this.vetId = this.route.snapshot.paramMap.get(contextParam);
+
+    if (this.vetId) {
+      this.basePath = `/${this.isAdminView ? 'admin' : 'vet'}/${this.vetId}`;
+    }
 
     this.clientService.findAll().subscribe(
       (clients) => {
@@ -93,6 +104,7 @@ export class ClientsComponent {
 
   openDelete(id: number) {
     this.selectedId = id;
+    this.deleteSuccessMessage = '';
     this.showModal = true;
   }
 
@@ -104,16 +116,21 @@ export class ClientsComponent {
             (clients) => {
               this.clients = clients;
               this.onSearch(this.searchTerm); 
+              this.deleteSuccessMessage = 'Cliente eliminado correctamente';
             }
           );
         }
       );
+      return;
     }
-    this.showModal = false;
+
+    this.closeModal();
   }
 
   closeModal() {
     this.showModal = false;
+    this.selectedId = null;
+    this.deleteSuccessMessage = '';
   }
 
   onRowClick(event: TablaFilaClickEvent): void {
@@ -122,7 +139,7 @@ export class ClientsComponent {
       return;
     }
 
-    this.router.navigate(['/vet', this.vetId, 'clients', client.id]);
+    this.router.navigate([this.basePath, 'clients', client.id]);
   }
 
   onActionClick(event: TablaActionClickEvent): void {
@@ -132,7 +149,7 @@ export class ClientsComponent {
     }
 
     if (event.actionId === 'edit') {
-      this.router.navigate(['/vet', this.vetId, 'clients', 'update', client.id]);
+      this.router.navigate([this.basePath, 'clients', 'update', client.id]);
       return;
     }
 

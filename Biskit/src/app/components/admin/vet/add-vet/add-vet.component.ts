@@ -13,12 +13,16 @@ import { ActivatedRoute } from '@angular/router';
 export class AddVetComponent {
 
   vetId: number | null = null;
+  adminId: number | null = null;
 
   constructor(private route: ActivatedRoute) {}
 
   ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id');
-    this.vetId = id ? Number(id) : null;
+    const idVet = this.route.snapshot.paramMap.get('idVet');
+    this.vetId = idVet ? Number(idVet) : null;
+
+    const idAdmin = this.route.snapshot.paramMap.get('idAdmin');
+    this.adminId = idAdmin ? Number(idAdmin) : null;
   }
 
 }

@@ -17,6 +17,8 @@ export class PetsComponent {
   
   public pets: Pet[] = [];
   public vetId: number = 0;
+  public basePath = '';
+  public isAdminView = false;
   public petsTreatedByVet: Pet[] = [];
   public showOnlyMyPets: boolean = false;
 
@@ -25,19 +27,26 @@ export class PetsComponent {
   constructor(private petService: PetService, private vetService: VetService, private route: ActivatedRoute) {}
 
   ngOnInit() {
-    
-    this.vetId = Number(this.route.snapshot.paramMap.get('vetId'));
+    const routePath = this.route.snapshot.routeConfig?.path ?? '';
+    this.isAdminView = routePath.startsWith('admin/');
+
+    const contextParam = this.isAdminView ? 'idAdmin' : 'vetId';
+    this.vetId = Number(this.route.snapshot.paramMap.get(contextParam));
+    this.basePath = `/${this.isAdminView ? 'admin' : 'vet'}/${this.vetId}`;
+
     this.petService.findAll().subscribe(
       (pets) => {
         this.pets = pets;
       }
     );
 
-    this.vetService.getPetsTreatedByVet(this.vetId).subscribe(
-      (pets) => {
-        this.petsTreatedByVet = pets;
-      }
-    );
+    if (!this.isAdminView) {
+      this.vetService.getPetsTreatedByVet(this.vetId).subscribe(
+        (pets) => {
+          this.petsTreatedByVet = pets;
+        }
+      );
+    }
 
   }
 

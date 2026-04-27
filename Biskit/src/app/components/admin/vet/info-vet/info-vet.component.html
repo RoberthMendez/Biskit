@@ -1,15 +1,17 @@
 <main>
-    <h1>Información del Veterinario</h1>
-    <section class="vet-info">
-        <h2>Nombre: {{ vet.nombre }}</h2>
-        <h2>Cédula: {{ vet.cedula }}</h2>
-        <h2>Correo: {{ vet.correo }}</h2>
-        <h2>Tratamientos: {{ vet.tratamientos.length }}</h2>
-    </section>
+  <h1>Información del Veterinario</h1>
+  <section class="vet-info">
+    <h2>Nombre: {{ vet.nombre }}</h2>
+    <h2>Cédula: {{ vet.cedula }}</h2>
+    <h2>Correo: {{ vet.correo }}</h2>
+    <h2>Tratamientos: {{ vet.tratamientos.length }}</h2>
+  </section>
 
-    <!-- MODAL Eliminar Veterinario -->
+  <!-- MODAL Eliminar Veterinario -->
   @if (showModal) {
     <app-delete-modal
+      [entityLabel]="'veterinario'"
+      [successMessage]="deleteSuccessMessage"
       (close)="closeModal()"
       (confirm)="confirmDelete()"
     ></app-delete-modal>

@@ -4,11 +4,13 @@ import { Client } from '../../../../../models/Client/client';
 
 @Component({
   selector: 'app-client-header',
+  standalone: true,
   imports: [ClientActionsComponent],
   templateUrl: './client-header.component.html',
 })
 export class ClientHeaderComponent {
   @Input() client!: Client;
+  @Input() basePath = '/vet/clients';
   @Output() deleteClient = new EventEmitter<number>();
 
   onDelete(clientId: number): void {

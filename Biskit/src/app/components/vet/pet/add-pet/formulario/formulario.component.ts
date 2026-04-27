@@ -28,6 +28,7 @@ type DropdownKey = 'cliente' | 'especie' | 'raza' | 'enfermedad';
 export class FormularioComponent implements OnInit {
   @Input() petId: number | null = null;
   @Input() vetId: number | null = null;
+  @Input() basePath = '';
   // ── Formulario ───────────────────────────────────────────────────────────────
   formPet: Pet = new Pet();
   fechaNacimientoStr: string = '';
@@ -521,7 +522,7 @@ export class FormularioComponent implements OnInit {
           : 'Mascota guardada correctamente';
 
         setTimeout(() => {
-          this.router.navigate(['/vet/', this.vetId, 'pets']);
+          this.router.navigateByUrl(`${this.basePath}/pets`);
         }, 600);
       },
       error: () => {
