@@ -6,7 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { mergeMap } from 'rxjs';
 import { TratamientoService } from '../../../../services/tratamiento.service';
 import { DeleteModalComponent } from '../../../reusables/delete-modal/delete-modal.component';
-import { TreatmentsCardComponent } from "../../../reusables/tratamientos/treatments-card/treatments-card.component";
+import { TreatmentsCardComponent } from "../../../reusables/treatments-card/treatments-card.component";
 import { RouterLink } from '@angular/router';
 import { CardInfoVetComponent } from './card-info-vet/card-info-vet.component';
 

@@ -7,7 +7,7 @@ import { TratamientoService } from '../../../../services/tratamiento.service';
 import { CardInfoPetComponent } from './card-info-pet/card-info-pet.component';
 import { CardInfoOwnerComponent } from './card-info-owner/card-info-owner.component';
 import { mergeMap } from 'rxjs';
-import { TreatmentsCardComponent } from '../../../reusables/tratamientos/treatments-card/treatments-card.component';
+import { TreatmentsCardComponent } from '../../../reusables/treatments-card/treatments-card.component';
 
 @Component({
   selector: 'app-info-pet',

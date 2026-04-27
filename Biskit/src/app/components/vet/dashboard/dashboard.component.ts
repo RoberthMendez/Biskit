@@ -9,7 +9,7 @@ import { Tratamiento } from '../../../models/Tratamiento/tratamiento';
 import { CardVerComponent } from "./card-ver/card-ver.component";
 import { CardDonaComponent } from "../../admin/dashboard/card-dona/card-dona.component";
 import { CardAccesoRapidoComponent } from "./card-acceso-rapido/card-acceso-rapido.component";
-import { TreatmentsCardComponent } from '../../reusables/tratamientos/treatments-card/treatments-card.component';
+import { TreatmentsCardComponent } from '../../reusables/treatments-card/treatments-card.component';
 
 @Component({
   selector: 'app-dashboard',

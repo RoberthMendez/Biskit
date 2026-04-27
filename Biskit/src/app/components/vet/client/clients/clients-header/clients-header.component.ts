@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { BackButtonComponent } from "../../../../reusables/back-button/back-button.component";
 
 @Component({
   standalone: true,
   selector: 'app-clients-header',
-  imports: [RouterLink],
+  imports: [RouterLink, BackButtonComponent],
   templateUrl: './clients-header.component.html',
 })
 export class ClientsHeaderComponent {

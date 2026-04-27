@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Client } from '../../../models/Client/client';
 import { Pet } from '../../../models/Pets/pet';
-import { TreatmentsCardComponent } from '../../reusables/tratamientos/treatments-card/treatments-card.component';
+import { TreatmentsCardComponent } from '../../reusables/treatments-card/treatments-card.component';
 import { PetCardComponent } from './pet-card/pet-card.component';
 import { RouterLink } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';

@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { TreatmentItemComponent } from '../../../client/info-pet/treatment-item/treatment-item.component';
-import { Tratamiento } from '../../../../models/Tratamiento/tratamiento';
+import { TreatmentItemComponent } from '../../client/info-pet/treatment-item/treatment-item.component';
+import { Tratamiento } from '../../../models/Tratamiento/tratamiento';
 
 @Component({
   selector: 'app-treatments-card',

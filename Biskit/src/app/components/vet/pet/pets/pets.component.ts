@@ -6,11 +6,12 @@ import { PetService } from '../../../../services/pet.service';
 import { VetService } from '../../../../services/vet.service';
 import { CardPetComponent } from './card-pet/card-pet.component';
 import { HttpErrorResponse } from '@angular/common/http';
+import { BackButtonComponent } from "../../../reusables/back-button/back-button.component";
 
 @Component({
   selector: 'app-pets',
   standalone: true,
-  imports: [CardPetComponent, FormsModule, RouterLink],
+  imports: [CardPetComponent, FormsModule, RouterLink, BackButtonComponent],
   templateUrl: './pets.component.html',
 })
 export class PetsComponent {
