@@ -18,6 +18,7 @@ export class PetsComponent {
   public pets: Pet[] = [];
   public vetId: number = 0;
   public petsTreatedByVet: Pet[] = [];
+  public showOnlyMyPets: boolean = false;
 
   public searchTerm: string = '';
 
@@ -41,11 +42,10 @@ export class PetsComponent {
   }
 
   get filteredPets(): Pet[] {
+    const source = this.showOnlyMyPets ? this.petsTreatedByVet : this.pets;
     const term = this.searchTerm.trim().toLowerCase();
-    if (!term) return this.pets;
-    return this.pets.filter((pet) =>
-      pet.nombre.toLowerCase().includes(term)
-    );
+    if (!term) return source;
+    return source.filter((pet) => pet.nombre.toLowerCase().includes(term));
   }
 
 }

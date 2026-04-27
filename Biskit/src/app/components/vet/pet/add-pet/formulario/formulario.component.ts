@@ -1,9 +1,4 @@
-import {
-  Component,
-  Input,
-  OnInit,
-  HostListener,
-} from '@angular/core';
+import { Component, Input, OnInit, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -32,7 +27,7 @@ type DropdownKey = 'cliente' | 'especie' | 'raza' | 'enfermedad';
 })
 export class FormularioComponent implements OnInit {
   @Input() petId: number | null = null;
-
+  @Input() vetId: number | null = null;
   // ── Formulario ───────────────────────────────────────────────────────────────
   formPet: Pet = new Pet();
   fechaNacimientoStr: string = '';
@@ -42,7 +37,7 @@ export class FormularioComponent implements OnInit {
   // ── Listas de datos ──────────────────────────────────────────────────────────s
   clientes: Client[] = [];
   especies: Especie[] = [];
-  razas: Raza[] = [];          // todas las razas
+  razas: Raza[] = []; // todas las razas
   razasFiltradas: Raza[] = []; // razas filtradas por especie seleccionada
   enfermedades: Enfermedad[] = [];
 
@@ -83,7 +78,8 @@ export class FormularioComponent implements OnInit {
   savingRaza: boolean = false;
   savingEnfermedad: boolean = false;
   private closeRazaModalTimeout: ReturnType<typeof setTimeout> | null = null;
-  private closeEnfermedadModalTimeout: ReturnType<typeof setTimeout> | null = null;
+  private closeEnfermedadModalTimeout: ReturnType<typeof setTimeout> | null =
+    null;
 
   // ─────────────────────────────────────────────────────────────────────────────
 
@@ -137,21 +133,19 @@ export class FormularioComponent implements OnInit {
 
   // ─── Carga de datos ───────────────────────────────────────────────────────────
   private loadLists(): void {
-    this.clientService.findAll().subscribe(
-      (clientes) => (this.clientes = clientes),
-    );
-    this.razasService.findAll().subscribe(
-      (razas) => {
-        this.razas = razas;
-        this.razasFiltradas = razas;
-      },
-    );
-    this.especiesService.findAll().subscribe(
-      (especies) => (this.especies = especies),
-    );
-    this.enfermedadesService.findAll().subscribe(
-      (enfermedades) => (this.enfermedades = enfermedades),
-    )
+    this.clientService
+      .findAll()
+      .subscribe((clientes) => (this.clientes = clientes));
+    this.razasService.findAll().subscribe((razas) => {
+      this.razas = razas;
+      this.razasFiltradas = razas;
+    });
+    this.especiesService
+      .findAll()
+      .subscribe((especies) => (this.especies = especies));
+    this.enfermedadesService
+      .findAll()
+      .subscribe((enfermedades) => (this.enfermedades = enfermedades));
   }
 
   // ─── Getters de filtrado en tiempo real ───────────────────────────────────────
@@ -183,9 +177,7 @@ export class FormularioComponent implements OnInit {
 
   get enfermedadesFiltradas(): Enfermedad[] {
     const q = this.enfermedadSearch.toLowerCase();
-    return this.enfermedades.filter((e) =>
-      e.nombre.toLowerCase().includes(q),
-    );
+    return this.enfermedades.filter((e) => e.nombre.toLowerCase().includes(q));
   }
 
   // ─── Control de dropdowns ─────────────────────────────────────────────────────
@@ -274,7 +266,9 @@ export class FormularioComponent implements OnInit {
     this.razaModalEspecieSearch = especieSeleccionada?.nombre ?? '';
     this.filterRazasByEspecie(especieId);
 
-    if (this.addRazaError === 'Selecciona una especie antes de agregar la raza') {
+    if (
+      this.addRazaError === 'Selecciona una especie antes de agregar la raza'
+    ) {
       this.addRazaError = null;
     }
   }
@@ -352,7 +346,6 @@ export class FormularioComponent implements OnInit {
   }
 
   saveNewRaza(): void {
-
     if (!this.selectedEspecieId) {
       this.addRazaError = 'Selecciona una especie antes de agregar la raza';
       return;
@@ -372,45 +365,43 @@ export class FormularioComponent implements OnInit {
       new Especie(this.selectedEspecieId, this.especieSearch.trim()),
     );
 
-    this.razasService
-      .addRaza(raza)
-      .subscribe({
-        next: (razaCreada: Raza | null) => {
-          const especieSeleccionada = this.especies.find(
-            (e) => e.id === this.selectedEspecieId,
-          );
+    this.razasService.addRaza(raza).subscribe({
+      next: (razaCreada: Raza | null) => {
+        const especieSeleccionada = this.especies.find(
+          (e) => e.id === this.selectedEspecieId,
+        );
 
-          const especieRaza = razaCreada?.especie?.id
-            ? razaCreada.especie
-            : new Especie(
-                this.selectedEspecieId ?? 0,
-                especieSeleccionada?.nombre ?? this.especieSearch.trim(),
-              );
+        const especieRaza = razaCreada?.especie?.id
+          ? razaCreada.especie
+          : new Especie(
+              this.selectedEspecieId ?? 0,
+              especieSeleccionada?.nombre ?? this.especieSearch.trim(),
+            );
 
-          const razaPersistida: Raza = new Raza(
-            razaCreada?.id ?? null,
-            razaCreada?.nombre ?? raza.nombre,
-            especieRaza,
-          );
+        const razaPersistida: Raza = new Raza(
+          razaCreada?.id ?? null,
+          razaCreada?.nombre ?? raza.nombre,
+          especieRaza,
+        );
 
-          this.razas = [...this.razas, razaPersistida];
-          this.filterRazasByEspecie(this.selectedEspecieId);
-          this.selectRaza(razaPersistida);
+        this.razas = [...this.razas, razaPersistida];
+        this.filterRazasByEspecie(this.selectedEspecieId);
+        this.selectRaza(razaPersistida);
 
-          this.addRazaError = null;
-          this.addRazaSuccess = 'Raza agregada correctamente';
-          this.savingRaza = false;
+        this.addRazaError = null;
+        this.addRazaSuccess = 'Raza agregada correctamente';
+        this.savingRaza = false;
 
-          this.closeRazaModalTimeout = setTimeout(() => {
-            this.closeAddRazaModal();
-          }, 600);
-        },
-        error: () => {
-          this.addRazaError = 'Ocurrió un error al guardar la raza';
-          this.addRazaSuccess = null;
-          this.savingRaza = false;
-        },
-      });
+        this.closeRazaModalTimeout = setTimeout(() => {
+          this.closeAddRazaModal();
+        }, 600);
+      },
+      error: () => {
+        this.addRazaError = 'Ocurrió un error al guardar la raza';
+        this.addRazaSuccess = null;
+        this.savingRaza = false;
+      },
+    });
   }
 
   // ─── Modal: Agregar Enfermedad ────────────────────────────────────────────────
@@ -449,38 +440,38 @@ export class FormularioComponent implements OnInit {
     this.addEnfermedadError = null;
     this.savingEnfermedad = true;
 
-    const enfermedad: Enfermedad = new Enfermedad(null, this.newEnfermedadNombre.trim());
+    const enfermedad: Enfermedad = new Enfermedad(
+      null,
+      this.newEnfermedadNombre.trim(),
+    );
 
-    this.enfermedadesService
-      .addEnfermedad(enfermedad)
-      .subscribe({
-        next: (enfermedadCreada: Enfermedad | null) => {
-          const enfermedadPersistida = new Enfermedad(
-            enfermedadCreada?.id ?? null,
-            enfermedadCreada?.nombre ?? enfermedad.nombre,
-          );
+    this.enfermedadesService.addEnfermedad(enfermedad).subscribe({
+      next: (enfermedadCreada: Enfermedad | null) => {
+        const enfermedadPersistida = new Enfermedad(
+          enfermedadCreada?.id ?? null,
+          enfermedadCreada?.nombre ?? enfermedad.nombre,
+        );
 
-          this.enfermedades = [...this.enfermedades, enfermedadPersistida];
-          this.selectEnfermedad(enfermedadPersistida);
-          this.addEnfermedadError = null;
-          this.addEnfermedadSuccess = 'Enfermedad agregada correctamente';
-          this.savingEnfermedad = false;
+        this.enfermedades = [...this.enfermedades, enfermedadPersistida];
+        this.selectEnfermedad(enfermedadPersistida);
+        this.addEnfermedadError = null;
+        this.addEnfermedadSuccess = 'Enfermedad agregada correctamente';
+        this.savingEnfermedad = false;
 
-          this.closeEnfermedadModalTimeout = setTimeout(() => {
-            this.closeAddEnfermedadModal();
-          }, 600);
-        },
-        error: () => {
-          this.addEnfermedadSuccess = null;
-          this.addEnfermedadError = 'Ocurrió un error al guardar la enfermedad';
-          this.savingEnfermedad = false;
-        },
-      });
+        this.closeEnfermedadModalTimeout = setTimeout(() => {
+          this.closeAddEnfermedadModal();
+        }, 600);
+      },
+      error: () => {
+        this.addEnfermedadSuccess = null;
+        this.addEnfermedadError = 'Ocurrió un error al guardar la enfermedad';
+        this.savingEnfermedad = false;
+      },
+    });
   }
 
   // ─── Guardar mascota ──────────────────────────────────────────────────────────
   savePet(): void {
-
     this.errorMessage = null;
     this.successMessage = null;
 
@@ -488,19 +479,19 @@ export class FormularioComponent implements OnInit {
       this.errorMessage = 'Nombre requerido';
       return;
     }
-    if (!this.selectedClienteId) {
+    if (!this.selectedClienteId || !this.existeCliente()) {
       this.errorMessage = 'Selecciona un dueño de la lista';
       return;
     }
-    if (!this.selectedEspecieId) {
+    if (!this.selectedEspecieId || !this.existeEspecie()) {
       this.errorMessage = 'Selecciona una especie de la lista';
       return;
     }
-    if (!this.selectedRazaId) {
+    if (!this.selectedRazaId || !this.existeRaza()) {
       this.errorMessage = 'Selecciona una raza de la lista';
       return;
     }
-    if (!this.selectedEnfermedadId) {
+    if (!this.selectedEnfermedadId || !this.existeEnfermedad()) {
       this.errorMessage = 'Selecciona una enfermedad de la lista';
       return;
     }
@@ -519,6 +510,9 @@ export class FormularioComponent implements OnInit {
 
     this.formPet.fechaNacimiento = new Date(this.fechaNacimientoStr);
 
+    //Imprimir el objeto formPet para verificar que se esté armando correctamente antes de enviarlo
+    console.log('Mascota a guardar:', this.formPet);
+
     this.petService.savePet(this.formPet).subscribe({
       next: () => {
         window.scrollTo({ top: 0, behavior: 'auto' });
@@ -527,7 +521,7 @@ export class FormularioComponent implements OnInit {
           : 'Mascota guardada correctamente';
 
         setTimeout(() => {
-          this.router.navigate(['/vet/pets']);
+          this.router.navigate(['/vet/', this.vetId, 'pets']);
         }, 600);
       },
       error: () => {
@@ -537,7 +531,6 @@ export class FormularioComponent implements OnInit {
           : 'No fue posible guardar la mascota.';
       },
     });
-
   }
 
   private resetForm(): void {
@@ -552,5 +545,31 @@ export class FormularioComponent implements OnInit {
     this.selectedRazaId = null;
     this.selectedEnfermedadId = null;
     this.razasFiltradas = [...this.razas];
+  }
+
+  private existeEspecie(): boolean {
+    return this.especies.some(
+      (e) => e.id === this.selectedEspecieId && e.nombre === this.especieSearch,
+    );
+  }
+
+  private existeRaza(): boolean {
+    return this.razas.some(
+      (r) => r.id === this.selectedRazaId && r.nombre === this.razaSearch,
+    );
+  }
+
+  private existeCliente(): boolean {
+    return this.clientes.some(
+      (c) => c.id === this.selectedClienteId && c.nombre === this.clienteSearch,
+    );
+  }
+
+  private existeEnfermedad(): boolean {
+    return this.enfermedades.some(
+      (e) =>
+        e.id === this.selectedEnfermedadId &&
+        e.nombre === this.enfermedadSearch,
+    );
   }
 }
