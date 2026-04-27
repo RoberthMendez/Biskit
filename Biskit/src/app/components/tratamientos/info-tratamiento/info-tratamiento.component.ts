@@ -65,6 +65,8 @@ export class InfoTratamientoComponent implements OnInit {
 
       if (petId !== null && !Number.isNaN(petId)) {
         this.backLink = `${this.basePath}/pets/${petId}`;
+      } else {
+        this.backLink = this.basePath;
       }
 
       if (petId !== null && tratamientoId !== null && !Number.isNaN(tratamientoId)) {
@@ -77,6 +79,15 @@ export class InfoTratamientoComponent implements OnInit {
         next: (tratamiento) => {
           this.tratamiento = tratamiento;
           this.veterinario = tratamiento.vet;
+
+          if (petId === null && tratamiento.pet != null) {
+            this.pet = tratamiento.pet;
+            this.owner = tratamiento.pet.owner;
+          }
+
+          if (petId === null && tratamiento.pet?.id != null) {
+            this.editLink = `${this.basePath}/pets/${tratamiento.pet.id}/tratamiento/update/${tratamiento.id}`;
+          }
         },
         error: (error) => {
           console.error('Error al cargar tratamiento:', error);

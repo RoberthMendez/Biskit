@@ -41,20 +41,18 @@
     <app-card-dona
       class="w-full md:w-[48%] xl:w-[30%]"
       [titulo]="'MASCOTAS'"
-      [idAdmin]="adminId"
       [total]="numMascotas"
       [data]="[numMascotasActivas, numMascotasInactivas]"
     ></app-card-dona>
     <app-card-dona
       class="w-full md:w-[48%] xl:w-[30%]"
       [titulo]="'VETERINARIOS'"
-      [idAdmin]="adminId"
       [total]="numVeterinarios"
       [data]="[numVeterinariosActivos, numVeterinariosInactivos]"
     ></app-card-dona>
   </section>
   <!-- Tratamientos por mes (Gráfico de Barras) -->
-  <section class="flex justify-around items-center">
+  <section class="flex justify-center items-center">
     <app-card-barras class="w-full" [tratamientos]="tratamientosMes">
     </app-card-barras>
   </section>
@@ -85,42 +83,3 @@
     </app-card-repuestos>
   </section>
 </main>
-
-<!-- 
-<p>Tratamientos de cada mes</p>
-<ul>
-  <li *ngFor="let item of tratamientosMes">
-    {{ item.mes }} : {{ item.numTratamientos }}
-  </li>
-</ul>
-
-<p>Tratamientos por medicamento (último mes):</p>
-<ul>
-  <li *ngFor="let item of drogaTratamientosMesCount">
-    {{ item.drogaNombre }} : {{ item.count }}
-  </li>
-</ul>
-<p>Veterinarios activos: {{ numVeterinariosActivos }}</p>
-<p>Veterinarios inactivos: {{ numVeterinariosInactivos }}</p>
-<p>Mascotas totales: {{ numMascotas }}</p>
-<p>Mascotas inactivas: {{ numMascotasInactivas }}</p>
-<p>Ventas totales: {{ ventasTotales }}</p>
-<p>Ganancias totales: {{ gananciasTotales }}</p>
-<p>Top 5 drogas:</p>
-<ul>
-  <li *ngFor="let item of top5Drogas">
-    #{{ item.top }}: {{ item.drogaNombre }} : {{ item.countTratamientos }}
-  </li>
-</ul>
-<p>Top 5 enfermedades:</p>
-<ul>
-  <li *ngFor="let item of top5Enfermedades">
-    #{{ item.top }}: {{ item.enfermedadNombre }} : {{ item.countPets }}
-  </li>
-</ul>
-<p>Drogas bajas en stock:</p>
-<ul>
-  <li *ngFor="let item of drogasBajasEnStock">
-    Reponer {{ item.drogaNombre }}, Stock actual: {{ item.stockActual }} !!!!!
-  </li>
-</ul> -->

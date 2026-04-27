@@ -13,8 +13,6 @@ export class CardDonaComponent {
   dataDona: any;
   options: any;
 
-  @Input() idAdmin: string = '';
-
   @Input() titulo: string = '';
 
   @Input() total: number = 0;

@@ -6,10 +6,17 @@
   <div class="h-auto w-0.5 min-w-0.5 shrink-0 self-stretch bg-[#2B5392]"></div>
 
   <div class="flex flex-col gap-1">
-    <!-- Fecha -->
-    <p [class]="dateClasses">
-      {{ tratamiento.fecha | date: "dd-MM-yyyy" }}
-    </p>
+    <div class="flex items-center justify-between gap-1">
+      @if (variant === "vet") {
+        <p [class]="dateClasses">
+          {{ tratamiento.pet.nombre! }}
+        </p>
+      }
+      <span [class]="dateClasses">·</span>
+      <p [class]="dateClasses">
+        {{ tratamiento.fecha | date: "dd-MM-yyyy" }}
+      </p>
+    </div>
 
     <!-- Drogas -->
     <div [class]="drugGridClasses">

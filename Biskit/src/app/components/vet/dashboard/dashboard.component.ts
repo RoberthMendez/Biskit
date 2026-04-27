@@ -2,17 +2,24 @@ import { Component } from '@angular/core';
 import { VetService } from '../../../services/vet.service';
 import { PetService } from '../../../services/pet.service';
 import { ClientService } from '../../../services/client.service';
+import { TratamientoService } from '../../../services/tratamiento.service';
 import { ActivatedRoute } from '@angular/router';
 import { Vet } from '../../../models/Vets/vet-cl';
+import { Tratamiento } from '../../../models/Tratamiento/tratamiento';
+import { CardVerComponent } from "./card-ver/card-ver.component";
+import { CardDonaComponent } from "../../admin/dashboard/card-dona/card-dona.component";
+import { CardAccesoRapidoComponent } from "./card-acceso-rapido/card-acceso-rapido.component";
+import { TreatmentsCardComponent } from '../../reusables/tratamientos/treatments-card/treatments-card.component';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [],
+  imports: [CardVerComponent, CardDonaComponent, CardAccesoRapidoComponent, TreatmentsCardComponent],
   templateUrl: './dashboard.component.html',
 })
 export class DashboardComponent {
   vetId: number = 0;
   vet!: Vet;
+  tratamientos: Tratamiento[] = [];
   numTratamientosByVet: number = 0;
   numPets: number = 0;
   numPetsActivos: number = 0;
@@ -24,6 +31,7 @@ export class DashboardComponent {
     private vetService: VetService,
     private petService: PetService,
     private clientService: ClientService,
+    private tratamientoService: TratamientoService,
   ) {}
 
   ngOnInit(): void {
@@ -39,6 +47,15 @@ export class DashboardComponent {
     this.vetService.countTratamientosByVet(this.vetId).subscribe({
       next: (count) => {
         this.numTratamientosByVet = count;
+      },
+    });
+
+    this.tratamientoService.findTratamientosByVet(this.vetId).subscribe({
+      next: (tratamientos) => {
+        this.tratamientos = tratamientos;
+      },
+      error: (error) => {
+        console.error('Error cargando tratamientos del veterinario:', error);
       },
     });
 

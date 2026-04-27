@@ -1,10 +1,54 @@
-    <!---- Datos ------>
-<h1>Vet Id: {{ vetId }}</h1>
-<h2>Nombre: {{ vet.nombre }}</h2>
-<h2>Cédula: {{ vet.cedula }}</h2>
-<h2>Correo: {{ vet.correo }}</h2>
-<h2>Tratamientos : {{ numTratamientosByVet }}</h2>
-<h2>Mascotas : {{ numPets }}</h2>
-<h2>Mascotas Activas : {{ numPetsActivos }}</h2>
-<h2>Mascotas Inactivas : {{ numPetsInactivos }}</h2>
-<h2>Clientes : {{ numClients }}</h2>
+<main
+  class="flex flex-col gap-8 sm:gap-10 my-8 sm:my-10 mx-4 sm:mx-8 md:mx-12 lg:mx-16 xl:mx-24 2xl:mx-30"
+>
+  <!-- Titulo -->
+  <section
+    class="text-[#4a4a4a] w-full flex flex-col items-center justify-center gap-2"
+  >
+    <h1
+      class="text-xl font-black tracking-wider text-[#4a4a4a] sm:text-3xl md:text-4xl"
+    >
+      Hola de nuevo {{ vet.nombre }}!
+    </h1>
+    <p class="text-sm text-[#8d8580dd] font-medium text-center">
+      Aquí puedes ver un resumen de tu actividad y accesos rápidos
+    </p>
+  </section>
+  <!-- Ver Mascotas y Clientes -->
+  <section
+    class="flex flex-col xl:flex-row justify-around items-stretch xl:items-center gap-6 lg:gap-8 xl:gap-10"
+  >
+    <app-card-ver class="w-full xl:w-1/2" [titulo]="'Mascotas'" [vetId]="vetId">
+    </app-card-ver>
+    <app-card-ver class="w-full xl:w-1/2" [titulo]="'Clientes'" [vetId]="vetId">
+    </app-card-ver>
+  </section>
+  <!-- Mascotas Activas y Accesos Rápidos -->
+  <section
+    class="flex flex-col xl:flex-row justify-around items-center gap-6 lg:gap-8 xl:gap-10"
+  >
+    <app-card-dona
+      class="w-full xl:w-1/2"
+      [titulo]="'MASCOTAS'"
+      [total]="numPets"
+      [data]="[numPetsActivos, numPetsInactivos]"
+    ></app-card-dona>
+    <app-card-acceso-rapido class="w-full xl:w-1/2" [vetId]="vetId">
+    </app-card-acceso-rapido>
+  </section>
+  <!-- Tratamientos -->
+  <section class="w-full">
+    <app-treatments-card
+      class="w-full"
+      [title]="'Tus Tratamientos'"
+      [helperText]="
+        'Cantidad de tratamientos realizados: ' + numTratamientosByVet
+      "
+      [tratamientos]="tratamientos"
+      [routeBase]="['/vet', vetId]"
+      routeSegment="tratamientos"
+      [variant]="'vet'"
+      [listVariant]="'vet'"
+    ></app-treatments-card>
+  </section>
+</main>

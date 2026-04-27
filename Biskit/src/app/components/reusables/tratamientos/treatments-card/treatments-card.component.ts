@@ -49,7 +49,7 @@ export class TreatmentsCardComponent {
 
     if (effectiveListVariant === 'vet') {
       const extraClasses = this.tratamientos.length > 4
-        ? 'max-h-[12rem] overflow-y-auto'
+        ? 'max-h-[18rem] overflow-y-auto'
         : 'overflow-visible';
 
       return `${base} ${extraClasses}`;
@@ -65,7 +65,15 @@ export class TreatmentsCardComponent {
   }
 
   protected get addButtonLink(): Array<string | number> | null {
-    if (!this.showAddButton || this.entityId == null || this.routeBase.length === 0) {
+    if (!this.showAddButton || this.routeBase.length === 0) {
+      return null;
+    }
+
+    if (this.routeSegment === 'tratamientos') {
+      return [...this.routeBase, this.routeSegment, 'add'];
+    }
+
+    if (this.entityId == null) {
       return null;
     }
 
@@ -73,11 +81,15 @@ export class TreatmentsCardComponent {
   }
 
   protected getTreatmentLink(tratamiento: Tratamiento): Array<string | number> | null {
-    if (
-      this.entityId == null ||
-      this.routeBase.length === 0 ||
-      tratamiento.id == null
-    ) {
+    if (this.routeBase.length === 0 || tratamiento.id == null) {
+      return null;
+    }
+
+    if (this.routeSegment === 'tratamientos') {
+      return [...this.routeBase, this.routeSegment, tratamiento.id];
+    }
+
+    if (this.entityId == null) {
       return null;
     }
 

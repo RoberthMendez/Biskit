@@ -1,0 +1,32 @@
+<article
+  class="bg-[#FBFAF8] pt-6 pb-8 px-5 sm:px-6 rounded-2xl border border-[#E0E0E0] flex items-center flex-col justify-center gap-6 sm:gap-7 w-full"
+>
+  <!-- Encabezado -->
+  <div class="w-full">
+    <p
+      class="text-xs font-semibold tracking-widest uppercase text-[#8d8580] mb-1"
+    >
+      ACCESO RÁPIDO
+    </p>
+
+    <h2 class="font-semibold text-lg leading-tight text-[#4a4a4a]">
+      Crear Nuevo Registro
+    </h2>
+  </div>
+
+  <!-- Items -->
+  <div class="w-full flex flex-col gap-3">
+    <app-item-acceso-rapido
+      [titulo]="'Mascota'"
+      [vetId]="vetId"
+    ></app-item-acceso-rapido>
+    <app-item-acceso-rapido
+      [titulo]="'Cliente'"
+      [vetId]="vetId"
+    ></app-item-acceso-rapido>
+    <app-item-acceso-rapido
+      [titulo]="'Tratamiento'"
+      [vetId]="vetId"
+    ></app-item-acceso-rapido>
+  </div>
+</article>
