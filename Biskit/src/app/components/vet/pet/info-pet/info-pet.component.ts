@@ -8,7 +8,6 @@ import { CardInfoPetComponent } from './card-info-pet/card-info-pet.component';
 import { CardInfoOwnerComponent } from './card-info-owner/card-info-owner.component';
 import { mergeMap } from 'rxjs';
 import { TreatmentsCardComponent } from '../../../reusables/tratamientos/treatments-card/treatments-card.component';
-import { CardInfoTratamientosComponent } from "./card-info-tratamientos/card-info-tratamientos.component";
 
 @Component({
   selector: 'app-info-pet',
@@ -16,7 +15,7 @@ import { CardInfoTratamientosComponent } from "./card-info-tratamientos/card-inf
     CardInfoPetComponent,
     CardInfoOwnerComponent,
     RouterLink,
-    CardInfoTratamientosComponent
+    TreatmentsCardComponent
 ],
   templateUrl: './info-pet.component.html',
 })

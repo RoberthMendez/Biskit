@@ -7,7 +7,7 @@
 
   <div class="flex flex-col gap-1">
     <div class="flex items-center justify-between gap-1">
-      @if (variant === "vet") {
+      @if (variant === "vet" && showPetName !== false) {
         <p [class]="dateClasses">
           {{ tratamiento.pet.nombre! }}
         </p>

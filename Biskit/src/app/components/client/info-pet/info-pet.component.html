@@ -34,13 +34,17 @@
     <app-pet-card [pet]="pet"></app-pet-card>
 
     <!-- Tratamientos -->
-    <aside class="flex w-full lg:col-span-2">
-      <app-treatments-section
-        [pet]="pet"
-        [clientId]="client.id"
-        [petId]="pet.id"
-        class="w-full min-h-40"
-      ></app-treatments-section>
+    <aside class="flex w-full lg:col-span-2" *ngIf="client.id">
+      <app-treatments-card
+        [tratamientos]="pet.tratamientos ?? []"
+        [routeBase]="['/client', client.id!]"
+        [routeSegment]="'pet'"
+        [entityId]="pet.id"
+        [variant]="'client'"
+        [title]="'Tratamientos de ' + pet.nombre"
+        [listVariant]="'client'"
+        class="w-full"
+      ></app-treatments-card>
     </aside>
   </section>
 </main>

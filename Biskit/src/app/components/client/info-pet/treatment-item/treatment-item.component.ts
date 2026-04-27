@@ -26,6 +26,8 @@ export class TreatmentItemComponent {
 
   @Input() variant: 'client' | 'vet' = 'client';
 
+  @Input() showPetName?: boolean;
+
   @Input('t')
   set legacyTreatment(value: Tratamiento) {
     this.tratamiento = value;

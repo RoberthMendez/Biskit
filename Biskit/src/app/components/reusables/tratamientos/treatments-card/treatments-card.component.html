@@ -113,6 +113,9 @@
         [link]="getTreatmentLink(tratamiento)"
         [state]="estadoAtras"
         [variant]="variant"
+        [showPetName]="
+          showPetName !== undefined ? showPetName : variant === 'vet'
+        "
       ></app-treatment-item>
     }
   </div>

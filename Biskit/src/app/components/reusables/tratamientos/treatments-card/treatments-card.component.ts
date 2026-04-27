@@ -29,6 +29,8 @@ export class TreatmentsCardComponent {
 
   @Input() listVariant?: 'client' | 'vet';
 
+  @Input() showPetName?: boolean;
+
   @Input() showAddButton = false;
 
   @Input() addButtonLabel = 'Agregar Tratamiento';

@@ -56,10 +56,16 @@
 
       <!-- Tratamientos y Dueño -->
       <aside class="flex flex-col gap-5 lg:col-span-2 justify-center">
-        <app-card-info-tratamientos
-          [pet]="pet"
-          [vetId]="vetId"
-          [basePath]="basePath"
+        <app-treatments-card
+          [tratamientos]="pet.tratamientos ?? []"
+          [routeBase]="[basePath]"
+          [routeSegment]="'pets'"
+          [entityId]="pet.id"
+          [variant]="'vet'"
+          [title]="'Tratamientos de ' + pet.nombre"
+          [showAddButton]="true"
+          [addButtonLabel]="'Agregar Tratamiento'"
+          [showPetName]="false"
         />
         <app-card-info-owner [owner]="pet.owner" />
       </aside>

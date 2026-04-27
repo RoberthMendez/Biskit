@@ -1,7 +1,8 @@
 import { Component, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { Client } from '../../../models/Client/client';
 import { Pet } from '../../../models/Pets/pet';
-import { TreatmentsSectionComponent } from './treatments-section/treatments-section.component';
+import { TreatmentsCardComponent } from '../../reusables/tratamientos/treatments-card/treatments-card.component';
 import { PetCardComponent } from './pet-card/pet-card.component';
 import { RouterLink } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
@@ -14,7 +15,7 @@ import { ClientService } from '../../../services/client.service';
   selector: 'app-info-pet',
   templateUrl: './info-pet.component.html',
   standalone: true,
-  imports: [PetCardComponent, TreatmentsSectionComponent, RouterLink],
+  imports: [CommonModule, PetCardComponent, TreatmentsCardComponent, RouterLink],
 })
 export class InfoPetComponent {
   @Input() client: Client = new Client();
