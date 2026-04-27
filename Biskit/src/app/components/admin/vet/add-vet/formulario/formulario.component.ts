@@ -38,6 +38,8 @@ export class FormularioComponent {
 
   @Input() adminId: number | null = null;
 
+  @Input() returnRoute: string | Array<string | number> = ['/admin'];
+
   constructor(
     private vetService: VetService,
     private router: Router,
@@ -169,7 +171,11 @@ export class FormularioComponent {
 
         this.vetId ? this.successMessage = 'Cambios guardados correctamente' : this.successMessage = 'Veterinario guardado correctamente';
         setTimeout(() => {
-          this.router.navigate(['admin', this.adminId, 'vets']);
+          this.router.navigate(
+            Array.isArray(this.returnRoute)
+              ? this.returnRoute
+              : [this.returnRoute],
+          );
         }, 600);
 
         this.formVet = new Vet(); //Resetear el formulario

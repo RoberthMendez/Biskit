@@ -4,18 +4,18 @@ import { Client } from '../../../models/Client/client';
 import { Pet } from '../../../models/Pets/pet';
 import { TreatmentsCardComponent } from '../../reusables/treatments-card/treatments-card.component';
 import { PetCardComponent } from './pet-card/pet-card.component';
-import { RouterLink } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { PetService } from '../../../services/pet.service';
 import { mergeMap } from 'rxjs';
 import { TratamientoService } from '../../../services/tratamiento.service';
 import { ClientService } from '../../../services/client.service';
+import { BackButtonComponent } from '../../reusables/back-button/back-button.component';
 
 @Component({
   selector: 'app-info-pet',
   templateUrl: './info-pet.component.html',
   standalone: true,
-  imports: [CommonModule, PetCardComponent, TreatmentsCardComponent, RouterLink],
+  imports: [CommonModule, PetCardComponent, TreatmentsCardComponent, BackButtonComponent],
 })
 export class InfoPetComponent {
   @Input() client: Client = new Client();

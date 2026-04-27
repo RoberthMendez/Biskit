@@ -1,21 +1,7 @@
-<!-- BACK -->
-<button
-  type="button"
-  (click)="goToClients()"
-  class="back-link group mt-6 mb-2 ml-4 inline-flex h-10 cursor-pointer items-center justify-start sm:mt-8 sm:ml-8 md:ml-12 lg:ml-20 xl:ml-28"
->
-  <!-- SVG igual -->
-  <svg class="mt-1 h-9" viewBox="0 0 24 24" fill="none">
-    <path d="M8 12L16 12" stroke="#6B6B6B" stroke-width="2" />
-    <path d="M11 9L8 12L11 15" stroke="#6B6B6B" stroke-width="2" />
-  </svg>
-
-  <h2
-    class="ml-1 text-base font-bold tracking-wider text-[#4a4a4acc] underline underline-offset-6 transition-colors duration-300 group-hover:text-[#4A4A4Aee] sm:text-lg"
-  >
-    Lista de Clientes
-  </h2>
-</button>
+<app-back-button
+  [label]="'Lista de Clientes'"
+  [ruta]="clientsRoute"
+></app-back-button>
 
 <main
   id="info-client-main"

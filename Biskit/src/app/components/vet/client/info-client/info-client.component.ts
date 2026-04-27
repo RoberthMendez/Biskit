@@ -8,6 +8,7 @@ import { ClientHeaderComponent } from './client-header/client-header.component';
 import { ClientDetailsComponent } from './client-details/client-details.component';
 import { PetsSectionComponent } from './pets-section/pets-section.component';
 import { DeleteModalComponent } from '../../../reusables/delete-modal/delete-modal.component';
+import { BackButtonComponent } from '../../../reusables/back-button/back-button.component';
 
 @Component({
   selector: 'app-info-client',
@@ -18,6 +19,7 @@ import { DeleteModalComponent } from '../../../reusables/delete-modal/delete-mod
     ClientDetailsComponent,
     PetsSectionComponent,
     DeleteModalComponent,
+    BackButtonComponent,
   ],
 })
 export class InfoClientComponent {

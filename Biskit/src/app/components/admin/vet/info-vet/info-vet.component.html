@@ -1,46 +1,11 @@
+<app-back-button
+  [label]="'Lista de Veterinarios'"
+  [ruta]="['/admin', adminId, 'vets']"
+></app-back-button>
 <main
   class="mx-4 mt-2 my-6 space-y-6 sm:mx-8 sm:mt-6 sm:mb-10 md:mx-12 lg:mx-20 xl:mx-28"
 >
   @if (vet) {
-    <a
-      [routerLink]="['/admin', adminId, 'vets']"
-      class="back-link group mt-2 mb-2 inline-flex h-10 max-w-full items-center justify-start sm:mt-6"
-    >
-      <svg
-        class="mt-1 h-9"
-        viewBox="0 0 24 24"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-        <g
-          id="SVGRepo_tracerCarrier"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        ></g>
-        <g id="SVGRepo_iconCarrier">
-          <path
-            d="M8 12L16 12"
-            stroke="#6B6B6B"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          ></path>
-          <path
-            d="M11 9L8.08704 11.913V11.913C8.03897 11.961 8.03897 12.039 8.08704 12.087V12.087L11 15"
-            stroke="#6B6B6B"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          ></path>
-        </g>
-      </svg>
-      <h2
-        class="truncate text-sm font-bold tracking-wider text-[#4a4a4acc] underline underline-offset-4 transition-colors duration-300 group-hover:text-[#4A4A4Aee] sm:text-base md:text-lg"
-      >
-        Dashboard Administrador
-      </h2>
-    </a>
     <section
       class="mx-auto grid w-full max-w-6xl grid-cols-1 items-center gap-8 md:grid-cols-2 lg:grid-cols-3"
     >

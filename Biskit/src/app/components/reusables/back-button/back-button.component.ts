@@ -10,6 +10,6 @@ export class BackButtonComponent {
 
   @Input() label: String = '';
 
-  @Input() ruta: Array<string | number> = ['..'];
+  @Input() ruta: string | Array<string | number> = ['..'];
 
 }

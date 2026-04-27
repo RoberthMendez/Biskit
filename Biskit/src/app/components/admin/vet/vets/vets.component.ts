@@ -11,10 +11,12 @@ import {
 import { DeleteModalComponent } from '../../../reusables/delete-modal/delete-modal.component';
 import { HeaderComponent } from './header/header.component';
 import { BarraBusquedaComponent } from './barra-busqueda/barra-busqueda.component';
+import { BackButtonComponent } from "../../../reusables/back-button/back-button.component";
+import { MobileVetCardComponent } from './mobile-vet-card/mobile-vet-card.component';
 
 @Component({
   selector: 'app-vets',
-  imports: [TablaComponent, DeleteModalComponent, HeaderComponent, BarraBusquedaComponent],
+  imports: [TablaComponent, DeleteModalComponent, HeaderComponent, BarraBusquedaComponent, BackButtonComponent, MobileVetCardComponent],
   templateUrl: './vets.component.html',
 })
 export class VetsComponent {

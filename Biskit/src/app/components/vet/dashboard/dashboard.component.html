@@ -41,9 +41,7 @@
     <app-treatments-card
       class="w-full"
       [title]="'Tus Tratamientos'"
-      [helperText]="
-        'Cantidad de tratamientos realizados: ' + numTratamientosByVet
-      "
+      [helperText]="'Tratamientos Realizados: ' + numTratamientosByVet"
       [tratamientos]="tratamientos"
       [routeBase]="['/vet', vetId]"
       routeSegment="tratamientos"

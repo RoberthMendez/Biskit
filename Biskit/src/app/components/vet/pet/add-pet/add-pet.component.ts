@@ -1,15 +1,15 @@
 import { Component } from '@angular/core';
 import { FormularioComponent } from './formulario/formulario.component';
 import { ImagenComponent } from './imagen/imagen.component';
-import { RouterLink } from '@angular/router';
 import { VetService } from '../../../../services/vet.service';
 import { PetService } from '../../../../services/pet.service';
 import { Router, ActivatedRoute } from '@angular/router';
+import { BackButtonComponent } from '../../../reusables/back-button/back-button.component';
 
 @Component({
   selector: 'app-add-pet',
   standalone: true,
-  imports: [FormularioComponent, ImagenComponent, RouterLink],
+  imports: [FormularioComponent, ImagenComponent, BackButtonComponent],
   templateUrl: './add-pet.component.html',
 })
 export class AddPetComponent {
@@ -17,6 +17,8 @@ export class AddPetComponent {
   vetId: number = 0;
   basePath = '';
   isAdminView = false;
+  backLink: string | Array<string | number> = '';
+  backLabel = 'Lista de Mascotas';
 
   constructor(
     private route: ActivatedRoute,
@@ -35,6 +37,20 @@ export class AddPetComponent {
     const contextParam = this.isAdminView ? 'idAdmin' : 'vetId';
     this.vetId = Number(this.route.snapshot.paramMap.get(contextParam));
     this.basePath = `/${this.isAdminView ? 'admin' : 'vet'}/${this.vetId}`;
+    this.updateBackNavigation();
+  }
+
+  private updateBackNavigation(): void {
+    const fromDetail = this.route.snapshot.queryParamMap.get('from') === 'detail';
+
+    if (this.petId != null && fromDetail) {
+      this.backLink = `${this.basePath}/pets/${this.petId}`;
+      this.backLabel = 'Detalle de Mascota';
+      return;
+    }
+
+    this.backLink = `${this.basePath}/pets`;
+    this.backLabel = 'Lista de Mascotas';
   }
 
   private comprobarIds() {

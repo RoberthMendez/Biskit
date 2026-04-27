@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Router, ActivatedRoute, RouterLink } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Pet } from '../../../../models/Pets/pet';
 import { PetService } from '../../../../services/pet.service';
 import { VetService } from '../../../../services/vet.service';
@@ -8,14 +8,15 @@ import { CardInfoPetComponent } from './card-info-pet/card-info-pet.component';
 import { CardInfoOwnerComponent } from './card-info-owner/card-info-owner.component';
 import { mergeMap } from 'rxjs';
 import { TreatmentsCardComponent } from '../../../reusables/treatments-card/treatments-card.component';
+import { BackButtonComponent } from '../../../reusables/back-button/back-button.component';
 
 @Component({
   selector: 'app-info-pet',
   imports: [
     CardInfoPetComponent,
     CardInfoOwnerComponent,
-    RouterLink,
-    TreatmentsCardComponent
+    TreatmentsCardComponent,
+    BackButtonComponent,
 ],
   templateUrl: './info-pet.component.html',
 })

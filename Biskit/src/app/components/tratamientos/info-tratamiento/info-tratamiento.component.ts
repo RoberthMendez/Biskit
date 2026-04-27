@@ -8,6 +8,7 @@ import { Client } from '../../../models/Client/client';
 import { TratamientoService } from '../../../services/tratamiento.service';
 import { PetService } from '../../../services/pet.service';
 import { DeleteModalComponent } from '../../reusables/delete-modal/delete-modal.component';
+import { BackButtonComponent } from '../../reusables/back-button/back-button.component';
 
 @Component({
   selector: 'app-info-tratamiento',
@@ -16,6 +17,7 @@ import { DeleteModalComponent } from '../../reusables/delete-modal/delete-modal.
     CommonModule,
     RouterLink,
     DeleteModalComponent,
+    BackButtonComponent,
   ],
   templateUrl: './info-tratamiento.component.html',
 })
@@ -28,6 +30,7 @@ export class InfoTratamientoComponent implements OnInit {
   isClientView = false;
   basePath = '';
   backLink = '';
+  backLabel = 'Volver';
   editLink = '';
   showDeleteModal = false;
   deleteSuccessMessage = '';
@@ -55,18 +58,22 @@ export class InfoTratamientoComponent implements OnInit {
 
     if (this.isClientView && clientId !== null && !Number.isNaN(clientId)) {
       this.backLink = `/client/${clientId}/pet/${petId}`;
+      this.backLabel = 'Detalle de Mascota';
       this.isClientView = true;
     }
 
     if (!this.isClientView) {
-      const contextParam = routePath.startsWith('admin/') ? 'idAdmin' : 'vetId';
+      const isAdminPage = routePath.startsWith('admin/');
+      const contextParam = isAdminPage ? 'idAdmin' : 'vetId';
       const contextId = Number(this.route.snapshot.paramMap.get(contextParam));
-      this.basePath = `/${routePath.startsWith('admin/') ? 'admin' : 'vet'}/${contextId}`;
+      this.basePath = `/${isAdminPage ? 'admin' : 'vet'}/${contextId}`;
 
       if (petId !== null && !Number.isNaN(petId)) {
         this.backLink = `${this.basePath}/pets/${petId}`;
+        this.backLabel = 'Detalle de Mascota';
       } else {
         this.backLink = this.basePath;
+        this.backLabel = isAdminPage ? 'Panel de Administrador' : 'Panel Veterinario';
       }
 
       if (petId !== null && tratamientoId !== null && !Number.isNaN(tratamientoId)) {

@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Pet } from '../../../models/Pets/pet';
 import { Vet } from '../../../models/Vets/vet-cl';
@@ -12,6 +12,7 @@ import { PetService } from '../../../services/pet.service';
 import { VetService } from '../../../services/vet.service';
 import { TratamientoService } from '../../../services/tratamiento.service';
 import { DrogasService } from '../../../services/drogas.service';
+import { BackButtonComponent } from '../../reusables/back-button/back-button.component';
 
 class DrugRowState {
   searchText = '';
@@ -22,7 +23,7 @@ class DrugRowState {
 @Component({
   selector: 'app-add-tratamiento',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink],
+  imports: [CommonModule, FormsModule, BackButtonComponent],
   templateUrl: './add-tratamiento.component.html',
 })
 export class AddTratamientoComponent implements OnInit {

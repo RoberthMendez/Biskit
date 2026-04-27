@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet, NavigationEnd } from '@angular/router';
+import { filter } from 'rxjs/operators';
 import { FooterComponent } from './components/reusables/footer/footer.component';
 
 @Component({
@@ -10,4 +11,10 @@ import { FooterComponent } from './components/reusables/footer/footer.component'
 })
 export class AppComponent {
   title = 'Biskit';
+
+  constructor(router: Router) {
+    router.events.pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd)).subscribe(() => {
+      window.scrollTo(0, 0);
+    });
+  }
 }

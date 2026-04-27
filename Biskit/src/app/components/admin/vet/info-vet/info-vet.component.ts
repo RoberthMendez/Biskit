@@ -7,7 +7,7 @@ import { mergeMap } from 'rxjs';
 import { TratamientoService } from '../../../../services/tratamiento.service';
 import { DeleteModalComponent } from '../../../reusables/delete-modal/delete-modal.component';
 import { TreatmentsCardComponent } from "../../../reusables/treatments-card/treatments-card.component";
-import { RouterLink } from '@angular/router';
+import { BackButtonComponent } from '../../../reusables/back-button/back-button.component';
 import { CardInfoVetComponent } from './card-info-vet/card-info-vet.component';
 
 @Component({
@@ -16,8 +16,8 @@ import { CardInfoVetComponent } from './card-info-vet/card-info-vet.component';
   imports: [
     DeleteModalComponent,
     TreatmentsCardComponent,
-    RouterLink,
     NgComponentOutlet,
+    BackButtonComponent,
   ],
   templateUrl: './info-vet.component.html',
 })

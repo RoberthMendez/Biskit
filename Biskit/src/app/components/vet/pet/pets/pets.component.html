@@ -1,7 +1,6 @@
-<!-- Botón de volver a Panel de Veterinario -->
 <app-back-button
-  [label]="'Panel Veterinario'"
-  [ruta]="['/vet', vetId]"
+  [label]="isAdminView ? 'Panel de Administrador' : 'Panel Veterinario'"
+  [ruta]="isAdminView ? ['/admin', vetId] : ['/vet', vetId]"
 ></app-back-button>
 
 <!-- Título -->

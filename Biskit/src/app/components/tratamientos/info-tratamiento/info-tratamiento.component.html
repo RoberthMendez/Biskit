@@ -1,33 +1,5 @@
 <main>
-  <a
-    [routerLink]="backLink"
-    class="back-link group mx-4 mt-6 mb-4 inline-flex h-10 w-fit items-center justify-start sm:mx-8 md:mx-16 lg:mx-28"
-  >
-    <svg
-      class="mt-1 h-9"
-      viewBox="0 0 24 24"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M8 12L16 12"
-        stroke="#6B6B6B"
-        stroke-width="2"
-        stroke-linecap="round"
-      />
-      <path
-        d="M11 9L8.08704 11.913C8.03897 11.961 8.03897 12.039 8.08704 12.087L11 15"
-        stroke="#6B6B6B"
-        stroke-width="2"
-        stroke-linecap="round"
-      />
-    </svg>
-    <h2
-      class="ml-1 text-lg font-bold tracking-wider text-[#4a4a4acc] underline underline-offset-6 transition-colors duration-300 group-hover:text-[#4A4A4Aee]"
-    >
-      Información de la Mascota
-    </h2>
-  </a>
+  <app-back-button [label]="backLabel" [ruta]="backLink"></app-back-button>
   <section class="mx-4 mb-10 sm:mx-8 md:mx-16 lg:mx-24 xl:mx-32">
     <div class="container mx-auto max-w-6xl px-0 pb-6 sm:px-4">
       <div class="relative flex flex-col gap-6 px-4 sm:px-6 lg:px-8 lg:pb-2">
