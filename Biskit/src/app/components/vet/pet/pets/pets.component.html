@@ -61,30 +61,32 @@
   <!-- Acciones -->
   <div class="flex items-center justify-end gap-3">
     <!-- Botón Filtro: Mis Mascotas -->
-    <button
-      (click)="showOnlyMyPets = !showOnlyMyPets"
-      [class]="
-        showOnlyMyPets
-          ? 'flex items-center gap-2 rounded-lg border border-[#2B5392] bg-[#2B5392] px-3 py-2 text-[#FBFAF8] transition-colors duration-200'
-          : 'flex items-center gap-2 rounded-lg border border-[#2B5392] bg-transparent px-3 py-2 text-[#2B5392] transition-colors duration-200 hover:bg-[#2B5392]/10'
-      "
-    >
-      <svg
-        class="h-5 w-auto"
-        viewBox="0 0 24 24"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
+    @if (vetId != 0) {
+      <button
+        (click)="showOnlyMyPets = !showOnlyMyPets"
+        [class]="
+          showOnlyMyPets
+            ? 'flex items-center gap-2 rounded-lg border border-[#2B5392] bg-[#2B5392] px-3 py-2 text-[#FBFAF8] transition-colors duration-200'
+            : 'flex items-center gap-2 rounded-lg border border-[#2B5392] bg-transparent px-3 py-2 text-[#2B5392] transition-colors duration-200 hover:bg-[#2B5392]/10'
+        "
       >
-        <path
-          d="M3 4.5H21M7 12H17M10.5 19.5H13.5"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        />
-      </svg>
-      Mis Mascotas
-    </button>
+        <svg
+          class="h-5 w-auto"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M3 4.5H21M7 12H17M10.5 19.5H13.5"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+        Mis Mascotas
+      </button>
+    }
 
     <!-- Agregar Mascota -->
     <a
