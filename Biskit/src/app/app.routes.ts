@@ -219,13 +219,6 @@ export const routes: Routes = [
       ),
   },
   {
-    path: 'admin/vets/:vetId',
-    loadComponent: () =>
-      import('./components/admin/vet/info-vet/info-vet.component').then(
-        (m) => m.InfoVetComponent,
-      ),
-  },
-  {
     path: 'admin/:idAdmin/vets/:vetId',
     loadComponent: () =>
       import('./components/admin/vet/info-vet/info-vet.component').then(

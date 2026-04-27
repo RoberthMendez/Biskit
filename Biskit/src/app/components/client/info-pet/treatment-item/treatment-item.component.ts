@@ -9,11 +9,83 @@ import { Droga } from '../../../../models/Droga/droga';
   standalone: true,
   imports: [RouterLink, DatePipe],
   templateUrl: './treatment-item.component.html',
+  host: {
+    class: 'contents',
+  },
 })
 export class TreatmentItemComponent {
-  @Input() t!: Tratamiento;
+  @Input() tratamiento!: Tratamiento;
+
   @Input() clientId?: number;
+
   @Input() petId?: number;
+
+  @Input() link: Array<string | number> | null = null;
+
+  @Input() state?: Record<string, any>;
+
+  @Input() variant: 'client' | 'vet' = 'client';
+
+  @Input('t')
+  set legacyTreatment(value: Tratamiento) {
+    this.tratamiento = value;
+  }
+
+  protected get treatmentLink(): Array<string | number> | null {
+    if (this.link?.length) {
+      return this.link;
+    }
+
+    if (
+      this.clientId == null ||
+      this.petId == null ||
+      this.tratamiento?.id == null
+    ) {
+      return null;
+    }
+
+    return ['/client', this.clientId, 'pet', this.petId, 'tratamiento', this.tratamiento.id];
+  }
+
+  protected get itemClasses(): string {
+    return this.variant === 'vet'
+      ? 'cursor-pointer mx-4 mb-2 flex items-stretch gap-2 rounded-lg p-2 transition hover:bg-blue-50'
+      : 'cursor-pointer mx-5 mb-3.25 flex items-stretch gap-2 rounded-lg p-2 transition hover:bg-blue-50';
+  }
+
+  protected get dateClasses(): string {
+    return this.variant === 'vet'
+      ? 'text-xs font-semibold text-[#8D8580]'
+      : 'text-sm font-semibold text-[#8D8580]';
+  }
+
+  protected get drugGridClasses(): string {
+    const drugCount = this.tratamiento?.drogas?.length ?? 0;
+    const base =
+      this.variant === 'vet'
+        ? 'custom-scroll grid max-h-13 gap-x-4 gap-y-2 pr-1'
+        : 'custom-scroll grid max-h-16 gap-x-4 gap-y-2 pr-1';
+
+    const columns =
+      drugCount <= 3
+        ? 'grid-cols-1'
+        : drugCount <= 6
+          ? 'grid-cols-2'
+          : drugCount <= 9
+            ? 'grid-cols-3'
+            : 'grid-cols-4';
+
+    const overflow =
+      this.variant === 'vet'
+        ? drugCount > 12
+          ? 'overflow-y-auto'
+          : 'overflow-visible'
+        : drugCount > 9
+          ? 'overflow-y-auto'
+          : 'overflow-visible';
+
+    return `${base} ${columns} ${overflow}`;
+  }
 
   protected getDrugColumns(drogas: Droga[]): Droga[][] {
     const columns: Droga[][] = [];

@@ -1,18 +1,31 @@
 import { Component } from '@angular/core';
 import { VetService } from '../../../../services/vet.service';
 import { Vet } from '../../../../models/Vets/vet-cl';
+import { NgComponentOutlet } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { mergeMap } from 'rxjs';
 import { TratamientoService } from '../../../../services/tratamiento.service';
 import { DeleteModalComponent } from '../../../reusables/delete-modal/delete-modal.component';
+import { TreatmentsCardComponent } from "../../../reusables/tratamientos/treatments-card/treatments-card.component";
+import { RouterLink } from '@angular/router';
+import { CardInfoVetComponent } from './card-info-vet/card-info-vet.component';
 
 @Component({
   selector: 'app-info-vet',
-  imports: [DeleteModalComponent],
+  standalone: true,
+  imports: [
+    DeleteModalComponent,
+    TreatmentsCardComponent,
+    RouterLink,
+    NgComponentOutlet,
+  ],
   templateUrl: './info-vet.component.html',
 })
 export class InfoVetComponent {
+
   vet!: Vet;
+  adminId = 0;
+  protected vetCardComponent = CardInfoVetComponent;
 
   constructor(
     private vetService: VetService,
@@ -21,7 +34,17 @@ export class InfoVetComponent {
     private tratamientoService: TratamientoService
   ) {}
 
+  protected get vetCardInputs(): Record<string, unknown> {
+    return {
+      vet: this.vet,
+      adminId: this.adminId,
+      onDelete: this.openDeleteModal.bind(this),
+    };
+  }
+
   ngOnInit(): void {
+    this.adminId = Number(this.route.snapshot.paramMap.get('idAdmin'));
+
     const id = this.route.snapshot.paramMap.get('vetId');
     const vetId = Number(id);
 
@@ -43,19 +66,6 @@ export class InfoVetComponent {
         this.vet.tratamientos = tratamientos;
       },
     });
-  }
-
-  onEstadoChange(nuevoEstado: boolean): void {
-    if (this.vet.id != null) {
-      this.vet.estado = nuevoEstado;
-
-      this.vetService.updateEstado(this.vet.id, nuevoEstado).subscribe({
-        error: (error) => {
-          console.error('Error al actualizar el estado del veterinario:', error);
-          this.vet.estado = !nuevoEstado;
-        },
-      });
-    }
   }
 
   /// Modal para eliminar veterinario
@@ -80,7 +90,7 @@ export class InfoVetComponent {
     this.shouldNavigateAfterDelete = false;
 
     if (shouldNavigate) {
-      this.router.navigate(['/vet/vets']);
+      this.router.navigate(['/admin', this.adminId, 'vets']);
     }
   }
 

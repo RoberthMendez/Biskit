@@ -5,15 +5,15 @@ import { PetService } from '../../../../services/pet.service';
 import { TratamientoService } from '../../../../services/tratamiento.service';
 import { CardInfoPetComponent } from './card-info-pet/card-info-pet.component';
 import { CardInfoOwnerComponent } from './card-info-owner/card-info-owner.component';
-import { CardInfoTratamientosComponent } from './card-info-tratamientos/card-info-tratamientos.component';
 import { mergeMap } from 'rxjs';
+import { TreatmentsCardComponent } from '../../../reusables/tratamientos/treatments-card/treatments-card.component';
 
 @Component({
   selector: 'app-info-pet',
   imports: [
     CardInfoPetComponent,
     CardInfoOwnerComponent,
-    CardInfoTratamientosComponent,
+    TreatmentsCardComponent,
     RouterLink,
   ],
   templateUrl: './info-pet.component.html',

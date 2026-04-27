@@ -35,6 +35,11 @@ export class LoginFormComponent {
 
     this.credencialesService.authenticate(credenciales).subscribe({
       next: (response) => {
+        if (response.id != null) {
+          localStorage.setItem('authRole', response.tipo);
+          localStorage.setItem('authId', String(response.id));
+        }
+
         if (response.tipo === 'CLIENTE') {
           if (response.id) {
             this.router.navigate(['/client', response.id]);

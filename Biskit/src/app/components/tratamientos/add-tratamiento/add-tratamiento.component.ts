@@ -30,7 +30,7 @@ export class AddTratamientoComponent implements OnInit {
   pets: Pet[] = [];
   vets: Vet[] = [];
   drogas: Droga[] = [];
-  vetId!: number;
+  vetId: number | null = null;
   basePath = '';
   isAdminView = false;
 
@@ -67,8 +67,10 @@ export class AddTratamientoComponent implements OnInit {
     this.isAdminView = routePath.startsWith('admin/');
 
     const contextParam = this.isAdminView ? 'idAdmin' : 'vetId';
-    this.vetId = Number(this.route.snapshot.paramMap.get(contextParam));
-    this.basePath = `/${this.isAdminView ? 'admin' : 'vet'}/${this.vetId}`;
+    this.vetId = this.resolveContextVetId(contextParam);
+    this.basePath = this.vetId != null
+      ? `/${this.isAdminView ? 'admin' : 'vet'}/${this.vetId}`
+      : `/${this.isAdminView ? 'admin' : 'vet'}`;
 
     const petIdParam = this.route.snapshot.paramMap.get('petId');
     this.preselectedPetId = petIdParam ? Number(petIdParam) : null;
@@ -407,7 +409,7 @@ export class AddTratamientoComponent implements OnInit {
   }
 
   private syncVetSelectionFromRoute(): void {
-    if (this.isAdminView || this.isEditMode || Number.isNaN(this.vetId)) {
+    if (this.isAdminView || this.isEditMode || this.vetId == null) {
       return;
     }
 
@@ -469,6 +471,24 @@ export class AddTratamientoComponent implements OnInit {
         this.requestedVetPrefill = false;
       },
     });
+  }
+
+  private resolveContextVetId(contextParam: string): number | null {
+    const routeValue = this.route.snapshot.paramMap.get(contextParam);
+    const routeId = routeValue != null ? Number(routeValue) : NaN;
+
+    if (!Number.isNaN(routeId) && routeId > 0) {
+      return routeId;
+    }
+
+    const storedRole = localStorage.getItem('authRole');
+    const storedId = Number(localStorage.getItem('authId'));
+
+    if (storedRole === 'VETERINARIO' && !Number.isNaN(storedId) && storedId > 0) {
+      return storedId;
+    }
+
+    return null;
   }
 
   private getTodayDateString(): string {
