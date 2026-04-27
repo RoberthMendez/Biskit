@@ -479,19 +479,19 @@ export class FormularioComponent implements OnInit {
       this.errorMessage = 'Nombre requerido';
       return;
     }
-    if (!this.selectedClienteId) {
+    if (!this.selectedClienteId || !this.existeCliente()) {
       this.errorMessage = 'Selecciona un dueño de la lista';
       return;
     }
-    if (!this.selectedEspecieId) {
+    if (!this.selectedEspecieId || !this.existeEspecie()) {
       this.errorMessage = 'Selecciona una especie de la lista';
       return;
     }
-    if (!this.selectedRazaId) {
+    if (!this.selectedRazaId || !this.existeRaza()) {
       this.errorMessage = 'Selecciona una raza de la lista';
       return;
     }
-    if (!this.selectedEnfermedadId) {
+    if (!this.selectedEnfermedadId || !this.existeEnfermedad()) {
       this.errorMessage = 'Selecciona una enfermedad de la lista';
       return;
     }
@@ -509,6 +509,9 @@ export class FormularioComponent implements OnInit {
     }
 
     this.formPet.fechaNacimiento = new Date(this.fechaNacimientoStr);
+
+    //Imprimir el objeto formPet para verificar que se esté armando correctamente antes de enviarlo
+    console.log('Mascota a guardar:', this.formPet);
 
     this.petService.savePet(this.formPet).subscribe({
       next: () => {
@@ -542,5 +545,31 @@ export class FormularioComponent implements OnInit {
     this.selectedRazaId = null;
     this.selectedEnfermedadId = null;
     this.razasFiltradas = [...this.razas];
+  }
+
+  private existeEspecie(): boolean {
+    return this.especies.some(
+      (e) => e.id === this.selectedEspecieId && e.nombre === this.especieSearch,
+    );
+  }
+
+  private existeRaza(): boolean {
+    return this.razas.some(
+      (r) => r.id === this.selectedRazaId && r.nombre === this.razaSearch,
+    );
+  }
+
+  private existeCliente(): boolean {
+    return this.clientes.some(
+      (c) => c.id === this.selectedClienteId && c.nombre === this.clienteSearch,
+    );
+  }
+
+  private existeEnfermedad(): boolean {
+    return this.enfermedades.some(
+      (e) =>
+        e.id === this.selectedEnfermedadId &&
+        e.nombre === this.enfermedadSearch,
+    );
   }
 }
