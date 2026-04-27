@@ -76,6 +76,7 @@ export class ClientsComponent {
   ) {}
 
   ngOnInit(){
+    
     const routePath = this.route.snapshot.routeConfig?.path ?? '';
     this.isAdminView = routePath.startsWith('admin/');
     const vetIdParam = this.route.snapshot.paramMap.get('vetId');

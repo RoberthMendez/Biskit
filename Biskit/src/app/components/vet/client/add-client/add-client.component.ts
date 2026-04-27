@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { VolverComponent } from './volver/volver.component';
 import { ImagenComponent } from './imagen/imagen.component';
 import { ClientFormComponent } from './form/form.component';
 import { ActivatedRoute } from '@angular/router';
@@ -7,7 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-add-client',
   standalone: true,
-  imports: [VolverComponent, ClientFormComponent, ImagenComponent],
+  imports: [ClientFormComponent, ImagenComponent],
   templateUrl: './add-client.component.html',
 })
 export class AddClientComponent {

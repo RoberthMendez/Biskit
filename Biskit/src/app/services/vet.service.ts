@@ -53,7 +53,7 @@ export class VetService {
 
   //Comprobar si el id de vet existe
   existsById(id: number): Observable<void> {
-  return this.http.get<void>(`http://localhost:8080/vets/${id}/exists`);
-}
+    return this.http.get<void>(`http://localhost:8080/vets/${id}/exists`); 
+  }
 
 }
