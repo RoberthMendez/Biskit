@@ -13,15 +13,21 @@ import {
   TablaFilaClickEvent,
 } from '../../../reusables/tabla/tabla.types';
 import { ActivatedRoute, Router } from '@angular/router';
+import { VetService } from '../../../../services/vet.service';
 
 @Component({
   standalone: true,
   selector: 'app-clients',
   templateUrl: './clients.component.html',
-  imports: [ClientsHeaderComponent, ClientsSearchComponent, TablaComponent, ClientsCardsComponent, DeleteModalComponent]
+  imports: [
+    ClientsHeaderComponent,
+    ClientsSearchComponent,
+    TablaComponent,
+    ClientsCardsComponent,
+    DeleteModalComponent,
+  ],
 })
 export class ClientsComponent {
-
   clients: Client[] = [];
   filteredClients: Client[] = [];
   searchTerm: string = '';
@@ -61,32 +67,46 @@ export class ClientsComponent {
 
   constructor(
     private clientService: ClientService,
+    private vetService: VetService,
     private route: ActivatedRoute,
     private router: Router,
   ) {}
 
-  ngOnInit(){
-    this.vetId = this.route.snapshot.paramMap.get('vetId');
+  ngOnInit() {
+    const vetIdParam = this.route.snapshot.paramMap.get('vetId');
 
-    this.clientService.findAll().subscribe(
-      (clients) => {
-        this.clients = clients;
-        this.filteredClients = clients;
-      }
-    )
+    if (vetIdParam) {
+      this.vetService.existsById(Number(vetIdParam)).subscribe({
+        next: () => {
+          this.vetId = vetIdParam;
+        },
+        error: (error) => {
+          const mensaje = error.error?.detalle || 'Veterinario no encontrado';
+          this.router.navigate(['/error'], {
+            queryParams: { mensaje },
+          });
+        },
+      });
+    }
+
+    this.clientService.findAll().subscribe((clients) => {
+      this.clients = clients;
+      this.filteredClients = clients;
+    });
   }
 
   onSearch(searchTerm: string) {
     this.searchTerm = searchTerm.toLowerCase();
-    
+
     if (this.searchTerm === '') {
       this.filteredClients = this.clients;
     } else {
-      this.filteredClients = this.clients.filter(client =>
-        client.nombre.toLowerCase().includes(this.searchTerm) ||
-        client.cedula.toLowerCase().includes(this.searchTerm) ||
-        client.correo.toLowerCase().includes(this.searchTerm) ||
-        client.celular.toLowerCase().includes(this.searchTerm)
+      this.filteredClients = this.clients.filter(
+        (client) =>
+          client.nombre.toLowerCase().includes(this.searchTerm) ||
+          client.cedula.toLowerCase().includes(this.searchTerm) ||
+          client.correo.toLowerCase().includes(this.searchTerm) ||
+          client.celular.toLowerCase().includes(this.searchTerm),
       );
     }
   }
@@ -98,16 +118,12 @@ export class ClientsComponent {
 
   confirmDelete() {
     if (this.selectedId !== null) {
-       this.clientService.deleteClient(this.selectedId).subscribe(
-        () => {
-          this.clientService.findAll().subscribe(
-            (clients) => {
-              this.clients = clients;
-              this.onSearch(this.searchTerm); 
-            }
-          );
-        }
-      );
+      this.clientService.deleteClient(this.selectedId).subscribe(() => {
+        this.clientService.findAll().subscribe((clients) => {
+          this.clients = clients;
+          this.onSearch(this.searchTerm);
+        });
+      });
     }
     this.showModal = false;
   }
@@ -132,7 +148,13 @@ export class ClientsComponent {
     }
 
     if (event.actionId === 'edit') {
-      this.router.navigate(['/vet', this.vetId, 'clients', 'update', client.id]);
+      this.router.navigate([
+        '/vet',
+        this.vetId,
+        'clients',
+        'update',
+        client.id,
+      ]);
       return;
     }
 
