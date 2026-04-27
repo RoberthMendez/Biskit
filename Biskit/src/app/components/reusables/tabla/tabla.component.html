@@ -1,4 +1,10 @@
-<article class="hidden w-full justify-center md:flex">
+<article
+  [class]="
+    showOnMobile
+      ? 'flex w-full justify-center'
+      : 'hidden w-full justify-center md:flex'
+  "
+>
   <div
     class="w-full overflow-hidden rounded-xl border border-[#EAE6E1] bg-[#FBFAF8]"
   >
@@ -6,7 +12,9 @@
       class="custom-scroll overflow-x-auto overflow-y-auto"
       [style.max-height]="maxHeight"
     >
-      <table class="w-full table-auto text-sm backdrop-blur-sm lg:text-base">
+      <table
+        class="w-full min-w-152 table-auto text-sm backdrop-blur-sm lg:text-base"
+      >
         <thead class="bg-[#FBFAF8]">
           <tr class="text-[#2B5392]">
             @for (
@@ -30,6 +38,10 @@
               app-fila
               [celdas]="fila"
               [alineaciones]="alineacionesColumnas"
+              [filaOriginal]="datos[$index]"
+              [filaIndex]="$index"
+              (filaClick)="onFilaClick($event)"
+              (accionClick)="onActionClick($event)"
               class="clients-row group cursor-pointer border-b border-[#EAE6E1] transition-colors duration-200 hover:bg-[#F2F6FC]"
             ></tr>
           }

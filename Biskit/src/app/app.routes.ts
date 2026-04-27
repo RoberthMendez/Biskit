@@ -128,6 +128,13 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'admin/:idAdmin/vets/update/:id',
+    loadComponent: () =>
+      import('./components/admin/vet/add-vet/add-vet.component').then(
+        (m) => m.AddVetComponent,
+      ),
+  },
+  {
     path: 'admin/:idAdmin/vets',
     loadComponent: () =>
       import('./components/admin/vet/vets/vets.component').then(
@@ -150,6 +157,13 @@ export const routes: Routes = [
   },
   {
     path: 'admin/vets/:vetId',
+    loadComponent: () =>
+      import('./components/admin/vet/info-vet/info-vet.component').then(
+        (m) => m.InfoVetComponent,
+      ),
+  },
+  {
+    path: 'admin/:idAdmin/vets/:vetId',
     loadComponent: () =>
       import('./components/admin/vet/info-vet/info-vet.component').then(
         (m) => m.InfoVetComponent,

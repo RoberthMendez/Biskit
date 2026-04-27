@@ -1,37 +1,212 @@
 import { Component } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { VetService } from '../../../../services/vet.service';
 import { Vet } from '../../../../models/Vets/vet-cl';
+import { TablaComponent } from '../../../reusables/tabla/tabla.component';
+import {
+  TablaActionClickEvent,
+  TablaColumnaInput,
+  TablaFilaClickEvent,
+} from '../../../reusables/tabla/tabla.types';
+import { DeleteModalComponent } from '../info-vet/delete-modal/delete-modal.component';
+import { HeaderComponent } from './header/header.component';
+import { BarraBusquedaComponent } from './barra-busqueda/barra-busqueda.component';
 
 @Component({
   selector: 'app-vets',
-  imports: [],
-  templateUrl: './vets.component.html'
+  imports: [TablaComponent, DeleteModalComponent, HeaderComponent, BarraBusquedaComponent],
+  templateUrl: './vets.component.html',
 })
 export class VetsComponent {
 
   public vets: Vet[] = [];
   public searchTerm: string = '';
+  public adminId = 1;
 
+  public showModal = false;
+  public selectedDeleteId: number | null = null;
 
-  constructor(private vetService: VetService) {}
+  public readonly columnasVet: TablaColumnaInput[] = [
+    {
+      header: 'Foto',
+      accessor: (fila) => (fila as Vet).urlFoto,
+      type: 'image',
+      align: 'center',
+      imageAlt: 'Foto del veterinario',
+    },
+    { header: 'Nombre', key: 'nombre' },
+    {
+      header: 'Especialidad',
+      accessor: (fila) => (fila as Vet).especialidad?.nombre ?? 'Sin especialidad',
+    },
+    { header: 'Correo', key: 'correo' },
+    { header: 'Cedula', key: 'cedula' },
+    {
+      header: 'Estado',
+      accessor: (fila) => String((fila as Vet).estado),
+      type: 'badge',
+      align: 'center',
+      badgeMap: {
+        true: {
+          label: 'ACTIVO',
+          className:
+            'rounded-lg bg-[#ebfaf1] px-4 py-3 text-sm font-semibold text-[#2bab60]',
+        },
+        false: {
+          label: 'INACTIVO',
+          className:
+            'rounded-lg bg-[#ededed] px-4 py-3 text-sm font-semibold text-[#8c8c8c]',
+        },
+      },
+    },
+    {
+      header: 'Acciones',
+      type: 'actions',
+      align: 'right',
+      actions: [
+        {
+          id: 'edit',
+          label: 'Editar',
+          icon: 'edit',
+          showLabel: false,
+          className:
+            'flex items-center justify-center gap-2 rounded-lg border border-[#2B5392] bg-transparent px-3 py-2 text-[#2B5392] transition-colors duration-200 hover:bg-[#2B5392] hover:text-[#FBFAF8] lg:px-4',
+        },
+        {
+          id: 'delete',
+          label: 'Eliminar',
+          icon: 'delete',
+          showLabel: false,
+          className:
+            'flex cursor-pointer items-center justify-center gap-2 rounded-lg border border-[#B22222] bg-transparent px-3 py-2 text-[#B22222] transition-colors duration-200 hover:bg-[#B22222] hover:text-[#FBFAF8] lg:px-4',
+        },
+      ],
+    },
+  ];
+
+  constructor(
+    private vetService: VetService,
+    private route: ActivatedRoute,
+    private router: Router,
+  ) {}
 
   ngOnInit() {
-    this.vetService.findAll().subscribe(
-      (vets) => {
-        this.vets = vets;
-      }
-    );
+    const idAdmin = Number(this.route.snapshot.paramMap.get('idAdmin'));
+    if (!Number.isNaN(idAdmin) && idAdmin > 0) {
+      this.adminId = idAdmin;
+    }
+
+    this.cargarVets();
   }
 
-  //filtrar veterinarios por nombre, correo o cedula
   get filteredVets(): Vet[] {
     const term = this.searchTerm.trim().toLowerCase();
     if (!term) return this.vets;
     return this.vets.filter((vet) =>
       vet.nombre.toLowerCase().includes(term) ||
       vet.correo.toLowerCase().includes(term) ||
-      vet.cedula.toLowerCase().includes(term)
+      vet.cedula.toLowerCase().includes(term),
     );
+  }
+
+  public onSearch(searchTerm: string): void {
+    this.searchTerm = searchTerm.trim().toLowerCase();
+  }
+
+  public onRowClick(event: TablaFilaClickEvent): void {
+    const vet = this.extraerVet(event.row);
+    if (!vet?.id) {
+      return;
+    }
+
+    this.router.navigate(['/admin', this.adminId, 'vets', vet.id]);
+  }
+
+  public onActionClick(event: TablaActionClickEvent): void {
+    const vet = this.extraerVet(event.row);
+    if (!vet?.id) {
+      return;
+    }
+
+    if (event.actionId === 'edit') {
+      this.router.navigate(['/admin', this.adminId, 'vets', 'update', vet.id]);
+      return;
+    }
+
+    if (event.actionId === 'delete') {
+      this.openDeleteModal(vet.id);
+    }
+  }
+
+  public onCardClick(vet: Vet): void {
+    if (!vet.id) {
+      return;
+    }
+
+    this.router.navigate(['/admin', this.adminId, 'vets', vet.id]);
+  }
+
+  public onEditCard(vet: Vet): void {
+    if (!vet.id) {
+      return;
+    }
+
+    this.router.navigate(['/admin', this.adminId, 'vets', 'update', vet.id]);
+  }
+
+  public onDeleteCard(vet: Vet): void {
+    if (!vet.id) {
+      return;
+    }
+
+    this.openDeleteModal(vet.id);
+  }
+
+  public openDeleteModal(vetId: number): void {
+    this.selectedDeleteId = vetId;
+    this.showModal = true;
+  }
+
+  public closeModal(): void {
+    this.showModal = false;
+    this.selectedDeleteId = null;
+  }
+
+  public confirmDelete(): void {
+    if (this.selectedDeleteId == null) {
+      this.closeModal();
+      return;
+    }
+
+    const vetId = this.selectedDeleteId;
+    this.vetService.deleteVet(vetId).subscribe({
+      next: () => {
+        this.vets = this.vets.filter((vet) => vet.id !== vetId);
+        this.closeModal();
+      },
+      error: () => {
+        this.closeModal();
+      },
+    });
+  }
+
+  private cargarVets(): void {
+    this.vetService.findAll().subscribe({
+      next: (vets) => {
+        this.vets = vets;
+      },
+      error: () => {
+        this.vets = [];
+      },
+    });
+  }
+
+  private extraerVet(row: unknown): Vet | null {
+    if (!row || typeof row !== 'object') {
+      return null;
+    }
+
+    return row as Vet;
   }
 
 }

@@ -1,5 +1,5 @@
 <article
-  class="bg-[#FBFAF8] pt-6 pb-8 px-6 rounded-2xl border border-[#E0E0E0] flex items-center flex-col justify-center gap-7"
+  class="bg-[#FBFAF8] pt-6 pb-8 px-5 sm:px-6 rounded-2xl border border-[#E0E0E0] flex items-center flex-col justify-center gap-6 sm:gap-7 w-full"
 >
   <p
     class="text-[#8d8580dd] text-sm text-center font-semibold items-center flex"
@@ -7,15 +7,25 @@
     {{ titulo }}
   </p>
   <!-- Dona -->
-  <div class="relative">
-    <p-chart type="doughnut" [data]="dataDona" [options]="options"> </p-chart>
+  <div class="relative w-full max-w-[18rem] aspect-square">
+    <p-chart
+      type="doughnut"
+      [data]="dataDona"
+      [options]="options"
+      styleClass="w-full h-full"
+    >
+    </p-chart>
 
     <!-- Total en centro -->
     <div
       class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none"
     >
-      <span class="text-sm text-[#8d8580dd]">TOTAL {{ titulo }}</span>
-      <span class="text-3xl font-bold text-[#4a4a4a]">{{ total }}</span>
+      <span class="text-xs sm:text-sm text-[#8d8580dd]"
+        >TOTAL {{ titulo }}</span
+      >
+      <span class="text-2xl sm:text-3xl font-bold text-[#4a4a4a]">{{
+        total
+      }}</span>
     </div>
   </div>
   @if (titulo === "MASCOTAS") {
@@ -45,7 +55,9 @@
           </g>
         </g>
       </svg>
-      <p class="text-[#fcf6f0] font-medium">Ver Mascotas</p>
+      <p class="text-[#fcf6f0] font-medium text-sm sm:text-base">
+        Ver Mascotas
+      </p>
     </a>
   } @else if (titulo === "VETERINARIOS") {
     <a
@@ -73,7 +85,9 @@
           ></path>
         </g>
       </svg>
-      <p class="text-[#fcf6f0] font-medium">Ver Veterinarios</p>
+      <p class="text-[#fcf6f0] font-medium text-sm sm:text-base">
+        Ver Veterinarios
+      </p>
     </a>
   }
 </article>

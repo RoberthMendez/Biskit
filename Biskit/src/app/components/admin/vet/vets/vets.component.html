@@ -1,12 +1,93 @@
-<h2>
-    Veterinarios
-</h2>
-
-<!-- Ciclo Provicional para ver Veterinarios -->
+<main class="mx-4 my-6 space-y-5 sm:mx-8 sm:my-8 md:mx-12 lg:mx-20 xl:mx-28">
+  <app-header [adminId]="adminId"></app-header>
+  <app-barra-busqueda (search)="onSearch($event)"></app-barra-busqueda>
   @if (filteredVets.length > 0) {
-    @for (vet of filteredVets; track vet.id) {
-        <h1> Nombre: {{ vet.nombre }}</h1>
-        <h2> Cédula: {{ vet.cedula }}</h2>
-        <h2> Correo: {{ vet.correo }}</h2>
+    <div class="flex flex-col gap-3 md:hidden">
+      @for (vet of filteredVets; track vet.id) {
+        <article
+          class="rounded-xl border border-[#EAE6E1] bg-[#FBFAF8] p-4 shadow-[0_6px_18px_rgba(43,83,146,0.08)]"
+        >
+          <button
+            type="button"
+            class="w-full text-left"
+            (click)="onCardClick(vet)"
+          >
+            <div class="flex items-center gap-3">
+              <img
+                [src]="vet.urlFoto || '/images/add-vet/default-vet.png'"
+                alt="Foto del veterinario"
+                class="size-14 min-h-14 min-w-14 shrink-0 aspect-square overflow-hidden rounded-full border border-[#EAE6E1] object-cover object-center"
+              />
+              <div class="min-w-0 flex-1">
+                <h3 class="truncate text-base font-semibold text-[#4A4A4A]">
+                  {{ vet.nombre }}
+                </h3>
+                <p class="truncate text-sm text-[#8d8580]">
+                  {{ vet.especialidad.nombre || "Sin especialidad" }}
+                </p>
+              </div>
+              <span
+                class="rounded-md px-2.5 py-1 text-xs font-semibold"
+                [class.bg-[#ebfaf1]]="vet.estado"
+                [class.text-[#2bab60]]="vet.estado"
+                [class.bg-[#ededed]]="!vet.estado"
+                [class.text-[#8c8c8c]]="!vet.estado"
+              >
+                {{ vet.estado ? "ACTIVO" : "INACTIVO" }}
+              </span>
+            </div>
+          </button>
+
+          <div
+            class="mt-3 space-y-1 border-t border-[#EAE6E1] pt-3 text-sm text-[#4A4A4A]"
+          >
+            <p class="truncate">
+              <span class="font-semibold">Correo:</span> {{ vet.correo }}
+            </p>
+            <p class="truncate">
+              <span class="font-semibold">Cédula:</span> {{ vet.cedula }}
+            </p>
+          </div>
+
+          <div class="mt-4 grid grid-cols-2 gap-2">
+            <button
+              type="button"
+              class="cursor-pointer rounded-lg border border-[#2B5392] px-3 py-2 text-sm font-medium text-[#2B5392] transition-colors duration-200 hover:bg-[#2B5392] hover:text-[#FBFAF8]"
+              (click)="onEditCard(vet)"
+            >
+              Editar
+            </button>
+            <button
+              type="button"
+              class="cursor-pointer rounded-lg border border-[#B22222] px-3 py-2 text-sm font-medium text-[#B22222] transition-colors duration-200 hover:bg-[#B22222] hover:text-[#FBFAF8]"
+              (click)="onDeleteCard(vet)"
+            >
+              Eliminar
+            </button>
+          </div>
+        </article>
       }
+    </div>
+
+    <app-tabla
+      [columnas]="columnasVet"
+      [datos]="filteredVets"
+      [maxHeight]="'36rem'"
+      (rowClick)="onRowClick($event)"
+      (actionClick)="onActionClick($event)"
+    ></app-tabla>
+  } @else {
+    <article
+      class="rounded-xl border border-dashed border-[#D8D2CB] bg-[#FBFAF8] px-5 py-10 text-center text-sm text-[#8D8580] sm:px-6 sm:text-base"
+    >
+      No hay veterinarios para mostrar.
+    </article>
   }
+
+  @if (showModal) {
+    <app-delete-modal
+      (close)="closeModal()"
+      (confirm)="confirmDelete()"
+    ></app-delete-modal>
+  }
+</main>

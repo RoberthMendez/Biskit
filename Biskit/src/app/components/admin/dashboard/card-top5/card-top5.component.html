@@ -1,5 +1,5 @@
 <article
-  class="bg-[#FBFAF8] pt-6 pb-8 px-10 rounded-2xl border border-[#E0E0E0] flex items-center flex-col justify-center gap-2"
+  class="bg-[#FBFAF8] pt-6 pb-8 px-5 sm:px-7 lg:px-10 rounded-2xl border border-[#E0E0E0] flex items-center flex-col justify-center gap-2"
 >
   <!-- Titulo -->
   <div class="flex justify-start w-full items-start">
@@ -9,7 +9,7 @@
       >
         TOP 5
       </p>
-      <h3 class="text-lg font-semibold">
+      <h3 class="text-base sm:text-lg font-semibold">
         @if (titulo === "Drogas") {
           Drogas más Vendidas
         } @else if (titulo === "Enfermedades") {
@@ -21,7 +21,7 @@
   <!-- Lista de Top 5 -->
   <!-- Titulo Columna -->
   <div class="flex justify-end w-full">
-    <p class="text-[#4A4A4A]/40 font-normal text-xs mr-0.4">
+    <p class="text-[#4A4A4A]/40 font-normal text-xs mr-1">
       {{ tituloColumna }}
     </p>
   </div>
@@ -38,9 +38,9 @@
           class="w-1 shrink-0 bg-[#2b5392]"
           [style.opacity]="1 - i * 0.2"
         ></div>
-        <div class="flex-1 items-center flex">
+        <div class="flex-1 items-center flex min-w-0">
           <span
-            class="text-sm font-medium tracking-widest uppercase text-[#4A4A4A]"
+            class="text-sm font-medium tracking-widest uppercase text-[#4A4A4A] truncate"
             [style.color]="i === 0 ? '#2b5392' : null"
             >{{ puesto.nombre }}</span
           >

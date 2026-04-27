@@ -1,19 +1,33 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FilaComponent } from "./fila/fila.component";
-import { TablaColumna, TablaColumnaInput } from './tabla.types';
+import {
+  TablaActionClickEvent,
+  TablaColumna,
+  TablaColumnaInput,
+  TablaFilaClickEvent,
+} from './tabla.types';
 
 @Component({
   selector: 'app-tabla',
   imports: [FilaComponent],
-  templateUrl: './tabla.component.html'
+  templateUrl: './tabla.component.html',
+  host: {
+    class: 'block w-full'
+  }
 })
 export class TablaComponent {
+
+  @Input() showOnMobile = false;
 
   @Input() maxHeight: string | null = null;
 
   @Input() columnas: TablaColumnaInput[] = [];
 
   @Input() datos: unknown[] = [];
+
+  @Output() rowClick = new EventEmitter<TablaFilaClickEvent>();
+
+  @Output() actionClick = new EventEmitter<TablaActionClickEvent>();
 
   public get columnasNormalizadas(): TablaColumna[] {
     const keysBase = this.obtenerKeysBase();
@@ -38,7 +52,10 @@ export class TablaComponent {
     const columnas = this.columnasNormalizadas;
 
     return this.datos.map((fila) =>
-      columnas.map((columna, index) => this.obtenerValorCelda(fila, columna, index))
+      columnas.map((columna, index) => {
+        const valor = this.obtenerValorCelda(fila, columna, index);
+        return this.normalizarCelda(valor, columna);
+      })
     );
   }
 
@@ -140,6 +157,48 @@ export class TablaComponent {
     return key
       .replace(/([a-z])([A-Z])/g, '$1 $2')
       .replace(/^./, (letra) => letra.toUpperCase());
+  }
+
+  public onFilaClick(event: TablaFilaClickEvent): void {
+    this.rowClick.emit(event);
+  }
+
+  public onActionClick(event: TablaActionClickEvent): void {
+    this.actionClick.emit(event);
+  }
+
+  private normalizarCelda(valor: unknown, columna: TablaColumna): unknown {
+    switch (columna.type) {
+      case 'image': {
+        const src = typeof valor === 'string' ? valor : '';
+
+        return {
+          kind: 'image',
+          src,
+          alt: columna.imageAlt ?? columna.header,
+          fallback: columna.imageFallback ?? '/images/add-vet/default-vet.png',
+        };
+      }
+      case 'badge': {
+        const key = String(valor);
+        const badge = columna.badgeMap?.[key];
+
+        return {
+          kind: 'badge',
+          label: badge?.label ?? key,
+          className:
+            badge?.className ??
+            'bg-[#EAE6E1] text-[#4A4A4A] border border-[#DCD6CF]',
+        };
+      }
+      case 'actions':
+        return {
+          kind: 'actions',
+          actions: columna.actions ?? [],
+        };
+      default:
+        return valor;
+    }
   }
 
 }

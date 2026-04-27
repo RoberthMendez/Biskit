@@ -1,5 +1,5 @@
 <article
-  class="bg-[#FBFAF8] pt-6 pb-8 px-10 rounded-2xl border border-[#E0E0E0] flex items-center flex-col justify-center gap-6"
+  class="bg-[#FBFAF8] pt-6 pb-8 px-5 sm:px-7 lg:px-10 rounded-2xl border border-[#E0E0E0] flex items-center flex-col justify-center gap-6"
 >
   <div class="flex justify-start w-full items-start">
     <div>
@@ -28,7 +28,7 @@
     </div>
   } @else {
     <div
-      class="flex flex-col gap-2.5 w-[90%] max-h-120 overflow-y-scroll custom-scroll"
+      class="flex flex-col gap-2.5 w-full max-h-72 sm:max-h-96 lg:max-h-120 overflow-y-scroll custom-scroll"
     >
       @for (droga of drogas; track droga.drogaNombre) {
         <div

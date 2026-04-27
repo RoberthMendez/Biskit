@@ -17,11 +17,13 @@
   <!-- Tabla y Cards cuando hay clientes -->
   @if (filteredClients.length > 0) {
     <!-- Tabla -->
-    <app-clients-tabla
-      [clients]="filteredClients"
-      (delete)="openDelete($event)"
-    >
-    </app-clients-tabla>
+    <app-tabla
+      [columnas]="columnasClient"
+      [datos]="filteredClients"
+      [maxHeight]="'42rem'"
+      (rowClick)="onRowClick($event)"
+      (actionClick)="onActionClick($event)"
+    ></app-tabla>
 
     <!-- Cards -->
     <app-clients-cards
