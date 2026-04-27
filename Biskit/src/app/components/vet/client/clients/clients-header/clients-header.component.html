@@ -1,5 +1,5 @@
 <a
-  routerLink="/vet"
+  [routerLink]="backRoute"
   class="back-link group mt-6 mb-2 ml-4 inline-flex h-10 items-center justify-start sm:mt-8 sm:ml-8 md:ml-12 lg:ml-20 xl:ml-28"
 >
   <svg
@@ -34,7 +34,7 @@
   <h2
     class="ml-1 text-base font-bold tracking-wider text-[#4a4a4acc] underline underline-offset-6 transition-colors duration-300 group-hover:text-[#4A4A4Aee] sm:text-lg"
   >
-    Panel de Veterinario
+    {{ panelTitle }}
   </h2>
 </a>
 <!-- clients-header.component.html -->
@@ -54,7 +54,7 @@
 
   <div class="flex items-center justify-start sm:justify-end">
     <a
-      routerLink="/vet/clients/add"
+      [routerLink]="addRoute"
       class="flex cursor-pointer items-center gap-2 rounded-lg border border-[#2B5392] px-3 py-2 text-[#2B5392] hover:bg-[#2B5392] hover:text-white duration-200"
     >
       <svg

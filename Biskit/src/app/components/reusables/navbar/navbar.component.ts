@@ -1,12 +1,23 @@
-import { Component, ElementRef, HostListener, OnDestroy, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, Input, OnDestroy, ViewChild } from '@angular/core';
+import { RouterLink } from '@angular/router';
+
+export interface NavbarOption {
+  label: string;
+  route: string | Array<string | number>;
+  variant?: 'link' | 'button';
+}
 
 @Component({
   selector: 'app-navbar',
-  imports: [],
+  standalone: true,
+  imports: [RouterLink],
   templateUrl: './navbar.component.html',
 })
-export class NavbarComponent {
+export class NavbarComponent implements OnDestroy {
   @ViewChild('navToggle') navToggle?: ElementRef<HTMLInputElement>;
+  @Input() options: NavbarOption[] = [];
+  @Input() sticky = false;
+  @Input() brandRoute: string | Array<string | number> = '/';
 
   private ignoreScroll = false;
   private ignoreScrollTimeoutId: ReturnType<typeof setTimeout> | null = null;
@@ -41,6 +52,14 @@ export class NavbarComponent {
     if (this.ignoreScrollTimeoutId) {
       clearTimeout(this.ignoreScrollTimeoutId);
     }
+  }
+
+  isAnchorRoute(route: NavbarOption['route']): boolean {
+    return typeof route === 'string' && route.startsWith('#');
+  }
+
+  isButton(option: NavbarOption): boolean {
+    return option.variant === 'button';
   }
 
 }

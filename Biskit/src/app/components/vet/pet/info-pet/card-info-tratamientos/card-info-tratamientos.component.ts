@@ -17,6 +17,8 @@ export class CardInfoTratamientosComponent {
 
   @Input() vetId!: number;
 
+  @Input() basePath = '';
+
   protected get sortedTratamientos(): Tratamiento[] {
     return [...(this.pet.tratamientos ?? [])].sort(
       (a, b) => this.getTimestamp(b.fecha) - this.getTimestamp(a.fecha),

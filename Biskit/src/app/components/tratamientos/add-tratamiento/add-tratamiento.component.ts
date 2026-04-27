@@ -31,6 +31,8 @@ export class AddTratamientoComponent implements OnInit {
   vets: Vet[] = [];
   drogas: Droga[] = [];
   vetId!: number;
+  basePath = '';
+  isAdminView = false;
 
   tratamiento: Tratamiento = new Tratamiento();
   fechaForm = this.getTodayDateString();
@@ -43,7 +45,7 @@ export class AddTratamientoComponent implements OnInit {
   saving = false;
   errorMessage = '';
   successMessage = '';
-  backLink: (string | number)[] = ['/vet/pets'];
+  backLink = '';
   backLabel = 'Lista de Mascotas';
   private preselectedPetId: number | null = null;
   private editTratamientoId: number | null = null;
@@ -61,8 +63,13 @@ export class AddTratamientoComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    const routePath = this.route.snapshot.routeConfig?.path ?? '';
+    this.isAdminView = routePath.startsWith('admin/');
 
-    this.vetId = Number(this.route.snapshot.paramMap.get('vetId'));
+    const contextParam = this.isAdminView ? 'idAdmin' : 'vetId';
+    this.vetId = Number(this.route.snapshot.paramMap.get(contextParam));
+    this.basePath = `/${this.isAdminView ? 'admin' : 'vet'}/${this.vetId}`;
+
     const petIdParam = this.route.snapshot.paramMap.get('petId');
     this.preselectedPetId = petIdParam ? Number(petIdParam) : null;
     this.updateBackLink();
@@ -282,7 +289,7 @@ export class AddTratamientoComponent implements OnInit {
           : 'Tratamiento guardado correctamente';
 
         setTimeout(() => {
-          this.router.navigate(['/vet/', this.vetId, 'pets', petId]);
+          this.router.navigateByUrl(`${this.basePath}/pets/${petId}`);
         }, 600);
       },
       error: (error: HttpErrorResponse) => {
@@ -327,12 +334,12 @@ export class AddTratamientoComponent implements OnInit {
 
   private updateBackLink(): void {
     if (this.preselectedPetId != null && !Number.isNaN(this.preselectedPetId)) {
-      this.backLink = ['/vet/', this.vetId, 'pets', this.preselectedPetId];
+      this.backLink = `${this.basePath}/pets/${this.preselectedPetId}`;
       this.backLabel = 'Información de la Mascota';
       return;
     }
 
-    this.backLink = ['/vet/', this.vetId, 'pets'];
+    this.backLink = `${this.basePath}/pets`;
     this.backLabel = 'Lista de Mascotas';
   }
 
@@ -369,7 +376,10 @@ export class AddTratamientoComponent implements OnInit {
     }
 
     const vetId = currentTratamiento.vet?.id;
-    if (vetId != null) {
+    if (this.isAdminView) {
+      this.tratamiento.vet = new Vet();
+      this.vetSearchText = '';
+    } else if (vetId != null) {
       const selectedVet =
         this.vets.find((candidate) => candidate.id === vetId) ?? currentTratamiento.vet;
       this.selectVet(selectedVet);
@@ -397,7 +407,7 @@ export class AddTratamientoComponent implements OnInit {
   }
 
   private syncVetSelectionFromRoute(): void {
-    if (this.isEditMode || Number.isNaN(this.vetId)) {
+    if (this.isAdminView || this.isEditMode || Number.isNaN(this.vetId)) {
       return;
     }
 

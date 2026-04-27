@@ -4,11 +4,13 @@ import { Client } from '../../../../../models/Client/client';
 
 @Component({
   selector: 'app-client-actions',
+  standalone: true,
   templateUrl: './client-actions.component.html',
   imports: [RouterLink],
 })
 export class ClientActionsComponent {
   @Input() client!: Client;
+  @Input() basePath = '/vet/clients';
   @Output() deleteClient = new EventEmitter<number>();
 
   onDelete(): void {

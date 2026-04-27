@@ -60,7 +60,7 @@
 
     <!-- Botón Agregar -->
     <a
-      [routerLink]="['/vet/', vetId, 'pets', pet.id, 'tratamiento', 'add']"
+      [routerLink]="basePath + '/pets/' + pet.id + '/tratamiento/add'"
       class="mr-6 flex items-center gap-2 rounded-lg border border-[#2B5392] bg-transparent px-3 py-2 text-[#2B5392] transition-colors duration-200 hover:bg-[#2B5392] hover:text-[#FBFAF8]"
     >
       <svg
@@ -101,14 +101,9 @@
   >
     @for (tratamiento of sortedTratamientos; track tratamiento.id) {
       <a
-        [routerLink]="[
-          '/vet/',
-          vetId,
-          'pets',
-          pet.id,
-          'tratamiento',
-          tratamiento.id,
-        ]"
+        [routerLink]="
+          basePath + '/pets/' + pet.id + '/tratamiento/' + tratamiento.id
+        "
         class="cursor-pointer mx-4 mb-2 flex items-stretch gap-2 rounded-lg p-2 transition hover:bg-blue-50"
       >
         <div

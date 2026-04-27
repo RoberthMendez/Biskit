@@ -85,15 +85,7 @@
             class="flex w-full flex-col gap-3 sm:flex-row sm:justify-end lg:absolute lg:right-8 lg:bottom-1 lg:w-auto lg:shrink-0"
           >
             <a
-              [routerLink]="[
-                '/vet/',
-                veterinario?.id,
-                'pets',
-                pet?.id,
-                'tratamiento',
-                'update',
-                tratamiento?.id,
-              ]"
+              [routerLink]="editLink"
               class="flex w-full items-center justify-center gap-2 rounded-lg border border-[#2B5392] bg-transparent px-4 py-2 text-[#2B5392] transition-colors duration-200 hover:bg-[#2B5392] hover:text-[#FBFAF8] sm:w-auto"
             >
               <svg
@@ -1160,37 +1152,11 @@
   </section>
 
   @if (showDeleteModal) {
-    <article
-      class="fixed inset-0 z-100 flex items-center justify-center bg-black/40 backdrop-blur-sm"
-    >
-      <div
-        class="animate-fadeIn w-[90%] max-w-md justify-center space-y-4 rounded-2xl bg-[#FBFAF8] px-8 py-10 text-center shadow-xl"
-      >
-        <h2 class="text-xl font-extrabold tracking-wide text-[#4A4A4A]">
-          Confirmar Eliminación
-        </h2>
-
-        <p class="text-center text-[#8d8580]">
-          ¿Estás seguro de que deseas eliminar este tratamiento? Esta acción no
-          se puede deshacer.
-        </p>
-
-        <div class="flex justify-end gap-4">
-          <button
-            (click)="closeDeleteModal()"
-            class="cursor-pointer rounded-lg border border-[#2B5392] px-4 py-2 text-[#2B5392] transition hover:bg-[#2B5392] hover:text-white"
-          >
-            Cancelar
-          </button>
-
-          <button
-            (click)="confirmDeleteTratamiento()"
-            class="cursor-pointer rounded-lg border border-[#B22222] px-4 py-2 text-[#B22222] transition hover:bg-[#B22222] hover:text-white"
-          >
-            Eliminar
-          </button>
-        </div>
-      </div>
-    </article>
+    <app-delete-modal
+      [entityLabel]="'tratamiento'"
+      [successMessage]="deleteSuccessMessage"
+      (close)="closeDeleteModal()"
+      (confirm)="confirmDeleteTratamiento()"
+    ></app-delete-modal>
   }
 </main>

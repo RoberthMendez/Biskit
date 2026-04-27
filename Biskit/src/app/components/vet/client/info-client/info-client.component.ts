@@ -7,10 +7,11 @@ import { map, switchMap } from 'rxjs';
 import { ClientHeaderComponent } from './client-header/client-header.component';
 import { ClientDetailsComponent } from './client-details/client-details.component';
 import { PetsSectionComponent } from './pets-section/pets-section.component';
-import { DeleteModalComponent } from './delete-modal/delete-modal.component';
+import { DeleteModalComponent } from '../../../reusables/delete-modal/delete-modal.component';
 
 @Component({
   selector: 'app-info-client',
+  standalone: true,
   templateUrl: './info-client.component.html',
   imports: [
     ClientHeaderComponent,
@@ -23,6 +24,8 @@ export class InfoClientComponent {
 
   client: Client = new Client();
   vetId: number | null = null;
+  basePath = '/vet/clients';
+  clientsRoute = '/vet/clients';
 
   constructor(
     private clientService: ClientService,
@@ -34,6 +37,15 @@ export class InfoClientComponent {
   ngOnInit(): void {
 
     this.comprobarIds();
+    const routePath = this.route.snapshot.routeConfig?.path ?? '';
+    const isAdminView = routePath.startsWith('admin/');
+    const contextParam = isAdminView ? 'idAdmin' : 'vetId';
+    const contextId = this.route.snapshot.paramMap.get(contextParam) ?? '';
+
+    if (contextId) {
+      this.basePath = `/${isAdminView ? 'admin' : 'vet'}/${contextId}/clients`;
+      this.clientsRoute = this.basePath;
+    }
     
     const id = this.route.snapshot.paramMap.get('id');
     const clientId = id ? Number(id) : 0;
@@ -57,27 +69,39 @@ export class InfoClientComponent {
   }
 
   goToClients(): void {
-    this.router.navigate(['/vet/clients']);
+    this.router.navigateByUrl(this.clientsRoute);
   }
 
   showModal = false;
   selectedDeleteId: number | null = null;
+  deleteSuccessMessage = '';
+  shouldNavigateAfterDelete = false;
 
   openDeleteModal(clientId?: number) {
     this.selectedDeleteId = clientId ?? null;
+    this.deleteSuccessMessage = '';
+    this.shouldNavigateAfterDelete = false;
     this.showModal = true;
   }
 
   closeModal() {
+    const shouldNavigate = this.shouldNavigateAfterDelete;
     this.showModal = false;
     this.selectedDeleteId = null;
+    this.deleteSuccessMessage = '';
+    this.shouldNavigateAfterDelete = false;
+
+    if (shouldNavigate) {
+      this.router.navigateByUrl(this.clientsRoute);
+    }
   }
 
   confirmDelete() {
     if (this.selectedDeleteId != null) {
       this.clientService.deleteClient(this.selectedDeleteId).subscribe(
         () => {
-          this.router.navigate(['/vet/clients']);
+          this.shouldNavigateAfterDelete = true;
+          this.deleteSuccessMessage = 'Cliente eliminado correctamente';
         }
       );
       return;

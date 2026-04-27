@@ -27,6 +27,7 @@
   >
     <app-client-header
       [client]="client"
+      [basePath]="basePath"
       (deleteClient)="openDeleteModal($event)"
     ></app-client-header>
 
@@ -39,6 +40,8 @@
   <!-- MODAL -->
   @if (showModal) {
     <app-delete-modal
+      [entityLabel]="'cliente'"
+      [successMessage]="deleteSuccessMessage"
       (close)="closeModal()"
       (confirm)="confirmDelete()"
     ></app-delete-modal>

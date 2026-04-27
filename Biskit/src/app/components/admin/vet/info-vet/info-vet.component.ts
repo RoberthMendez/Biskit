@@ -4,7 +4,7 @@ import { Vet } from '../../../../models/Vets/vet-cl';
 import { ActivatedRoute, Router } from '@angular/router';
 import { mergeMap } from 'rxjs';
 import { TratamientoService } from '../../../../services/tratamiento.service';
-import { DeleteModalComponent } from './delete-modal/delete-modal.component';
+import { DeleteModalComponent } from '../../../reusables/delete-modal/delete-modal.component';
 
 @Component({
   selector: 'app-info-vet',
@@ -62,22 +62,34 @@ export class InfoVetComponent {
 
   showModal = false;
   selectedDeleteId: number | null = null;
+  deleteSuccessMessage = '';
+  shouldNavigateAfterDelete = false;
 
   openDeleteModal(vetId?: number) {
     this.selectedDeleteId = vetId ?? null;
+    this.deleteSuccessMessage = '';
+    this.shouldNavigateAfterDelete = false;
     this.showModal = true;
   }
 
   closeModal() {
+    const shouldNavigate = this.shouldNavigateAfterDelete;
     this.showModal = false;
     this.selectedDeleteId = null;
+    this.deleteSuccessMessage = '';
+    this.shouldNavigateAfterDelete = false;
+
+    if (shouldNavigate) {
+      this.router.navigate(['/vet/vets']);
+    }
   }
 
   confirmDelete() {
     if (this.selectedDeleteId != null) {
       this.vetService.deleteVet(this.selectedDeleteId).subscribe(
         () => {
-          this.router.navigate(['/vet/vets']);
+          this.shouldNavigateAfterDelete = true;
+          this.deleteSuccessMessage = 'Veterinario eliminado correctamente';
         }
       );
       return;

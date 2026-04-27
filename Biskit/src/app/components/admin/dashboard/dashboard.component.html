@@ -1,3 +1,11 @@
+@if (dashboardNavbarOptions.length > 0) {
+  <app-navbar
+    [options]="dashboardNavbarOptions"
+    [sticky]="false"
+    [brandRoute]="['/admin', adminId]"
+  ></app-navbar>
+}
+
 <main
   class="flex flex-col gap-8 sm:gap-10 my-8 sm:my-10 mx-4 sm:mx-8 md:mx-12 lg:mx-16 xl:mx-24 2xl:mx-30"
 >

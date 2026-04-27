@@ -13,16 +13,28 @@ import { CardBarrasComponent } from "./card-barras/card-barras.component";
 import { CardTop5Component } from "./card-top5/card-top5.component";
 import { CardTablaComponent } from "./card-tabla/card-tabla.component";
 import { CardRepuestosComponent } from "./card-repuestos/card-repuestos.component";
+import { NavbarComponent, type NavbarOption } from '../../reusables/navbar/navbar.component';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, CardKPIComponent, CardDonaComponent, CardBarrasComponent, CardTop5Component, CardTablaComponent, CardRepuestosComponent],
+  imports: [CommonModule, NavbarComponent, CardKPIComponent, CardDonaComponent, CardBarrasComponent, CardTop5Component, CardTablaComponent, CardRepuestosComponent],
   templateUrl: './dashboard.component.html'
 })
 export class DashboardComponent {
 
   public adminId: string = '';
+  public get dashboardNavbarOptions(): NavbarOption[] {
+    if (!this.adminId) {
+      return [];
+    }
+
+    return [
+      { label: 'Mascotas', route: ['/admin', this.adminId, 'pets'] },
+      { label: 'Veterinarios', route: ['/admin', this.adminId, 'vets'] },
+      { label: 'Clientes', route: ['/admin', this.adminId, 'clients'] },
+    ];
+  }
 
   public ventasTotales: number = 0;
   public gananciasTotales: number = 0;

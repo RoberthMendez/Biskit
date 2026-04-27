@@ -16,6 +16,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 export class PetsComponent {
   public pets: Pet[] = [];
   public vetId: number = 0;
+  public basePath = '';
+  public isAdminView = false;
   public petsTreatedByVet: Pet[] = [];
   public showOnlyMyPets: boolean = false;
 
@@ -29,27 +31,38 @@ export class PetsComponent {
   ) {}
 
   ngOnInit() {
-    const vetIdParam = this.route.snapshot.paramMap.get('vetId');
+    const routePath = this.route.snapshot.routeConfig?.path ?? '';
+    this.isAdminView = routePath.startsWith('admin/');
 
-    if (vetIdParam) {
-      this.vetId = Number(vetIdParam);
+    const contextParam = this.isAdminView ? 'idAdmin' : 'vetId';
+    this.vetId = Number(this.route.snapshot.paramMap.get(contextParam));
+    this.basePath = `/${this.isAdminView ? 'admin' : 'vet'}/${this.vetId}`;
 
+    this.petService.findAll().subscribe(
+      (pets) => {
+        this.pets = pets;
+      }
+    );
+
+    if (!this.isAdminView) {
       this.vetService.getPetsTreatedByVet(this.vetId).subscribe({
         next: (pets) => {
           this.petsTreatedByVet = pets;
         },
-        error: (error: HttpErrorResponse) => {
-          const mensaje = error.error?.detalle || 'Error al obtener mascotas';
+      error: (error: HttpErrorResponse) => {
+        const mensaje = error.error?.detalle || 'Error al obtener mascotas';
 
-          this.router.navigate(['/error'], {
-            queryParams: { mensaje },
-          });
-        },
+        this.router.navigate(['/error'], {
+          queryParams: { mensaje },
+        });
+      },
       });
     }
+    
     this.petService.findAll().subscribe((pets) => {
       this.pets = pets;
     });
+    
   }
 
   get filteredPets(): Pet[] {

@@ -17,6 +17,9 @@ export class CardPetComponent {
   @Input()
   vetId!: number;
 
+  @Input()
+  basePath = '';
+
   @ViewChild('toggleSwitch')
   private toggleSwitchRef?: ElementRef<HTMLElement>;
 

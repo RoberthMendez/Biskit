@@ -1,4 +1,6 @@
-<main class="mx-4 my-6 space-y-5 sm:mx-8 sm:my-8 md:mx-12 lg:mx-20 xl:mx-28">
+<main
+  class="mx-4 mt-2 my-6 space-y-5 sm:mx-8 sm:mt-4 sm:mb-8 md:mx-12 lg:mx-20 xl:mx-28"
+>
   <app-header [adminId]="adminId"></app-header>
   <app-barra-busqueda (search)="onSearch($event)"></app-barra-busqueda>
   @if (filteredVets.length > 0) {
@@ -86,6 +88,8 @@
 
   @if (showModal) {
     <app-delete-modal
+      [entityLabel]="'veterinario'"
+      [successMessage]="deleteSuccessMessage"
       (close)="closeModal()"
       (confirm)="confirmDelete()"
     ></app-delete-modal>

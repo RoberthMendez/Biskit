@@ -33,7 +33,10 @@ import { EspecialidadesService } from '../../../../../services/especialidades.se
   ],
 })
 export class FormularioComponent {
+
   @Input() vetId: number | null = null;
+
+  @Input() adminId: number | null = null;
 
   constructor(
     private vetService: VetService,
@@ -161,19 +164,18 @@ export class FormularioComponent {
 
     this.vetService.saveVet(this.formVet).subscribe({
       next: () => {
+
         window.scrollTo({ top: 0, behavior: 'auto' });
 
-        if (this.vetId) {
-          this.successMessage = 'Cambios guardados correctamente';
-          setTimeout(() => {
-            this.router.navigate(['']);
-          }, 600);
-          return;
-        }
+        this.vetId ? this.successMessage = 'Cambios guardados correctamente' : this.successMessage = 'Veterinario guardado correctamente';
+        setTimeout(() => {
+          this.router.navigate(['admin', this.adminId, 'vets']);
+        }, 600);
 
-        this.successMessage = 'Veterinario guardado correctamente';
         this.formVet = new Vet(); //Resetear el formulario
         this.especialidadSearch = '';
+        return;
+        
       },
       error: () => {
         window.scrollTo({ top: 0, behavior: 'auto' });

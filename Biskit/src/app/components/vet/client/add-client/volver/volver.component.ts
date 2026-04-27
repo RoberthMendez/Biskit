@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 @Component({
@@ -7,4 +7,6 @@ import { RouterLink } from '@angular/router';
   imports: [RouterLink],
   templateUrl: './volver.component.html',
 })
-export class VolverComponent {}
+export class VolverComponent {
+  @Input() route: string | Array<string | number> = '/vet/clients';
+}
