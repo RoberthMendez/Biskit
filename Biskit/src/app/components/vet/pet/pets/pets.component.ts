@@ -5,6 +5,7 @@ import { Pet } from '../../../../models/Pets/pet';
 import { PetService } from '../../../../services/pet.service';
 import { VetService } from '../../../../services/vet.service';
 import { CardPetComponent } from './card-pet/card-pet.component';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-pets',
@@ -24,6 +25,7 @@ export class PetsComponent {
     private petService: PetService,
     private vetService: VetService,
     private route: ActivatedRoute,
+    private router: Router,
   ) {}
 
   ngOnInit() {
@@ -32,14 +34,22 @@ export class PetsComponent {
     if (vetIdParam) {
       this.vetId = Number(vetIdParam);
 
-      this.vetService.getPetsTreatedByVet(this.vetId).subscribe((pets) => {
-        this.petsTreatedByVet = pets;
+      this.vetService.getPetsTreatedByVet(this.vetId).subscribe({
+        next: (pets) => {
+          this.petsTreatedByVet = pets;
+        },
+        error: (error: HttpErrorResponse) => {
+          const mensaje = error.error?.detalle || 'Error al obtener mascotas';
+
+          this.router.navigate(['/error'], {
+            queryParams: { mensaje },
+          });
+        },
       });
     }
     this.petService.findAll().subscribe((pets) => {
       this.pets = pets;
     });
-
   }
 
   get filteredPets(): Pet[] {
