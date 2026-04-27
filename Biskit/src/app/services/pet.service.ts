@@ -53,5 +53,9 @@ export class PetService {
     return this.http.get<number>(`http://localhost:8080/vet/pets/count/inactivos`);
   }
 
+  // ----- Comprobar Existencia de Mascota -----
+  existsById(id: number): Observable<void> {
+    return this.http.get<void>(`http://localhost:8080/vet/pets/${id}/exists`);
+  }
 
 }
