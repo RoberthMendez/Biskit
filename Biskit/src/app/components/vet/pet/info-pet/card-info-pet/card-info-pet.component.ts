@@ -25,9 +25,6 @@ export class CardInfoPetComponent implements AfterViewInit, OnChanges {
   @ViewChild('toggleSwitch')
   private toggleSwitchRef?: ElementRef<HTMLElement>;
 
-  @ViewChild('toggleInput')
-  private toggleInputRef?: ElementRef<HTMLInputElement>;
-
   ngAfterViewInit(): void {
     this.updateTogglePillFromView();
   }

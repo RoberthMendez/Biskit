@@ -534,20 +534,6 @@ export class FormularioComponent implements OnInit {
     });
   }
 
-  private resetForm(): void {
-    this.formPet = new Pet();
-    this.fechaNacimientoStr = '';
-    this.clienteSearch = '';
-    this.especieSearch = '';
-    this.razaSearch = '';
-    this.enfermedadSearch = '';
-    this.selectedClienteId = null;
-    this.selectedEspecieId = null;
-    this.selectedRazaId = null;
-    this.selectedEnfermedadId = null;
-    this.razasFiltradas = [...this.razas];
-  }
-
   private existeEspecie(): boolean {
     return this.especies.some(
       (e) => e.id === this.selectedEspecieId && e.nombre === this.especieSearch,

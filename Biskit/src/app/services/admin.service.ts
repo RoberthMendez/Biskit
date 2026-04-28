@@ -1,8 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Droga } from '../models/Droga/droga';
-import { Enfermedad } from '../models/Pets/enfermedad';
 import { DrogaTratamientosCountDto } from '../models/dtos/droga-tratamientos-count-dto';
 import { TratamientoMesDto } from '../models/dtos/tratamiento-mes-dto';
 import { TopDto } from '../models/dtos/top-dto';

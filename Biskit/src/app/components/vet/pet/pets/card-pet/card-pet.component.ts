@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, SimpleChanges, ViewChild } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Pet } from '../../../../../models/Pets/pet';
 import { PetService } from '../../../../../services/pet.service';
