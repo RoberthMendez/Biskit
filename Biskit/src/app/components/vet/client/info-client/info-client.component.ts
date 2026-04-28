@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Client } from '../../../../models/Client/client';
 import { ClientService } from '../../../../services/client.service';
 import { VetService } from '../../../../services/vet.service';
+import { AdminService } from '../../../../services/admin.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { map, switchMap } from 'rxjs';
 import { ClientHeaderComponent } from './client-header/client-header.component';
@@ -23,7 +24,6 @@ import { BackButtonComponent } from '../../../reusables/back-button/back-button.
   ],
 })
 export class InfoClientComponent {
-
   client: Client = new Client();
   vetId: number | null = null;
   basePath = '/vet/clients';
@@ -32,12 +32,12 @@ export class InfoClientComponent {
   constructor(
     private clientService: ClientService,
     private vetService: VetService,
+    private adminService: AdminService,
     private route: ActivatedRoute,
     private router: Router,
   ) {}
 
   ngOnInit(): void {
-
     this.comprobarIds();
     const routePath = this.route.snapshot.routeConfig?.path ?? '';
     const isAdminView = routePath.startsWith('admin/');
@@ -48,7 +48,7 @@ export class InfoClientComponent {
       this.basePath = `/${isAdminView ? 'admin' : 'vet'}/${contextId}/clients`;
       this.clientsRoute = this.basePath;
     }
-    
+
     const id = this.route.snapshot.paramMap.get('id');
     const clientId = id ? Number(id) : 0;
 
@@ -60,9 +60,9 @@ export class InfoClientComponent {
             map((pets) => ({
               client,
               pets: pets ?? [],
-            }))
-          )
-        )
+            })),
+          ),
+        ),
       )
       .subscribe(({ client, pets }) => {
         this.client = client;
@@ -100,12 +100,10 @@ export class InfoClientComponent {
 
   confirmDelete() {
     if (this.selectedDeleteId != null) {
-      this.clientService.deleteClient(this.selectedDeleteId).subscribe(
-        () => {
-          this.shouldNavigateAfterDelete = true;
-          this.deleteSuccessMessage = 'Cliente eliminado correctamente';
-        }
-      );
+      this.clientService.deleteClient(this.selectedDeleteId).subscribe(() => {
+        this.shouldNavigateAfterDelete = true;
+        this.deleteSuccessMessage = 'Cliente eliminado correctamente';
+      });
       return;
     }
 
@@ -138,5 +136,18 @@ export class InfoClientComponent {
         });
       },
     });
+
+    const adminIdParam = Number(this.route.snapshot.paramMap.get('idAdmin'));
+    if (adminIdParam) {
+      this.adminService.existsById(adminIdParam).subscribe({
+        next: () => {},
+        error: (error) => {
+          const mensaje = error.error?.detalle || 'Administrador no encontrado';
+          this.router.navigate(['/error'], {
+            queryParams: { mensaje },
+          });
+        },
+      });
+    }
   }
 }

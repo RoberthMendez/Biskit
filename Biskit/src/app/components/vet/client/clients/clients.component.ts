@@ -14,6 +14,7 @@ import {
 } from '../../../reusables/tabla/tabla.types';
 import { ActivatedRoute, Router } from '@angular/router';
 import { VetService } from '../../../../services/vet.service';
+import { AdminService } from '../../../../services/admin.service';
 
 @Component({
   standalone: true,
@@ -71,12 +72,14 @@ export class ClientsComponent {
   constructor(
     private clientService: ClientService,
     private vetService: VetService,
+    private adminService: AdminService,
     private route: ActivatedRoute,
     private router: Router,
   ) {}
 
   ngOnInit(){
     
+    this.comprobarIds();
     const routePath = this.route.snapshot.routeConfig?.path ?? '';
     this.isAdminView = routePath.startsWith('admin/');
     const vetIdParam = this.route.snapshot.paramMap.get('vetId');
@@ -186,5 +189,36 @@ export class ClientsComponent {
     }
 
     return row as Client;
+  }
+
+  private comprobarIds() {
+    const vetIdParam = Number(this.route.snapshot.paramMap.get('vetId'));
+
+     if (vetIdParam) {
+      this.vetService.existsById(vetIdParam).subscribe({
+        next: () => {
+        },
+        error: (error) => {
+          const mensaje = error.error?.detalle || 'Veterinario no encontrado';
+          this.router.navigate(['/error'], {
+            queryParams: { mensaje },
+          });
+        },
+      });
+    }
+
+    const adminIdParam = Number(this.route.snapshot.paramMap.get('idAdmin'));
+    if (adminIdParam) {
+      this.adminService.existsById(adminIdParam).subscribe({
+        next: () => {
+        },
+        error: (error) => {
+          const mensaje = error.error?.detalle || 'Administrador no encontrado';
+          this.router.navigate(['/error'], {
+            queryParams: { mensaje },
+          });
+        },
+      });
+    }
   }
 }

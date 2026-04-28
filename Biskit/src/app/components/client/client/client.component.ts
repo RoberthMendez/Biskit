@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { Client } from '../../../models/Client/client';
 import { ClientService } from '../../../services/client.service';
-import { ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { Pet } from '../../../models/Pets/pet';
@@ -20,9 +20,11 @@ export class ClientComponent {
   constructor(
     private clientService: ClientService,
     private route: ActivatedRoute,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
+    this.comprobarId();
     this.route.paramMap
       .pipe(
         map((params) => Number(params.get('id') ?? 0)),
@@ -39,5 +41,20 @@ export class ClientComponent {
       .subscribe((pets) => {
         this.pets = pets;
       });
+  }
+
+  private comprobarId() {
+    const idParam = Number(this.route.snapshot.paramMap.get('id'));
+    if (idParam) {
+      this.clientService.existsById(idParam).subscribe({
+        next: () => {},
+        error: (error) => {
+          const mensaje = error.error?.detalle || 'Cliente no encontrado';
+          this.router.navigate(['/error'], {
+            queryParams: { mensaje },
+          });
+        },
+      });
+    }
   }
 }

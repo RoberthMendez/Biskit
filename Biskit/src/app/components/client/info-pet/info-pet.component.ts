@@ -4,7 +4,7 @@ import { Client } from '../../../models/Client/client';
 import { Pet } from '../../../models/Pets/pet';
 import { TreatmentsCardComponent } from '../../reusables/treatments-card/treatments-card.component';
 import { PetCardComponent } from './pet-card/pet-card.component';
-import { ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { PetService } from '../../../services/pet.service';
 import { mergeMap } from 'rxjs';
 import { TratamientoService } from '../../../services/tratamiento.service';
@@ -26,9 +26,11 @@ export class InfoPetComponent {
     private petService: PetService,
     private clientService: ClientService,
     private tratamientoService: TratamientoService,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
+    this.comprobarIds();
     const petId = this.route.snapshot.paramMap.get('petId');
     const clientId = this.route.snapshot.paramMap.get('clientId');
 
@@ -52,5 +54,32 @@ export class InfoPetComponent {
           this.pet.tratamientos = [];
         },
       });
+  }
+
+  private comprobarIds(): void {
+    const petIdParam = Number(this.route.snapshot.paramMap.get('petId'));
+    const clientIdParam = Number(this.route.snapshot.paramMap.get('clientId'));
+    this.clientService.existsById(clientIdParam).subscribe({
+      next: () => {
+      },
+      error: (error) => {
+        const mensaje = error.error?.detalle || 'Cliente no encontrado';
+        this.router.navigate(['/error'], {
+          queryParams: { mensaje },
+        });
+      },
+    });
+
+    this.petService.existsById(petIdParam).subscribe({
+      next: () => {
+      },
+      error: (error) => {
+        const mensaje = error.error?.detalle || 'Mascota no encontrada';
+        this.router.navigate(['/error'], {
+          queryParams: { mensaje },
+        });
+      },
+    });
+
   }
 }

@@ -68,4 +68,9 @@ export class AdminService {
   getDrogasBajasEnStock(): Observable<StockDrogaDto[]> {
     return this.http.get<StockDrogaDto[]>('http://localhost:8080/admin/drogas-bajas-stock');
   }
+
+  //Verificar existencia de Admin por ID
+  existsById(id: number): Observable<void> {
+    return this.http.get<void>(`http://localhost:8080/admin/${id}/exists`);
+  }
 }

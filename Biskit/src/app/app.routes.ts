@@ -281,4 +281,5 @@ export const routes: Routes = [
         (m) => m.ErrorComponent,
       ),
   },
+  { path: '**', redirectTo: 'error' },
 ];

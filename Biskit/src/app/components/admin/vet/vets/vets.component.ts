@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { VetService } from '../../../../services/vet.service';
+import { AdminService } from '../../../../services/admin.service';
 import { Vet } from '../../../../models/Vets/vet-cl';
 import { TablaComponent } from '../../../reusables/tabla/tabla.component';
 import {
@@ -89,11 +90,13 @@ export class VetsComponent {
 
   constructor(
     private vetService: VetService,
+    private adminService: AdminService,
     private route: ActivatedRoute,
     private router: Router,
   ) {}
 
   ngOnInit() {
+    this.comprobarId();
     const idAdmin = Number(this.route.snapshot.paramMap.get('idAdmin'));
     if (!Number.isNaN(idAdmin) && idAdmin > 0) {
       this.adminId = idAdmin;
@@ -214,4 +217,19 @@ export class VetsComponent {
     return row as Vet;
   }
 
+  private comprobarId(): void {
+    const idAdminParam = Number(this.route.snapshot.paramMap.get('idAdmin'));
+    if (idAdminParam) {
+      this.adminService.existsById(idAdminParam).subscribe({
+        next: () => {
+        },
+        error: (error) => {
+          const mensaje = error.error?.detalle || 'Administrador no encontrado';
+          this.router.navigate(['/error'], {
+            queryParams: { mensaje },
+          });
+        },
+      });
+    }
+  }
 }

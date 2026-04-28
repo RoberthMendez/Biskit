@@ -4,6 +4,7 @@ import { Vet } from '../../../../models/Vets/vet-cl';
 import { NgComponentOutlet } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { mergeMap } from 'rxjs';
+import { AdminService } from '../../../../services/admin.service';
 import { TratamientoService } from '../../../../services/tratamiento.service';
 import { DeleteModalComponent } from '../../../reusables/delete-modal/delete-modal.component';
 import { TreatmentsCardComponent } from "../../../reusables/treatments-card/treatments-card.component";
@@ -31,7 +32,8 @@ export class InfoVetComponent {
     private vetService: VetService,
     private route: ActivatedRoute,
     private router: Router,
-    private tratamientoService: TratamientoService
+    private tratamientoService: TratamientoService,
+    private adminService: AdminService,
   ) {}
 
   protected get vetCardInputs(): Record<string, unknown> {
@@ -43,6 +45,7 @@ export class InfoVetComponent {
   }
 
   ngOnInit(): void {
+    this.comprobarIds();
     this.adminId = Number(this.route.snapshot.paramMap.get('idAdmin'));
 
     const id = this.route.snapshot.paramMap.get('vetId');
@@ -107,6 +110,38 @@ export class InfoVetComponent {
 
     this.closeModal();
   }
+
+  private comprobarIds() {
+    const vetIdParam = Number(this.route.snapshot.paramMap.get('vetId'));
+    const adminIdParam = Number(this.route.snapshot.paramMap.get('idAdmin'));
+
+    if (adminIdParam) {
+      this.adminService.existsById(adminIdParam).subscribe({
+        next: () => {
+        },
+        error: (error) => {
+          const mensaje = error.error?.detalle || 'Administrador no encontrado';
+          this.router.navigate(['/error'], {
+            queryParams: { mensaje },
+          });
+        },
+      });
+    }
+
+    if (vetIdParam) {
+      this.vetService.existsById(vetIdParam).subscribe({
+        next: () => {
+        },
+        error: (error) => {
+          const mensaje = error.error?.detalle || 'Veterinario no encontrado';
+          this.router.navigate(['/error'], {
+            queryParams: { mensaje },
+          });
+        },
+      });
+    }
+  }
+    
 
 
 }

@@ -4,6 +4,7 @@ import { Pet } from '../../../../models/Pets/pet';
 import { PetService } from '../../../../services/pet.service';
 import { VetService } from '../../../../services/vet.service';
 import { TratamientoService } from '../../../../services/tratamiento.service';
+import { AdminService } from '../../../../services/admin.service';
 import { CardInfoPetComponent } from './card-info-pet/card-info-pet.component';
 import { CardInfoOwnerComponent } from './card-info-owner/card-info-owner.component';
 import { mergeMap } from 'rxjs';
@@ -28,6 +29,7 @@ export class InfoPetComponent {
   constructor(
     private petService: PetService,
     private vetService: VetService,
+    private adminService: AdminService,
     private tratamientoService: TratamientoService,
     private route: ActivatedRoute,
     private router: Router,
@@ -96,6 +98,20 @@ export class InfoPetComponent {
         next: () => {},
         error: (error) => {
           const mensaje = error.error?.detalle || 'Mascota no encontrada';
+          this.router.navigate(['/error'], {
+            queryParams: { mensaje },
+          });
+        },
+      });
+    }
+
+    const adminIdParam = Number(this.route.snapshot.paramMap.get('idAdmin'));
+    if (adminIdParam) {
+      this.adminService.existsById(adminIdParam).subscribe({
+        next: () => {
+        },
+        error: (error) => {
+          const mensaje = error.error?.detalle || 'Administrador no encontrado';
           this.router.navigate(['/error'], {
             queryParams: { mensaje },
           });

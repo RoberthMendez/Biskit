@@ -6,7 +6,7 @@ import { TratamientoMesDto } from '../../../models/dtos/tratamiento-mes-dto';
 import { TopDto } from '../../../models/dtos/top-dto';
 import { StockDrogaDto } from '../../../models/dtos/stock-droga-dto';
 import { Admin } from '../../../models/Admin/admin';
-import { ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { CardKPIComponent } from "./card-kpi/card-kpi.component";
 import { CardDonaComponent } from "./card-dona/card-dona.component";
 import { CardBarrasComponent } from "./card-barras/card-barras.component";
@@ -53,11 +53,12 @@ export class DashboardComponent {
 
   constructor(
     private adminService: AdminService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router,
   ) { }
 
   ngOnInit() {
-
+    this.comprobarId();
     const adminId = this.route.snapshot.paramMap.get('id');
     this.adminId = adminId ?? '';
     if (adminId)
@@ -179,6 +180,22 @@ export class DashboardComponent {
         }
       }
     );
+  }
+
+  private comprobarId() {
+    const idParam = Number(this.route.snapshot.paramMap.get('id'));
+    if (idParam) {
+      this.adminService.existsById(idParam).subscribe({
+        next: () => {
+        },
+        error: (error) => {
+          const mensaje = error.error?.detalle || 'Administrador no encontrado';
+          this.router.navigate(['/error'], {
+            queryParams: { mensaje },
+          });
+        },
+      });
+    }
   }
 }
 

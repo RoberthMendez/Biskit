@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { FormularioComponent } from './formulario/formulario.component';
 import { ImagenComponent } from './imagen/imagen.component';
-import { ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
+import { VetService } from '../../../../services/vet.service';
+import { AdminService } from '../../../../services/admin.service';
 import { BackButtonComponent } from '../../../reusables/back-button/back-button.component';
 
 @Component({
@@ -18,9 +20,10 @@ export class AddVetComponent {
   backLabel = 'Lista de Veterinarios';
   returnRoute: string | Array<string | number> = ['/admin', 0, 'vets'];
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(private route: ActivatedRoute, private router: Router, private vetService: VetService, private adminService: AdminService) {}
 
   ngOnInit(): void {
+    this.comprobarIds();
     const idVet = this.route.snapshot.paramMap.get('idVet');
     this.vetId = idVet ? Number(idVet) : null;
 
@@ -36,6 +39,37 @@ export class AddVetComponent {
       this.backLink = ['/admin', this.adminId, 'vets', this.vetId];
       this.backLabel = 'Detalle de Veterinario';
       this.returnRoute = ['/admin', this.adminId, 'vets', this.vetId];
+    }
+  }
+
+  private comprobarIds(): void {
+    const idAdmin = this.route.snapshot.paramMap.get('idAdmin');
+    const idVet = this.route.snapshot.paramMap.get('idVet');
+
+    if (idAdmin) {
+      this.adminService.existsById(Number(idAdmin)).subscribe({
+        next: () => {
+        },
+        error: (error) => {
+          const mensaje = error.error?.detalle || 'Administrador no encontrado';
+          this.router.navigate(['/error'], {
+            queryParams: { mensaje },
+          });
+        },
+      });
+    }
+
+    if (idVet) {
+      this.vetService.existsById(Number(idVet)).subscribe({
+        next: () => {
+        },
+        error: (error) => {
+          const mensaje = error.error?.detalle || 'Veterinario no encontrado';
+          this.router.navigate(['/error'], {
+            queryParams: { mensaje },
+          });
+        },
+      });
     }
   }
 

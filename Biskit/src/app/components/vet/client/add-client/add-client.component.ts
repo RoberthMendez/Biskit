@@ -4,6 +4,7 @@ import { ClientFormComponent } from './form/form.component';
 import { ActivatedRoute } from '@angular/router';
 import { VetService } from '../../../../services/vet.service';
 import { ClientService } from '../../../../services/client.service';
+import { AdminService } from '../../../../services/admin.service';
 import { Router } from '@angular/router';
 import { BackButtonComponent } from '../../../reusables/back-button/back-button.component';
 
@@ -24,6 +25,7 @@ export class AddClientComponent {
   constructor(
     private route: ActivatedRoute,
     private vetService: VetService,
+    private adminService: AdminService,
     private clientService: ClientService,
     private router: Router,
   ) {}
@@ -65,7 +67,6 @@ export class AddClientComponent {
     if (vetIdParam) {
       this.vetService.existsById(vetIdParam).subscribe({
         next: () => {
-          this.vetId = vetIdParam;
         },
         error: (error) => {
           const mensaje = error.error?.detalle || 'Veterinario no encontrado';
@@ -81,6 +82,20 @@ export class AddClientComponent {
         next: () => {},
         error: (error) => {
           const mensaje = error.error?.detalle || 'Cliente no encontrado';
+          this.router.navigate(['/error'], {
+            queryParams: { mensaje },
+          });
+        },
+      });
+    }
+
+    const adminIdParam = Number(this.route.snapshot.paramMap.get('idAdmin'));
+    if (adminIdParam) {
+      this.adminService.existsById(adminIdParam).subscribe({
+        next: () => {
+        },
+        error: (error) => {
+          const mensaje = error.error?.detalle || 'Administrador no encontrado';
           this.router.navigate(['/error'], {
             queryParams: { mensaje },
           });
