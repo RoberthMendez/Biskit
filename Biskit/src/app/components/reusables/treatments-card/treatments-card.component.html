@@ -1,6 +1,8 @@
 <article [class]="cardClasses">
   <!-- Título -->
-  <div class="mx-3 mt-2 mb-6 flex w-full items-center justify-between">
+  <div
+    class="mx-3 mt-2 mb-6 flex w-full flex-col gap-3 lg:flex-row lg:items-center lg:justify-between"
+  >
     <!-- Ícono y título -->
     <div class="flex items-center gap-1">
       <svg
@@ -63,11 +65,12 @@
       </div>
     </div>
 
+    <!-- Botón de Agregar -->
     @if (showAddButton && addButtonLink) {
       <a
         [routerLink]="addButtonLink"
         [state]="estadoAtras ?? undefined"
-        class="mr-6 flex items-center gap-2 rounded-lg border border-[#2B5392] bg-transparent px-3 py-2 text-[#2B5392] transition-colors duration-200 hover:bg-[#2B5392] hover:text-[#FBFAF8]"
+        class="mr-6 flex w-fit items-center gap-2 rounded-lg border border-[#2B5392] bg-transparent px-3 py-2 text-[#2B5392] transition-colors duration-200 hover:bg-[#2B5392] hover:text-[#FBFAF8]"
       >
         <svg
           class="h-6 w-auto"
