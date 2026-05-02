@@ -22,6 +22,7 @@
       <aside class="flex flex-col gap-5 lg:col-span-2 justify-center">
         <app-treatments-card
           [tratamientos]="pet.tratamientos ?? []"
+          [petActivo]="pet.estado"
           [routeBase]="[basePath]"
           [routeSegment]="'pets'"
           [entityId]="pet.id"

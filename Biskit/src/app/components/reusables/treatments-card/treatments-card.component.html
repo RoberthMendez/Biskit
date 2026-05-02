@@ -67,38 +67,44 @@
 
     <!-- Botón de Agregar -->
     @if (showAddButton && addButtonLink) {
-      <a
-        [routerLink]="addButtonLink"
-        [state]="estadoAtras ?? undefined"
-        class="mr-6 flex w-fit items-center gap-2 rounded-lg border border-[#2B5392] bg-transparent px-3 py-2 text-[#2B5392] transition-colors duration-200 hover:bg-[#2B5392] hover:text-[#FBFAF8]"
+      <div
+        [title]="petActivo === false ? 'Mascota inactiva' : ''"
+        class="mr-6 w-fit"
       >
-        <svg
-          class="h-6 w-auto"
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
+        <button
+          [routerLink]="addButtonLink"
+          [disabled]="petActivo === false"
+          class="flex items-center gap-2 rounded-lg border px-3 py-2 transition-colors duration-200"
+          [class]="
+            petActivo === false
+              ? 'border-[#aaa] text-[#aaa]'
+              : 'cursor-pointer border-[#2B5392] text-[#2B5392] hover:bg-[#2B5392] hover:text-[#FBFAF8]'
+          "
         >
-          <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-          <g
-            id="SVGRepo_tracerCarrier"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          ></g>
-          <g id="SVGRepo_iconCarrier">
-            <g id="Edit / Add_Plus">
-              <path
-                id="Vector"
-                d="M6 12H12M12 12H18M12 12V18M12 12V6"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              ></path>
+          <svg class="h-6 w-auto" viewBox="0 0 24 24" fill="none">
+            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+            <g
+              id="SVGRepo_tracerCarrier"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></g>
+            <g id="SVGRepo_iconCarrier">
+              <g id="Edit / Add_Plus">
+                <path
+                  id="Vector"
+                  d="M6 12H12M12 12H18M12 12V18M12 12V6"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                ></path>
+              </g>
             </g>
-          </g>
-        </svg>
-        {{ addButtonLabel }}
-      </a>
+          </svg>
+
+          {{ addButtonLabel }}
+        </button>
+      </div>
     }
   </div>
 
