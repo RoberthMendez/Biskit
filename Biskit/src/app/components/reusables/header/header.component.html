@@ -3,11 +3,38 @@
 >
   <!-- Logo -->
   <div class="flex items-center">
-    <img src="/images/marca/logoB&W.png" alt="logoB&W" class="h-14" />
+    <img src="/images/marca/logoB&W.png" alt="logoB&W" class="h-16" />
   </div>
 
   <!-- usuario | cerrar sesión -->
   <div class="flex items-center gap-4 text-[#fcf6f0]">
+    <!-- Opciones de navegación (solo ADMIN) -->
+    @if (rolUsuario === "ADMIN") {
+      <nav class="flex items-center gap-6 text-[0.85rem] font-medium">
+        <a
+          [routerLink]="['/admin', idUsuario, 'pets']"
+          routerLinkActive="text-white border-b border-white"
+          class="text-[#cfcfcf] transition-colors duration-200 hover:text-white mr-4"
+        >
+          Mascotas
+        </a>
+        <a
+          [routerLink]="['/admin', idUsuario, 'vets']"
+          routerLinkActive="text-white border-b border-white"
+          class="text-[#cfcfcf] transition-colors duration-200 hover:text-white mr-4"
+        >
+          Veterinarios
+        </a>
+        <a
+          [routerLink]="['/admin', idUsuario, 'clients']"
+          routerLinkActive="text-white border-b border-white"
+          class="text-[#cfcfcf] transition-colors duration-200 hover:text-white mr-6"
+        >
+          Clientes
+        </a>
+      </nav>
+    }
+
     <!-- Ícono usuario + nombre -->
     <div class="flex items-center gap-2">
       <svg

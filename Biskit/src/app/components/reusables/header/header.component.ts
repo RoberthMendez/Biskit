@@ -11,6 +11,8 @@ import { Router, RouterLink } from '@angular/router';
 })
 export class HeaderComponent {
   nombreUsuario: string = '';
+  idUsuario: number | null = null;
+  rolUsuario: string | null = null;
 
   constructor(
     private adminService: AdminService,
@@ -20,20 +22,21 @@ export class HeaderComponent {
   ) {}
 
   ngOnInit() {
-    const authRole = localStorage.getItem('authRole');
-    const authId = Number(localStorage.getItem('authId'));
-    if (authRole === 'VETERINARIO') {
-      this.vetService.findById(authId).subscribe((vet) => {
+    this.rolUsuario = localStorage.getItem('authRole');
+    this.idUsuario = Number(localStorage.getItem('authId'));
+  
+    if (this.rolUsuario === 'VETERINARIO') {
+      this.vetService.findById(this.idUsuario).subscribe((vet) => {
         this.nombreUsuario = vet.nombre;
       });
     }
-    if (authRole === 'ADMIN') {
-      this.adminService.getAdminById(String(authId)).subscribe((admin) => {
+    if (this.rolUsuario === 'ADMIN') {
+      this.adminService.getAdminById(String(this.idUsuario)).subscribe((admin) => {
         this.nombreUsuario = admin.nombre;
       });
     }
-    if (authRole === 'CLIENTE') {
-      this.clientService.findById(authId).subscribe((client) => {
+    if (this.rolUsuario === 'CLIENTE') {
+      this.clientService.findById(this.idUsuario).subscribe((client) => {
         this.nombreUsuario = client.nombre;
       });
     }
