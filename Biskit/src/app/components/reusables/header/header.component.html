@@ -1,84 +1,183 @@
 <header
-  class="flex items-center justify-between bg-[#2f3a4a] px-7.5 shadow-md h-[12.5vh]"
+  class="group z-50 bg-[#2f3a4a] shadow-md"
+  [class.sticky]="true"
+  [class.top-0]="true"
 >
-  <!-- Logo -->
-  <div class="flex items-center">
-    <img src="/images/marca/logoB&W.png" alt="logoB&W" class="h-16" />
-  </div>
+  <!-- Hidden checkbox for pure-CSS toggle -->
+  <input type="checkbox" id="nav-toggle" class="peer hidden" />
 
-  <!-- usuario | cerrar sesión -->
-  <div class="flex items-center gap-4 text-[#fcf6f0]">
-    <!-- Opciones de navegación (solo ADMIN) -->
-    @if (rolUsuario === "ADMIN") {
-      <nav class="flex items-center gap-6 text-[0.85rem] font-medium">
-        <a
-          [routerLink]="['/admin', idUsuario, 'pets']"
-          routerLinkActive="text-white border-b border-white"
-          class="text-[#cfcfcf] transition-colors duration-200 hover:text-white mr-4"
-        >
-          Mascotas
-        </a>
-        <a
-          [routerLink]="['/admin', idUsuario, 'vets']"
-          routerLinkActive="text-white border-b border-white"
-          class="text-[#cfcfcf] transition-colors duration-200 hover:text-white mr-4"
-        >
-          Veterinarios
-        </a>
-        <a
-          [routerLink]="['/admin', idUsuario, 'clients']"
-          routerLinkActive="text-white border-b border-white"
-          class="text-[#cfcfcf] transition-colors duration-200 hover:text-white mr-6"
-        >
-          Clientes
-        </a>
-      </nav>
-    }
-
-    <!-- Ícono usuario + nombre -->
-    <div class="flex items-center gap-2">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        class="h-5 w-5 shrink-0"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-        stroke-width="1.5"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
-        />
-      </svg>
-      <h3 class="text-[1 rem] font-light text-[#fcf6f0]">
-        {{ nombreUsuario }}
-      </h3>
+  <!-- Top bar -->
+  <div class="flex h-[12.5vh] items-center justify-between px-7.5">
+    <!-- Logo -->
+    <div class="flex items-center">
+      <img src="/images/marca/logoB&W.png" alt="logoB&W" class="h-16" />
     </div>
 
-    <!-- Divisor vertical -->
-    <div class="h-5 w-px bg-[#cfcfcf4c]"></div>
+    <!-- Desktop: usuario | cerrar sesión (visible desde lg) -->
+    <div class="hidden items-center gap-4 text-[#fcf6f0] lg:flex">
+      @if (rolUsuario === "ADMIN") {
+        <nav class="flex items-center gap-6 text-[0.85rem] font-medium">
+          <a
+            [routerLink]="['/admin', idUsuario, 'pets']"
+            routerLinkActive="text-white border-b border-white"
+            class="text-[#cfcfcf] transition-colors duration-200 hover:text-white"
+            >Mascotas</a
+          >
+          <a
+            [routerLink]="['/admin', idUsuario, 'vets']"
+            routerLinkActive="text-white border-b border-white"
+            class="text-[#cfcfcf] transition-colors duration-200 hover:text-white"
+            >Veterinarios</a
+          >
+          <a
+            [routerLink]="['/admin', idUsuario, 'clients']"
+            routerLinkActive="text-white border-b border-white"
+            class="text-[#cfcfcf] transition-colors duration-200 hover:text-white mr-2"
+            >Clientes</a
+          >
+        </nav>
+        <div class="h-5 w-px bg-[#cfcfcf4c]"></div>
+      }
 
-    <!-- Ícono cerrar sesión -->
-    <button
-      title="Cerrar sesión"
-      [routerLink]="['/']"
-      class="flex items-center justify-center text-[#cfcfcf] transition-colors duration-200 hover:text-white cursor-pointer bg-transparent border-none p-0"
-    >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        class="h-5 w-5"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-        stroke-width="1.5"
+      <div class="flex items-center gap-2">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5 shrink-0"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          stroke-width="1.5"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
+          />
+        </svg>
+        <h3 class="text-[0.9rem] font-light">{{ nombreUsuario }}</h3>
+      </div>
+
+      <div class="h-5 w-px bg-[#cfcfcf4c]"></div>
+
+      <button
+        title="Cerrar sesión"
+        [routerLink]="['/']"
+        class="flex items-center justify-center text-[#cfcfcf] transition-colors duration-200 hover:text-white cursor-pointer bg-transparent border-none p-0"
       >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75"
-        />
-      </svg>
-    </button>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          stroke-width="1.5"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75"
+          />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Hamburger toggle (visible hasta lg) -->
+    <label
+      for="nav-toggle"
+      class="flex h-10 w-10 cursor-pointer flex-col items-center justify-center gap-1.5 lg:hidden"
+    >
+      <span
+        class="block h-0.5 w-6 origin-center rounded-full bg-[#cfcfcf] transition-all duration-300 group-has-checked:translate-y-2 group-has-checked:rotate-45"
+      ></span>
+      <span
+        class="block h-0.5 w-6 rounded-full bg-[#cfcfcf] transition-all duration-300 group-has-checked:opacity-0"
+      ></span>
+      <span
+        class="block h-0.5 w-6 origin-center rounded-full bg-[#cfcfcf] transition-all duration-300 group-has-checked:-translate-y-2 group-has-checked:-rotate-45"
+      ></span>
+    </label>
   </div>
+
+  <!-- Mobile dropdown -->
+  <nav
+    class="max-h-0 overflow-hidden bg-[#263140] transition-[max-height] duration-500 ease-in-out peer-checked:max-h-64 lg:hidden"
+  >
+    <ul
+      class="flex list-none flex-col items-center gap-5 py-6 text-[0.95rem] font-medium"
+    >
+      @if (rolUsuario === "ADMIN") {
+        <li>
+          <a
+            [routerLink]="['/admin', idUsuario, 'pets']"
+            routerLinkActive="text-white border-b border-white"
+            class="text-[#cfcfcf] transition-colors duration-200 hover:text-white"
+            >Mascotas</a
+          >
+        </li>
+        <li>
+          <a
+            [routerLink]="['/admin', idUsuario, 'vets']"
+            routerLinkActive="text-white border-b border-white"
+            class="text-[#cfcfcf] transition-colors duration-200 hover:text-white"
+            >Veterinarios</a
+          >
+        </li>
+        <li>
+          <a
+            [routerLink]="['/admin', idUsuario, 'clients']"
+            routerLinkActive="text-white border-b border-white"
+            class="text-[#cfcfcf] transition-colors duration-200 hover:text-white"
+            >Clientes</a
+          >
+        </li>
+        <li><div class="w-32 border-t border-[#cfcfcf4c]"></div></li>
+      }
+
+      <!-- Usuario -->
+      <li class="flex items-center gap-2 text-[#cfcfcf]">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5 shrink-0"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          stroke-width="1.5"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
+          />
+        </svg>
+        <span class="text-[0.9rem] font-light text-[#fcf6f0]">{{
+          nombreUsuario
+        }}</span>
+      </li>
+
+      <!-- Cerrar sesión -->
+      <li>
+        <button
+          title="Cerrar sesión"
+          [routerLink]="['/']"
+          class="flex items-center gap-2 text-[0.85rem] text-[#cfcfcf] transition-colors duration-200 hover:text-white cursor-pointer bg-transparent border-none p-0"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            stroke-width="1.5"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75"
+            />
+          </svg>
+          Cerrar sesión
+        </button>
+      </li>
+    </ul>
+  </nav>
 </header>

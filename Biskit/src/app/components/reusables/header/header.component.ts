@@ -24,16 +24,18 @@ export class HeaderComponent {
   ngOnInit() {
     this.rolUsuario = localStorage.getItem('authRole');
     this.idUsuario = Number(localStorage.getItem('authId'));
-  
+
     if (this.rolUsuario === 'VETERINARIO') {
       this.vetService.findById(this.idUsuario).subscribe((vet) => {
         this.nombreUsuario = vet.nombre;
       });
     }
     if (this.rolUsuario === 'ADMIN') {
-      this.adminService.getAdminById(String(this.idUsuario)).subscribe((admin) => {
-        this.nombreUsuario = admin.nombre;
-      });
+      this.adminService
+        .getAdminById(String(this.idUsuario))
+        .subscribe((admin) => {
+          this.nombreUsuario = admin.nombre;
+        });
     }
     if (this.rolUsuario === 'CLIENTE') {
       this.clientService.findById(this.idUsuario).subscribe((client) => {

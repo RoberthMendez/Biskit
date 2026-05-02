@@ -12,7 +12,7 @@ import { HeaderComponent } from './components/reusables/header/header.component'
 })
 export class AppComponent {
   title = 'Biskit';
-  mostrarHeader = true;
+  mostrarHeader = false;
 
   constructor(router: Router) {
     router.events
@@ -24,8 +24,41 @@ export class AppComponent {
       .subscribe(() => {
         const ruta = router.url;
         this.mostrarHeader =
-          ruta !== '/' && ruta !== '/login' && !ruta.startsWith('/error');
-        window.scrollTo(0, 0);
+          ruta !== '/' &&
+          ruta !== '/#hero' &&
+          ruta !== '/#sobre-biskit' &&
+          ruta !== '/#servicios' &&
+          ruta !== '/#proceso' &&
+          ruta !== '/#contacto' &&
+          ruta !== '/login' &&
+          !ruta.startsWith('/error');
+
+        // -------------------------
+        // Guardar authRole + authId
+        // -------------------------
+
+        const segmentos = ruta.split('/').filter(Boolean);
+
+        if (segmentos.length >= 2) {
+          const rol = segmentos[0];
+          const id = segmentos[1];
+
+          if (rol === 'vet') {
+            localStorage.setItem('authRole', 'VETERINARIO');
+            localStorage.setItem('authId', id);
+          }
+
+          if (rol === 'client') {
+            localStorage.setItem('authRole', 'CLIENTE');
+            localStorage.setItem('authId', id);
+          }
+
+          if (rol === 'admin') {
+            localStorage.setItem('authRole', 'ADMIN');
+            localStorage.setItem('authId', id);
+          }
+        }
+
       });
   }
 }
