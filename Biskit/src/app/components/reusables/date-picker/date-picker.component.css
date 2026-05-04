@@ -97,6 +97,23 @@
   transform: translateY(-1px);
 }
 
+.datepicker .datepicker-controls .prev-btn,
+.datepicker .datepicker-controls .next-btn,
+.datepicker .datepicker-controls .prev-btn:hover,
+.datepicker .datepicker-controls .next-btn:hover,
+.datepicker .datepicker-controls .prev-btn:focus,
+.datepicker .datepicker-controls .next-btn:focus,
+.datepicker .datepicker-controls .prev-btn:active,
+.datepicker .datepicker-controls .next-btn:active {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.datepicker .datepicker-controls > * {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
 /* ================= DÍAS ================= */
 
 .datepicker .datepicker-view .dow {

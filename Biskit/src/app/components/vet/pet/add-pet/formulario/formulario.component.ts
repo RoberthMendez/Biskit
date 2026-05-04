@@ -15,6 +15,7 @@ import { Enfermedad } from '../../../../../models/Pets/enfermedad';
 import { EspeciesService } from '../../../../../services/especies.service';
 import { RazasService } from '../../../../../services/razas.service';
 import { EnfermedadesService } from '../../../../../services/enfermedades.service';
+import { DatepickerComponent } from '../../../../reusables/date-picker/date-picker.component';
 
 // ─── Tipos de dropdown ─────────────────────────────────────────────────────────
 type DropdownKey = 'cliente' | 'especie' | 'raza' | 'enfermedad';
@@ -22,10 +23,12 @@ type DropdownKey = 'cliente' | 'especie' | 'raza' | 'enfermedad';
 @Component({
   selector: 'app-formulario',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, DatepickerComponent],
   templateUrl: './formulario.component.html',
 })
 export class FormularioComponent implements OnInit {
+  private readonly datePickerComponentType = DatepickerComponent;
+
   @Input() petId: number | null = null;
   @Input() vetId: number | null = null;
   @Input() basePath = '';
