@@ -8,20 +8,23 @@ import { AdminService } from '../../../../services/admin.service';
 import { CardPetComponent } from './card-pet/card-pet.component';
 import { HttpErrorResponse } from '@angular/common/http';
 import { BackButtonComponent } from "../../../reusables/back-button/back-button.component";
+import { BotonFiltrosComponent } from "../../../reusables/boton-filtros/boton-filtros.component";
 
 @Component({
   selector: 'app-pets',
   standalone: true,
-  imports: [CardPetComponent, FormsModule, RouterLink, BackButtonComponent],
+  imports: [CardPetComponent, FormsModule, RouterLink, BackButtonComponent, BotonFiltrosComponent],
   templateUrl: './pets.component.html',
 })
 export class PetsComponent {
   public pets: Pet[] = [];
+  public petsFiltrados: Pet[] = [];
   public vetId: number = 0;
   public basePath = '';
   public isAdminView = false;
   public petsTreatedByVet: Pet[] = [];
   public showOnlyMyPets: boolean = false;
+  public hayFiltrosActivos: boolean = false;
 
   public searchTerm: string = '';
 
@@ -63,13 +66,23 @@ export class PetsComponent {
       });
     }
     
-    this.petService.findAll().subscribe((pets) => {
-      this.pets = pets;
-    });
-    
+  }
+
+  // Capturar filtros emitidos desde el componente boton-filtros
+  onFiltrosAplicados(petsFiltrados: Pet[] | any) {
+    this.petsFiltrados = petsFiltrados;
+    this.hayFiltrosActivos = true;
   }
 
   get filteredPets(): Pet[] {
+    // Si hay filtros activos, usar siempre los resultados filtrados, aunque estén vacíos
+    if (this.hayFiltrosActivos) {
+      const term = this.searchTerm.trim().toLowerCase();
+      if (!term) return this.petsFiltrados;
+      return this.petsFiltrados.filter((pet) => pet.nombre.toLowerCase().includes(term));
+    }
+
+    // Sino, usar la lógica anterior (búsqueda y filtro mis mascotas)
     const source = this.showOnlyMyPets ? this.petsTreatedByVet : this.pets;
     const term = this.searchTerm.trim().toLowerCase();
     if (!term) return source;

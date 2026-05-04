@@ -10,6 +10,7 @@ import { CardVerComponent } from "./card-ver/card-ver.component";
 import { CardDonaComponent } from "../../admin/dashboard/card-dona/card-dona.component";
 import { CardAccesoRapidoComponent } from "./card-acceso-rapido/card-acceso-rapido.component";
 import { TreatmentsCardComponent } from '../../reusables/treatments-card/treatments-card.component';
+import { FiltrosEstadoService } from '../../../services/filtros-estado.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -32,9 +33,11 @@ export class DashboardComponent {
     private petService: PetService,
     private clientService: ClientService,
     private tratamientoService: TratamientoService,
+    private filtrosEstadoService: FiltrosEstadoService,
   ) {}
 
   ngOnInit(): void {
+    this.filtrosEstadoService.limpiarTodo();
     const id = this.route.snapshot.paramMap.get('id');
     this.vetId = id ? Number(id) : 0;
 

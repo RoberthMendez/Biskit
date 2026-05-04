@@ -1,0 +1,586 @@
+<!-- Botón Principal -->
+<button
+  (click)="abrirModal()"
+  [class]="
+    tieneFilterActivos
+      ? 'flex items-center gap-2 rounded-lg border border-[#2B5392] bg-[#2B5392] px-3 py-2 text-[#FBFAF8] transition-colors duration-200 hover:bg-[#1d3f6f]'
+      : 'flex items-center gap-2 rounded-lg border border-[#2B5392] bg-transparent px-3 py-2 text-[#2B5392] transition-colors duration-200 hover:bg-[#2B5392]/10'
+  "
+  class="cursor-pointer"
+>
+  <!-- Ícono Filtro -->
+  <svg
+    class="h-5 w-auto"
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M3 4.5H21M7 12H17M10.5 19.5H13.5"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+  </svg>
+  <span class="text-sm font-medium">Filtros</span>
+  <!-- Indicador de filtros activos -->
+  @if (tieneFilterActivos) {
+    <span class="ml-1 inline-flex h-2 w-2 rounded-full bg-[#FBFAF8]"></span>
+  }
+</button>
+
+<!-- Modal Backdrop -->
+@if (showModal) {
+  <div
+    class="fixed inset-0 z-40 bg-black/40 transition-opacity duration-200"
+    (click)="cerrarModal()"
+  ></div>
+}
+
+<!-- Modal -->
+@if (showModal) {
+  <div
+    class="fixed inset-x-4 top-4 z-50 mx-auto flex max-h-[calc(100vh-2rem)] w-[calc(100vw-2rem)] max-w-sm flex-col overflow-visible rounded-lg border border-[#d4c5b9] bg-white shadow-2xl sm:inset-x-auto sm:right-8 sm:top-6 sm:w-[min(28rem,calc(100vw-4rem))] md:right-12 lg:right-24 lg:top-8 lg:max-h-[calc(100vh-4rem)]"
+  >
+    <div class="flex min-h-0 flex-1 flex-col">
+      <!-- Header -->
+      <div
+        class="flex items-center justify-between border-b border-[#f0e7dc] px-4 py-4 sm:px-6"
+      >
+        <h2 class="pr-3 text-xl font-semibold text-[#4a4a4a]">
+          {{ tipo === "pets" ? "Filtrar Mascotas" : "Filtrar Veterinarios" }}
+        </h2>
+        <button
+          (click)="cerrarModal()"
+          class="text-[#8d8580] transition-colors duration-200 hover:text-[#4a4a4a]"
+        >
+          <svg
+            class="h-6 w-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M6 18L18 6M6 6l12 12"
+            ></path>
+          </svg>
+        </button>
+      </div>
+
+      <div
+        class="custom-scroll min-h-0 flex-1 overflow-y-auto px-4 py-4 sm:px-6"
+      >
+        <!-- Filtros Pets -->
+        @if (tipo === "pets") {
+          <div class="space-y-4">
+            <!-- Toggle: Mis Mascotas (solo para veterinarios) -->
+            @if (!isAdminView) {
+              <div class="rounded-lg border border-[#e5d9cc] bg-[#fefbf7] p-3">
+                <label class="flex cursor-pointer items-center gap-3">
+                  <input
+                    type="checkbox"
+                    [(ngModel)]="mostrarMisMascotas"
+                    class="h-4 w-4 cursor-pointer rounded border-[#d4c5b9] accent-[#2B5392]"
+                  />
+                  <span class="text-sm font-medium text-[#4a4a4a]"
+                    >Mostrar solo mis mascotas</span
+                  >
+                </label>
+              </div>
+            }
+
+            <!-- Especie -->
+            <div class="relative" data-dropdown="especie">
+              <label
+                class="mb-2 block text-sm font-semibold text-[#4A4A4A] sm:text-base"
+              >
+                Especie
+              </label>
+              <div
+                class="rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 sm:px-4 sm:py-3"
+                (click)="openDropdown('especie')"
+              >
+                <input
+                  [(ngModel)]="especieSearch"
+                  name="especieSearch"
+                  type="text"
+                  placeholder="Seleccione la especie..."
+                  autocomplete="off"
+                  (click)="$event.stopPropagation()"
+                  (focus)="openDropdown('especie')"
+                  (input)="onEspecieSearchChange()"
+                  class="w-full bg-transparent text-sm text-[#4A4A4A] placeholder-[#4A4A4A]/50 outline-none sm:text-base"
+                />
+              </div>
+
+              <!-- Dropdown especie -->
+              @if (dropdownOpen["especie"]) {
+                <div
+                  class="custom-scroll z-60 rounded-xl border border-gray-200 bg-white shadow-lg"
+                  data-dropdown-content="especie"
+                  [ngStyle]="dropdownStyles['especie']"
+                >
+                  @for (
+                    especie of especieSearch ? especiesFiltradas : especies;
+                    track especie.id
+                  ) {
+                    <div
+                      class="cursor-pointer border-b border-gray-100 px-4 py-3 hover:bg-blue-50"
+                      (click)="selectEspeciePet(especie)"
+                    >
+                      <p class="text-sm font-semibold text-gray-800">
+                        {{ especie.nombre }}
+                      </p>
+                    </div>
+                  }
+                  @if (
+                    (especieSearch
+                      ? especiesFiltradas.length
+                      : especies.length) === 0
+                  ) {
+                    <p class="px-4 py-3 text-sm text-gray-400">
+                      Sin resultados
+                    </p>
+                  }
+                </div>
+              }
+            </div>
+
+            <!-- Raza -->
+            @if (razasFiltradas.length > 0 || filtrosPets.especie) {
+              <div class="relative" data-dropdown="raza">
+                <label
+                  class="mb-2 block text-sm font-semibold text-[#4A4A4A] sm:text-base"
+                >
+                  Raza
+                </label>
+                <div
+                  class="rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 sm:px-4 sm:py-3"
+                >
+                  <input
+                    [(ngModel)]="razaSearch"
+                    name="razaSearch"
+                    type="text"
+                    placeholder="Seleccione la raza..."
+                    autocomplete="off"
+                    (click)="$event.stopPropagation()"
+                    (focus)="openDropdown('raza')"
+                    (input)="onRazaSearchChange()"
+                    class="w-full bg-transparent text-sm text-[#4A4A4A] placeholder-[#4A4A4A]/50 outline-none sm:text-base"
+                  />
+                </div>
+
+                <!-- Dropdown raza -->
+                @if (dropdownOpen["raza"]) {
+                  <div
+                    class="custom-scroll z-60 rounded-xl border border-gray-200 bg-white shadow-lg"
+                    data-dropdown-content="raza"
+                    [ngStyle]="dropdownStyles['raza']"
+                  >
+                    @for (
+                      raza of razaSearch
+                        ? (todasLasRazas | slice: 0)
+                        : razasFiltradas;
+                      track raza.id
+                    ) {
+                      @if (
+                        raza.especie?.nombre === filtrosPets.especie &&
+                        (!razaSearch ||
+                          raza.nombre
+                            .toLowerCase()
+                            .includes(razaSearch.toLowerCase()))
+                      ) {
+                        <div
+                          class="cursor-pointer border-b border-gray-100 px-4 py-3 hover:bg-blue-50"
+                          (click)="selectRazaPet(raza)"
+                        >
+                          <p class="text-sm font-semibold text-gray-800">
+                            {{ raza.nombre }}
+                          </p>
+                        </div>
+                      }
+                    }
+                  </div>
+                }
+              </div>
+            }
+
+            <!-- Enfermedad -->
+            <div class="relative" data-dropdown="enfermedad">
+              <label
+                class="mb-2 block text-sm font-semibold text-[#4A4A4A] sm:text-base"
+              >
+                Enfermedad
+              </label>
+              <div
+                class="rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 sm:px-4 sm:py-3"
+                (click)="$event.stopPropagation(); openDropdown('enfermedad')"
+              >
+                <input
+                  [(ngModel)]="enfermedadSearch"
+                  name="enfermedadSearch"
+                  type="text"
+                  placeholder="Seleccione enfermedad..."
+                  autocomplete="off"
+                  (click)="$event.stopPropagation()"
+                  (focus)="openDropdown('enfermedad')"
+                  (input)="onEnfermedadSearchChange()"
+                  class="w-full bg-transparent text-sm text-[#4A4A4A] placeholder-[#4A4A4A]/50 outline-none sm:text-base"
+                />
+              </div>
+
+              <!-- Dropdown enfermedad -->
+              @if (dropdownOpen["enfermedad"]) {
+                <div
+                  class="custom-scroll z-60 rounded-xl border border-gray-200 bg-white shadow-lg"
+                  data-dropdown-content="enfermedad"
+                  [ngStyle]="dropdownStyles['enfermedad']"
+                >
+                  @for (
+                    enfermedad of enfermedadSearch
+                      ? enfermedadesFiltradas
+                      : enfermedades;
+                    track enfermedad.id
+                  ) {
+                    <div
+                      class="cursor-pointer border-b border-gray-100 px-4 py-3 hover:bg-blue-50"
+                      (click)="selectEnfermedad(enfermedad)"
+                    >
+                      <p class="text-sm font-semibold text-gray-800">
+                        {{ enfermedad.nombre }}
+                      </p>
+                    </div>
+                  }
+                  @if (
+                    (enfermedadSearch
+                      ? enfermedadesFiltradas.length
+                      : enfermedades.length) === 0
+                  ) {
+                    <p class="px-4 py-3 text-sm text-gray-400">
+                      Sin resultados
+                    </p>
+                  }
+                </div>
+              }
+            </div>
+
+            <!-- Edad -->
+            <div>
+              <label class="mb-2 block text-sm font-medium text-[#4a4a4a]">
+                Edad mínima (años)
+              </label>
+              <input
+                type="number"
+                [(ngModel)]="filtrosPets.edad"
+                min="0"
+                class="w-full rounded-lg border border-[#d4c5b9] px-3 py-2 text-sm text-[#4a4a4a] transition-colors duration-200 focus:border-[#2B5392] focus:outline-none"
+                placeholder="Ej: 5"
+              />
+            </div>
+
+            <!-- Peso -->
+            <div>
+              <label class="mb-2 block text-sm font-medium text-[#4a4a4a]">
+                Peso mínimo (kg)
+              </label>
+              <input
+                type="number"
+                [(ngModel)]="filtrosPets.peso"
+                min="0"
+                class="w-full rounded-lg border border-[#d4c5b9] px-3 py-2 text-sm text-[#4a4a4a] transition-colors duration-200 focus:border-[#2B5392] focus:outline-none"
+                placeholder="Ej: 25"
+              />
+            </div>
+
+            <!-- Cantidad de Tratamientos -->
+            <div>
+              <label class="mb-2 block text-sm font-medium text-[#4a4a4a]">
+                Cantidad mínima de Tratamientos
+              </label>
+              <input
+                type="number"
+                [(ngModel)]="filtrosPets.tratamientos"
+                min="0"
+                class="w-full rounded-lg border border-[#d4c5b9] px-3 py-2 text-sm text-[#4a4a4a] transition-colors duration-200 focus:border-[#2B5392] focus:outline-none"
+                placeholder="Ej: 3"
+              />
+            </div>
+
+            <!-- Estado -->
+            <div class="relative" data-dropdown="estadoPet">
+              <label
+                class="mb-2 block text-sm font-semibold text-[#4A4A4A] sm:text-base"
+              >
+                Estado
+              </label>
+              <div
+                class="cursor-pointer rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 sm:px-4 sm:py-3"
+                (click)="$event.stopPropagation(); openDropdown('estadoPet')"
+              >
+                <p class="text-sm text-[#4A4A4A]">
+                  @if (
+                    filtrosPets.estado === null ||
+                    filtrosPets.estado === undefined
+                  ) {
+                    <span class="text-[#4A4A4A]/50">Todas</span>
+                  } @else if (filtrosPets.estado === true) {
+                    <span>Activas</span>
+                  } @else {
+                    <span>Inactivas</span>
+                  }
+                </p>
+              </div>
+
+              <!-- Dropdown estado -->
+              @if (dropdownOpen["estadoPet"]) {
+                <div
+                  class="z-60 w-full rounded-xl border border-gray-200 bg-white shadow-lg"
+                  data-dropdown-content="estadoPet"
+                  [ngStyle]="dropdownStyles['estadoPet']"
+                >
+                  <div
+                    class="cursor-pointer border-b border-gray-100 px-4 py-3 hover:bg-blue-50"
+                    (click)="selectEstadoPet(undefined)"
+                  >
+                    <p class="text-sm font-semibold text-gray-800">Todas</p>
+                  </div>
+                  <div
+                    class="cursor-pointer border-b border-gray-100 px-4 py-3 hover:bg-blue-50"
+                    (click)="selectEstadoPet(true)"
+                  >
+                    <p class="text-sm font-semibold text-gray-800">Activas</p>
+                  </div>
+                  <div
+                    class="cursor-pointer px-4 py-3 hover:bg-blue-50"
+                    (click)="selectEstadoPet(false)"
+                  >
+                    <p class="text-sm font-semibold text-gray-800">Inactivas</p>
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+        }
+
+        <!-- Filtros Vets -->
+        @if (tipo === "vets") {
+          <div class="space-y-4">
+            <!-- Especialidad -->
+            <div class="relative" data-dropdown="especialidad">
+              <label
+                class="mb-2 block text-sm font-semibold text-[#4A4A4A] sm:text-base"
+              >
+                Especialidad
+              </label>
+              <div
+                class="rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 sm:px-4 sm:py-3"
+              >
+                <input
+                  [(ngModel)]="especialidadSearch"
+                  name="especialidadSearch"
+                  type="text"
+                  placeholder="Seleccione especialidad..."
+                  autocomplete="off"
+                  (click)="$event.stopPropagation()"
+                  (focus)="openDropdown('especialidad')"
+                  (input)="onEspecialidadSearchChange()"
+                  class="w-full bg-transparent text-sm text-[#4A4A4A] placeholder-[#4A4A4A]/50 outline-none sm:text-base"
+                />
+              </div>
+
+              <!-- Dropdown especialidad -->
+              @if (dropdownOpen["especialidad"]) {
+                <div
+                  class="custom-scroll z-60 rounded-xl border border-gray-200 bg-white shadow-lg"
+                  data-dropdown-content="especialidad"
+                  [ngStyle]="dropdownStyles['especialidad']"
+                >
+                  @for (
+                    especialidad of especialidadSearch
+                      ? especialidadesFiltradas
+                      : especialidades;
+                    track especialidad.id
+                  ) {
+                    <div
+                      class="cursor-pointer border-b border-gray-100 px-4 py-3 hover:bg-blue-50"
+                      (click)="selectEspecialidad(especialidad)"
+                    >
+                      <p class="text-sm font-semibold text-gray-800">
+                        {{ especialidad.nombre }}
+                      </p>
+                    </div>
+                  }
+                  @if (
+                    (especialidadSearch
+                      ? especialidadesFiltradas.length
+                      : especialidades.length) === 0
+                  ) {
+                    <p class="px-4 py-3 text-sm text-gray-400">
+                      Sin resultados
+                    </p>
+                  }
+                </div>
+              }
+            </div>
+
+            <!-- Cantidad de Tratamientos -->
+            <div>
+              <label class="mb-2 block text-sm font-medium text-[#4a4a4a]">
+                Cantidad mínima de Tratamientos
+              </label>
+              <input
+                type="number"
+                [(ngModel)]="filtrosVets.tratamientos"
+                min="0"
+                class="w-full rounded-lg border border-[#d4c5b9] px-3 py-2 text-sm text-[#4a4a4a] transition-colors duration-200 focus:border-[#2B5392] focus:outline-none"
+                placeholder="Ej: 10"
+              />
+            </div>
+
+            <!-- Estado -->
+            <div class="relative" data-dropdown="estadoVet">
+              <label
+                class="mb-2 block text-sm font-semibold text-[#4A4A4A] sm:text-base"
+              >
+                Estado
+              </label>
+              <div
+                class="cursor-pointer rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 sm:px-4 sm:py-3"
+                (click)="$event.stopPropagation(); openDropdown('estadoVet')"
+              >
+                <p class="text-sm text-[#4A4A4A]">
+                  @if (
+                    filtrosVets.estado === null ||
+                    filtrosVets.estado === undefined
+                  ) {
+                    <span class="text-[#4A4A4A]/50">Todas</span>
+                  } @else if (filtrosVets.estado === true) {
+                    <span>Activas</span>
+                  } @else {
+                    <span>Inactivas</span>
+                  }
+                </p>
+              </div>
+
+              <!-- Dropdown estado -->
+              @if (dropdownOpen["estadoVet"]) {
+                <div
+                  class="z-60 w-full rounded-xl border border-gray-200 bg-white shadow-lg"
+                  data-dropdown-content="estadoVet"
+                  [ngStyle]="dropdownStyles['estadoVet']"
+                >
+                  <div
+                    class="cursor-pointer border-b border-gray-100 px-4 py-3 hover:bg-blue-50"
+                    (click)="selectEstadoVet(undefined)"
+                  >
+                    <p class="text-sm font-semibold text-gray-800">Todas</p>
+                  </div>
+                  <div
+                    class="cursor-pointer border-b border-gray-100 px-4 py-3 hover:bg-blue-50"
+                    (click)="selectEstadoVet(true)"
+                  >
+                    <p class="text-sm font-semibold text-gray-800">Activas</p>
+                  </div>
+                  <div
+                    class="cursor-pointer px-4 py-3 hover:bg-blue-50"
+                    (click)="selectEstadoVet(false)"
+                  >
+                    <p class="text-sm font-semibold text-gray-800">Inactivas</p>
+                  </div>
+                </div>
+              }
+            </div>
+
+            <!-- Pet (para filtrar vets que tratan una mascota específica) -->
+            <div class="relative" data-dropdown="mascota">
+              <label
+                class="mb-2 block text-sm font-semibold text-[#4A4A4A] sm:text-base"
+              >
+                Buscar vets por mascota
+              </label>
+              <div
+                class="rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 sm:px-4 sm:py-3"
+              >
+                <input
+                  [(ngModel)]="mascotaSearch"
+                  name="mascotaSearch"
+                  type="text"
+                  placeholder="Seleccione mascota..."
+                  autocomplete="off"
+                  (click)="$event.stopPropagation()"
+                  (focus)="openDropdown('mascota')"
+                  (input)="onMascotaSearchChange()"
+                  class="w-full bg-transparent text-sm text-[#4A4A4A] placeholder-[#4A4A4A]/50 outline-none sm:text-base"
+                />
+              </div>
+
+              <!-- Dropdown mascota -->
+              @if (dropdownOpen["mascota"]) {
+                <div
+                  class="custom-scroll z-60 rounded-xl border border-gray-200 bg-white shadow-lg"
+                  data-dropdown-content="mascota"
+                  [ngStyle]="dropdownStyles['mascota']"
+                >
+                  <div
+                    class="cursor-pointer border-b border-gray-100 px-4 py-3 hover:bg-blue-50"
+                    (click)="selectMascota({ nombre: '' })"
+                  >
+                    <p class="text-sm font-semibold text-gray-800">Todas</p>
+                  </div>
+                  @for (
+                    mascota of mascotaSearch ? mascotasFiltradas : mascotas;
+                    track mascota.id
+                  ) {
+                    <div
+                      class="cursor-pointer border-b border-gray-100 px-4 py-3 hover:bg-blue-50"
+                      (click)="selectMascota(mascota)"
+                    >
+                      <p class="text-sm font-semibold text-gray-800">
+                        {{ mascota.nombre }}
+                      </p>
+                    </div>
+                  }
+                  @if (
+                    (mascotaSearch
+                      ? mascotasFiltradas.length
+                      : mascotas.length) === 0
+                  ) {
+                    <p class="px-4 py-3 text-sm text-gray-400">
+                      Sin resultados
+                    </p>
+                  }
+                </div>
+              }
+            </div>
+          </div>
+        }
+      </div>
+
+      <!-- Acciones -->
+      <div class="flex gap-3 border-t border-[#f0e7dc] px-4 py-4 sm:px-6">
+        <button
+          (click)="limpiarFiltros()"
+          class="cursor-pointer flex-1 rounded-lg border border-[#d4c5b9] bg-transparent px-4 py-2 text-sm font-medium text-[#6D6155] transition-colors duration-200 hover:bg-[#f5ede3]"
+        >
+          Limpiar
+        </button>
+        <button
+          (click)="aplicarFiltros()"
+          [disabled]="isLoading"
+          class="cursor-pointer flex-1 rounded-lg bg-[#2B5392] px-4 py-2 text-sm font-medium text-white transition-colors duration-200 hover:bg-[#1d3f6f] disabled:opacity-50"
+        >
+          @if (isLoading) {
+            <span class="mr-2 inline-block animate-spin">⟳</span>
+            Aplicando...
+          } @else {
+            Aplicar Filtros
+          }
+        </button>
+      </div>
+    </div>
+  </div>
+}

@@ -23,8 +23,10 @@ import { MobileVetCardComponent } from './mobile-vet-card/mobile-vet-card.compon
 export class VetsComponent {
 
   public vets: Vet[] = [];
+  public vetsFiltrados: Vet[] = [];
   public searchTerm: string = '';
   public adminId = 1;
+  public hayFiltrosActivos: boolean = false;
 
   public showModal = false;
   public selectedDeleteId: number | null = null;
@@ -105,7 +107,25 @@ export class VetsComponent {
     this.cargarVets();
   }
 
+  // Capturar filtros emitidos desde el componente header
+  onFiltrosAplicados(vetsFiltrados: Vet[]) {
+    this.vetsFiltrados = vetsFiltrados;
+    this.hayFiltrosActivos = true;
+  }
+
   get filteredVets(): Vet[] {
+    // Si hay filtros activos, usar siempre los resultados filtrados, aunque estén vacíos
+    if (this.hayFiltrosActivos) {
+      const term = this.searchTerm.trim().toLowerCase();
+      if (!term) return this.vetsFiltrados;
+      return this.vetsFiltrados.filter((vet) =>
+        vet.nombre.toLowerCase().includes(term) ||
+        vet.correo.toLowerCase().includes(term) ||
+        vet.cedula.toLowerCase().includes(term),
+      );
+    }
+
+    // Sino, usar la búsqueda normal
     const term = this.searchTerm.trim().toLowerCase();
     if (!term) return this.vets;
     return this.vets.filter((vet) =>

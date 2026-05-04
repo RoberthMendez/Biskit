@@ -13,6 +13,7 @@ import { CardBarrasComponent } from './card-barras/card-barras.component';
 import { CardTop5Component } from './card-top5/card-top5.component';
 import { CardTablaComponent } from './card-tabla/card-tabla.component';
 import { CardRepuestosComponent } from './card-repuestos/card-repuestos.component';
+import { FiltrosEstadoService } from '../../../services/filtros-estado.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -49,9 +50,11 @@ export class DashboardComponent {
     private adminService: AdminService,
     private route: ActivatedRoute,
     private router: Router,
+    private filtrosEstadoService: FiltrosEstadoService,
   ) {}
 
   ngOnInit() {
+    this.filtrosEstadoService.limpiarTodo();
     this.comprobarId();
     const adminId = this.route.snapshot.paramMap.get('id');
     this.adminId = adminId ?? '';

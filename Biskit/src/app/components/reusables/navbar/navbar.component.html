@@ -20,7 +20,7 @@
     <!-- Hamburger toggle (label for checkbox, visible below lg) -->
     <label
       for="nav-toggle"
-      class="mr-7.5 ml-auto flex h-10 w-10 cursor-pointer flex-col items-center justify-center gap-1.5 lg:hidden"
+      class="mr-7.5 ml-auto flex h-10 w-10 cursor-pointer flex-col items-center justify-center gap-1.5 z-51 lg:hidden"
     >
       <span
         class="block h-0.5 w-6 origin-center rounded-full bg-[#6d6155] transition-all duration-300 group-has-checked:translate-y-2 group-has-checked:rotate-45"
@@ -89,7 +89,7 @@
 
   <!-- Mobile nav dropdown (slides open via peer-checked on the checkbox) -->
   <nav
-    class="max-h-0 overflow-hidden bg-[linear-gradient(90deg,#e0dfdb_0%,#e3e2de_35%,#e6e5e1_50%,#e9e7e4_65%,#f0eeeb_100%)] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.1)] transition-[max-height] duration-500 ease-in-out peer-checked:max-h-125 lg:hidden"
+    class="max-h-0 overflow-hidden bg-[linear-gradient(90deg,#e0dfdb_0%,#e3e2de_35%,#e6e5e1_50%,#e9e7e4_65%,#f0eeeb_100%)] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.1)] transition-[max-height] duration-500 ease-in-out peer-checked:max-h-125 lg:hidden z-49"
   >
     <ul
       class="flex list-none flex-col items-center gap-5 py-6 text-[0.95rem] font-medium"

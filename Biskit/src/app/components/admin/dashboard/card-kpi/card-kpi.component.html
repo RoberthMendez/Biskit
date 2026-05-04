@@ -49,10 +49,16 @@
 
   <div class="flex flex-col justify-center gap-1">
     <p class="text-[#8d8580] text-xs font-semibold tracking-widest uppercase">
+      @if (titulo === "VENTAS TOTALES") {
+        #
+      }
       {{ titulo }}
     </p>
     <h4 class="text-2xl sm:text-3xl font-bold text-[#4a4a4a] leading-tight">
-      ${{ valorFormateado }}
+      @if (titulo === "GANANCIAS TOTALES") {
+        $
+      }
+      {{ valorFormateado }}
     </h4>
   </div>
 </article>
