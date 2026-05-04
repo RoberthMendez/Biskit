@@ -189,14 +189,12 @@
             >
 
             <div class="rounded-xl border border-gray-200 bg-gray-50 px-4 py-3">
-              <input
-                type="date"
+              <app-date-picker
                 id="fecha"
                 name="fecha"
                 [(ngModel)]="fechaForm"
-                required
-                class="w-full bg-transparent text-[#4A4A4A] outline-none"
-              />
+                placeholder="Selecciona fecha"
+              ></app-date-picker>
             </div>
           </div>
 

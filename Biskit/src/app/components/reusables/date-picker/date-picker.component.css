@@ -1,0 +1,167 @@
+:root {
+  --biskit-datepicker-surface: #fbfaf8;
+  --biskit-datepicker-surface-soft: #f6f7f8;
+  --biskit-datepicker-ink: #2f3a4a;
+  --biskit-datepicker-muted: #8d8580;
+  --biskit-datepicker-border: rgba(47, 58, 74, 0.12);
+  --biskit-datepicker-hover: #e8eaee;
+  --biskit-datepicker-selected: #2f3a4a;
+}
+
+/* ================= BASE ================= */
+
+.datepicker,
+.datepicker .datepicker-picker,
+.datepicker .datepicker-title,
+.datepicker .datepicker-controls .button,
+.datepicker .datepicker-controls .btn,
+.datepicker .datepicker-footer .button,
+.datepicker .datepicker-footer .btn,
+.datepicker .datepicker-cell {
+  color: var(--biskit-datepicker-ink) !important;
+}
+
+/* ================= BURBUJA ANIMACIÓN ================= */
+
+.datepicker-dropdown .datepicker-picker {
+  transform-origin: top left;
+  opacity: 0;
+  transform: translateY(8px) scale(0.92);
+  filter: blur(4px);
+
+  transition:
+    opacity 220ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 220ms cubic-bezier(0.16, 1, 0.3, 1),
+    filter 220ms ease;
+}
+
+.datepicker-dropdown:not(.hidden) .datepicker-picker {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
+
+  animation: bubble-in 260ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes bubble-in {
+  0% {
+    opacity: 0;
+    transform: translateY(10px) scale(0.9);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(-2px) scale(1.02);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ================= CONTENEDOR ================= */
+
+.datepicker .datepicker-picker {
+  background: var(--biskit-datepicker-surface);
+  border: 1px solid var(--biskit-datepicker-border);
+  border-radius: 32px;
+  box-shadow: 0 24px 56px rgba(47, 58, 74, 0.12);
+  padding: 0.25rem;
+  overflow: hidden;
+}
+
+.datepicker .datepicker-title {
+  background: var(--biskit-datepicker-surface-soft);
+  border-radius: 28px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  padding: 0.65rem 0.9rem;
+  margin: 0.1rem;
+}
+
+/* ================= CONTROLES ================= */
+
+.datepicker .datepicker-controls {
+  gap: 0.3rem;
+}
+
+.datepicker .datepicker-controls .button,
+.datepicker .datepicker-controls .btn {
+  background: transparent !important;
+  border-radius: 9999px !important;
+  font-weight: 600;
+  transition: all 180ms ease;
+}
+
+.datepicker .datepicker-controls .button:hover,
+.datepicker .datepicker-controls .btn:hover {
+  background: rgba(47, 58, 74, 0.08) !important;
+  transform: translateY(-1px);
+}
+
+/* ================= DÍAS ================= */
+
+.datepicker .datepicker-view .dow {
+  color: var(--biskit-datepicker-muted) !important;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.datepicker .datepicker-cell {
+  background: transparent !important;
+  border-radius: 9999px !important;
+  font-weight: 600;
+  margin: 0.12rem;
+  transition: all 170ms ease;
+}
+
+/* Hover */
+.datepicker .datepicker-cell:not(.disabled):hover {
+  background-color: var(--biskit-datepicker-hover) !important;
+}
+
+/* ✅ SELECCIÓN REAL */
+.datepicker .datepicker-cell.selected,
+.datepicker .datepicker-cell.selected:hover,
+.datepicker .datepicker-cell.selected:focus {
+  background-color: var(--biskit-datepicker-selected) !important;
+  color: #fbfaf8 !important;
+}
+
+/* Hoy */
+.datepicker .datepicker-cell.today:not(.selected) {
+  box-shadow: inset 0 0 0 1px rgba(47, 58, 74, 0.25);
+}
+
+/* Disabled */
+.datepicker .datepicker-cell.disabled {
+  color: #cfcfcf !important;
+  opacity: 0.45;
+}
+
+/* Otros meses */
+.datepicker-cell.prev,
+.datepicker-cell.next {
+  color: var(--biskit-datepicker-muted) !important;
+}
+
+/* ================= FOOTER ================= */
+
+.datepicker .datepicker-footer {
+  background: var(--biskit-datepicker-surface-soft);
+  border-top: 1px solid rgba(47, 58, 74, 0.08);
+  border-radius: 0 0 32px 32px;
+}
+
+/* ================= ACCESIBILIDAD ================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .datepicker * {
+    transition: none !important;
+    animation: none !important;
+  }
+
+  .datepicker-dropdown .datepicker-picker {
+    opacity: 1;
+    transform: none;
+  }
+}

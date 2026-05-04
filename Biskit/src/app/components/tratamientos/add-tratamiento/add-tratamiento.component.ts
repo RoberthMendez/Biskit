@@ -13,6 +13,7 @@ import { VetService } from '../../../services/vet.service';
 import { TratamientoService } from '../../../services/tratamiento.service';
 import { DrogasService } from '../../../services/drogas.service';
 import { BackButtonComponent } from '../../reusables/back-button/back-button.component';
+import { DatepickerComponent } from '../../reusables/date-picker/date-picker.component';
 
 class DrugRowState {
   searchText = '';
@@ -23,7 +24,7 @@ class DrugRowState {
 @Component({
   selector: 'app-add-tratamiento',
   standalone: true,
-  imports: [CommonModule, FormsModule, BackButtonComponent],
+  imports: [CommonModule, FormsModule, BackButtonComponent, DatepickerComponent],
   templateUrl: './add-tratamiento.component.html',
 })
 export class AddTratamientoComponent implements OnInit {
