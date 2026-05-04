@@ -4,7 +4,13 @@
   [class.top-0]="sticky"
 >
   <!-- Hidden checkbox for pure-CSS toggle -->
-  <input #navToggle type="checkbox" id="nav-toggle" class="peer hidden" />
+  <input
+    #navToggle
+    type="checkbox"
+    id="nav-toggle"
+    class="peer hidden"
+    (change)="onToggleChange()"
+  />
 
   <!-- Top bar -->
   <div class="flex h-[12.5vh] items-center">
