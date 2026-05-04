@@ -12,7 +12,7 @@ export class FiltrosService {
 
   constructor(private http: HttpClient) { }
 
-  getPetsFiltrados(filtro: FiltrosPetsDto){
+  getPetsFiltrados(filtro: FiltrosPetsDto, misMascotas?: boolean, vetId?: number){
 
     let params = new HttpParams();
 
@@ -30,6 +30,14 @@ export class FiltrosService {
       params = params.set('enfermedad', filtro.enfermedad);
     if (filtro.tratamientos != null)
       params = params.set('tratamientos', filtro.tratamientos.toString());
+
+    // If requesting only "my pets", backend expects misMascotas and vetId
+    if (misMascotas === true && vetId != null) {
+      params = params.set('misMascotas', 'true');
+      params = params.set('vetId', vetId.toString());
+      // Call the vets filtering endpoint which supports returning pets for a vet
+      return this.http.get<Pet[]>(`http://localhost:8080/filtros/vets`, { params });
+    }
 
     return this.http.get<Pet[]>(`http://localhost:8080/filtros/pets`, { params });
 

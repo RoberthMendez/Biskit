@@ -4,4 +4,7 @@ export class FiltrosVetsDto {
   especialidad?: string;
   tratamientos?: number;
   pet?: string;
+  misMascotas?: boolean;
+  vetId?: number;
+
 }

@@ -9,11 +9,13 @@ import { CardPetComponent } from './card-pet/card-pet.component';
 import { HttpErrorResponse } from '@angular/common/http';
 import { BackButtonComponent } from "../../../reusables/back-button/back-button.component";
 import { BotonFiltrosComponent } from "../../../reusables/boton-filtros/boton-filtros.component";
+import { ViewChild } from '@angular/core';
+import { EmptyResultsComponent } from '../../../reusables/empty-results/empty-results.component';
 
 @Component({
   selector: 'app-pets',
   standalone: true,
-  imports: [CardPetComponent, FormsModule, RouterLink, BackButtonComponent, BotonFiltrosComponent],
+  imports: [CardPetComponent, FormsModule, RouterLink, BackButtonComponent, BotonFiltrosComponent, EmptyResultsComponent],
   templateUrl: './pets.component.html',
 })
 export class PetsComponent {
@@ -22,11 +24,12 @@ export class PetsComponent {
   public vetId: number = 0;
   public basePath = '';
   public isAdminView = false;
-  public petsTreatedByVet: Pet[] = [];
   public showOnlyMyPets: boolean = false;
   public hayFiltrosActivos: boolean = false;
 
   public searchTerm: string = '';
+
+  @ViewChild(BotonFiltrosComponent) botonFiltros?: BotonFiltrosComponent;
 
   constructor(
     private petService: PetService,
@@ -50,28 +53,22 @@ export class PetsComponent {
         this.pets = pets;
       }
     );
-
-    if (!this.isAdminView) {
-      this.vetService.getPetsTreatedByVet(this.vetId).subscribe({
-        next: (pets) => {
-          this.petsTreatedByVet = pets;
-        },
-      error: (error: HttpErrorResponse) => {
-        const mensaje = error.error?.detalle || 'Error al obtener mascotas';
-
-        this.router.navigate(['/error'], {
-          queryParams: { mensaje },
-        });
-      },
-      });
-    }
     
   }
 
   // Capturar filtros emitidos desde el componente boton-filtros
   onFiltrosAplicados(petsFiltrados: Pet[] | any) {
-    this.petsFiltrados = petsFiltrados;
+    this.petsFiltrados = Array.isArray(petsFiltrados) ? [...petsFiltrados] : [];
     this.hayFiltrosActivos = true;
+  }
+
+  // Clear search term and any applied filters (also resets boton-filtros state)
+  clearAllFilters(): void {
+    this.searchTerm = '';
+    this.hayFiltrosActivos = false;
+    this.petsFiltrados = [];
+    this.showOnlyMyPets = false;
+    this.botonFiltros?.resetWithoutEmit();
   }
 
   get filteredPets(): Pet[] {
@@ -82,8 +79,11 @@ export class PetsComponent {
       return this.petsFiltrados.filter((pet) => pet.nombre.toLowerCase().includes(term));
     }
 
-    // Sino, usar la lógica anterior (búsqueda y filtro mis mascotas)
-    const source = this.showOnlyMyPets ? this.petsTreatedByVet : this.pets;
+    let source = this.pets;
+    if (this.showOnlyMyPets && this.vetId) {
+      source = this.pets.filter((pet) => (pet.tratamientos ?? []).some((t) => t.vet?.id === this.vetId));
+    }
+
     const term = this.searchTerm.trim().toLowerCase();
     if (!term) return source;
     return source.filter((pet) => pet.nombre.toLowerCase().includes(term));

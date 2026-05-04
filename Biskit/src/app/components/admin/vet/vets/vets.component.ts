@@ -11,13 +11,15 @@ import {
 } from '../../../reusables/tabla/tabla.types';
 import { DeleteModalComponent } from '../../../reusables/delete-modal/delete-modal.component';
 import { HeaderComponent } from './header/header.component';
+import { ViewChild } from '@angular/core';
+import { EmptyResultsComponent } from '../../../reusables/empty-results/empty-results.component';
 import { BarraBusquedaComponent } from './barra-busqueda/barra-busqueda.component';
 import { BackButtonComponent } from "../../../reusables/back-button/back-button.component";
 import { MobileVetCardComponent } from './mobile-vet-card/mobile-vet-card.component';
 
 @Component({
   selector: 'app-vets',
-  imports: [TablaComponent, DeleteModalComponent, HeaderComponent, BarraBusquedaComponent, BackButtonComponent, MobileVetCardComponent],
+  imports: [TablaComponent, DeleteModalComponent, HeaderComponent, BarraBusquedaComponent, BackButtonComponent, MobileVetCardComponent, EmptyResultsComponent],
   templateUrl: './vets.component.html',
 })
 export class VetsComponent {
@@ -27,6 +29,9 @@ export class VetsComponent {
   public searchTerm: string = '';
   public adminId = 1;
   public hayFiltrosActivos: boolean = false;
+
+  @ViewChild(HeaderComponent) header?: HeaderComponent;
+  @ViewChild(BarraBusquedaComponent) searchBar?: BarraBusquedaComponent;
 
   public showModal = false;
   public selectedDeleteId: number | null = null;
@@ -111,6 +116,15 @@ export class VetsComponent {
   onFiltrosAplicados(vetsFiltrados: Vet[]) {
     this.vetsFiltrados = vetsFiltrados;
     this.hayFiltrosActivos = true;
+  }
+
+  // Clear search and filters, delegate to header to reset boton-filtros
+  clearAllFilters(): void {
+    this.searchTerm = '';
+    this.hayFiltrosActivos = false;
+    this.vetsFiltrados = [];
+    this.header?.resetFiltersWithoutEmit();
+    this.searchBar?.clear();
   }
 
   get filteredVets(): Vet[] {

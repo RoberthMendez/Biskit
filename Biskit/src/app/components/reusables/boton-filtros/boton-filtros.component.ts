@@ -25,6 +25,7 @@ export class BotonFiltrosComponent implements OnInit {
 
   @Input() tipo: 'pets' | 'vets' = 'pets';
   @Input() isAdminView: boolean = false;
+  @Input() vetId?: number;
   @Output() filtrosAplicados = new EventEmitter<Pet[] | Vet[]>();
   
   showModal = false;
@@ -44,6 +45,8 @@ export class BotonFiltrosComponent implements OnInit {
   enfermedadSearch = '';
   especialidadSearch = '';
   mascotaSearch = '';
+  estadoPetSearch = '';
+  estadoVetSearch = '';
   
   especiesFiltradas: any[] = [];
   enfermedadesFiltradas: any[] = [];
@@ -135,6 +138,16 @@ export class BotonFiltrosComponent implements OnInit {
     if (this.tipo === 'pets' && filtrosGuardados.filtrosPets) {
       this.filtrosPets = { ...filtrosGuardados.filtrosPets };
       this.mostrarMisMascotas = Boolean(filtrosGuardados.mostrarMisMascotas);
+      this.estadoPetSearch = this.getEstadoLabel(this.filtrosPets.estado);
+      this.especieSearch = this.filtrosPets.especie || '';
+      this.razaSearch = this.filtrosPets.raza || '';
+      this.enfermedadSearch = this.filtrosPets.enfermedad || '';
+      if (this.especieSearch) {
+        this.onEspecieSearchChange();
+      }
+      if (this.enfermedadSearch) {
+        this.onEnfermedadSearchChange();
+      }
       if (this.filtrosPets.especie) {
         this.onEspecieChange();
       }
@@ -144,8 +157,39 @@ export class BotonFiltrosComponent implements OnInit {
 
     if (this.tipo === 'vets' && filtrosGuardados.filtrosVets) {
       this.filtrosVets = { ...filtrosGuardados.filtrosVets };
+      this.estadoVetSearch = this.getEstadoLabel(this.filtrosVets.estado);
+      this.especialidadSearch = this.filtrosVets.especialidad || '';
+      this.mascotaSearch = this.getMascotaLabel(this.filtrosVets.pet);
+      if (this.especialidadSearch) {
+        this.onEspecialidadSearchChange();
+      }
+      if (this.mascotaSearch) {
+        this.onMascotaSearchChange();
+      }
       this.aplicarFiltros(false);
     }
+  }
+
+  private getEstadoLabel(estado?: boolean): string {
+    if (estado === true) {
+      return 'Activas';
+    }
+
+    if (estado === false) {
+      return 'Inactivas';
+    }
+
+    return '';
+  }
+
+  private getMascotaLabel(petId?: string | null): string {
+    if (!petId || petId === '') {
+      return '';
+    }
+    
+    // En selectMascota se guarda el nombre, así que buscamos por nombre
+    const mascota = this.mascotas.find(m => m.nombre === petId);
+    return mascota ? mascota.nombre : petId;
   }
 
   private getStorageKey(): string {
@@ -158,6 +202,13 @@ export class BotonFiltrosComponent implements OnInit {
       this.razasFiltradas = this.todasLasRazas.filter(
         (raza: any) => raza.especie?.nombre === this.filtrosPets.especie
       );
+
+      if (
+        this.filtrosPets.raza &&
+        !this.razasFiltradas.some((raza: any) => raza.nombre === this.filtrosPets.raza)
+      ) {
+        this.filtrosPets.raza = undefined;
+      }
     } else {
       this.razasFiltradas = [];
       this.filtrosPets.raza = undefined;
@@ -189,12 +240,14 @@ export class BotonFiltrosComponent implements OnInit {
       this.especieSearch = '';
       this.razaSearch = '';
       this.enfermedadSearch = '';
+      this.estadoPetSearch = '';
       this.especiesFiltradas = [];
       this.enfermedadesFiltradas = [];
     } else {
       this.filtrosVets = {};
       this.especialidadSearch = '';
       this.mascotaSearch = '';
+      this.estadoVetSearch = '';
       this.especialidadesFiltradas = [];
       this.mascotasFiltradas = [];
     }
@@ -204,11 +257,38 @@ export class BotonFiltrosComponent implements OnInit {
     this.aplicarFiltros(false);
   }
 
+  // Reset filters state without emitting filtrosAplicados (used by parent to clear filters centrally)
+  resetWithoutEmit(): void {
+    if (this.tipo === 'pets') {
+      this.filtrosPets = {};
+      this.mostrarMisMascotas = false;
+      this.razasFiltradas = [];
+      this.especieSearch = '';
+      this.razaSearch = '';
+      this.enfermedadSearch = '';
+      this.estadoPetSearch = '';
+      this.especiesFiltradas = [];
+      this.enfermedadesFiltradas = [];
+    } else {
+      this.filtrosVets = {};
+      this.especialidadSearch = '';
+      this.mascotaSearch = '';
+      this.estadoVetSearch = '';
+      this.especialidadesFiltradas = [];
+      this.mascotasFiltradas = [];
+    }
+    this.cerrarTodosLosDropdowns();
+    this.tieneFilterActivos = false;
+    this.filtrosEstadoService.eliminar(this.getStorageKey());
+  }
+
   aplicarFiltros(guardarEstado = true) {
     this.isLoading = true;
+
+    this.normalizarFiltros();
     
     if (this.tipo === 'pets') {
-      this.filtrosService.getPetsFiltrados(this.filtrosPets).subscribe({
+      this.filtrosService.getPetsFiltrados(this.filtrosPets, this.mostrarMisMascotas, this.vetId).subscribe({
         next: (pets) => {
           this.tieneFilterActivos = this.verificarFiltrosActivos();
           if (guardarEstado) {
@@ -243,6 +323,35 @@ export class BotonFiltrosComponent implements OnInit {
         }
       });
     }
+  }
+
+  private normalizarFiltros(): void {
+    if (this.tipo === 'pets') {
+      this.filtrosPets = {
+        ...this.filtrosPets,
+        edad: this.normalizarNumero(this.filtrosPets.edad),
+        peso: this.normalizarNumero(this.filtrosPets.peso),
+        tratamientos: this.normalizarNumero(this.filtrosPets.tratamientos),
+      };
+
+      if (!this.filtrosPets.especie) {
+        this.filtrosPets.raza = undefined;
+      }
+    } else {
+      this.filtrosVets = {
+        ...this.filtrosVets,
+        tratamientos: this.normalizarNumero(this.filtrosVets.tratamientos),
+      };
+    }
+  }
+
+  private normalizarNumero(valor?: number | string | null): number | undefined {
+    if (valor === undefined || valor === null || valor === '') {
+      return undefined;
+    }
+
+    const numero = Number(valor);
+    return Number.isNaN(numero) ? undefined : numero;
   }
 
   private verificarFiltrosActivos(): boolean {
@@ -344,6 +453,11 @@ export class BotonFiltrosComponent implements OnInit {
 
   // Métodos de búsqueda y filtrado para PETS
   onEspecieSearchChange() {
+    if (!this.especieSearch.trim()) {
+      this.filtrosPets.especie = undefined;
+      this.filtrosPets.raza = undefined;
+      this.razasFiltradas = [];
+    }
     this.especiesFiltradas = this.especies.filter(e =>
       e.nombre.toLowerCase().includes(this.especieSearch.toLowerCase())
     );
@@ -357,6 +471,9 @@ export class BotonFiltrosComponent implements OnInit {
   }
 
   onRazaSearchChange() {
+    if (!this.razaSearch.trim()) {
+      this.filtrosPets.raza = undefined;
+    }
     this.razasFiltradas = this.todasLasRazas.filter(r =>
       r.especie?.nombre === this.filtrosPets.especie &&
       r.nombre.toLowerCase().includes(this.razaSearch.toLowerCase())
@@ -370,6 +487,9 @@ export class BotonFiltrosComponent implements OnInit {
   }
 
   onEnfermedadSearchChange() {
+    if (!this.enfermedadSearch.trim()) {
+      this.filtrosPets.enfermedad = undefined;
+    }
     this.enfermedadesFiltradas = this.enfermedades.filter(e =>
       e.nombre.toLowerCase().includes(this.enfermedadSearch.toLowerCase())
     );
@@ -383,11 +503,21 @@ export class BotonFiltrosComponent implements OnInit {
 
   selectEstadoPet(estado: boolean | undefined) {
     this.filtrosPets.estado = estado;
+    this.estadoPetSearch = this.getEstadoLabel(estado);
     this.closeDropdown('estadoPet');
+  }
+
+  onEstadoPetSearchChange() {
+    if (!this.estadoPetSearch.trim()) {
+      this.filtrosPets.estado = undefined;
+    }
   }
 
   // Métodos de búsqueda y filtrado para VETS
   onEspecialidadSearchChange() {
+    if (!this.especialidadSearch.trim()) {
+      this.filtrosVets.especialidad = undefined;
+    }
     this.especialidadesFiltradas = this.especialidades.filter(e =>
       e.nombre.toLowerCase().includes(this.especialidadSearch.toLowerCase())
     );
@@ -401,10 +531,20 @@ export class BotonFiltrosComponent implements OnInit {
 
   selectEstadoVet(estado: boolean | undefined) {
     this.filtrosVets.estado = estado;
+    this.estadoVetSearch = this.getEstadoLabel(estado);
     this.closeDropdown('estadoVet');
   }
 
+  onEstadoVetSearchChange() {
+    if (!this.estadoVetSearch.trim()) {
+      this.filtrosVets.estado = undefined;
+    }
+  }
+
   onMascotaSearchChange() {
+    if (!this.mascotaSearch.trim()) {
+      this.filtrosVets.pet = undefined;
+    }
     this.mascotasFiltradas = this.mascotas.filter(m =>
       m.nombre.toLowerCase().includes(this.mascotaSearch.toLowerCase())
     );

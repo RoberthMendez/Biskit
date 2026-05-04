@@ -1,34 +1,36 @@
 <!-- Botón Principal -->
-<button
-  (click)="abrirModal()"
-  [class]="
-    tieneFilterActivos
-      ? 'flex items-center gap-2 rounded-lg border border-[#2B5392] bg-[#2B5392] px-3 py-2 text-[#FBFAF8] transition-colors duration-200 hover:bg-[#1d3f6f]'
-      : 'flex items-center gap-2 rounded-lg border border-[#2B5392] bg-transparent px-3 py-2 text-[#2B5392] transition-colors duration-200 hover:bg-[#2B5392]/10'
-  "
-  class="cursor-pointer"
->
-  <!-- Ícono Filtro -->
-  <svg
-    class="h-5 w-auto"
-    viewBox="0 0 24 24"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
+<div class="flex items-center gap-2">
+  <button
+    (click)="abrirModal()"
+    [class]="
+      tieneFilterActivos
+        ? 'flex items-center gap-2 rounded-lg border border-[#2B5392] bg-[#2B5392] px-3 py-2 text-[#FBFAF8] transition-colors duration-200 hover:bg-[#1d3f6f]'
+        : 'flex items-center gap-2 rounded-lg border border-[#2B5392] bg-transparent px-3 py-2 text-[#2B5392] transition-colors duration-200 hover:bg-[#2B5392]/10'
+    "
+    class="cursor-pointer"
   >
-    <path
-      d="M3 4.5H21M7 12H17M10.5 19.5H13.5"
-      stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-    />
-  </svg>
-  <span class="text-sm font-medium">Filtros</span>
-  <!-- Indicador de filtros activos -->
-  @if (tieneFilterActivos) {
-    <span class="ml-1 inline-flex h-2 w-2 rounded-full bg-[#FBFAF8]"></span>
-  }
-</button>
+    <!-- Ícono Filtro -->
+    <svg
+      class="h-5 w-auto"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M3 4.5H21M7 12H17M10.5 19.5H13.5"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+    <span class="text-sm font-medium">Filtros</span>
+    <!-- Indicador de filtros activos -->
+    @if (tieneFilterActivos) {
+      <span class="ml-1 inline-flex h-2 w-2 rounded-full bg-[#FBFAF8]"></span>
+    }
+  </button>
+</div>
 
 <!-- Modal Backdrop -->
 @if (showModal) {
@@ -318,21 +320,19 @@
                 Estado
               </label>
               <div
-                class="cursor-pointer rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 sm:px-4 sm:py-3"
-                (click)="$event.stopPropagation(); openDropdown('estadoPet')"
+                class="rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 sm:px-4 sm:py-3"
               >
-                <p class="text-sm text-[#4A4A4A]">
-                  @if (
-                    filtrosPets.estado === null ||
-                    filtrosPets.estado === undefined
-                  ) {
-                    <span class="text-[#4A4A4A]/50">Todas</span>
-                  } @else if (filtrosPets.estado === true) {
-                    <span>Activas</span>
-                  } @else {
-                    <span>Inactivas</span>
-                  }
-                </p>
+                <input
+                  [(ngModel)]="estadoPetSearch"
+                  name="estadoPetSearch"
+                  type="text"
+                  placeholder="Seleccione estado..."
+                  autocomplete="off"
+                  (click)="$event.stopPropagation()"
+                  (focus)="openDropdown('estadoPet')"
+                  (input)="onEstadoPetSearchChange()"
+                  class="w-full bg-transparent text-sm text-[#4A4A4A] placeholder-[#4A4A4A]/50 outline-none sm:text-base"
+                />
               </div>
 
               <!-- Dropdown estado -->
@@ -342,24 +342,47 @@
                   data-dropdown-content="estadoPet"
                   [ngStyle]="dropdownStyles['estadoPet']"
                 >
-                  <div
-                    class="cursor-pointer border-b border-gray-100 px-4 py-3 hover:bg-blue-50"
-                    (click)="selectEstadoPet(undefined)"
-                  >
-                    <p class="text-sm font-semibold text-gray-800">Todas</p>
-                  </div>
-                  <div
-                    class="cursor-pointer border-b border-gray-100 px-4 py-3 hover:bg-blue-50"
-                    (click)="selectEstadoPet(true)"
-                  >
-                    <p class="text-sm font-semibold text-gray-800">Activas</p>
-                  </div>
-                  <div
-                    class="cursor-pointer px-4 py-3 hover:bg-blue-50"
-                    (click)="selectEstadoPet(false)"
-                  >
-                    <p class="text-sm font-semibold text-gray-800">Inactivas</p>
-                  </div>
+                  @if (
+                    !estadoPetSearch ||
+                    "Activas"
+                      .toLowerCase()
+                      .includes(estadoPetSearch.toLowerCase())
+                  ) {
+                    <div
+                      class="cursor-pointer border-b border-gray-100 px-4 py-3 hover:bg-blue-50"
+                      (click)="selectEstadoPet(true)"
+                    >
+                      <p class="text-sm font-semibold text-gray-800">Activas</p>
+                    </div>
+                  }
+                  @if (
+                    !estadoPetSearch ||
+                    "Inactivas"
+                      .toLowerCase()
+                      .includes(estadoPetSearch.toLowerCase())
+                  ) {
+                    <div
+                      class="cursor-pointer px-4 py-3 hover:bg-blue-50"
+                      (click)="selectEstadoPet(false)"
+                    >
+                      <p class="text-sm font-semibold text-gray-800">
+                        Inactivas
+                      </p>
+                    </div>
+                  }
+                  @if (
+                    estadoPetSearch &&
+                    !"Activas"
+                      .toLowerCase()
+                      .includes(estadoPetSearch.toLowerCase()) &&
+                    !"Inactivas"
+                      .toLowerCase()
+                      .includes(estadoPetSearch.toLowerCase())
+                  ) {
+                    <p class="px-4 py-3 text-sm text-gray-400">
+                      Sin resultados
+                    </p>
+                  }
                 </div>
               }
             </div>
@@ -449,21 +472,19 @@
                 Estado
               </label>
               <div
-                class="cursor-pointer rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 sm:px-4 sm:py-3"
-                (click)="$event.stopPropagation(); openDropdown('estadoVet')"
+                class="rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 sm:px-4 sm:py-3"
               >
-                <p class="text-sm text-[#4A4A4A]">
-                  @if (
-                    filtrosVets.estado === null ||
-                    filtrosVets.estado === undefined
-                  ) {
-                    <span class="text-[#4A4A4A]/50">Todas</span>
-                  } @else if (filtrosVets.estado === true) {
-                    <span>Activas</span>
-                  } @else {
-                    <span>Inactivas</span>
-                  }
-                </p>
+                <input
+                  [(ngModel)]="estadoVetSearch"
+                  name="estadoVetSearch"
+                  type="text"
+                  placeholder="Seleccione estado..."
+                  autocomplete="off"
+                  (click)="$event.stopPropagation()"
+                  (focus)="openDropdown('estadoVet')"
+                  (input)="onEstadoVetSearchChange()"
+                  class="w-full bg-transparent text-sm text-[#4A4A4A] placeholder-[#4A4A4A]/50 outline-none sm:text-base"
+                />
               </div>
 
               <!-- Dropdown estado -->
@@ -473,24 +494,47 @@
                   data-dropdown-content="estadoVet"
                   [ngStyle]="dropdownStyles['estadoVet']"
                 >
-                  <div
-                    class="cursor-pointer border-b border-gray-100 px-4 py-3 hover:bg-blue-50"
-                    (click)="selectEstadoVet(undefined)"
-                  >
-                    <p class="text-sm font-semibold text-gray-800">Todas</p>
-                  </div>
-                  <div
-                    class="cursor-pointer border-b border-gray-100 px-4 py-3 hover:bg-blue-50"
-                    (click)="selectEstadoVet(true)"
-                  >
-                    <p class="text-sm font-semibold text-gray-800">Activas</p>
-                  </div>
-                  <div
-                    class="cursor-pointer px-4 py-3 hover:bg-blue-50"
-                    (click)="selectEstadoVet(false)"
-                  >
-                    <p class="text-sm font-semibold text-gray-800">Inactivas</p>
-                  </div>
+                  @if (
+                    !estadoVetSearch ||
+                    "Activas"
+                      .toLowerCase()
+                      .includes(estadoVetSearch.toLowerCase())
+                  ) {
+                    <div
+                      class="cursor-pointer border-b border-gray-100 px-4 py-3 hover:bg-blue-50"
+                      (click)="selectEstadoVet(true)"
+                    >
+                      <p class="text-sm font-semibold text-gray-800">Activas</p>
+                    </div>
+                  }
+                  @if (
+                    !estadoVetSearch ||
+                    "Inactivas"
+                      .toLowerCase()
+                      .includes(estadoVetSearch.toLowerCase())
+                  ) {
+                    <div
+                      class="cursor-pointer px-4 py-3 hover:bg-blue-50"
+                      (click)="selectEstadoVet(false)"
+                    >
+                      <p class="text-sm font-semibold text-gray-800">
+                        Inactivas
+                      </p>
+                    </div>
+                  }
+                  @if (
+                    estadoVetSearch &&
+                    !"Activas"
+                      .toLowerCase()
+                      .includes(estadoVetSearch.toLowerCase()) &&
+                    !"Inactivas"
+                      .toLowerCase()
+                      .includes(estadoVetSearch.toLowerCase())
+                  ) {
+                    <p class="px-4 py-3 text-sm text-gray-400">
+                      Sin resultados
+                    </p>
+                  }
                 </div>
               }
             </div>

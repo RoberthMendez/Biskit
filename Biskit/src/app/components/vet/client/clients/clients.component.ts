@@ -1,5 +1,5 @@
 // clients.component.ts
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { ClientService } from '../../../../services/client.service';
 import { Client } from '../../../../models/Client/client';
 import { ClientsHeaderComponent } from './clients-header/clients-header.component';
@@ -15,6 +15,7 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import { VetService } from '../../../../services/vet.service';
 import { AdminService } from '../../../../services/admin.service';
+import { EmptyResultsComponent } from '../../../reusables/empty-results/empty-results.component';
 
 @Component({
   standalone: true,
@@ -26,9 +27,13 @@ import { AdminService } from '../../../../services/admin.service';
     TablaComponent,
     ClientsCardsComponent,
     DeleteModalComponent,
+    // reusable
+    EmptyResultsComponent,
   ],
 })
 export class ClientsComponent {
+  @ViewChild(ClientsSearchComponent) searchComponent?: ClientsSearchComponent;
+
   clients: Client[] = [];
   filteredClients: Client[] = [];
   searchTerm: string = '';
@@ -116,6 +121,10 @@ export class ClientsComponent {
 
     if (this.searchTerm === '') {
       this.filteredClients = this.clients;
+      // clear visible input in child component; fallback to DOM if needed
+      this.searchComponent?.clear();
+      const el = document.querySelector('app-clients-buscador input') as HTMLInputElement | null;
+      if (el) el.value = '';
     } else {
       this.filteredClients = this.clients.filter(
         (client) =>

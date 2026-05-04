@@ -26,6 +26,7 @@
     <app-boton-filtros
       [tipo]="'pets'"
       [isAdminView]="isAdminView"
+      [vetId]="vetId"
       (filtrosAplicados)="onFiltrosAplicados($event)"
     ></app-boton-filtros>
 
@@ -115,19 +116,10 @@
 
   <!-- Mensaje sin resultados -->
   @if (filteredPets.length === 0 && pets.length > 0) {
-    <div
-      class="mx-2 my-20 flex flex-col items-center justify-center gap-4 text-center sm:mx-10"
-    >
-      <p class="mb-2 text-base text-[#8d8580dd]">
-        No se encontraron mascotas que coincidan con tu búsqueda
-      </p>
-      <button
-        (click)="searchTerm = ''"
-        class="cursor-pointer rounded-xl border border-[#6D6155]/30 bg-[#6D6155]/5 px-4 py-2 text-[#6D6155] transition-all duration-200 hover:bg-[#6D6155]/10 hover:text-[#4F453D]"
-      >
-        Limpiar búsqueda
-      </button>
-    </div>
+    <app-empty-results
+      [message]="'No se encontraron mascotas que coincidan con tu búsqueda'"
+      (clear)="clearAllFilters()"
+    ></app-empty-results>
   }
 
   <!-- Sin mascotas registradas -->
