@@ -128,56 +128,59 @@
             }
           </div>
 
-          <div class="relative">
-            <label
-              for="vetSearch"
-              class="mb-2 block text-base font-semibold text-[#4A4A4A]"
-              >Veterinario</label
-            >
-
-            <div class="rounded-xl border border-gray-200 bg-gray-50 px-4 py-3">
-              <input
-                type="text"
-                id="vetSearch"
-                name="vetSearch"
-                [(ngModel)]="vetSearchText"
-                (focus)="openVetDropdown()"
-                (blur)="closeVetDropdown()"
-                placeholder="Buscar veterinario..."
-                autocomplete="off"
-                required
-                class="w-full bg-transparent text-[#4A4A4A] outline-none"
-              />
-            </div>
-
-            <input
-              type="hidden"
-              name="vetId"
-              [value]="tratamiento.vet.id ?? ''"
-            />
-
-            @if (vetDropdownOpen) {
-              <div
-                class="custom-scroll absolute z-10 mt-1 max-h-60 w-full overflow-y-auto rounded-xl border border-gray-200 bg-white shadow-lg"
+          @if (isAdminView) {
+            <div class="relative">
+              <label
+                for="vetSearch"
+                class="mb-2 block text-base font-semibold text-[#4A4A4A]"
+                >Veterinario</label
               >
-                @for (vet of filteredVets; track vet.id ?? vet.nombre) {
-                  <div
-                    class="cursor-pointer border-b border-gray-100 px-4 py-3 hover:bg-blue-50"
-                    (mousedown)="selectVet(vet)"
-                  >
-                    <p class="text-sm font-semibold text-gray-800">
-                      {{ vet.nombre }}
-                    </p>
-                  </div>
-                } @empty {
-                  <div class="px-4 py-3 text-sm text-gray-500">
-                    No se encontraron veterinarios.
-                  </div>
-                }
-              </div>
-            }
-          </div>
 
+              <div
+                class="rounded-xl border border-gray-200 bg-gray-50 px-4 py-3"
+              >
+                <input
+                  type="text"
+                  id="vetSearch"
+                  name="vetSearch"
+                  [(ngModel)]="vetSearchText"
+                  (focus)="openVetDropdown()"
+                  (blur)="closeVetDropdown()"
+                  placeholder="Buscar veterinario..."
+                  autocomplete="off"
+                  required
+                  class="w-full bg-transparent text-[#4A4A4A] outline-none"
+                />
+              </div>
+
+              <input
+                type="hidden"
+                name="vetId"
+                [value]="tratamiento.vet.id ?? ''"
+              />
+
+              @if (vetDropdownOpen) {
+                <div
+                  class="custom-scroll absolute z-10 mt-1 max-h-60 w-full overflow-y-auto rounded-xl border border-gray-200 bg-white shadow-lg"
+                >
+                  @for (vet of filteredVets; track vet.id ?? vet.nombre) {
+                    <div
+                      class="cursor-pointer border-b border-gray-100 px-4 py-3 hover:bg-blue-50"
+                      (mousedown)="selectVet(vet)"
+                    >
+                      <p class="text-sm font-semibold text-gray-800">
+                        {{ vet.nombre }}
+                      </p>
+                    </div>
+                  } @empty {
+                    <div class="px-4 py-3 text-sm text-gray-500">
+                      No se encontraron veterinarios.
+                    </div>
+                  }
+                </div>
+              }
+            </div>
+          }
           <div>
             <label
               for="fecha"
@@ -249,9 +252,29 @@
                           class="cursor-pointer border-b border-gray-100 px-4 py-3 hover:bg-blue-50"
                           (mousedown)="selectDrug(index, drug)"
                         >
-                          <p class="text-sm font-semibold text-gray-800">
-                            {{ drug.nombre }}
-                          </p>
+                          <div
+                            class="flex w-full items-center justify-between gap-4"
+                          >
+                            <p
+                              class="text-sm font-semibold text-gray-800 truncate"
+                            >
+                              {{ drug.nombre }}
+                            </p>
+                            @if (drug.unidadesDisponibles == 0) {
+                              <p
+                                class="text-sm text-red-500 ml-4 flex-shrink-0"
+                              >
+                                Sin unidades disponibles
+                              </p>
+                            } @else {
+                              <p
+                                class="text-sm text-gray-500 ml-4 flex-shrink-0"
+                              >
+                                Unidades disponibles:
+                                {{ drug.unidadesDisponibles }}
+                              </p>
+                            }
+                          </div>
                         </div>
                       } @empty {
                         <div class="px-4 py-3 text-sm text-gray-500">
