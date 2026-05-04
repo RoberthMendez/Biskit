@@ -30,11 +30,10 @@
       (actionClick)="onActionClick($event)"
     ></app-tabla>
   } @else {
-    <article
-      class="rounded-xl border border-dashed border-[#D8D2CB] bg-[#FBFAF8] px-5 py-10 text-center text-sm text-[#8D8580] sm:px-6 sm:text-base"
-    >
-      No hay veterinarios para mostrar.
-    </article>
+    <app-empty-results
+      [message]="'No hay veterinarios para mostrar.'"
+      (clear)="clearAllFilters()"
+    ></app-empty-results>
   }
 
   @if (showModal) {

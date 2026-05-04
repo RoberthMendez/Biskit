@@ -1,8 +1,10 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { RouterLink } from "@angular/router";
 import { BotonFiltrosComponent } from "../../../../reusables/boton-filtros/boton-filtros.component";
 import { Vet } from "../../../../../models/Vets/vet-cl";
 import { CommonModule } from '@angular/common';
+
+// Expose a small API to reset filters from parent components
 
 @Component({
   selector: 'app-header',
@@ -14,9 +16,15 @@ export class HeaderComponent {
 
   @Input() adminId: number = 0;
   @Output() filtrosAplicados = new EventEmitter<any>();
+  @ViewChild(BotonFiltrosComponent) botonFiltros?: BotonFiltrosComponent;
 
   onFiltrosAplicados(vets: any) {
     this.filtrosAplicados.emit(vets);
+  }
+
+  // Called by parent (VetsComponent) to reset filters without emitting
+  public resetFiltersWithoutEmit(): void {
+    this.botonFiltros?.resetWithoutEmit();
   }
 
 }

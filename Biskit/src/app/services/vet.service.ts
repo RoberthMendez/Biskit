@@ -45,11 +45,6 @@ export class VetService {
     return this.http.get<number>(`http://localhost:8080/vets/${vetId}/tratamientos/count`);
   }
 
-  // ----- Mascotas Tratadas por un Veterinario -----
-  getPetsTreatedByVet(vetId: number): Observable<Pet[]> {
-    return this.http.get<Pet[]>(`http://localhost:8080/vets/${vetId}/pets`);
-  }
-
   //Comprobar si el id de vet existe
   existsById(id: number): Observable<void> {
     return this.http.get<void>(`http://localhost:8080/vets/${id}/exists`); 

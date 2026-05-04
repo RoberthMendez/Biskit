@@ -19,7 +19,7 @@ import { FiltrosEstadoService } from '../../../services/filtros-estado.service';
 })
 export class DashboardComponent {
   vetId: number = 0;
-  vet!: Vet;
+  vet: Vet = new Vet();
   tratamientos: Tratamiento[] = [];
   numTratamientosByVet: number = 0;
   numPets: number = 0;
