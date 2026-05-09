@@ -282,6 +282,13 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'login/forgot-password',
+    loadComponent: () =>
+      import('./components/password/forgot-password/forgot-password.component').then(
+        (m) => m.ForgotPasswordComponent,
+      ),
+  },
+  {
     path: 'error',
     loadComponent: () =>
       import('./components/error/error.component').then(

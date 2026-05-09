@@ -23,12 +23,21 @@ export class CredencialesService {
   }
 
   // ----- Restablecimiento de Contraseña -----
-  resetPassword(idUsuario: number, credenciales: Credenciales): Observable<void> {
-    //Imprimir id
-    console.log(idUsuario);
+  resetPassword(
+    idUsuario: number,
+    credenciales: Credenciales,
+  ): Observable<void> {
     return this.http.put<void>(
       `http://localhost:8080/login/${idUsuario}/reset-password`,
       credenciales,
+    );
+  }
+
+  // ----- Enviar Correo para Cambiar Contraseña -----
+  forgotPassword(correo: String): Observable<void> {
+    return this.http.post<void>(
+      `http://localhost:8080/login/forgot-password`,
+      correo,
     );
   }
 }

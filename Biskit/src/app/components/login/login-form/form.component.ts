@@ -3,12 +3,12 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CredencialesService } from '../../../services/credenciales.service';
 import { Credenciales } from '../../../models/Credenciales/credenciales';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-login-form',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './form.component.html',
 })
 export class LoginFormComponent {
