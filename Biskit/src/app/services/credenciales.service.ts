@@ -21,4 +21,14 @@ export class CredencialesService {
   addCredenciales(credenciales: Credenciales) {
     return this.http.post('http://localhost:8080/register', credenciales);
   }
+
+  // ----- Restablecimiento de Contraseña -----
+  resetPassword(idUsuario: number, credenciales: Credenciales): Observable<void> {
+    //Imprimir id
+    console.log(idUsuario);
+    return this.http.put<void>(
+      `http://localhost:8080/login/${idUsuario}/reset-password`,
+      credenciales,
+    );
+  }
 }
