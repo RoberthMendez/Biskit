@@ -13,6 +13,22 @@
     <p class="text-sm text-[#8d8580dd] font-medium text-center">
       Aquí puedes ver un resumen de las estadísticas de Biskit
     </p>
+    <!-- Botones -->
+    <div class="mt-4 flex flex-col sm:flex-row items-center gap-3">
+      <button
+        (click)="descargarReporteUltimoMes()"
+        class="w-full sm:w-auto cursor-pointer rounded-full bg-[#2b5392] px-6 py-3 text-sm font-semibold text-white shadow-md transition hover:bg-[#1a3a6b]"
+      >
+        Descargar Reporte del Mes
+      </button>
+
+      <button
+        (click)="descargarReporteGeneral()"
+        class="w-full sm:w-auto cursor-pointer rounded-full bg-white px-6 py-3 text-sm font-semibold text-[#2b5392] shadow-sm transition hover:bg-[#f3f6fb]"
+      >
+        Descargar Reporte General
+      </button>
+    </div>
   </section>
   <!-- Ventas, Mascotas y Veterinarios -->
   <section
