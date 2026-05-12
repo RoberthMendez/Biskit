@@ -18,6 +18,7 @@ export class ForgotPasswordComponent {
   usuario: string = '';
   error: string = '';
   success: boolean = false;
+  loading: boolean = false;
 
   onSubmit(): void {
     this.error = '';
@@ -28,12 +29,16 @@ export class ForgotPasswordComponent {
       return;
     }
 
+    this.loading = true;
+
     this.credencialesService.forgotPassword(this.usuario).subscribe({
       next: () => {
         this.success = true;
+        this.loading = false;
       },
       error: () => {
         this.error = 'Error al restablecer la contraseña';
+        this.loading = false;
       }
     });
 
