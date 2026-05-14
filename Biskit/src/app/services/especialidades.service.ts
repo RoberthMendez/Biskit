@@ -25,11 +25,11 @@ export class EspecialidadesService {
 
   
   findAll(): Observable<Especialidad[]> {
-    return this.http.get<Especialidad[]>('http://localhost:8080/vet/especialidades');
+    return this.http.get<Especialidad[]>('http://localhost:8080/especialidades');
   }
 
   addEspecialidad(especialidad: Especialidad): Observable<Especialidad> {
-    return this.http.post<Especialidad>('http://localhost:8080/vet/especialidades/add', especialidad);
+    return this.http.post<Especialidad>('http://localhost:8080/especialidades/add', especialidad);
   }
 
   
