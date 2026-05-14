@@ -69,6 +69,24 @@ export class AdminService {
     return this.http.get<StockDrogaDto[]>('http://localhost:8080/admin/drogas-bajas-stock');
   }
 
+  descargarReporteExcel(): void {
+    this.http.get('http://localhost:8080/admin/reporte-ultimo-mes-excel', {
+        responseType: 'blob'  // 👈 indica que la respuesta es un archivo binario
+    }).subscribe({
+        next: (blob) => {
+            const url = window.URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `reporte-biskit-${new Date().toLocaleDateString('es-CO')}.xlsx`;
+            link.click();
+            window.URL.revokeObjectURL(url);
+        },
+        error: (err) => {
+            console.error('Error al descargar el reporte:', err);
+        }
+    });
+  }
+
   //Verificar existencia de Admin por ID
   existsById(id: number): Observable<void> {
     return this.http.get<void>(`http://localhost:8080/admin/${id}/exists`);

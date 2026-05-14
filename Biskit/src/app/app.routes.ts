@@ -275,6 +275,20 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'login/reset-password/:id',
+    loadComponent: () =>
+      import('./components/password/reset-password/reset-password.component').then(
+        (m) => m.ResetPasswordComponent,
+      ),
+  },
+  {
+    path: 'login/forgot-password',
+    loadComponent: () =>
+      import('./components/password/forgot-password/forgot-password.component').then(
+        (m) => m.ForgotPasswordComponent,
+      ),
+  },
+  {
     path: 'error',
     loadComponent: () =>
       import('./components/error/error.component').then(

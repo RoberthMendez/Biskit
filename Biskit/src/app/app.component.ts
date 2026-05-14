@@ -30,7 +30,7 @@ export class AppComponent {
           ruta !== '/#servicios' &&
           ruta !== '/#proceso' &&
           ruta !== '/#contacto' &&
-          ruta !== '/login' &&
+          !ruta.startsWith('/login') &&
           !ruta.startsWith('/error');
 
         // -------------------------
@@ -58,7 +58,6 @@ export class AppComponent {
             localStorage.setItem('authId', id);
           }
         }
-
       });
   }
 }
