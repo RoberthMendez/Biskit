@@ -18,44 +18,44 @@ export class PetService {
   // ----- Crear y Actualizar Mascota (CREATE/UPDATE) -----
   savePet(pet: Pet): Observable<Pet> {
     if (pet.id)
-      return this.http.put<Pet>(`http://localhost:8080/vet/pets/update/${pet.id}`, pet);
+      return this.http.put<Pet>(`http://localhost:8080/pets/update/${pet.id}`, pet);
     else
-      return this.http.post<Pet>('http://localhost:8080/vet/pets/add', pet);
+      return this.http.post<Pet>('http://localhost:8080/pets/add', pet);
   }
 
   // ----- Mostrar Mascotas (READ) -----
   findAll(): Observable<Pet[]> {
-    return this.http.get<Pet[]>('http://localhost:8080/vet/pets');
+    return this.http.get<Pet[]>('http://localhost:8080/pets');
   }
 
   // ----- Mostrar Mascota (READ) -----
   findById(id: number): Observable<Pet> {
-    return this.http.get<Pet>(`http://localhost:8080/vet/pets/${id}`);
+    return this.http.get<Pet>(`http://localhost:8080/pets/${id}`);
   }
 
   // ----- Actualizar Estado de Mascota (PATCH) -----
   updateEstado(id: number, estado: boolean): Observable<void> {
-    return this.http.patch<void>(`http://localhost:8080/vet/pets/update-estado/${id}`, { estado });
+    return this.http.patch<void>(`http://localhost:8080/pets/update-estado/${id}`, { estado });
   }
 
     // ----- Total de Mascotas -----
   countPets(): Observable<number> {
-    return this.http.get<number>(`http://localhost:8080/vet/pets/count`);
+    return this.http.get<number>(`http://localhost:8080/pets/count`);
   }
 
   // ----- Total de Mascotas Activas -----
   countPetsActivos(): Observable<number> {
-    return this.http.get<number>(`http://localhost:8080/vet/pets/count/activos`);
+    return this.http.get<number>(`http://localhost:8080/pets/count/activos`);
   }
 
   // ----- Total de Mascotas Inactivas -----
   countPetsInactivos(): Observable<number> {
-    return this.http.get<number>(`http://localhost:8080/vet/pets/count/inactivos`);
+    return this.http.get<number>(`http://localhost:8080/pets/count/inactivos`);
   }
 
   // ----- Comprobar Existencia de Mascota -----
   existsById(id: number): Observable<void> {
-    return this.http.get<void>(`http://localhost:8080/vet/pets/${id}/exists`);
+    return this.http.get<void>(`http://localhost:8080/pets/${id}/exists`);
   }
 
 }
