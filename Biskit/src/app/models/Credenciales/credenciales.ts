@@ -1,15 +1,15 @@
 export class Credenciales {
   public id?: number;
-  public usuario: string;
+  public username: string;
   public password: string;
 
   constructor(
     id?: number,
-    usuario: string = '',
+    username: string = '',
     password: string = '',
   ) {
     this.id = id;
-    this.usuario = usuario;
+    this.username = username;
     this.password = password;
   }
 }

@@ -29,7 +29,7 @@ export class LoginFormComponent {
     }
 
     const credenciales: Credenciales = {
-      usuario: this.usuario,
+      username: this.usuario,
       password: this.contrasena,
     };
 
