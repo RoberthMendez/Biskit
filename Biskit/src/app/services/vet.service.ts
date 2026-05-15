@@ -50,4 +50,8 @@ export class VetService {
     return this.http.get<void>(`http://localhost:8080/vets/${id}/exists`); 
   }
 
+  getDetails(): Observable<Vet> {
+    return this.http.get<Vet>(`http://localhost:8080/vets/details`);
+  }
+
 }

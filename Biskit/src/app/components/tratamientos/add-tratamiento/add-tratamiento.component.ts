@@ -24,11 +24,15 @@ class DrugRowState {
 @Component({
   selector: 'app-add-tratamiento',
   standalone: true,
-  imports: [CommonModule, FormsModule, BackButtonComponent, DatepickerComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    BackButtonComponent,
+    DatepickerComponent,
+  ],
   templateUrl: './add-tratamiento.component.html',
 })
 export class AddTratamientoComponent implements OnInit {
-  
   pets: Pet[] = [];
   vets: Vet[] = [];
   drogas: Droga[] = [];
@@ -70,9 +74,10 @@ export class AddTratamientoComponent implements OnInit {
 
     const contextParam = this.isAdminView ? 'idAdmin' : 'vetId';
     this.vetId = this.resolveContextVetId(contextParam);
-    this.basePath = this.vetId != null
-      ? `/${this.isAdminView ? 'admin' : 'vet'}/${this.vetId}`
-      : `/${this.isAdminView ? 'admin' : 'vet'}`;
+    this.basePath =
+      this.vetId != null
+        ? `/${this.isAdminView ? 'admin' : 'vet'}/${this.vetId}`
+        : `/${this.isAdminView ? 'admin' : 'vet'}`;
 
     const petIdParam = this.route.snapshot.paramMap.get('petId');
     this.preselectedPetId = petIdParam ? Number(petIdParam) : null;
@@ -103,7 +108,8 @@ export class AddTratamientoComponent implements OnInit {
         this.syncVetSelectionFromRoute();
       },
       error: () => {
-        this.errorMessage = 'No fue posible cargar los veterinarios disponibles.';
+        this.errorMessage =
+          'No fue posible cargar los veterinarios disponibles.';
       },
     });
 
@@ -129,7 +135,6 @@ export class AddTratamientoComponent implements OnInit {
         this.errorMessage = 'No fue posible cargar las drogas disponibles.';
       },
     });
-
   }
 
   get isEditMode(): boolean {
@@ -145,7 +150,9 @@ export class AddTratamientoComponent implements OnInit {
 
     return this.pets.filter((pet) => {
       const nameMatch = pet.nombre?.toLowerCase().includes(normalizedSearch);
-      const breedMatch = pet.raza?.nombre?.toLowerCase().includes(normalizedSearch);
+      const breedMatch = pet.raza?.nombre
+        ?.toLowerCase()
+        .includes(normalizedSearch);
       const speciesMatch = pet.raza?.especie?.nombre
         ?.toLowerCase()
         .includes(normalizedSearch);
@@ -161,7 +168,9 @@ export class AddTratamientoComponent implements OnInit {
       return this.vets;
     }
 
-    return this.vets.filter((vet) => vet.nombre?.toLowerCase().includes(normalizedSearch));
+    return this.vets.filter((vet) =>
+      vet.nombre?.toLowerCase().includes(normalizedSearch),
+    );
   }
 
   filteredDrogas(index: number): Droga[] {
@@ -255,7 +264,6 @@ export class AddTratamientoComponent implements OnInit {
   }
 
   guardarTratamiento(): void {
-
     this.errorMessage = '';
     this.successMessage = '';
 
@@ -305,12 +313,9 @@ export class AddTratamientoComponent implements OnInit {
   }
 
   private manejarError(error: HttpErrorResponse): string {
-
     if (error.status === 400 && error.error) {
       return (
-        error.error.detalle ||
-        error.error.mensaje ||
-        'Error en la solicitud.'
+        error.error.detalle || error.error.mensaje || 'Error en la solicitud.'
       );
     }
 
@@ -385,12 +390,16 @@ export class AddTratamientoComponent implements OnInit {
       this.vetSearchText = '';
     } else if (vetId != null) {
       const selectedVet =
-        this.vets.find((candidate) => candidate.id === vetId) ?? currentTratamiento.vet;
+        this.vets.find((candidate) => candidate.id === vetId) ??
+        currentTratamiento.vet;
       this.selectVet(selectedVet);
     }
 
     const selectedDrogas = (currentTratamiento.drogas ?? [])
-      .map((drug) => this.drogas.find((candidate) => candidate.id === drug.id) ?? drug)
+      .map(
+        (drug) =>
+          this.drogas.find((candidate) => candidate.id === drug.id) ?? drug,
+      )
       .filter((drug) => drug.id != null);
 
     this.drugRows = selectedDrogas.length
@@ -484,9 +493,14 @@ export class AddTratamientoComponent implements OnInit {
     }
 
     const storedRole = localStorage.getItem('authRole');
-    const storedId = Number(localStorage.getItem('authId'));
+    let storedId = 0;
+    if (storedRole === 'VET') {
+      this.vetService.getDetails().subscribe((vet) => {
+        storedId = vet.id!;
+      });
+    }
 
-    if (storedRole === 'VETERINARIO' && !Number.isNaN(storedId) && storedId > 0) {
+    if (storedRole === 'VET' && !Number.isNaN(storedId) && storedId > 0) {
       return storedId;
     }
 

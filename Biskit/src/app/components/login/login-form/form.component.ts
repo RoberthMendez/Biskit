@@ -34,37 +34,9 @@ export class LoginFormComponent {
     };
 
     this.credencialesService.authenticate(credenciales).subscribe({
-      next: (response) => {
-        if (response.id != null) {
-          localStorage.setItem('authRole', response.tipo);
-          localStorage.setItem('authId', String(response.id));
-        }
-
-        if (response.tipo === 'CLIENTE') {
-          if (response.id) {
-            this.router.navigate(['/client', response.id]);
-          } else {
-            this.error = 'No se pudo obtener el id del cliente.';
-          }
-          return;
-        }
-
-        if (response.tipo === 'VETERINARIO') {
-          this.router.navigate(['/vet', response.id]);
-          return;
-        }
-
-        if (response.tipo === 'ADMIN') {
-          this.router.navigate(['/admin', response.id]);
-          return;
-        }
-
-        if (response.tipo === 'CREDENCIALES_INVALIDAS') {
-          this.error = 'Usuario o contrasena incorrectos.';
-          return;
-        }
-
-        console.log('Autenticación exitosa:', response);
+      next: (data) => {
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('authRole', data.rol)
       },
       error: (error) => {
         const tipo = error.error?.tipo;

@@ -49,4 +49,8 @@ export class ClientService {
     return this.http.get<void>(`http://localhost:8080/clients/${id}/exists`);
   }
 
+  getDetails(): Observable<Client> {
+      return this.http.get<Client>(`http://localhost:8080/clients/details`);
+  }
+
 }
