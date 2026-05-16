@@ -102,17 +102,24 @@ export class AddTratamientoComponent implements OnInit {
 
     this.loadingPets = true;
 
-    this.vetService.findAll().subscribe({
-      next: (vets) => {
-        this.vets = vets;
-        this.syncEditFormData();
-        this.syncVetSelectionFromRoute();
-      },
-      error: () => {
-        this.errorMessage =
-          'No fue posible cargar los veterinarios disponibles.';
-      },
-    });
+    if (this.isAdminView) {
+      this.vetService.findAll().subscribe({
+        next: (vets) => {
+          this.vets = vets;
+        },
+        error: () => {
+          this.errorMessage =
+            'No fue posible cargar los veterinarios disponibles.';
+        },
+      });
+    } else {
+      this.vetService.getDetails().subscribe({
+        next: (vet) => {
+          this.vets = [vet];
+          this.selectVet(vet);
+        },
+      });
+    }
 
     this.petService.findAll().subscribe({
       next: (pets) => {

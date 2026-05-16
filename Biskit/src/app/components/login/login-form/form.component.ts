@@ -62,8 +62,10 @@ export class LoginFormComponent {
           this.error = 'No se pudo conectar con el servidor.';
         } else if (error.status === 500) {
           this.error = 'Error interno del servidor';
+        } else if (error.error?.mensaje === 'Usuario o contraseña incorrecta') {
+          this.error = error.error.mensaje;
         } else {
-          this.error = 'Usuario o contrasena incorrectos.';
+          this.error = 'Ocurrió un error inesperado.';
         }
       },
     });

@@ -14,7 +14,6 @@ export class PetService {
 
   // ----- Crear Mascota (CREATE) -----
   savePet(pet: Pet): Observable<Pet> {
-    console.log('Guardando mascota:', pet);
     if (pet.id) {
       return this.http.put<Pet>(
         `http://localhost:8080/pets/update/${pet.id}`,
