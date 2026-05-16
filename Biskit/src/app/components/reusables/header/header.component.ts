@@ -24,6 +24,21 @@ export class HeaderComponent {
   ngOnInit() {
     this.rolUsuario = localStorage.getItem('authRole');
 
+    const currentUrl = this.router.url;
+
+    // Verificar coincidencia entre rol y ruta
+    if (
+      (currentUrl.startsWith('/admin') && this.rolUsuario !== 'ADMIN') ||
+      (currentUrl.startsWith('/vet') && this.rolUsuario !== 'VET') ||
+      (currentUrl.startsWith('/client') && this.rolUsuario !== 'CLIENT')
+    ) {
+
+      localStorage.removeItem('token');
+      localStorage.removeItem('authRole');
+
+      return;
+    }
+
     if (this.rolUsuario === 'VET') {
       this.vetService.getDetails().subscribe((vet) => {
         this.nombreUsuario = vet.nombre;
@@ -44,4 +59,13 @@ export class HeaderComponent {
       });
     }
   }
+
+  cerrarSesion() {
+
+    localStorage.removeItem('token');
+    localStorage.removeItem('authRole');
+
+    this.router.navigate(['/']);
+  }
+
 }
