@@ -2,13 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { PetDTO } from '../../../models/dtos/pet-dto';
-import { Tratamiento } from '../../../models/Tratamiento/tratamiento';
 import { Vet } from '../../../models/Vets/vet-cl';
 import { Client } from '../../../models/Client/client';
 import { TratamientoService } from '../../../services/tratamiento.service';
 import { PetService } from '../../../services/pet.service';
 import { DeleteModalComponent } from '../../reusables/delete-modal/delete-modal.component';
 import { BackButtonComponent } from '../../reusables/back-button/back-button.component';
+import { TratamientoDetalleDto } from '../../../models/dtos/tratamiento-detalle-dto';
 
 @Component({
   selector: 'app-info-tratamiento',
@@ -22,7 +22,7 @@ import { BackButtonComponent } from '../../reusables/back-button/back-button.com
   templateUrl: './info-tratamiento.component.html',
 })
 export class InfoTratamientoComponent implements OnInit {
-  tratamiento: Tratamiento | null = null;
+  tratamiento: TratamientoDetalleDto | null = null;
   veterinario: Vet | null = null;
   pet: PetDTO | null = null;
   owner: Client | null = null;
@@ -34,6 +34,7 @@ export class InfoTratamientoComponent implements OnInit {
   showDeleteModal = false;
   deleteSuccessMessage = '';
   shouldNavigateAfterDelete = false;
+  private routeTratamientoId: number | null = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -54,6 +55,10 @@ export class InfoTratamientoComponent implements OnInit {
     const vetId = vetIdParam !== null ? Number(vetIdParam) : null;
     const tratamientoId =
       tratamientoIdParam !== null ? Number(tratamientoIdParam) : null;
+    this.routeTratamientoId =
+      tratamientoId !== null && !Number.isNaN(tratamientoId)
+        ? tratamientoId
+        : null;
     const clientId = clientIdParam !== null ? Number(clientIdParam) : null;
     const isAdminPage = routePath.startsWith('admin/');
     const isAdminVetDetailPage =
@@ -106,12 +111,14 @@ export class InfoTratamientoComponent implements OnInit {
     if (tratamientoId !== null && !Number.isNaN(tratamientoId)) {
       this.tratamientoService.findById(tratamientoId).subscribe({
         next: (tratamiento) => {
+          tratamiento.id =
+            this.resolveTratamientoId(tratamiento) ?? tratamientoId;
           this.tratamiento = tratamiento;
           this.veterinario = tratamiento.vet;
+          this.owner = tratamiento.client;
 
-          if (petId === null && tratamiento.pet != null) {
-            this.pet = this.toPetDto(tratamiento.pet as any);
-            this.owner = this.toOwner(tratamiento.pet as any);
+          if (tratamiento.pet != null) {
+            this.pet = tratamiento.pet;
           }
 
           if (
@@ -164,11 +171,8 @@ export class InfoTratamientoComponent implements OnInit {
   getFechaTratamiento(): string {
     if (!this.tratamiento?.fecha) return 'Sin fecha';
 
-    const rawFecha = this.tratamiento.fecha as Date | string;
-    const localDateMatch =
-      typeof rawFecha === 'string'
-        ? rawFecha.match(/^(\d{4})-(\d{2})-(\d{2})$/)
-        : null;
+    const rawFecha = this.tratamiento.fecha;
+    const localDateMatch = rawFecha.match(/^(\d{4})-(\d{2})-(\d{2})$/);
 
     const parsedDate = localDateMatch
       ? new Date(
@@ -187,72 +191,6 @@ export class InfoTratamientoComponent implements OnInit {
     }).format(parsedDate);
   }
 
-  private toPetDto(pet: any): PetDTO {
-    const edad =
-      typeof pet?.edad === 'number'
-        ? pet.edad
-        : this.calculateEdadFromFecha(pet?.fechaNacimiento);
-
-    return {
-      id: pet?.id,
-      nombre: pet?.nombre ?? '',
-      estado: pet?.estado ?? true,
-      edad,
-      peso: pet?.peso ?? 0,
-      urlFoto: pet?.urlFoto ?? '',
-      enfermedad:
-        typeof pet?.enfermedad === 'string'
-          ? pet.enfermedad
-          : (pet?.enfermedad?.nombre ?? ''),
-      owner:
-        typeof pet?.owner === 'string' ? pet.owner : (pet?.owner?.nombre ?? ''),
-      raza:
-        typeof pet?.raza === 'string' ? pet.raza : (pet?.raza?.nombre ?? ''),
-      especie:
-        typeof pet?.especie === 'string'
-          ? pet.especie
-          : (pet?.raza?.especie?.nombre ?? pet?.especie?.nombre ?? ''),
-    };
-  }
-
-  private toOwner(pet: any): Client {
-    if (pet?.owner && typeof pet.owner === 'object') {
-      return pet.owner;
-    }
-
-    if (typeof pet?.owner === 'string') {
-      return new Client(undefined, pet.owner);
-    }
-
-    return new Client();
-  }
-
-  private calculateEdadFromFecha(
-    fechaNacimiento: Date | string | null | undefined,
-  ): number {
-    if (!fechaNacimiento) {
-      return 0;
-    }
-
-    const birthDate = new Date(fechaNacimiento);
-    if (Number.isNaN(birthDate.getTime())) {
-      return 0;
-    }
-
-    const today = new Date();
-    let age = today.getFullYear() - birthDate.getFullYear();
-    const monthDiff = today.getMonth() - birthDate.getMonth();
-
-    if (
-      monthDiff < 0 ||
-      (monthDiff === 0 && today.getDate() < birthDate.getDate())
-    ) {
-      age--;
-    }
-
-    return age;
-  }
-
   openDeleteModal(): void {
     this.deleteSuccessMessage = '';
     this.shouldNavigateAfterDelete = false;
@@ -261,23 +199,21 @@ export class InfoTratamientoComponent implements OnInit {
 
   closeDeleteModal(): void {
     const shouldNavigate = this.shouldNavigateAfterDelete;
-    const petId = this.pet?.id;
 
     this.showDeleteModal = false;
     this.deleteSuccessMessage = '';
     this.shouldNavigateAfterDelete = false;
 
-    if (shouldNavigate && petId != null) {
+    if (shouldNavigate) {
       this.router.navigateByUrl(this.backLink);
     }
   }
 
   confirmDeleteTratamiento(): void {
-    const tratamientoId = this.tratamiento?.id;
-    const petId = this.pet?.id;
+    const tratamientoId = this.resolveTratamientoId(this.tratamiento);
 
-    if (tratamientoId == null || petId == null) {
-      this.closeDeleteModal();
+    if (tratamientoId == null) {
+      console.error('No fue posible resolver el ID del tratamiento a eliminar.');
       return;
     }
 
@@ -290,5 +226,23 @@ export class InfoTratamientoComponent implements OnInit {
         console.error('Error al eliminar tratamiento:', error);
       },
     });
+  }
+
+  private resolveTratamientoId(
+    tratamiento: TratamientoDetalleDto | null,
+  ): number | null {
+    const rawTratamiento = tratamiento as
+      | (TratamientoDetalleDto & {
+          tratamientoId?: number;
+          idTratamiento?: number;
+        })
+      | null;
+
+    return (
+      rawTratamiento?.id ??
+      rawTratamiento?.tratamientoId ??
+      rawTratamiento?.idTratamiento ??
+      this.routeTratamientoId
+    );
   }
 }

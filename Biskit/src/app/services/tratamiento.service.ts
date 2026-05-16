@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { Tratamiento } from '../models/Tratamiento/tratamiento';
 import { HttpClient } from '@angular/common/http';
 import { TratamientoDto } from '../models/dtos/tratamiento-dto';
+import { TratamientoDetalleDto } from '../models/dtos/tratamiento-detalle-dto';
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +13,7 @@ export class TratamientoService {
 
   // ----- Crear y Actualizar Tratamiento (CREATE/UPDATE) -----
   saveTratamiento(tratamientoDto: TratamientoDto): Observable<Tratamiento> {
-    if (tratamientoDto.id)
+    if (tratamientoDto.id != null)
       return this.http.put<Tratamiento>(
         `http://localhost:8080/tratamientos/update/${tratamientoDto.id}`,
         tratamientoDto,
@@ -25,8 +26,8 @@ export class TratamientoService {
   }
 
   // ----- Mostrar Tratamiento por ID (READ) -----
-  findById(id: number): Observable<Tratamiento> {
-    return this.http.get<Tratamiento>(
+  findById(id: number): Observable<TratamientoDetalleDto> {
+    return this.http.get<TratamientoDetalleDto>(
       `http://localhost:8080/tratamientos/${id}`,
     );
   }

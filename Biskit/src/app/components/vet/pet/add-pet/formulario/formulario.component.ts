@@ -107,24 +107,9 @@ export class FormularioComponent implements OnInit {
         .pipe(
           mergeMap((pet) => {
             this.loadedPetDto = pet;
+            this.applyPetDtoToForm(pet);
 
-            this.formPet.nombre = pet.nombre ?? '';
-            this.formPet.estado = pet.estado ?? true;
-            this.formPet.peso = pet.peso ?? null;
-            this.formPet.urlFoto = pet.urlFoto ?? '';
-
-            // Sincroniza los search inputs con los valores cargados
-            this.clienteSearch = pet.owner ?? '';
-            this.especieSearch = pet.especie ?? '';
-            this.razaSearch = pet.raza ?? '';
-            this.enfermedadSearch = pet.enfermedad ?? '';
-
-            this.fechaNacimientoStr = this.getApproxBirthDate(pet.edad);
-            this.formPet.fechaNacimiento = new Date(this.fechaNacimientoStr);
-
-            this.syncPetSelectionsFromDto();
-
-            return this.petService.getPetTratamientos(pet.id ?? 0);
+            return this.petService.getPetTratamientos(this.formPet.id ?? 0);
           }),
         )
         .subscribe((tratamientos) => {
@@ -515,9 +500,7 @@ export class FormularioComponent implements OnInit {
     }
 
     this.formPet.fechaNacimiento = new Date(this.fechaNacimientoStr);
-
-    //Imprimir el objeto formPet para verificar que se esté armando correctamente antes de enviarlo
-    console.log('Mascota a guardar:', this.formPet);
+    this.syncPetRelationsFromSelections();
 
     this.petService.savePet(this.formPet).subscribe({
       next: () => {
@@ -576,6 +559,9 @@ export class FormularioComponent implements OnInit {
       (cliente) => cliente.nombre === pet.owner,
     );
     this.selectedClienteId = clientMatch?.id ?? null;
+    if (clientMatch) {
+      this.formPet.owner = clientMatch;
+    }
 
     const especieMatch = this.especies.find(
       (especie) => especie.nombre === pet.especie,
@@ -594,16 +580,65 @@ export class FormularioComponent implements OnInit {
       return sameName && sameSpecies;
     });
     this.selectedRazaId = razaMatch?.id ?? null;
+    if (razaMatch) {
+      this.formPet.raza = razaMatch;
+      this.selectedEspecieId = razaMatch.especie?.id ?? this.selectedEspecieId;
+      this.filterRazasByEspecie(this.selectedEspecieId);
+    }
 
     const enfermedadMatch = this.enfermedades.find(
       (enfermedad) => enfermedad.nombre === pet.enfermedad,
     );
     this.selectedEnfermedadId = enfermedadMatch?.id ?? null;
+    if (enfermedadMatch) {
+      this.formPet.enfermedad = enfermedadMatch;
+    }
   }
 
-  private getApproxBirthDate(edad: number): string {
+  private syncPetRelationsFromSelections(): void {
+    const cliente = this.clientes.find((c) => c.id === this.selectedClienteId);
+    const raza = this.razas.find((r) => r.id === this.selectedRazaId);
+    const enfermedad = this.enfermedades.find(
+      (e) => e.id === this.selectedEnfermedadId,
+    );
+
+    if (cliente) {
+      this.formPet.owner = cliente;
+    }
+    if (raza) {
+      this.formPet.raza = raza;
+    }
+    if (enfermedad) {
+      this.formPet.enfermedad = enfermedad;
+    }
+  }
+
+  private applyPetDtoToForm(pet: PetDTO): void {
+    this.fechaNacimientoStr = this.getApproxBirthDate(pet.edad);
+
+    this.formPet = new Pet(
+      pet.id ?? this.petId ?? undefined,
+      pet.nombre ?? '',
+      pet.estado ?? true,
+      new Date(this.fechaNacimientoStr),
+      pet.peso ?? null,
+      pet.urlFoto ?? '',
+    );
+
+    // Sincroniza los search inputs con los valores cargados
+    this.clienteSearch = pet.owner ?? '';
+    this.especieSearch = pet.especie ?? '';
+    this.razaSearch = pet.raza ?? '';
+    this.enfermedadSearch = pet.enfermedad ?? '';
+
+    this.syncPetSelectionsFromDto();
+  }
+
+  private getApproxBirthDate(edad: number | null | undefined): string {
+    const edadValue =
+      typeof edad === 'number' && Number.isFinite(edad) ? edad : 0;
     const date = new Date();
-    date.setFullYear(date.getFullYear() - (Number.isFinite(edad) ? edad : 0));
+    date.setFullYear(date.getFullYear() - edadValue);
     return date.toISOString().split('T')[0];
   }
 }

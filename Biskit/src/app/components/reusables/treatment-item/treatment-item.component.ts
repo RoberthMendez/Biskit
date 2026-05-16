@@ -84,10 +84,7 @@ export class TreatmentItemComponent {
 
   protected get drugGridClasses(): string {
     const drugCount = this.drugNames.length;
-    const base =
-      this.variant === 'vet'
-        ? 'custom-scroll grid max-h-13 gap-x-4 gap-y-2 pr-1'
-        : 'custom-scroll grid max-h-16 gap-x-4 gap-y-2 pr-1';
+    const base = 'custom-scroll grid gap-x-4 gap-y-2 pr-1';
 
     const columns =
       drugCount <= 3
@@ -108,6 +105,14 @@ export class TreatmentItemComponent {
           : 'overflow-visible';
 
     return `${base} ${columns} ${overflow}`;
+  }
+
+  protected get drugGridMaxHeight(): string {
+    const rows = Math.min(Math.max(this.drugNames.length, 1), 3);
+    const textLineHeightRem = 1.5;
+    const rowGapRem = 0.125;
+
+    return `${rows * textLineHeightRem + (rows - 1) * rowGapRem}rem`;
   }
 
   protected getDrugColumns(drogas: string[]): string[][] {
