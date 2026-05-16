@@ -13,17 +13,20 @@ import { BackButtonComponent } from '../../../reusables/back-button/back-button.
   templateUrl: './add-vet.component.html',
 })
 export class AddVetComponent {
-
   vetId: number | null = null;
   adminId: number | null = null;
   backLink: Array<string | number> = ['/admin', 0, 'vets'];
   backLabel = 'Lista de Veterinarios';
   returnRoute: string | Array<string | number> = ['/admin', 0, 'vets'];
 
-  constructor(private route: ActivatedRoute, private router: Router, private vetService: VetService, private adminService: AdminService) {}
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private vetService: VetService,
+    private adminService: AdminService,
+  ) {}
 
   ngOnInit(): void {
-    this.comprobarIds();
     const idVet = this.route.snapshot.paramMap.get('idVet');
     this.vetId = idVet ? Number(idVet) : null;
 
@@ -34,43 +37,12 @@ export class AddVetComponent {
       this.backLink = ['/admin', this.adminId, 'vets'];
     }
 
-    const fromDetail = this.route.snapshot.queryParamMap.get('from') === 'detail';
+    const fromDetail =
+      this.route.snapshot.queryParamMap.get('from') === 'detail';
     if (this.adminId != null && this.vetId != null && fromDetail) {
       this.backLink = ['/admin', this.adminId, 'vets', this.vetId];
       this.backLabel = 'Detalle de Veterinario';
       this.returnRoute = ['/admin', this.adminId, 'vets', this.vetId];
     }
   }
-
-  private comprobarIds(): void {
-    const idAdmin = this.route.snapshot.paramMap.get('idAdmin');
-    const idVet = this.route.snapshot.paramMap.get('idVet');
-
-    if (idAdmin) {
-      this.adminService.existsById(Number(idAdmin)).subscribe({
-        next: () => {
-        },
-        error: (error) => {
-          const mensaje = error.error?.detalle || 'Administrador no encontrado';
-          this.router.navigate(['/error'], {
-            queryParams: { mensaje },
-          });
-        },
-      });
-    }
-
-    if (idVet) {
-      this.vetService.existsById(Number(idVet)).subscribe({
-        next: () => {
-        },
-        error: (error) => {
-          const mensaje = error.error?.detalle || 'Veterinario no encontrado';
-          this.router.navigate(['/error'], {
-            queryParams: { mensaje },
-          });
-        },
-      });
-    }
-  }
-
 }

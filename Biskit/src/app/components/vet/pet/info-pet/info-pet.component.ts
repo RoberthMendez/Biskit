@@ -38,8 +38,6 @@ export class InfoPetComponent {
   ) {}
 
   ngOnInit(): void {
-    this.comprobarIds();
-
     const id = this.route.snapshot.paramMap.get('petId');
     const petId = Number(id);
     const routePath = this.route.snapshot.routeConfig?.path ?? '';
@@ -72,49 +70,6 @@ export class InfoPetComponent {
         error: (error) => {
           console.error('Error al cambiar estado:', error);
           this.pet.estado = !nuevoEstado;
-        },
-      });
-    }
-  }
-
-  private comprobarIds() {
-    const vetIdParam = Number(this.route.snapshot.paramMap.get('vetId'));
-    if (vetIdParam) {
-      this.vetService.existsById(vetIdParam).subscribe({
-        next: () => {
-          this.vetId = vetIdParam;
-        },
-        error: (error) => {
-          const mensaje = error.error?.detalle || 'Veterinario no encontrado';
-          this.router.navigate(['/error'], {
-            queryParams: { mensaje },
-          });
-        },
-      });
-    }
-
-    const petIdParam = Number(this.route.snapshot.paramMap.get('petId'));
-    if (petIdParam) {
-      this.petService.existsById(petIdParam).subscribe({
-        next: () => {},
-        error: (error) => {
-          const mensaje = error.error?.detalle || 'Mascota no encontrada';
-          this.router.navigate(['/error'], {
-            queryParams: { mensaje },
-          });
-        },
-      });
-    }
-
-    const adminIdParam = Number(this.route.snapshot.paramMap.get('idAdmin'));
-    if (adminIdParam) {
-      this.adminService.existsById(adminIdParam).subscribe({
-        next: () => {},
-        error: (error) => {
-          const mensaje = error.error?.detalle || 'Administrador no encontrado';
-          this.router.navigate(['/error'], {
-            queryParams: { mensaje },
-          });
         },
       });
     }

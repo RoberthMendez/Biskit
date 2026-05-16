@@ -82,9 +82,7 @@ export class ClientsComponent {
     private router: Router,
   ) {}
 
-  ngOnInit(){
-    
-    this.comprobarIds();
+  ngOnInit() {
     const routePath = this.route.snapshot.routeConfig?.path ?? '';
     this.isAdminView = routePath.startsWith('admin/');
     const vetIdParam = this.route.snapshot.paramMap.get('vetId');
@@ -123,7 +121,9 @@ export class ClientsComponent {
       this.filteredClients = this.clients;
       // clear visible input in child component; fallback to DOM if needed
       this.searchComponent?.clear();
-      const el = document.querySelector('app-clients-buscador input') as HTMLInputElement | null;
+      const el = document.querySelector(
+        'app-clients-buscador input',
+      ) as HTMLInputElement | null;
       if (el) el.value = '';
     } else {
       this.filteredClients = this.clients.filter(
@@ -144,17 +144,13 @@ export class ClientsComponent {
 
   confirmDelete() {
     if (this.selectedId !== null) {
-       this.clientService.deleteClient(this.selectedId).subscribe(
-        () => {
-          this.clientService.findAll().subscribe(
-            (clients) => {
-              this.clients = clients;
-              this.onSearch(this.searchTerm); 
-              this.deleteSuccessMessage = 'Cliente eliminado correctamente';
-            }
-          );
-        }
-      );
+      this.clientService.deleteClient(this.selectedId).subscribe(() => {
+        this.clientService.findAll().subscribe((clients) => {
+          this.clients = clients;
+          this.onSearch(this.searchTerm);
+          this.deleteSuccessMessage = 'Cliente eliminado correctamente';
+        });
+      });
       return;
     }
 
@@ -198,36 +194,5 @@ export class ClientsComponent {
     }
 
     return row as Client;
-  }
-
-  private comprobarIds() {
-    const vetIdParam = Number(this.route.snapshot.paramMap.get('vetId'));
-
-     if (vetIdParam) {
-      this.vetService.existsById(vetIdParam).subscribe({
-        next: () => {
-        },
-        error: (error) => {
-          const mensaje = error.error?.detalle || 'Veterinario no encontrado';
-          this.router.navigate(['/error'], {
-            queryParams: { mensaje },
-          });
-        },
-      });
-    }
-
-    const adminIdParam = Number(this.route.snapshot.paramMap.get('idAdmin'));
-    if (adminIdParam) {
-      this.adminService.existsById(adminIdParam).subscribe({
-        next: () => {
-        },
-        error: (error) => {
-          const mensaje = error.error?.detalle || 'Administrador no encontrado';
-          this.router.navigate(['/error'], {
-            queryParams: { mensaje },
-          });
-        },
-      });
-    }
   }
 }

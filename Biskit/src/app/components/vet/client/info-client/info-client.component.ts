@@ -40,7 +40,6 @@ export class InfoClientComponent {
   ) {}
 
   ngOnInit(): void {
-    this.comprobarIds();
     const routePath = this.route.snapshot.routeConfig?.path ?? '';
     const isAdminView = routePath.startsWith('admin/');
     const contextParam = isAdminView ? 'idAdmin' : 'vetId';
@@ -110,46 +109,5 @@ export class InfoClientComponent {
     }
 
     this.closeModal();
-  }
-
-  private comprobarIds() {
-    const vetIdParam = Number(this.route.snapshot.paramMap.get('vetId'));
-    if (vetIdParam) {
-      this.vetService.existsById(vetIdParam).subscribe({
-        next: () => {
-          this.vetId = vetIdParam;
-        },
-        error: (error) => {
-          const mensaje = error.error?.detalle || 'Veterinario no encontrado';
-          this.router.navigate(['/error'], {
-            queryParams: { mensaje },
-          });
-        },
-      });
-    }
-
-    const clientIdParam = Number(this.route.snapshot.paramMap.get('id'));
-    this.clientService.existsById(clientIdParam).subscribe({
-      next: () => {},
-      error: (error) => {
-        const mensaje = error.error?.detalle || 'Cliente no encontrado';
-        this.router.navigate(['/error'], {
-          queryParams: { mensaje },
-        });
-      },
-    });
-
-    const adminIdParam = Number(this.route.snapshot.paramMap.get('idAdmin'));
-    if (adminIdParam) {
-      this.adminService.existsById(adminIdParam).subscribe({
-        next: () => {},
-        error: (error) => {
-          const mensaje = error.error?.detalle || 'Administrador no encontrado';
-          this.router.navigate(['/error'], {
-            queryParams: { mensaje },
-          });
-        },
-      });
-    }
   }
 }

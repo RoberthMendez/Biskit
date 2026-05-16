@@ -35,7 +35,8 @@ export class AddClientComponent {
     const isAdminView = routePath.startsWith('admin/');
     const contextParam = isAdminView ? 'idAdmin' : 'vetId';
     const contextId = this.route.snapshot.paramMap.get(contextParam) ?? '';
-    const fromDetail = this.route.snapshot.queryParamMap.get('from') === 'detail';
+    const fromDetail =
+      this.route.snapshot.queryParamMap.get('from') === 'detail';
 
     if (contextId) {
       this.basePath = `/${isAdminView ? 'admin' : 'vet'}/${contextId}`;
@@ -46,7 +47,6 @@ export class AddClientComponent {
     this.clientId = id ? Number(id) : null;
 
     this.updateBackNavigation(fromDetail);
-    this.comprobarIds();
   }
 
   private updateBackNavigation(fromDetail = false): void {
@@ -59,48 +59,5 @@ export class AddClientComponent {
 
     this.backLink = [this.basePath, 'clients'];
     this.backLabel = 'Lista de Clientes';
-  }
-
-  private comprobarIds() {
-    const vetIdParam = Number(this.route.snapshot.paramMap.get('vetId'));
-
-    if (vetIdParam) {
-      this.vetService.existsById(vetIdParam).subscribe({
-        next: () => {
-        },
-        error: (error) => {
-          const mensaje = error.error?.detalle || 'Veterinario no encontrado';
-          this.router.navigate(['/error'], {
-            queryParams: { mensaje },
-          });
-        },
-      });
-    }
-
-    if (this.clientId) {
-      this.clientService.existsById(this.clientId).subscribe({
-        next: () => {},
-        error: (error) => {
-          const mensaje = error.error?.detalle || 'Cliente no encontrado';
-          this.router.navigate(['/error'], {
-            queryParams: { mensaje },
-          });
-        },
-      });
-    }
-
-    const adminIdParam = Number(this.route.snapshot.paramMap.get('idAdmin'));
-    if (adminIdParam) {
-      this.adminService.existsById(adminIdParam).subscribe({
-        next: () => {
-        },
-        error: (error) => {
-          const mensaje = error.error?.detalle || 'Administrador no encontrado';
-          this.router.navigate(['/error'], {
-            queryParams: { mensaje },
-          });
-        },
-      });
-    }
   }
 }
