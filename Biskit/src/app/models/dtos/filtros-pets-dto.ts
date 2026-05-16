@@ -1,5 +1,4 @@
 export class FiltrosPetsDto {
-
   estado?: boolean;
   especie?: string;
   raza?: string;
@@ -7,5 +6,6 @@ export class FiltrosPetsDto {
   peso?: number;
   enfermedad?: string;
   tratamientos?: number;
-  
+  misMascotas?: boolean;
+  vetId?: number;
 }

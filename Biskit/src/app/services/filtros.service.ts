@@ -11,12 +11,11 @@ import { Vet } from '../models/Vets/vet-cl';
 export class FiltrosService {
   constructor(private http: HttpClient) {}
 
-  getPetsFiltrados(
-    filtro: FiltrosPetsDto,
-    misMascotas?: boolean,
-    vetId?: number,
-  ) {
+  getPetsFiltrados(filtro: FiltrosPetsDto) {
     let params = new HttpParams();
+    const tieneVetIdValido =
+      filtro.vetId !== undefined && filtro.vetId !== null && filtro.vetId > 0;
+    const vetId = tieneVetIdValido ? filtro.vetId : undefined;
 
     if (filtro.estado != null)
       params = params.set('estado', filtro.estado.toString());
@@ -29,16 +28,9 @@ export class FiltrosService {
     if (filtro.enfermedad) params = params.set('enfermedad', filtro.enfermedad);
     if (filtro.tratamientos != null)
       params = params.set('tratamientos', filtro.tratamientos.toString());
-
-    // If requesting only "my pets", backend expects misMascotas and vetId
-    if (misMascotas === true && vetId != null) {
-      params = params.set('misMascotas', 'true');
-      params = params.set('vetId', vetId.toString());
-      // Call the vets filtering endpoint which supports returning pets for a vet
-      return this.http.get<PetDTO[]>(`http://localhost:8080/filtros/vets`, {
-        params,
-      });
-    }
+    if (filtro.misMascotas === true && tieneVetIdValido)
+      params = params.set('misMascotas', filtro.misMascotas.toString());
+    if (vetId != null) params = params.set('vetId', vetId.toString());
 
     return this.http.get<PetDTO[]>(`http://localhost:8080/filtros/pets`, {
       params,

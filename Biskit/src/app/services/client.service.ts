@@ -12,6 +12,7 @@ export class ClientService {
 
   // ----- Crear y Actualizar Cliente (CREATE/UPDATE) -----
   saveClient(client: Client): Observable<Client> {
+    console.log('Guardando cliente:', client);
     if (client.id)
       return this.http.put<Client>(
         `http://localhost:8080/clients/update/${client.id}`,

@@ -144,7 +144,13 @@ export class BotonFiltrosComponent implements OnInit {
 
     if (this.tipo === 'pets' && filtrosGuardados.filtrosPets) {
       this.filtrosPets = { ...filtrosGuardados.filtrosPets };
-      this.mostrarMisMascotas = Boolean(filtrosGuardados.mostrarMisMascotas);
+      this.mostrarMisMascotas =
+        this.filtrosPets.misMascotas ??
+        filtrosGuardados.mostrarMisMascotas ??
+        false;
+      this.mostrarMisMascotas = Boolean(
+        this.filtrosPets.misMascotas ?? filtrosGuardados.mostrarMisMascotas,
+      );
       this.estadoPetSearch = this.getEstadoLabel(this.filtrosPets.estado);
       this.especieSearch = this.filtrosPets.especie || '';
       this.razaSearch = this.filtrosPets.raza || '';
@@ -201,6 +207,11 @@ export class BotonFiltrosComponent implements OnInit {
 
   private getStorageKey(): string {
     return `boton-filtros:${this.tipo}`;
+  }
+
+  onMostrarMisMascotasChange(value: boolean): void {
+    this.mostrarMisMascotas = value;
+    this.filtrosPets.misMascotas = value ? true : undefined;
   }
 
   onEspecieChange() {
@@ -297,25 +308,23 @@ export class BotonFiltrosComponent implements OnInit {
     this.normalizarFiltros();
 
     if (this.tipo === 'pets') {
-      this.filtrosService
-        .getPetsFiltrados(this.filtrosPets, this.mostrarMisMascotas, this.vetId)
-        .subscribe({
-          next: (pets) => {
-            this.tieneFilterActivos = this.verificarFiltrosActivos();
-            if (guardarEstado) {
-              this.filtrosEstadoService.guardar(this.getStorageKey(), {
-                filtrosPets: this.filtrosPets,
-                mostrarMisMascotas: this.mostrarMisMascotas,
-              });
-            }
-            this.filtrosAplicados.emit(pets);
-            this.isLoading = false;
-            this.cerrarModal();
-          },
-          error: () => {
-            this.isLoading = false;
-          },
-        });
+      this.filtrosService.getPetsFiltrados(this.filtrosPets).subscribe({
+        next: (pets) => {
+          this.tieneFilterActivos = this.verificarFiltrosActivos();
+          if (guardarEstado) {
+            this.filtrosEstadoService.guardar(this.getStorageKey(), {
+              filtrosPets: this.filtrosPets,
+              mostrarMisMascotas: this.mostrarMisMascotas,
+            });
+          }
+          this.filtrosAplicados.emit(pets);
+          this.isLoading = false;
+          this.cerrarModal();
+        },
+        error: () => {
+          this.isLoading = false;
+        },
+      });
     } else {
       this.filtrosService.getVetsFiltrados(this.filtrosVets).subscribe({
         next: (vets: any) => {
@@ -338,11 +347,17 @@ export class BotonFiltrosComponent implements OnInit {
 
   private normalizarFiltros(): void {
     if (this.tipo === 'pets') {
+      const tieneVetIdValido =
+        this.vetId !== undefined && this.vetId !== null && this.vetId > 0;
+
       this.filtrosPets = {
         ...this.filtrosPets,
         edad: this.normalizarNumero(this.filtrosPets.edad),
         peso: this.normalizarNumero(this.filtrosPets.peso),
         tratamientos: this.normalizarNumero(this.filtrosPets.tratamientos),
+        misMascotas:
+          this.mostrarMisMascotas && tieneVetIdValido ? true : undefined,
+        vetId: tieneVetIdValido ? this.vetId : undefined,
       };
 
       if (!this.filtrosPets.especie) {
@@ -367,10 +382,15 @@ export class BotonFiltrosComponent implements OnInit {
 
   private verificarFiltrosActivos(): boolean {
     if (this.tipo === 'pets') {
+      const misMascotas = this.filtrosPets.misMascotas;
+      const filtrosVisuales = { ...this.filtrosPets };
+      delete filtrosVisuales.misMascotas;
+      delete filtrosVisuales.vetId;
+
       return (
-        Object.values(this.filtrosPets).some(
+        Object.values(filtrosVisuales).some(
           (v) => v !== undefined && v !== null && v !== '',
-        ) || this.mostrarMisMascotas
+        ) || Boolean(misMascotas)
       );
     } else {
       return Object.values(this.filtrosVets).some(

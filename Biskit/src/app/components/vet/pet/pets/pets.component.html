@@ -108,7 +108,8 @@
     </svg>
     <input
       type="text"
-      [(ngModel)]="searchTerm"
+      [ngModel]="searchTerm"
+      (ngModelChange)="onSearchTermChange($event)"
       placeholder="Buscar mascota..."
       class="ml-2.5 w-full border-none bg-transparent text-xs text-[#2b5392] focus:outline-none"
     />

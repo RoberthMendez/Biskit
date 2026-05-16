@@ -1,8 +1,11 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { AdminService } from '../../../services/admin.service';
 import { VetService } from '../../../services/vet.service';
 import { ClientService } from '../../../services/client.service';
 import { Router, RouterLink } from '@angular/router';
+import { Admin } from '../../../models/Admin/admin';
+import { Vet } from '../../../models/Vets/vet-cl';
+import { Client } from '../../../models/Client/client';
 
 @Component({
   selector: 'app-header',
@@ -32,40 +35,65 @@ export class HeaderComponent {
       (currentUrl.startsWith('/vet') && this.rolUsuario !== 'VET') ||
       (currentUrl.startsWith('/client') && this.rolUsuario !== 'CLIENT')
     ) {
-
       localStorage.removeItem('token');
       localStorage.removeItem('authRole');
 
       return;
     }
 
-    if (this.rolUsuario === 'VET') {
-      this.vetService.getDetails().subscribe((vet) => {
-        this.nombreUsuario = vet.nombre;
-        this.idUsuario = vet.id!;
+    // Verificar coincidencia entre rol y ruta
+    if (
+      (currentUrl.startsWith('/admin') && this.rolUsuario !== 'ADMIN') ||
+      (currentUrl.startsWith('/vet') && this.rolUsuario !== 'VET') ||
+      (currentUrl.startsWith('/client') && this.rolUsuario !== 'CLIENT')
+    ) {
+      localStorage.removeItem('token');
+      localStorage.removeItem('authRole');
+
+      return;
+    }
+
+    if (this.rolUsuario === 'VET' || this.rolUsuario === 'VETERINARIO') {
+      this.rolUsuario = 'VET';
+      this.vetService.getDetails().subscribe({
+        next: (vet) => this.setUserDetails(vet),
+        error: () => this.clearUserDetails(),
       });
     }
     if (this.rolUsuario === 'ADMIN') {
-      this.adminService.getDetails()
-        .subscribe((admin) => {
-          this.nombreUsuario = admin.nombre;
-          this.idUsuario = admin.id!;
-        });
+      this.adminService.getDetails().subscribe({
+        next: (admin) => this.setUserDetails(admin),
+        error: () => this.clearUserDetails(),
+      });
     }
-    if (this.rolUsuario === 'CLIENT') {
-      this.clientService.getDetails().subscribe((client) => {
-        this.nombreUsuario = client.nombre;
-        this.idUsuario = client.id!;
+    if (this.rolUsuario === 'CLIENT' || this.rolUsuario === 'CLIENTE') {
+      this.rolUsuario = 'CLIENT';
+      this.clientService.getDetails().subscribe({
+        next: (client) => this.setUserDetails(client),
+        error: () => this.clearUserDetails(),
       });
     }
   }
 
-  cerrarSesion() {
+  private setUserDetails(user: Admin | Vet | Client | null): void {
+    if (!user) {
+      this.clearUserDetails();
+      return;
+    }
 
+    this.nombreUsuario = user.nombre ?? '';
+    this.idUsuario = user.id ?? null;
+  }
+
+  private clearUserDetails(): void {
+    this.nombreUsuario = '';
+    this.idUsuario = null;
+  }
+
+  cerrarSesion() {
     localStorage.removeItem('token');
     localStorage.removeItem('authRole');
 
     this.router.navigate(['/']);
   }
-
 }

@@ -13,6 +13,7 @@ import { HeaderComponent } from './components/reusables/header/header.component'
 export class AppComponent {
   title = 'Biskit';
   mostrarHeader = false;
+  private scrollResetTimerIds: number[] = [];
 
   constructor(router: Router) {
     router.events
@@ -58,6 +59,36 @@ export class AppComponent {
             localStorage.setItem('authId', id);
           }
         }
+
+        this.resetScrollAfterNavigation(ruta);
       });
+  }
+
+  private resetScrollAfterNavigation(ruta: string): void {
+    if (ruta.includes('#')) {
+      return;
+    }
+
+    this.scrollResetTimerIds.forEach((timerId) =>
+      window.clearTimeout(timerId),
+    );
+    this.scrollResetTimerIds = [];
+
+    this.scrollAppToTop();
+
+    [0, 50, 150].forEach((delay) => {
+      const timerId = window.setTimeout(() => {
+        this.scrollAppToTop();
+      }, delay);
+
+      this.scrollResetTimerIds.push(timerId);
+    });
+  }
+
+  private scrollAppToTop(): void {
+    const appShell = document.querySelector<HTMLElement>('.app-shell');
+
+    appShell?.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
   }
 }

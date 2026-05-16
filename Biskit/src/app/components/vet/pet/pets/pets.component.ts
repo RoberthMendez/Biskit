@@ -97,6 +97,12 @@ export class PetsComponent {
     this.petsFiltrados = [];
     this.showOnlyMyPets = false;
     this.botonFiltros?.resetWithoutEmit();
+    this.scrollListToTop();
+  }
+
+  onSearchTermChange(value: string): void {
+    this.searchTerm = value;
+    this.scrollListToTop();
   }
 
   private finishLoadingPets(): void {
@@ -117,6 +123,14 @@ export class PetsComponent {
         this.showCardsTimeoutId = undefined;
       }, 20);
     }, 500);
+  }
+
+  private scrollListToTop(): void {
+    requestAnimationFrame(() => {
+      document
+        .querySelector<HTMLElement>('.app-shell')
+        ?.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+    });
   }
 
   get filteredPets(): PetListado[] {

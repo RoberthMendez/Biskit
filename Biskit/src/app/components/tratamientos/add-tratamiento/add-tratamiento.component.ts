@@ -8,6 +8,7 @@ import { Vet } from '../../../models/Vets/vet-cl';
 import { DrogaDto } from '../../../models/dtos/droga-dto';
 import { Tratamiento } from '../../../models/Tratamiento/tratamiento';
 import { TratamientoDto } from '../../../models/dtos/tratamiento-dto';
+import { TratamientoDetalleDto } from '../../../models/dtos/tratamiento-detalle-dto';
 import { PetService } from '../../../services/pet.service';
 import { VetService } from '../../../services/vet.service';
 import { TratamientoService } from '../../../services/tratamiento.service';
@@ -55,7 +56,7 @@ export class AddTratamientoComponent implements OnInit {
   backLabel = 'Lista de Mascotas';
   private preselectedPetId: number | null = null;
   private editTratamientoId: number | null = null;
-  private loadedTratamiento: Tratamiento | null = null;
+  private loadedTratamiento: TratamientoDetalleDto | null = null;
   private requestedPetPrefill = false;
   private requestedVetPrefill = false;
 
@@ -138,7 +139,7 @@ export class AddTratamientoComponent implements OnInit {
   }
 
   get isEditMode(): boolean {
-    return this.tratamiento.id != null;
+    return this.editTratamientoId != null || this.tratamiento.id != null;
   }
 
   get filteredPets(): PetDTO[] {
@@ -284,9 +285,10 @@ export class AddTratamientoComponent implements OnInit {
 
     this.saving = true;
     const petId = this.tratamiento.pet.id;
+    const tratamientoId = this.editTratamientoId ?? this.tratamiento.id;
 
     const tratamientoDto = new TratamientoDto(
-      this.tratamiento.id,
+      tratamientoId,
       this.fechaForm,
       this.tratamiento.pet.id,
       this.tratamiento.vet.id,
@@ -371,29 +373,37 @@ export class AddTratamientoComponent implements OnInit {
     }
 
     const currentTratamiento = this.loadedTratamiento;
-    this.tratamiento.id = currentTratamiento.id;
+    const tratamientoId = this.resolveEditTratamientoId(currentTratamiento);
+    this.tratamiento.id = tratamientoId;
+    this.editTratamientoId = tratamientoId ?? this.editTratamientoId;
     this.fechaForm = this.toDateInputValue(currentTratamiento.fecha);
 
-    const petId = currentTratamiento.pet?.id;
+    const petId =
+      currentTratamiento.pet?.id ?? this.preselectedPetId ?? undefined;
     if (petId != null) {
       const selectedPet = this.findPetInCatalog(petId);
       if (selectedPet) {
         this.selectPet(selectedPet);
-      } else {
+      } else if (currentTratamiento.pet?.id != null) {
         this.selectPet(currentTratamiento.pet);
+        this.loadPetForPrefill(Number(petId));
+      } else {
+        this.tratamiento.pet = { id: petId } as any;
         this.loadPetForPrefill(Number(petId));
       }
     }
 
-    const vetId = currentTratamiento.vet?.id;
-    if (this.isAdminView) {
-      this.tratamiento.vet = new Vet();
-      this.vetSearchText = '';
-    } else if (vetId != null) {
+    const vetId = currentTratamiento.vet?.id ?? this.resolveRouteVetId();
+    if (vetId != null) {
       const selectedVet =
         this.vets.find((candidate) => candidate.id === vetId) ??
         currentTratamiento.vet;
-      this.selectVet(selectedVet);
+      if (selectedVet?.id != null) {
+        this.selectVet(selectedVet);
+      } else {
+        this.tratamiento.vet = { id: vetId } as any;
+        this.loadVetForPrefill(Number(vetId));
+      }
     }
 
     const selectedDrogas = (currentTratamiento.drogas ?? []) as DrogaDto[];
@@ -485,6 +495,32 @@ export class AddTratamientoComponent implements OnInit {
         this.requestedVetPrefill = false;
       },
     });
+  }
+
+  private resolveRouteVetId(): number | undefined {
+    const routeVetId = Number(this.route.snapshot.paramMap.get('vetId'));
+    if (!Number.isNaN(routeVetId) && routeVetId > 0) {
+      return routeVetId;
+    }
+
+    return this.vetId ?? undefined;
+  }
+
+  private resolveEditTratamientoId(
+    tratamiento: TratamientoDetalleDto,
+  ): number | undefined {
+    const rawTratamiento = tratamiento as TratamientoDetalleDto & {
+      tratamientoId?: number;
+      idTratamiento?: number;
+    };
+
+    return (
+      rawTratamiento.id ??
+      rawTratamiento.tratamientoId ??
+      rawTratamiento.idTratamiento ??
+      this.editTratamientoId ??
+      undefined
+    );
   }
 
   private resolveContextVetId(contextParam: string): number | null {
