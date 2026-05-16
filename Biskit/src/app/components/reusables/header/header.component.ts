@@ -41,8 +41,6 @@ export class HeaderComponent {
       return;
     }
 
-    const currentUrl = this.router.url;
-
     // Verificar coincidencia entre rol y ruta
     if (
       (currentUrl.startsWith('/admin') && this.rolUsuario !== 'ADMIN') ||
