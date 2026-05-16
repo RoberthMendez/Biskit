@@ -1,10 +1,14 @@
 import { DOCUMENT } from '@angular/common';
 import { AfterViewInit, Component, OnDestroy, inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { CaracteristicasComponent } from './caracteristicas/caracteristicas.component';
 import { ContactoComponent } from './contacto/contacto.component';
 import { CtaComponent } from './cta/cta.component';
 import { HeroBannerComponent } from './hero-banner/hero-banner.component';
-import { NavbarComponent, type NavbarOption } from '../reusables/navbar/navbar.component';
+import {
+  NavbarComponent,
+  type NavbarOption,
+} from '../reusables/navbar/navbar.component';
 import { PorQueComponent } from './por-que/por-que.component';
 import { ProcesoComponent } from './proceso/proceso.component';
 import { ServiciosComponent } from './servicios/servicios.component';
@@ -40,6 +44,39 @@ export class LandingComponent implements AfterViewInit, OnDestroy {
   private observer: IntersectionObserver | null = null;
   private timeoutIds: number[] = [];
   private rafIds: number[] = [];
+
+  constructor(private router: Router) {}
+
+  ngOnInit(): void {
+    const token = localStorage.getItem('token');
+    const rol = localStorage.getItem('authRole');
+
+    if (!token || !rol) {
+      return;
+    }
+
+    if (this.tokenExpirado(token)) {
+      localStorage.clear();
+      return;
+    }
+
+    switch (rol) {
+      case 'ADMIN':
+        this.router.navigate(['/admin']);
+        break;
+
+      case 'VET':
+        this.router.navigate(['/vet']);
+        break;
+
+      case 'CLIENT':
+        this.router.navigate(['/client']);
+        break;
+
+      default:
+        localStorage.clear();
+    }
+  }
 
   ngAfterViewInit(): void {
     const windowRef = this.document.defaultView;
@@ -152,5 +189,16 @@ export class LandingComponent implements AfterViewInit, OnDestroy {
 
     this.timeoutIds = [];
     this.rafIds = [];
+  }
+
+  private tokenExpirado(token: string): boolean {
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+
+      // exp viene en segundos
+      return payload.exp * 1000 < Date.now();
+    } catch {
+      return true;
+    }
   }
 }
