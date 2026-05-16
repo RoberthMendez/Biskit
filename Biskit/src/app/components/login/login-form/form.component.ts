@@ -36,29 +36,22 @@ export class LoginFormComponent {
     this.credencialesService.authenticate(credenciales).subscribe({
       next: (response) => {
         localStorage.setItem('token', response.token);
-        localStorage.setItem('authRole', response.rol)
+        localStorage.setItem('authRole', response.rol);
 
-       /* if (response.rol === 'CLIENT') {
-          if (response.id) {
-            this.router.navigate(['/client', response.id]);
-          } else {
-            this.error = 'No se pudo obtener el id del cliente.';
-          }
+        if (response.rol === 'CLIENT') {
+          this.router.navigate(['/client']);
           return;
         }
 
-
-        if (response.tipo === 'VETERINARIO') {
-          this.router.navigate(['/vet', response.id]);
+        if (response.rol === 'VET') {
+          this.router.navigate(['/vet']);
           return;
         }
-        */
+
         if (response.rol === 'ADMIN') {
           this.router.navigate(['/admin']);
           return;
         }
-
-
       },
       error: (error) => {
         const tipo = error.error?.tipo;

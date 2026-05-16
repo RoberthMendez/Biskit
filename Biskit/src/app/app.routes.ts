@@ -128,7 +128,7 @@ export const routes: Routes = [
       ),
   },
   {
-    path: 'client/:id',
+    path: 'client',
     loadComponent: () =>
       import('./components/client/client/client.component').then(
         (m) => m.ClientComponent,
@@ -282,7 +282,7 @@ export const routes: Routes = [
       ),
   },
   {
-    path: 'vet/:id',
+    path: 'vet',
     loadComponent: () =>
       import('./components/vet/dashboard/dashboard.component').then(
         (m) => m.DashboardComponent,

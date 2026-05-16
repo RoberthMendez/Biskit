@@ -43,27 +43,30 @@ export class DashboardComponent {
 
   ngOnInit(): void {
     this.filtrosEstadoService.limpiarTodo();
-    const id = this.route.snapshot.paramMap.get('id');
-    this.vetId = id ? Number(id) : 0;
 
-    this.vetService.findById(this.vetId).subscribe({
+    this.vetService.getDetails().subscribe({
       next: (vet) => {
         this.vet = vet;
-      },
-    });
 
-    this.vetService.countTratamientosByVet(this.vetId).subscribe({
-      next: (count) => {
-        this.numTratamientosByVet = count;
-      },
-    });
+        this.vetId = this.vet.id!;
 
-    this.vetService.findTratamientosByVet(this.vetId).subscribe({
-      next: (tratamientos) => {
-        this.tratamientos = tratamientos;
-      },
-      error: (error) => {
-        console.error('Error cargando tratamientos del veterinario:', error);
+        this.vetService.countTratamientosByVet(this.vetId).subscribe({
+          next: (count) => {
+            this.numTratamientosByVet = count;
+          },
+        });
+
+        this.vetService.findTratamientosByVet(this.vetId).subscribe({
+          next: (tratamientos) => {
+            this.tratamientos = tratamientos;
+          },
+          error: (error) => {
+            console.error(
+              'Error cargando tratamientos del veterinario:',
+              error,
+            );
+          },
+        });
       },
     });
 

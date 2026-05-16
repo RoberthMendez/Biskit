@@ -24,37 +24,22 @@ export class ClientComponent {
   ) {}
 
   ngOnInit(): void {
-    this.comprobarId();
-    this.route.paramMap
+    this.clientService
+      .getDetails()
       .pipe(
-        map((params) => Number(params.get('id') ?? 0)),
-        switchMap((id) => this.clientService.findById(id)),
         switchMap((client) => {
           this.client = client;
-          const clientId = client.id;
-          if (!clientId) {
-            return of([] as PetDTO[]);
-          }
-          return this.clientService.getPetsByClientId(clientId);
+
+          return this.clientService.getPetsByClientId(client.id!);
         }),
       )
-      .subscribe((pets) => {
-        this.pets = pets;
-      });
-  }
-
-  private comprobarId() {
-    const idParam = Number(this.route.snapshot.paramMap.get('id'));
-    if (idParam) {
-      this.clientService.existsById(idParam).subscribe({
-        next: () => {},
-        error: (error) => {
-          const mensaje = error.error?.detalle || 'Cliente no encontrado';
-          this.router.navigate(['/error'], {
-            queryParams: { mensaje },
-          });
+      .subscribe({
+        next: (pets) => {
+          this.pets = pets;
+        },
+        error: (err) => {
+          console.error(err);
         },
       });
-    }
   }
 }

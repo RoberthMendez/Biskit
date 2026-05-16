@@ -73,6 +73,7 @@ export class VetService {
     );
   }
   getDetails(): Observable<Vet> {
+    console.log("Llamando VET DETAILS")
     return this.http.get<Vet>(`http://localhost:8080/vets/details`);
   }
 }
