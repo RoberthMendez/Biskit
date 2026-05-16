@@ -57,7 +57,6 @@ export class PetsComponent {
   ) {}
 
   ngOnInit() {
-    this.comprobarIds();
     const routePath = this.route.snapshot.routeConfig?.path ?? '';
     this.isAdminView = routePath.startsWith('admin/');
 
@@ -154,36 +153,5 @@ export class PetsComponent {
     const term = this.searchTerm.trim().toLowerCase();
     if (!term) return source;
     return source.filter((pet) => pet.nombre.toLowerCase().includes(term));
-  }
-
-  private comprobarIds(): void {
-    const vetIdParam = Number(this.route.snapshot.paramMap.get('vetId'));
-    const adminIdParam = Number(this.route.snapshot.paramMap.get('idAdmin'));
-
-    if (vetIdParam) {
-      this.vetService.existsById(vetIdParam).subscribe({
-        next: () => {
-          this.vetId = vetIdParam;
-        },
-        error: (error) => {
-          const mensaje = error.error?.detalle || 'Veterinario no encontrado';
-          this.router.navigate(['/error'], {
-            queryParams: { mensaje },
-          });
-        },
-      });
-    }
-
-    if (adminIdParam) {
-      this.adminService.existsById(adminIdParam).subscribe({
-        next: () => {},
-        error: (error) => {
-          const mensaje = error.error?.detalle || 'Administrador no encontrado';
-          this.router.navigate(['/error'], {
-            queryParams: { mensaje },
-          });
-        },
-      });
-    }
   }
 }

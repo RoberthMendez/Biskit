@@ -61,7 +61,7 @@
 
       <button
         title="Cerrar sesión"
-        [routerLink]="['/']"
+        (click)="cerrarSesion()"
         class="flex items-center justify-center text-[#cfcfcf] transition-colors duration-200 hover:text-white cursor-pointer bg-transparent border-none p-0"
       >
         <svg

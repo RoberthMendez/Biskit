@@ -1,7 +1,7 @@
 <!-- clients.component.html -->
 
 <app-clients-header
-  [backRoute]="isAdminView ? ['/admin', vetId ?? ''] : ['/vet', vetId ?? '']"
+  [backRoute]="isAdminView ? '/admin' : '/vet'"
   [addRoute]="[basePath, 'clients', 'add']"
   [panelTitle]="isAdminView ? 'Panel de Administrador' : 'Panel de Veterinario'"
 ></app-clients-header>

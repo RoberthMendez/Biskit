@@ -27,6 +27,34 @@ export class HeaderComponent {
   ngOnInit() {
     this.rolUsuario = localStorage.getItem('authRole');
 
+    const currentUrl = this.router.url;
+
+    // Verificar coincidencia entre rol y ruta
+    if (
+      (currentUrl.startsWith('/admin') && this.rolUsuario !== 'ADMIN') ||
+      (currentUrl.startsWith('/vet') && this.rolUsuario !== 'VET') ||
+      (currentUrl.startsWith('/client') && this.rolUsuario !== 'CLIENT')
+    ) {
+      localStorage.removeItem('token');
+      localStorage.removeItem('authRole');
+
+      return;
+    }
+
+    const currentUrl = this.router.url;
+
+    // Verificar coincidencia entre rol y ruta
+    if (
+      (currentUrl.startsWith('/admin') && this.rolUsuario !== 'ADMIN') ||
+      (currentUrl.startsWith('/vet') && this.rolUsuario !== 'VET') ||
+      (currentUrl.startsWith('/client') && this.rolUsuario !== 'CLIENT')
+    ) {
+      localStorage.removeItem('token');
+      localStorage.removeItem('authRole');
+
+      return;
+    }
+
     if (this.rolUsuario === 'VET' || this.rolUsuario === 'VETERINARIO') {
       this.rolUsuario = 'VET';
       this.vetService.getDetails().subscribe({
@@ -62,5 +90,12 @@ export class HeaderComponent {
   private clearUserDetails(): void {
     this.nombreUsuario = '';
     this.idUsuario = null;
+  }
+
+  cerrarSesion() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('authRole');
+
+    this.router.navigate(['/']);
   }
 }

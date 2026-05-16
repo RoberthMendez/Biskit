@@ -45,7 +45,6 @@ export class InfoVetComponent {
   }
 
   ngOnInit(): void {
-    this.comprobarIds();
     this.adminId = Number(this.route.snapshot.paramMap.get('idAdmin'));
 
     const id = this.route.snapshot.paramMap.get('vetId');
@@ -107,34 +106,5 @@ export class InfoVetComponent {
     }
 
     this.closeModal();
-  }
-
-  private comprobarIds() {
-    const vetIdParam = Number(this.route.snapshot.paramMap.get('vetId'));
-    const adminIdParam = Number(this.route.snapshot.paramMap.get('idAdmin'));
-
-    if (adminIdParam) {
-      this.adminService.existsById(adminIdParam).subscribe({
-        next: () => {},
-        error: (error) => {
-          const mensaje = error.error?.detalle || 'Administrador no encontrado';
-          this.router.navigate(['/error'], {
-            queryParams: { mensaje },
-          });
-        },
-      });
-    }
-
-    if (vetIdParam) {
-      this.vetService.existsById(vetIdParam).subscribe({
-        next: () => {},
-        error: (error) => {
-          const mensaje = error.error?.detalle || 'Veterinario no encontrado';
-          this.router.navigate(['/error'], {
-            queryParams: { mensaje },
-          });
-        },
-      });
-    }
   }
 }
