@@ -23,22 +23,20 @@ export class HeaderComponent {
 
   ngOnInit() {
     this.rolUsuario = localStorage.getItem('authRole');
-    this.idUsuario = Number(localStorage.getItem('authId'));
 
-    if (this.rolUsuario === 'VETERINARIO') {
-      this.vetService.findById(this.idUsuario).subscribe((vet) => {
+    if (this.rolUsuario === 'VET') {
+      this.vetService.getDetails().subscribe((vet) => {
         this.nombreUsuario = vet.nombre;
       });
     }
     if (this.rolUsuario === 'ADMIN') {
-      this.adminService
-        .getAdminById(String(this.idUsuario))
+      this.adminService.getDetails()
         .subscribe((admin) => {
           this.nombreUsuario = admin.nombre;
         });
     }
-    if (this.rolUsuario === 'CLIENTE') {
-      this.clientService.findById(this.idUsuario).subscribe((client) => {
+    if (this.rolUsuario === 'CLIENT') {
+      this.clientService.getDetails().subscribe((client) => {
         this.nombreUsuario = client.nombre;
       });
     }

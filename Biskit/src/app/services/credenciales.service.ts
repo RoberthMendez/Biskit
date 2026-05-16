@@ -3,6 +3,7 @@ import { Credenciales } from '../models/Credenciales/credenciales';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ResCredencialesDto } from '../models/dtos/res-credenciales-dto';
+import { LoginDto } from '../models/dtos/login-dto';
 
 @Injectable({
   providedIn: 'root',
@@ -11,12 +12,12 @@ export class CredencialesService {
   constructor(private http: HttpClient) {}
 
   // ----- Autenticación de Usuario (LOGIN) -----
-  authenticate(credenciales: Credenciales): Observable<ResCredencialesDto> {
-    return this.http.post<ResCredencialesDto>(
-      'http://localhost:8080/login',
-      credenciales,
-    );
-  }
+  authenticate(credenciales: Credenciales): Observable<LoginDto> {
+    return this.http.post<LoginDto>(
+    'http://localhost:8080/login/nuevo',
+    credenciales
+  );
+}
 
   addCredenciales(credenciales: Credenciales) {
     return this.http.post('http://localhost:8080/register', credenciales);

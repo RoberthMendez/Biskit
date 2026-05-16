@@ -72,4 +72,7 @@ export class VetService {
       { params: { numSemana: numSemana.toString() } },
     );
   }
+  getDetails(): Observable<Vet> {
+    return this.http.get<Vet>(`http://localhost:8080/vets/details`);
+  }
 }

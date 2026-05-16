@@ -496,13 +496,14 @@ export class AddTratamientoComponent implements OnInit {
     }
 
     const storedRole = localStorage.getItem('authRole');
-    const storedId = Number(localStorage.getItem('authId'));
+    let storedId = 0;
+    if (storedRole === 'VET') {
+      this.vetService.getDetails().subscribe((vet) => {
+        storedId = vet.id!;
+      });
+    }
 
-    if (
-      storedRole === 'VETERINARIO' &&
-      !Number.isNaN(storedId) &&
-      storedId > 0
-    ) {
+    if (storedRole === 'VET' && !Number.isNaN(storedId) && storedId > 0) {
       return storedId;
     }
 

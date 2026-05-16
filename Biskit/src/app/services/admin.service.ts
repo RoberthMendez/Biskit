@@ -5,6 +5,7 @@ import { DrogaTratamientosCountDto } from '../models/dtos/droga-tratamientos-cou
 import { TratamientoMesDto } from '../models/dtos/tratamiento-mes-dto';
 import { TopDto } from '../models/dtos/top-dto';
 import { StockDrogaDto } from '../models/dtos/stock-droga-dto';
+import { Admin } from '../models/Admin/admin';
 
 @Injectable({
   providedIn: 'root'
@@ -78,5 +79,9 @@ export class AdminService {
   //Verificar existencia de Admin por ID
   existsById(id: number): Observable<void> {
     return this.http.get<void>(`http://localhost:8080/admin/${id}/exists`);
+  }
+
+  getDetails(): Observable<Admin> {
+      return this.http.get<Admin>(`http://localhost:8080/admin/details`);
   }
 }

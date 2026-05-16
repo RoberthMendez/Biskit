@@ -1,12 +1,14 @@
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter, withInMemoryScrolling } from '@angular/router';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { provideAnimations } from '@angular/platform-browser/animations';
 
 import { routes } from './app.routes';
+import { authInterceptor } from './helpers/auth.interceptor';
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideZoneChangeDetection({ eventCoalescing: true }),
+  providers: [
+    provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(
       routes,
       withInMemoryScrolling({
@@ -14,7 +16,7 @@ export const appConfig: ApplicationConfig = {
         anchorScrolling: 'disabled',
       }),
     ),
-    provideHttpClient(),
-    provideAnimations()
-  ]
+    provideHttpClient(withInterceptors([authInterceptor])),
+    provideAnimations(),
+  ],
 };
