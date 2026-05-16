@@ -55,19 +55,12 @@ export class DashboardComponent {
 
   ngOnInit() {
     this.filtrosEstadoService.limpiarTodo();
-    this.comprobarId();
-    const adminId = this.route.snapshot.paramMap.get('id');
-    this.adminId = adminId ?? '';
-    if (adminId)
-      this.adminService.getAdminById(adminId).subscribe({
-        next: (admin) => {
-          this.admin = admin;
-        },
-      });
-    else
-      console.error(
-        'No se pudo obtener el ID del administrador desde la ruta.',
-      );
+    
+    this.adminService.getDetails().subscribe({
+      next: (admin) => {
+        this.admin = admin;
+      },
+    });
 
     this.adminService.getLastTreatmentCount().subscribe({
       next: (tratamientosMes) => {
@@ -154,21 +147,6 @@ export class DashboardComponent {
         this.drogasBajasEnStock = drogasBajasStock;
       },
     });
-  }
-
-  private comprobarId() {
-    const idParam = Number(this.route.snapshot.paramMap.get('id'));
-    if (idParam) {
-      this.adminService.existsById(idParam).subscribe({
-        next: () => {},
-        error: (error) => {
-          const mensaje = error.error?.detalle || 'Administrador no encontrado';
-          this.router.navigate(['/error'], {
-            queryParams: { mensaje },
-          });
-        },
-      });
-    }
   }
 
   public descargarReporteUltimoMes() {

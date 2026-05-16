@@ -27,17 +27,20 @@ export class HeaderComponent {
     if (this.rolUsuario === 'VET') {
       this.vetService.getDetails().subscribe((vet) => {
         this.nombreUsuario = vet.nombre;
+        this.idUsuario = vet.id!;
       });
     }
     if (this.rolUsuario === 'ADMIN') {
       this.adminService.getDetails()
         .subscribe((admin) => {
           this.nombreUsuario = admin.nombre;
+          this.idUsuario = admin.id!;
         });
     }
     if (this.rolUsuario === 'CLIENT') {
       this.clientService.getDetails().subscribe((client) => {
         this.nombreUsuario = client.nombre;
+        this.idUsuario = client.id!;
       });
     }
   }

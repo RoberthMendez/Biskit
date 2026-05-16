@@ -34,9 +34,31 @@ export class LoginFormComponent {
     };
 
     this.credencialesService.authenticate(credenciales).subscribe({
-      next: (data) => {
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('authRole', data.rol)
+      next: (response) => {
+        localStorage.setItem('token', response.token);
+        localStorage.setItem('authRole', response.rol)
+
+       /* if (response.rol === 'CLIENT') {
+          if (response.id) {
+            this.router.navigate(['/client', response.id]);
+          } else {
+            this.error = 'No se pudo obtener el id del cliente.';
+          }
+          return;
+        }
+
+
+        if (response.tipo === 'VETERINARIO') {
+          this.router.navigate(['/vet', response.id]);
+          return;
+        }
+        */
+        if (response.rol === 'ADMIN') {
+          this.router.navigate(['/admin']);
+          return;
+        }
+
+
       },
       error: (error) => {
         const tipo = error.error?.tipo;

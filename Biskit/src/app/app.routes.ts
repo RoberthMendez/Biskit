@@ -142,7 +142,7 @@ export const routes: Routes = [
       ),
   },
   {
-    path: 'admin/:id',
+    path: 'admin',
     loadComponent: () =>
       import('./components/admin/dashboard/dashboard.component').then(
         (m) => m.DashboardComponent,
