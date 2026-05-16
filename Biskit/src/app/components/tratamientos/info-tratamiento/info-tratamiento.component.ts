@@ -86,7 +86,7 @@ export class InfoTratamientoComponent implements OnInit {
         this.backLink = `${this.basePath}/vets/${vetId}`;
         this.backLabel = 'Detalle del Veterinario';
       } else {
-        this.backLink = this.basePath;
+        this.backLink = isAdminPage ? '/admin' : '/vet';
         this.backLabel = isAdminPage
           ? 'Panel de Administrador'
           : 'Panel Veterinario';
@@ -213,7 +213,9 @@ export class InfoTratamientoComponent implements OnInit {
     const tratamientoId = this.resolveTratamientoId(this.tratamiento);
 
     if (tratamientoId == null) {
-      console.error('No fue posible resolver el ID del tratamiento a eliminar.');
+      console.error(
+        'No fue posible resolver el ID del tratamiento a eliminar.',
+      );
       return;
     }
 

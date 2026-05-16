@@ -35,21 +35,8 @@ export class HeaderComponent {
       (currentUrl.startsWith('/vet') && this.rolUsuario !== 'VET') ||
       (currentUrl.startsWith('/client') && this.rolUsuario !== 'CLIENT')
     ) {
-      localStorage.removeItem('token');
-      localStorage.removeItem('authRole');
-
-      return;
-    }
-
-    // Verificar coincidencia entre rol y ruta
-    if (
-      (currentUrl.startsWith('/admin') && this.rolUsuario !== 'ADMIN') ||
-      (currentUrl.startsWith('/vet') && this.rolUsuario !== 'VET') ||
-      (currentUrl.startsWith('/client') && this.rolUsuario !== 'CLIENT')
-    ) {
-      localStorage.removeItem('token');
-      localStorage.removeItem('authRole');
-
+      this.nombreUsuario = '';
+      this.idUsuario = null;
       return;
     }
 

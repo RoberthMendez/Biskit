@@ -94,20 +94,6 @@ export class ClientsComponent {
       this.basePath = `/${this.isAdminView ? 'admin' : 'vet'}/${this.vetId}`;
     }
 
-    if (vetIdParam) {
-      this.vetService.existsById(Number(vetIdParam)).subscribe({
-        next: () => {
-          this.vetId = vetIdParam;
-        },
-        error: (error) => {
-          const mensaje = error.error?.detalle || 'Veterinario no encontrado';
-          this.router.navigate(['/error'], {
-            queryParams: { mensaje },
-          });
-        },
-      });
-    }
-
     this.clientService.findAll().subscribe((clients) => {
       this.clients = clients;
       this.filteredClients = clients;
