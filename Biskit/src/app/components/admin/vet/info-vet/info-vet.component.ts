@@ -7,9 +7,10 @@ import { mergeMap } from 'rxjs';
 import { AdminService } from '../../../../services/admin.service';
 import { TratamientoService } from '../../../../services/tratamiento.service';
 import { DeleteModalComponent } from '../../../reusables/delete-modal/delete-modal.component';
-import { TreatmentsCardComponent } from "../../../reusables/treatments-card/treatments-card.component";
+import { TreatmentsCardComponent } from '../../../reusables/treatments-card/treatments-card.component';
 import { BackButtonComponent } from '../../../reusables/back-button/back-button.component';
 import { CardInfoVetComponent } from './card-info-vet/card-info-vet.component';
+import { ItemTratamientoDto } from '../../../../models/dtos/item-tratamiento-dto';
 
 @Component({
   selector: 'app-info-vet',
@@ -23,16 +24,15 @@ import { CardInfoVetComponent } from './card-info-vet/card-info-vet.component';
   templateUrl: './info-vet.component.html',
 })
 export class InfoVetComponent {
-
   vet!: Vet;
   adminId = 0;
+  tratamientos: ItemTratamientoDto[] = [];
   protected vetCardComponent = CardInfoVetComponent;
 
   constructor(
     private vetService: VetService,
     private route: ActivatedRoute,
     private router: Router,
-    private tratamientoService: TratamientoService,
     private adminService: AdminService,
   ) {}
 
@@ -61,14 +61,14 @@ export class InfoVetComponent {
       .pipe(
         mergeMap((vet) => {
           this.vet = vet;
-          return this.tratamientoService.findTratamientosByVet(vetId);
+          return this.vetService.findTratamientosByVet(vetId);
         }),
       )
       .subscribe({
-      next: (tratamientos) => {
-        this.vet.tratamientos = tratamientos;
-      },
-    });
+        next: (tratamientos) => {
+          this.tratamientos = tratamientos;
+        },
+      });
   }
 
   /// Modal para eliminar veterinario
@@ -99,12 +99,10 @@ export class InfoVetComponent {
 
   confirmDelete() {
     if (this.selectedDeleteId != null) {
-      this.vetService.deleteVet(this.selectedDeleteId).subscribe(
-        () => {
-          this.shouldNavigateAfterDelete = true;
-          this.deleteSuccessMessage = 'Veterinario eliminado correctamente';
-        }
-      );
+      this.vetService.deleteVet(this.selectedDeleteId).subscribe(() => {
+        this.shouldNavigateAfterDelete = true;
+        this.deleteSuccessMessage = 'Veterinario eliminado correctamente';
+      });
       return;
     }
 
@@ -117,8 +115,7 @@ export class InfoVetComponent {
 
     if (adminIdParam) {
       this.adminService.existsById(adminIdParam).subscribe({
-        next: () => {
-        },
+        next: () => {},
         error: (error) => {
           const mensaje = error.error?.detalle || 'Administrador no encontrado';
           this.router.navigate(['/error'], {
@@ -130,8 +127,7 @@ export class InfoVetComponent {
 
     if (vetIdParam) {
       this.vetService.existsById(vetIdParam).subscribe({
-        next: () => {
-        },
+        next: () => {},
         error: (error) => {
           const mensaje = error.error?.detalle || 'Veterinario no encontrado';
           this.router.navigate(['/error'], {
@@ -141,7 +137,4 @@ export class InfoVetComponent {
       });
     }
   }
-    
-
-
 }

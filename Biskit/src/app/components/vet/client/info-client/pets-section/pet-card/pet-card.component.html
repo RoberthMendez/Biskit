@@ -16,7 +16,7 @@
       </h3>
 
       <p class="text-sm font-medium text-[#8D8580] sm:text-base">
-        {{ pet.raza.especie.nombre }} · {{ pet.raza.nombre }}
+        {{ pet.especie }} · {{ pet.raza }}
       </p>
     </div>
 
@@ -38,14 +38,14 @@
     <div>
       <p class="mb-1 text-xs text-[#8D8580] sm:text-sm">Raza</p>
       <p class="font-medium wrap-break-word text-[#4A4A4A]">
-        {{ pet.raza.nombre }}
+        {{ pet.raza }}
       </p>
     </div>
     <div>
       <p class="mb-1 text-xs text-[#8D8580] sm:text-sm">Edad</p>
       <p class="font-medium text-[#4A4A4A]">
-        {{ getEdad(pet.fechaNacimiento) }}
-        {{ getEdad(pet.fechaNacimiento) === 1 ? "año" : "años" }}
+        {{ pet.edad }}
+        {{ pet.edad === 1 ? "año" : "años" }}
       </p>
     </div>
     <div>
@@ -55,7 +55,7 @@
     <div>
       <p class="mb-1 text-xs text-[#8D8580] sm:text-sm">Enfermedad</p>
       <p class="font-medium wrap-break-word text-[#4A4A4A]">
-        {{ pet.enfermedad.nombre }}
+        {{ pet.enfermedad }}
       </p>
     </div>
   </div>

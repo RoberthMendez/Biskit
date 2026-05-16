@@ -2,43 +2,59 @@ import { Injectable } from '@angular/core';
 import { Pet } from '../models/Pets/pet';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
-// interface UpdateEstadoResponse {
-//   ok?: boolean;
-//   message?: string;
-// }
+import { PetDTO } from '../models/dtos/pet-dto';
+import { Client } from '../models/Client/client';
+import { ItemTratamientoDto } from '../models/dtos/item-tratamiento-dto';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PetService {
+  constructor(private http: HttpClient) {}
 
-  constructor( private http: HttpClient ) {}
-
-  // ----- Crear y Actualizar Mascota (CREATE/UPDATE) -----
+  // ----- Crear Mascota (CREATE) -----
   savePet(pet: Pet): Observable<Pet> {
-    if (pet.id)
-      return this.http.put<Pet>(`http://localhost:8080/pets/update/${pet.id}`, pet);
-    else
-      return this.http.post<Pet>('http://localhost:8080/pets/add', pet);
+    if (pet.id) {
+      return this.http.put<Pet>(
+        `http://localhost:8080/pets/update/${pet.id}`,
+        pet,
+      );
+    }
+
+    return this.http.post<Pet>('http://localhost:8080/pets/add', pet);
   }
 
   // ----- Mostrar Mascotas (READ) -----
-  findAll(): Observable<Pet[]> {
-    return this.http.get<Pet[]>('http://localhost:8080/pets');
+  findAll(): Observable<PetDTO[]> {
+    return this.http.get<PetDTO[]>('http://localhost:8080/pets');
   }
 
   // ----- Mostrar Mascota (READ) -----
-  findById(id: number): Observable<Pet> {
-    return this.http.get<Pet>(`http://localhost:8080/pets/${id}`);
+  findById(id: number): Observable<PetDTO> {
+    return this.http.get<PetDTO>(`http://localhost:8080/pets/${id}`);
+  }
+
+  // ----- Mostrar Dueño de la Mascota (READ) -----
+  getPetOwner(id: number): Observable<Client> {
+    return this.http.get<Client>(`http://localhost:8080/pets/${id}/owner`);
+  }
+
+  // ----- Mostrar Tratamientos de una Mascota (READ) -----
+  getPetTratamientos(id: number): Observable<ItemTratamientoDto[]> {
+    return this.http.get<ItemTratamientoDto[]>(
+      `http://localhost:8080/pets/${id}/tratamientos`,
+    );
   }
 
   // ----- Actualizar Estado de Mascota (PATCH) -----
-  updateEstado(id: number, estado: boolean): Observable<void> {
-    return this.http.patch<void>(`http://localhost:8080/pets/update-estado/${id}`, { estado });
+  updateEstado(id: number): Observable<boolean> {
+    return this.http.patch<boolean>(
+      `http://localhost:8080/pets/update-estado/${id}`,
+      null,
+    );
   }
 
-    // ----- Total de Mascotas -----
+  // ----- Total de Mascotas -----
   countPets(): Observable<number> {
     return this.http.get<number>(`http://localhost:8080/pets/count`);
   }
@@ -57,5 +73,4 @@ export class PetService {
   existsById(id: number): Observable<void> {
     return this.http.get<void>(`http://localhost:8080/pets/${id}/exists`);
   }
-
 }

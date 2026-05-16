@@ -1,13 +1,13 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Client } from '../../../models/Client/client';
-import { Pet } from '../../../models/Pets/pet';
+import { PetDTO } from '../../../models/dtos/pet-dto';
+import { ItemTratamientoDto } from '../../../models/dtos/item-tratamiento-dto';
 import { TreatmentsCardComponent } from '../../reusables/treatments-card/treatments-card.component';
 import { PetCardComponent } from './pet-card/pet-card.component';
 import { Router, ActivatedRoute } from '@angular/router';
 import { PetService } from '../../../services/pet.service';
 import { mergeMap } from 'rxjs';
-import { TratamientoService } from '../../../services/tratamiento.service';
 import { ClientService } from '../../../services/client.service';
 import { BackButtonComponent } from '../../reusables/back-button/back-button.component';
 
@@ -15,17 +15,21 @@ import { BackButtonComponent } from '../../reusables/back-button/back-button.com
   selector: 'app-info-pet',
   templateUrl: './info-pet.component.html',
   standalone: true,
-  imports: [CommonModule, PetCardComponent, TreatmentsCardComponent, BackButtonComponent],
+  imports: [
+    CommonModule,
+    PetCardComponent,
+    TreatmentsCardComponent,
+    BackButtonComponent,
+  ],
 })
 export class InfoPetComponent {
   @Input() client: Client = new Client();
-  @Input() pet: Pet = new Pet();
+  @Input() pet: PetDTO & { tratamientos?: ItemTratamientoDto[] } = new PetDTO();
 
   constructor(
     private route: ActivatedRoute,
     private petService: PetService,
     private clientService: ClientService,
-    private tratamientoService: TratamientoService,
     private router: Router,
   ) {}
 
@@ -43,7 +47,7 @@ export class InfoPetComponent {
         }),
         mergeMap((pet) => {
           this.pet = pet;
-          return this.tratamientoService.findTratamientosByPetId(pet.id ?? 0);
+          return this.petService.getPetTratamientos(pet.id ?? 0);
         }),
       )
       .subscribe({
@@ -60,8 +64,7 @@ export class InfoPetComponent {
     const petIdParam = Number(this.route.snapshot.paramMap.get('petId'));
     const clientIdParam = Number(this.route.snapshot.paramMap.get('clientId'));
     this.clientService.existsById(clientIdParam).subscribe({
-      next: () => {
-      },
+      next: () => {},
       error: (error) => {
         const mensaje = error.error?.detalle || 'Cliente no encontrado';
         this.router.navigate(['/error'], {
@@ -71,8 +74,7 @@ export class InfoPetComponent {
     });
 
     this.petService.existsById(petIdParam).subscribe({
-      next: () => {
-      },
+      next: () => {},
       error: (error) => {
         const mensaje = error.error?.detalle || 'Mascota no encontrada';
         this.router.navigate(['/error'], {
@@ -80,6 +82,5 @@ export class InfoPetComponent {
         });
       },
     });
-
   }
 }

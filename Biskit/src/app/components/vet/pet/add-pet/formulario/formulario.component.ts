@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { mergeMap } from 'rxjs';
 
 import { Pet } from '../../../../../models/Pets/pet';
+import { PetDTO } from '../../../../../models/dtos/pet-dto';
 import { Raza } from '../../../../../models/Pets/raza';
 import { PetService } from '../../../../../services/pet.service';
 import { TratamientoService } from '../../../../../services/tratamiento.service';
@@ -37,6 +38,7 @@ export class FormularioComponent implements OnInit {
   fechaNacimientoStr: string = '';
   errorMessage: string | null = null;
   successMessage: string | null = null;
+  private loadedPetDto: PetDTO | null = null;
 
   // ── Listas de datos ──────────────────────────────────────────────────────────s
   clientes: Client[] = [];
@@ -93,7 +95,6 @@ export class FormularioComponent implements OnInit {
     private especiesService: EspeciesService,
     private razasService: RazasService,
     private enfermedadesService: EnfermedadesService,
-    private tratamientoService: TratamientoService,
     private router: Router,
   ) {}
 
@@ -105,28 +106,25 @@ export class FormularioComponent implements OnInit {
         .findById(this.petId)
         .pipe(
           mergeMap((pet) => {
-            this.formPet = pet;
+            this.loadedPetDto = pet;
+
+            this.formPet.nombre = pet.nombre ?? '';
+            this.formPet.estado = pet.estado ?? true;
+            this.formPet.peso = pet.peso ?? null;
+            this.formPet.urlFoto = pet.urlFoto ?? '';
 
             // Sincroniza los search inputs con los valores cargados
-            this.clienteSearch = pet.owner?.nombre ?? '';
-            this.especieSearch = pet.raza?.especie?.nombre ?? '';
-            this.razaSearch = pet.raza?.nombre ?? '';
-            this.enfermedadSearch = pet.enfermedad?.nombre ?? '';
+            this.clienteSearch = pet.owner ?? '';
+            this.especieSearch = pet.especie ?? '';
+            this.razaSearch = pet.raza ?? '';
+            this.enfermedadSearch = pet.enfermedad ?? '';
 
-            this.selectedClienteId = pet.owner?.id ?? null;
-            this.selectedEspecieId = pet.raza?.especie?.id ?? null;
-            this.selectedRazaId = pet.raza?.id ?? null;
-            this.selectedEnfermedadId = pet.enfermedad?.id ?? null;
+            this.fechaNacimientoStr = this.getApproxBirthDate(pet.edad);
+            this.formPet.fechaNacimiento = new Date(this.fechaNacimientoStr);
 
-            if (pet.raza?.especie?.id) {
-              this.filterRazasByEspecie(pet.raza.especie.id);
-            }
+            this.syncPetSelectionsFromDto();
 
-            this.fechaNacimientoStr = pet.fechaNacimiento
-              ? new Date(pet.fechaNacimiento).toISOString().split('T')[0]
-              : '';
-
-            return this.tratamientoService.findTratamientosByPetId(pet.id ?? 0);
+            return this.petService.getPetTratamientos(pet.id ?? 0);
           }),
         )
         .subscribe((tratamientos) => {
@@ -137,19 +135,23 @@ export class FormularioComponent implements OnInit {
 
   // ─── Carga de datos ───────────────────────────────────────────────────────────
   private loadLists(): void {
-    this.clientService
-      .findAll()
-      .subscribe((clientes) => (this.clientes = clientes));
+    this.clientService.findAll().subscribe((clientes) => {
+      this.clientes = clientes;
+      this.syncPetSelectionsFromDto();
+    });
     this.razasService.findAll().subscribe((razas) => {
       this.razas = razas;
       this.razasFiltradas = razas;
+      this.syncPetSelectionsFromDto();
     });
-    this.especiesService
-      .findAll()
-      .subscribe((especies) => (this.especies = especies));
-    this.enfermedadesService
-      .findAll()
-      .subscribe((enfermedades) => (this.enfermedades = enfermedades));
+    this.especiesService.findAll().subscribe((especies) => {
+      this.especies = especies;
+      this.syncPetSelectionsFromDto();
+    });
+    this.enfermedadesService.findAll().subscribe((enfermedades) => {
+      this.enfermedades = enfermedades;
+      this.syncPetSelectionsFromDto();
+    });
   }
 
   // ─── Getters de filtrado en tiempo real ───────────────────────────────────────
@@ -561,5 +563,47 @@ export class FormularioComponent implements OnInit {
         e.id === this.selectedEnfermedadId &&
         e.nombre === this.enfermedadSearch,
     );
+  }
+
+  private syncPetSelectionsFromDto(): void {
+    if (!this.loadedPetDto) {
+      return;
+    }
+
+    const pet = this.loadedPetDto;
+
+    const clientMatch = this.clientes.find(
+      (cliente) => cliente.nombre === pet.owner,
+    );
+    this.selectedClienteId = clientMatch?.id ?? null;
+
+    const especieMatch = this.especies.find(
+      (especie) => especie.nombre === pet.especie,
+    );
+    this.selectedEspecieId = especieMatch?.id ?? null;
+
+    if (this.selectedEspecieId) {
+      this.filterRazasByEspecie(this.selectedEspecieId);
+    }
+
+    const razaMatch = this.razas.find((raza) => {
+      const sameName = raza.nombre === pet.raza;
+      const sameSpecies = pet.especie
+        ? raza.especie?.nombre === pet.especie
+        : true;
+      return sameName && sameSpecies;
+    });
+    this.selectedRazaId = razaMatch?.id ?? null;
+
+    const enfermedadMatch = this.enfermedades.find(
+      (enfermedad) => enfermedad.nombre === pet.enfermedad,
+    );
+    this.selectedEnfermedadId = enfermedadMatch?.id ?? null;
+  }
+
+  private getApproxBirthDate(edad: number): string {
+    const date = new Date();
+    date.setFullYear(date.getFullYear() - (Number.isFinite(edad) ? edad : 0));
+    return date.toISOString().split('T')[0];
   }
 }

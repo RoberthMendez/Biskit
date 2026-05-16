@@ -1,6 +1,12 @@
-import { Component, ElementRef, Input, SimpleChanges, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  Input,
+  SimpleChanges,
+  ViewChild,
+} from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { Pet } from '../../../../../models/Pets/pet';
+import { PetDTO } from '../../../../../models/dtos/pet-dto';
 import { PetService } from '../../../../../services/pet.service';
 
 @Component({
@@ -10,9 +16,8 @@ import { PetService } from '../../../../../services/pet.service';
   templateUrl: './card-pet.component.html',
 })
 export class CardPetComponent {
-
   @Input()
-  pet!: Pet;
+  pet!: PetDTO & { tratamientos?: Array<{ vet?: { id?: number } | null }> };
 
   @Input()
   vetId!: number;
@@ -37,25 +42,26 @@ export class CardPetComponent {
   }
 
   getEdad(fechaNacimiento: string | Date): number {
+    if (!fechaNacimiento) return 0;
 
-    if (!fechaNacimiento) 
-      return 0;
-    
     const nacimiento = new Date(fechaNacimiento);
     const hoy = new Date();
     let edad = hoy.getFullYear() - nacimiento.getFullYear();
     const m = hoy.getMonth() - nacimiento.getMonth();
 
     if (m < 0 || (m === 0 && hoy.getDate() < nacimiento.getDate())) edad--;
-      return edad;
-      
+    return edad;
   }
 
   private updateTogglePill(toggle: HTMLElement): void {
     const input = toggle.querySelector('input') as HTMLInputElement | null;
     const pill = toggle.querySelector('.toggle-pill') as HTMLElement | null;
-    const spanInactive = toggle.querySelector('.toggle-inactive') as HTMLElement | null;
-    const spanActive = toggle.querySelector('.toggle-active') as HTMLElement | null;
+    const spanInactive = toggle.querySelector(
+      '.toggle-inactive',
+    ) as HTMLElement | null;
+    const spanActive = toggle.querySelector(
+      '.toggle-active',
+    ) as HTMLElement | null;
 
     if (!input || !pill || !spanInactive || !spanActive) {
       return;
@@ -87,7 +93,7 @@ export class CardPetComponent {
   }
 
   private cambiarEstadoMascota(id: number, nuevoEstado: boolean): void {
-    this.petService.updateEstado(id, nuevoEstado).subscribe({
+    this.petService.updateEstado(id).subscribe({
       error: (error) => {
         console.error('Error al cambiar estado:', error);
         this.revertirCheckbox(nuevoEstado);

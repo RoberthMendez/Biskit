@@ -1,13 +1,14 @@
 import { Component } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Pet } from '../../../../models/Pets/pet';
+import { forkJoin } from 'rxjs';
+import { PetDTO } from '../../../../models/dtos/pet-dto';
+import { Client } from '../../../../models/Client/client';
+import { ItemTratamientoDto } from '../../../../models/dtos/item-tratamiento-dto';
 import { PetService } from '../../../../services/pet.service';
 import { VetService } from '../../../../services/vet.service';
-import { TratamientoService } from '../../../../services/tratamiento.service';
 import { AdminService } from '../../../../services/admin.service';
 import { CardInfoPetComponent } from './card-info-pet/card-info-pet.component';
 import { CardInfoOwnerComponent } from './card-info-owner/card-info-owner.component';
-import { mergeMap } from 'rxjs';
 import { TreatmentsCardComponent } from '../../../reusables/treatments-card/treatments-card.component';
 import { BackButtonComponent } from '../../../reusables/back-button/back-button.component';
 
@@ -18,11 +19,13 @@ import { BackButtonComponent } from '../../../reusables/back-button/back-button.
     CardInfoOwnerComponent,
     TreatmentsCardComponent,
     BackButtonComponent,
-],
+  ],
   templateUrl: './info-pet.component.html',
 })
 export class InfoPetComponent {
-  pet!: Pet;
+  pet!: PetDTO;
+  owner: Client = new Client();
+  tratamientos: ItemTratamientoDto[] = [];
   vetId!: number;
   basePath = '';
 
@@ -30,7 +33,6 @@ export class InfoPetComponent {
     private petService: PetService,
     private vetService: VetService,
     private adminService: AdminService,
-    private tratamientoService: TratamientoService,
     private route: ActivatedRoute,
     private router: Router,
   ) {}
@@ -50,24 +52,22 @@ export class InfoPetComponent {
       return;
     }
 
-    this.petService
-      .findById(petId)
-      .pipe(
-        mergeMap((pet) => {
-          this.pet = pet;
-          return this.tratamientoService.findTratamientosByPetId(pet.id ?? 0);
-        }),
-      )
-      .subscribe((tratamientos) => {
-        this.pet.tratamientos = tratamientos;
-      });
+    forkJoin({
+      pet: this.petService.findById(petId),
+      owner: this.petService.getPetOwner(petId),
+      tratamientos: this.petService.getPetTratamientos(petId),
+    }).subscribe(({ pet, owner, tratamientos }) => {
+      this.pet = pet;
+      this.owner = owner;
+      this.tratamientos = tratamientos;
+    });
   }
 
   onEstadoChange(nuevoEstado: boolean): void {
     if (this.pet.id != null) {
       this.pet.estado = nuevoEstado;
 
-      this.petService.updateEstado(this.pet.id, nuevoEstado).subscribe({
+      this.petService.updateEstado(this.pet.id).subscribe({
         error: (error) => {
           console.error('Error al cambiar estado:', error);
           this.pet.estado = !nuevoEstado;
@@ -108,8 +108,7 @@ export class InfoPetComponent {
     const adminIdParam = Number(this.route.snapshot.paramMap.get('idAdmin'));
     if (adminIdParam) {
       this.adminService.existsById(adminIdParam).subscribe({
-        next: () => {
-        },
+        next: () => {},
         error: (error) => {
           const mensaje = error.error?.detalle || 'Administrador no encontrado';
           this.router.navigate(['/error'], {

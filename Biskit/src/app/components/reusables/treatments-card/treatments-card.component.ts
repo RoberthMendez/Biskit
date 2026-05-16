@@ -1,7 +1,10 @@
 import { Component, Input } from '@angular/core';
 import { RouterLink, Router } from '@angular/router';
-import { TreatmentItemComponent } from '../../client/info-pet/treatment-item/treatment-item.component';
+import { TreatmentItemComponent } from '../treatment-item/treatment-item.component';
 import { Tratamiento } from '../../../models/Tratamiento/tratamiento';
+import { ItemTratamientoDto } from '../../../models/dtos/item-tratamiento-dto';
+
+type TreatmentCardItem = Tratamiento | ItemTratamientoDto;
 
 @Component({
   selector: 'app-treatments-card',
@@ -19,7 +22,7 @@ export class TreatmentsCardComponent {
 
   @Input() helperText = '';
 
-  @Input() tratamientos: Tratamiento[] = [];
+  @Input() tratamientos: TreatmentCardItem[] = [];
 
   @Input() routeBase: Array<string | number> = [];
 
@@ -95,7 +98,7 @@ export class TreatmentsCardComponent {
   }
 
   protected getTreatmentLink(
-    tratamiento: Tratamiento,
+    tratamiento: TreatmentCardItem,
   ): Array<string | number> | null {
     if (this.routeBase.length === 0 || tratamiento.id == null) {
       return null;

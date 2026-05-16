@@ -1,5 +1,7 @@
+import { HorarioDia } from '../Citas/horario-dia';
 import { Credenciales } from '../Credenciales/credenciales';
 import { Tratamiento } from '../Tratamiento/tratamiento';
+import { ItemTratamientoDto } from '../dtos/item-tratamiento-dto';
 import { Especialidad } from './Especialidad/especialidad';
 
 export class Vet {
@@ -11,7 +13,8 @@ export class Vet {
   public urlFoto: string;
   public credenciales: Credenciales;
   public especialidad: Especialidad;
-  public tratamientos: Tratamiento[];
+  public tratamientos: Array<Tratamiento | ItemTratamientoDto>;
+  public horariosDia: HorarioDia[];
 
   constructor(
     id?: number,
@@ -22,7 +25,8 @@ export class Vet {
     urlFoto: string = '',
     credenciales: Credenciales = new Credenciales(),
     especialidad: Especialidad = new Especialidad(),
-    tratamientos: Tratamiento[] = [],
+    tratamientos: Array<Tratamiento | ItemTratamientoDto> = [],
+    horariosDia: HorarioDia[] = [],
   ) {
     this.id = id;
     this.nombre = nombre;
@@ -33,5 +37,6 @@ export class Vet {
     this.credenciales = credenciales;
     this.especialidad = especialidad;
     this.tratamientos = tratamientos;
+    this.horariosDia = horariosDia;
   }
 }

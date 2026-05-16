@@ -37,18 +37,6 @@ export class AdminService {
     return this.http.get<number>('http://localhost:8080/admin/vets-inactivos-count');
   }
 
-  getNumMascotas(): Observable<number> {
-    return this.http.get<number>('http://localhost:8080/admin/mascotas-count');
-  }
-
-  getNumMascotasActivas(): Observable<number> {
-    return this.http.get<number>('http://localhost:8080/admin/mascotas-activas-count');
-  }
-
-  getNumMascotasInactivas(): Observable<number> {
-    return this.http.get<number>('http://localhost:8080/admin/mascotas-inactivas-count');
-  }
-
   getVentasTotales(): Observable<number> {
     return this.http.get<number>('http://localhost:8080/admin/ventas-totales');
   }

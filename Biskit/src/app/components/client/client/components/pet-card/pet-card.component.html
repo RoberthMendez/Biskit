@@ -29,13 +29,15 @@
         }
       </div>
 
-      <!-- Nombre -->
-      <div class="flex justify-between items-center mx-2 sm:mx-4 mt-3">
-        <h3 class="text-[#4a4a4a] font-bold text-lg sm:text-xl tracking-wider">
+      <!-- Nombre y especie/raza -->
+      <div class="mx-2 mt-3 flex flex-col gap-1 sm:mx-4">
+        <h3
+          class="text-center text-lg font-bold tracking-wider text-[#4a4a4a] sm:text-xl"
+        >
           {{ pet.nombre }}
         </h3>
-        <p class="text-[#6D6155] font-medium text-xs">
-          {{ pet.raza.especie.nombre }} · {{ pet.raza.nombre }}
+        <p class="text-center text-xs font-medium text-[#6D6155]">
+          {{ pet.especie }} · {{ pet.raza }}
         </p>
       </div>
 
@@ -78,7 +80,7 @@
           </div>
           <div class="flex flex-1 items-center">
             <p class="text-xs text-[#282828] font-medium">
-              {{ getEdad(pet.fechaNacimiento) }}
+              {{ pet.edad }}
             </p>
           </div>
         </aside>
@@ -137,7 +139,7 @@
         </svg>
         <p class="text-xs text-[#8D8580] font-semibold">DIAGNÓSTICO</p>
         <p class="text-xs text-[#282828] font-medium">
-          {{ pet.enfermedad.nombre }}
+          {{ pet.enfermedad }}
         </p>
       </div>
     </div>

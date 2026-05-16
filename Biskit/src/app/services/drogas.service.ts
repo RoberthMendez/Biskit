@@ -1,27 +1,31 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { Droga } from '../models/Droga/droga';
+import { map, Observable } from 'rxjs';
+import { DrogaDto } from '../models/dtos/droga-dto';
+
+interface DrogaResponse {
+  id: number;
+  nombre: string;
+  unidadesDisponibles: number;
+}
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DrogasService {
-
-  constructor(private http: HttpClient) { }
-
-  // ----- Crear o Actualizar Droga (CREATE/UPDATE) -----
-  saveDroga(droga: Droga): Observable<Droga> {
-    if (droga.id)
-      return this.http.put<Droga>(`http://localhost:8080/drogas/update/${droga.id}`, droga);
-    else
-      return this.http.post<Droga>('http://localhost:8080/drogas/add', droga);
-  }
+  constructor(private http: HttpClient) {}
 
   // ----- Obtener todas las drogas (READ) -----
-  findAll(): Observable<Droga[]> {
-    return this.http.get<Droga[]>('http://localhost:8080/drogas');
+  findAll(): Observable<DrogaDto[]> {
+    return this.http
+      .get<DrogaResponse[]>('http://localhost:8080/drogas')
+      .pipe(
+        map((drogas) =>
+          drogas.map(
+            (droga) =>
+              new DrogaDto(droga.id, droga.nombre, droga.unidadesDisponibles),
+          ),
+        ),
+      );
   }
-
-
 }
