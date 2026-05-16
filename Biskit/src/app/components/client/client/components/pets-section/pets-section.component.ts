@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { PetCardComponent } from '../pet-card/pet-card.component';
 import { Client } from '../../../../../models/Client/client';
-import { Pet } from '../../../../../models/Pets/pet';
+import { PetDTO } from '../../../../../models/dtos/pet-dto';
 
 @Component({
   selector: 'app-pets-section',
@@ -10,5 +10,5 @@ import { Pet } from '../../../../../models/Pets/pet';
 })
 export class PetsSectionComponent {
   @Input() client!: Client;
-  @Input() pets: Pet[] = [];
+  @Input() pets: PetDTO[] = [];
 }

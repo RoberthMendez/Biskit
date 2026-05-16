@@ -14,6 +14,7 @@ import { CardTop5Component } from './card-top5/card-top5.component';
 import { CardTablaComponent } from './card-tabla/card-tabla.component';
 import { CardRepuestosComponent } from './card-repuestos/card-repuestos.component';
 import { FiltrosEstadoService } from '../../../services/filtros-estado.service';
+import { PetService } from '../../../services/pet.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -48,6 +49,7 @@ export class DashboardComponent {
 
   constructor(
     private adminService: AdminService,
+    private petService: PetService,
     private route: ActivatedRoute,
     private router: Router,
     private filtrosEstadoService: FiltrosEstadoService,
@@ -100,19 +102,19 @@ export class DashboardComponent {
       },
     });
 
-    this.adminService.getNumMascotas().subscribe({
+    this.petService.countPets().subscribe({
       next: (count) => {
         this.numMascotas = count;
       },
     });
 
-    this.adminService.getNumMascotasActivas().subscribe({
+    this.petService.countPetsActivos().subscribe({
       next: (count) => {
         this.numMascotasActivas = count;
       },
     });
 
-    this.adminService.getNumMascotasInactivas().subscribe({
+    this.petService.countPetsInactivos().subscribe({
       next: (count) => {
         this.numMascotasInactivas = count;
       },

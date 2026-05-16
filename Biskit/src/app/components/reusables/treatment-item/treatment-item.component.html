@@ -9,22 +9,22 @@
     <div class="flex items-center justify-between gap-1">
       @if (variant === "vet" && showPetName !== false) {
         <p [class]="dateClasses">
-          {{ tratamiento.pet.nombre! }}
+          {{ petName }}
         </p>
+        <span [class]="dateClasses">·</span>
       }
-      <span [class]="dateClasses">·</span>
       <p [class]="dateClasses">
-        {{ tratamiento.fecha | date: "dd-MM-yyyy" }}
+        {{ fecha | date: "dd-MM-yyyy" }}
       </p>
     </div>
 
     <!-- Drogas -->
     <div [class]="drugGridClasses">
-      @for (drugColumn of getDrugColumns(tratamiento.drogas); track $index) {
+      @for (drugColumn of getDrugColumns(drugNames); track $index) {
         <div class="flex flex-col gap-0.5">
           @for (d of drugColumn; track $index) {
             <p class="text-sm font-medium text-[#282828] truncate">
-              {{ d.nombre }}
+              {{ d }}
             </p>
           }
         </div>

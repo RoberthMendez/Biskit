@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PetsTableComponent } from './pets-table/pets-table.component';
 import { PetCardComponent } from './pet-card/pet-card.component';
-import { Pet } from '../../../../../models/Pets/pet';
+import { PetDTO } from '../../../../../models/dtos/pet-dto';
 
 @Component({
   selector: 'app-pets-section',
@@ -10,7 +10,5 @@ import { Pet } from '../../../../../models/Pets/pet';
   templateUrl: './pets-section.component.html',
 })
 export class PetsSectionComponent {
-
-  @Input() pets: Pet[] = [];
-  
+  @Input() pets: PetDTO[] = [];
 }

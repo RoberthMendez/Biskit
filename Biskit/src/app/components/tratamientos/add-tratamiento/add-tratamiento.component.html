@@ -115,8 +115,8 @@
                       {{ pet.nombre }}
                     </p>
                     <p class="text-xs text-gray-500">
-                      {{ pet.raza.especie.nombre || "Sin especie" }} -
-                      {{ pet.raza.nombre || "Sin raza" }}
+                      {{ pet.especie || "Sin especie" }} -
+                      {{ pet.raza || "Sin raza" }}
                     </p>
                   </div>
                 } @empty {
@@ -279,15 +279,11 @@
                               {{ drug.nombre }}
                             </p>
                             @if (drug.unidadesDisponibles == 0) {
-                              <p
-                                class="text-sm text-red-500 ml-4 flex-shrink-0"
-                              >
+                              <p class="text-sm text-red-500 ml-4 shrink-0">
                                 Sin unidades disponibles
                               </p>
                             } @else {
-                              <p
-                                class="text-sm text-gray-500 ml-4 flex-shrink-0"
-                              >
+                              <p class="text-sm text-gray-500 ml-4 shrink-0">
                                 Unidades disponibles:
                                 {{ drug.unidadesDisponibles }}
                               </p>

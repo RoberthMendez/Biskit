@@ -10,6 +10,7 @@ import { ClientDetailsComponent } from './client-details/client-details.componen
 import { PetsSectionComponent } from './pets-section/pets-section.component';
 import { DeleteModalComponent } from '../../../reusables/delete-modal/delete-modal.component';
 import { BackButtonComponent } from '../../../reusables/back-button/back-button.component';
+import { PetDTO } from '../../../../models/dtos/pet-dto';
 
 @Component({
   selector: 'app-info-client',
@@ -25,6 +26,7 @@ import { BackButtonComponent } from '../../../reusables/back-button/back-button.
 })
 export class InfoClientComponent {
   client: Client = new Client();
+  pets: PetDTO[] = [];
   vetId: number | null = null;
   basePath = '/vet/clients';
   clientsRoute = '/vet/clients';
@@ -66,7 +68,7 @@ export class InfoClientComponent {
       )
       .subscribe(({ client, pets }) => {
         this.client = client;
-        this.client.pets = pets;
+        this.pets = pets;
       });
   }
 

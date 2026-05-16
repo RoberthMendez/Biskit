@@ -1,8 +1,10 @@
 import { DatePipe } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { Tratamiento } from '../../../../models/Tratamiento/tratamiento';
-import { Droga } from '../../../../models/Droga/droga';
+import { Tratamiento } from '../../../models/Tratamiento/tratamiento';
+import { ItemTratamientoDto } from '../../../models/dtos/item-tratamiento-dto';
+
+type TreatmentItem = Tratamiento | ItemTratamientoDto;
 
 @Component({
   selector: 'app-treatment-item',
@@ -14,7 +16,7 @@ import { Droga } from '../../../../models/Droga/droga';
   },
 })
 export class TreatmentItemComponent {
-  @Input() tratamiento!: Tratamiento;
+  @Input() tratamiento!: TreatmentItem;
 
   @Input() clientId?: number;
 
@@ -29,8 +31,20 @@ export class TreatmentItemComponent {
   @Input() showPetName?: boolean;
 
   @Input('t')
-  set legacyTreatment(value: Tratamiento) {
+  set legacyTreatment(value: TreatmentItem) {
     this.tratamiento = value;
+  }
+
+  protected get petName(): string {
+    return this.getPetName(this.tratamiento);
+  }
+
+  protected get fecha(): string | Date {
+    return this.tratamiento?.fecha ?? '';
+  }
+
+  protected get drugNames(): string[] {
+    return this.getDrugNames(this.tratamiento);
   }
 
   protected get treatmentLink(): Array<string | number> | null {
@@ -46,7 +60,14 @@ export class TreatmentItemComponent {
       return null;
     }
 
-    return ['/client', this.clientId, 'pet', this.petId, 'tratamiento', this.tratamiento.id];
+    return [
+      '/client',
+      this.clientId,
+      'pet',
+      this.petId,
+      'tratamiento',
+      this.tratamiento.id,
+    ];
   }
 
   protected get itemClasses(): string {
@@ -62,7 +83,7 @@ export class TreatmentItemComponent {
   }
 
   protected get drugGridClasses(): string {
-    const drugCount = this.tratamiento?.drogas?.length ?? 0;
+    const drugCount = this.drugNames.length;
     const base =
       this.variant === 'vet'
         ? 'custom-scroll grid max-h-13 gap-x-4 gap-y-2 pr-1'
@@ -89,11 +110,37 @@ export class TreatmentItemComponent {
     return `${base} ${columns} ${overflow}`;
   }
 
-  protected getDrugColumns(drogas: Droga[]): Droga[][] {
-    const columns: Droga[][] = [];
+  protected getDrugColumns(drogas: string[]): string[][] {
+    const columns: string[][] = [];
     for (let i = 0; i < drogas.length; i += 3) {
       columns.push(drogas.slice(i, i + 3));
     }
     return columns;
+  }
+
+  private getPetName(tratamiento?: TreatmentItem): string {
+    if (!tratamiento) {
+      return '';
+    }
+
+    if ('petNombre' in tratamiento) {
+      return tratamiento.petNombre;
+    }
+
+    return tratamiento.pet?.nombre ?? '';
+  }
+
+  private getDrugNames(tratamiento?: TreatmentItem): string[] {
+    if (!tratamiento) {
+      return [];
+    }
+
+    if ('drogasNombres' in tratamiento) {
+      return tratamiento.drogasNombres;
+    }
+
+    return (tratamiento.drogas ?? []).map(
+      (droga: { nombre: string }) => droga.nombre,
+    );
   }
 }

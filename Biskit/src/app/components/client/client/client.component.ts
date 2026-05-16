@@ -4,7 +4,7 @@ import { ClientService } from '../../../services/client.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
-import { Pet } from '../../../models/Pets/pet';
+import { PetDTO } from '../../../models/dtos/pet-dto';
 import { ClientInfoComponent } from './components/client-info/client-info.component';
 import { PetsSectionComponent } from './components/pets-section/pets-section.component';
 
@@ -15,7 +15,7 @@ import { PetsSectionComponent } from './components/pets-section/pets-section.com
 })
 export class ClientComponent {
   @Input() client: Client = new Client();
-  @Input() pets: Pet[] = [];
+  @Input() pets: PetDTO[] = [];
 
   constructor(
     private clientService: ClientService,
@@ -33,7 +33,7 @@ export class ClientComponent {
           this.client = client;
           const clientId = client.id;
           if (!clientId) {
-            return of([] as Pet[]);
+            return of([] as PetDTO[]);
           }
           return this.clientService.getPetsByClientId(clientId);
         }),

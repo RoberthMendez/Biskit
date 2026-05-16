@@ -21,7 +21,7 @@
       <!-- Tratamientos y Dueño -->
       <aside class="flex flex-col gap-5 lg:col-span-2 justify-center">
         <app-treatments-card
-          [tratamientos]="pet.tratamientos ?? []"
+          [tratamientos]="tratamientos"
           [petActivo]="pet.estado"
           [routeBase]="[basePath]"
           [routeSegment]="'pets'"
@@ -32,7 +32,7 @@
           [addButtonLabel]="'Agregar Tratamiento'"
           [showPetName]="false"
         />
-        <app-card-info-owner [owner]="pet.owner" />
+        <app-card-info-owner [owner]="owner" />
       </aside>
     }
   </section>

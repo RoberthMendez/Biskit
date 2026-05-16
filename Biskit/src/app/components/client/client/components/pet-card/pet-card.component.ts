@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { Pet } from '../../../../../models/Pets/pet';
+import { PetDTO } from '../../../../../models/dtos/pet-dto';
 import { Client } from '../../../../../models/Client/client';
 
 @Component({
@@ -9,7 +9,7 @@ import { Client } from '../../../../../models/Client/client';
   imports: [RouterLink],
 })
 export class PetCardComponent {
-  @Input() pet!: Pet;
+  @Input() pet!: PetDTO;
   @Input() client!: Client;
 
   getEdad(fechaNacimiento: string | Date): number {

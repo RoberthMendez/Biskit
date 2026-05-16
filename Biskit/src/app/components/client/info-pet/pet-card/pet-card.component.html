@@ -14,9 +14,6 @@
     </div>
 
     <!-- Info básica -->
-    <app-pet-basic-info
-      [pet]="pet"
-      [edad]="getEdad(pet.fechaNacimiento)"
-    ></app-pet-basic-info>
+    <app-pet-basic-info [pet]="pet" [edad]="pet.edad"></app-pet-basic-info>
   </article>
 </aside>

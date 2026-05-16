@@ -1,6 +1,16 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
+  ViewChild,
+} from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { Pet } from '../../../../../models/Pets/pet';
+import { PetDTO } from '../../../../../models/dtos/pet-dto';
 
 @Component({
   selector: 'app-card-info-pet',
@@ -9,9 +19,8 @@ import { Pet } from '../../../../../models/Pets/pet';
   templateUrl: './card-info-pet.component.html',
 })
 export class CardInfoPetComponent implements AfterViewInit, OnChanges {
-
   @Input()
-  pet!: Pet;
+  pet!: PetDTO;
 
   @Input()
   vetId!: number;
@@ -34,9 +43,7 @@ export class CardInfoPetComponent implements AfterViewInit, OnChanges {
   }
 
   getEdad(fechaNacimiento: string | Date): number {
-
-    if (!fechaNacimiento)
-      return 0;
+    if (!fechaNacimiento) return 0;
 
     const nacimiento = new Date(fechaNacimiento);
     const hoy = new Date();
@@ -44,15 +51,18 @@ export class CardInfoPetComponent implements AfterViewInit, OnChanges {
     const m = hoy.getMonth() - nacimiento.getMonth();
 
     if (m < 0 || (m === 0 && hoy.getDate() < nacimiento.getDate())) edad--;
-      return edad;
-
+    return edad;
   }
 
   private updateTogglePill(toggle: HTMLElement): void {
     const input = toggle.querySelector('input') as HTMLInputElement | null;
     const pill = toggle.querySelector('.toggle-pill') as HTMLElement | null;
-    const spanInactive = toggle.querySelector('.toggle-inactive') as HTMLElement | null;
-    const spanActive = toggle.querySelector('.toggle-active') as HTMLElement | null;
+    const spanInactive = toggle.querySelector(
+      '.toggle-inactive',
+    ) as HTMLElement | null;
+    const spanActive = toggle.querySelector(
+      '.toggle-active',
+    ) as HTMLElement | null;
 
     if (!input || !pill || !spanInactive || !spanActive) {
       return;
@@ -81,7 +91,5 @@ export class CardInfoPetComponent implements AfterViewInit, OnChanges {
     }
 
     this.estadoChange.emit(this.pet.estado);
-
   }
-
 }

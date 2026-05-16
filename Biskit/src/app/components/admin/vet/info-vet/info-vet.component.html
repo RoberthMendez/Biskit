@@ -18,13 +18,16 @@
       <aside class="flex w-full flex-col justify-center lg:col-span-2">
         <app-treatments-card
           [title]="'Tratamientos de ' + vet.nombre"
+          [routeBase]="['/admin', adminId]"
+          [routeSegment]="'vets'"
+          [entityId]="vet.id"
           [helperText]="
-            vet.tratamientos.length +
-            (vet.tratamientos.length === 1
+            tratamientos.length +
+            (tratamientos.length === 1
               ? ' tratamiento registrado'
               : ' tratamientos registrados')
           "
-          [tratamientos]="vet.tratamientos"
+          [tratamientos]="tratamientos"
           [showAddButton]="false"
           [variant]="'vet'"
           [listVariant]="'client'"

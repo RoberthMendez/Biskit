@@ -1,9 +1,9 @@
 export class DrogaTratamientosCountDto {
-    drogaNombre: string;
-    count: number;
+  drogaNombre: string;
+  count: number;
 
-    constructor(drogaNombre: string, count: number) {
-        this.drogaNombre = drogaNombre;
-        this.count = count;
-    }
+  constructor(drogaNombre: string, count: number) {
+    this.drogaNombre = drogaNombre;
+    this.count = count;
+  }
 }

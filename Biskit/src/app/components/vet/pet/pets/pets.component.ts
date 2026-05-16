@@ -1,7 +1,7 @@
 import { Component, CUSTOM_ELEMENTS_SCHEMA, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { Pet } from '../../../../models/Pets/pet';
+import { PetDTO } from '../../../../models/dtos/pet-dto';
 import { PetService } from '../../../../services/pet.service';
 import { VetService } from '../../../../services/vet.service';
 import { AdminService } from '../../../../services/admin.service';
@@ -9,6 +9,10 @@ import { CardPetComponent } from './card-pet/card-pet.component';
 import { BackButtonComponent } from '../../../reusables/back-button/back-button.component';
 import { BotonFiltrosComponent } from '../../../reusables/boton-filtros/boton-filtros.component';
 import { EmptyResultsComponent } from '../../../reusables/empty-results/empty-results.component';
+
+type PetListado = PetDTO & {
+  tratamientos?: Array<{ vet?: { id?: number } | null }>;
+};
 
 @Component({
   selector: 'app-pets',
@@ -25,8 +29,8 @@ import { EmptyResultsComponent } from '../../../reusables/empty-results/empty-re
   templateUrl: './pets.component.html',
 })
 export class PetsComponent {
-  public pets: Pet[] = [];
-  public petsFiltrados: Pet[] = [];
+  public pets: PetListado[] = [];
+  public petsFiltrados: PetListado[] = [];
   public vetId: number = 0;
   public basePath = '';
   public isAdminView = false;
@@ -82,7 +86,7 @@ export class PetsComponent {
   }
 
   // Capturar filtros emitidos desde el componente boton-filtros
-  onFiltrosAplicados(petsFiltrados: Pet[] | any) {
+  onFiltrosAplicados(petsFiltrados: PetListado[] | any) {
     this.petsFiltrados = Array.isArray(petsFiltrados) ? [...petsFiltrados] : [];
     this.hayFiltrosActivos = true;
   }
@@ -116,7 +120,7 @@ export class PetsComponent {
     }, 500);
   }
 
-  get filteredPets(): Pet[] {
+  get filteredPets(): PetListado[] {
     // Si hay filtros activos, usar siempre los resultados filtrados, aunque estén vacíos
     if (this.hayFiltrosActivos) {
       const term = this.searchTerm.trim().toLowerCase();

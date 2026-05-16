@@ -261,6 +261,20 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'admin/:idAdmin/vets/:vetId/tratamiento/:tratamientoId',
+    loadComponent: () =>
+      import('./components/tratamientos/info-tratamiento/info-tratamiento.component').then(
+        (m) => m.InfoTratamientoComponent,
+      ),
+  },
+  {
+    path: 'admin/:idAdmin/vets/:vetId/tratamiento/update/:tratamientoId',
+    loadComponent: () =>
+      import('./components/tratamientos/add-tratamiento/add-tratamiento.component').then(
+        (m) => m.AddTratamientoComponent,
+      ),
+  },
+  {
     path: 'vet/:vetId/tratamientos/:tratamientoId',
     loadComponent: () =>
       import('./components/tratamientos/info-tratamiento/info-tratamiento.component').then(

@@ -2,6 +2,7 @@ import { Client } from '../Client/client';
 import { Tratamiento } from '../Tratamiento/tratamiento';
 import { Enfermedad } from './enfermedad';
 import { Raza } from './raza';
+import { ItemTratamientoDto } from '../dtos/item-tratamiento-dto';
 
 export class Pet {
   public id?: number;
@@ -13,7 +14,7 @@ export class Pet {
   public enfermedad: Enfermedad;
   public owner: Client;
   public raza: Raza;
-  public tratamientos?: Tratamiento[];
+  public tratamientos?: Array<Tratamiento | ItemTratamientoDto>;
 
   constructor(
     id?: number,
@@ -25,7 +26,7 @@ export class Pet {
     enfermedad: Enfermedad = new Enfermedad(),
     owner: Client = new Client(),
     raza: Raza = new Raza(),
-    tratamientos?: Tratamiento[],
+    tratamientos?: Array<Tratamiento | ItemTratamientoDto>,
   ) {
     this.id = id;
     this.nombre = nombre;
@@ -38,7 +39,6 @@ export class Pet {
     this.raza = raza;
     this.tratamientos = tratamientos ?? [];
   }
-
 }
 
 export { Pet as PeT };

@@ -3,20 +3,24 @@ import { Vet } from '../models/Vets/vet-cl';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Pet } from '../models/Pets/pet';
+import { HorarioDia } from '../models/Citas/horario-dia';
+import { CitaDto } from '../models/dtos/cita-dto';
+import { ItemTratamientoDto } from '../models/dtos/item-tratamiento-dto';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class VetService {
-
-  constructor( private http: HttpClient ) { }
+  constructor(private http: HttpClient) {}
 
   // ----- Crear y Actualizar Veterinario (CREATE/UPDATE) -----
   saveVet(vet: Vet): Observable<Vet> {
     if (vet.id)
-      return this.http.put<Vet>(`http://localhost:8080/vets/update/${vet.id}`, vet);
-    else
-      return this.http.post<Vet>('http://localhost:8080/vets/add', vet);
+      return this.http.put<Vet>(
+        `http://localhost:8080/vets/update/${vet.id}`,
+        vet,
+      );
+    else return this.http.post<Vet>('http://localhost:8080/vets/add', vet);
   }
 
   // ----- Mostrar Todos los Veterinarios (READ) -----
@@ -29,29 +33,46 @@ export class VetService {
     return this.http.get<Vet>(`http://localhost:8080/vets/${id}`);
   }
 
+  // ----- Mostrar Tratamientos por ID de Vet (READ) -----
+  findTratamientosByVet(vetId: number): Observable<ItemTratamientoDto[]> {
+    return this.http.get<ItemTratamientoDto[]>(
+      `http://localhost:8080/vets/${vetId}/tratamientos`,
+    );
+  }
+
   // ----- Eliminar Veterinario (DELETE) -----
   deleteVet(id: number): Observable<void> {
     return this.http.delete<void>(`http://localhost:8080/vets/delete/${id}`);
   }
 
-  // ----- Actualizar Estado de Mascota (PATCH) -----
-  updateEstado(id: number, estado: boolean): Observable<void> {
-    return this.http.patch<void>(`http://localhost:8080/vets/update-estado/${id}`, { estado });
-  }
-
-
   // ----- Numero de Tratamientos Realizados por un Veterinario -----
   countTratamientosByVet(vetId: number): Observable<number> {
-    return this.http.get<number>(`http://localhost:8080/vets/${vetId}/tratamientos/count`);
+    return this.http.get<number>(
+      `http://localhost:8080/vets/${vetId}/tratamientos/count`,
+    );
   }
 
   //Comprobar si el id de vet existe
   existsById(id: number): Observable<void> {
-    return this.http.get<void>(`http://localhost:8080/vets/${id}/exists`); 
+    return this.http.get<void>(`http://localhost:8080/vets/${id}/exists`);
   }
 
+  getHorarioSemanalByVetId(vetId: number): Observable<HorarioDia[]> {
+    return this.http.get<HorarioDia[]>(
+      `http://localhost:8080/vets/${vetId}/horario-semanal`,
+    );
+  }
+
+  getCitasSemanalesByVetId(
+    vetId: number,
+    numSemana: number,
+  ): Observable<CitaDto[]> {
+    return this.http.get<CitaDto[]>(
+      `http://localhost:8080/vets/${vetId}/citas-semanales`,
+      { params: { numSemana: numSemana.toString() } },
+    );
+  }
   getDetails(): Observable<Vet> {
     return this.http.get<Vet>(`http://localhost:8080/vets/details`);
   }
-
 }

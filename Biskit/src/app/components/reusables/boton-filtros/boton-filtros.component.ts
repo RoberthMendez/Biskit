@@ -1,4 +1,12 @@
-import { Component, Input, Output, EventEmitter, OnInit, HostListener, ElementRef } from '@angular/core';
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  OnInit,
+  HostListener,
+  ElementRef,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { forkJoin } from 'rxjs';
@@ -10,7 +18,7 @@ import { RazasService } from '../../../services/razas.service';
 import { EspecialidadesService } from '../../../services/especialidades.service';
 import { EnfermedadesService } from '../../../services/enfermedades.service';
 import { PetService } from '../../../services/pet.service';
-import { Pet } from '../../../models/Pets/pet';
+import { PetDTO } from '../../../models/dtos/pet-dto';
 import { Vet } from '../../../models/Vets/vet-cl';
 import { FiltrosEstadoService } from '../../../services/filtros-estado.service';
 
@@ -19,26 +27,25 @@ import { FiltrosEstadoService } from '../../../services/filtros-estado.service';
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './boton-filtros.component.html',
-  styleUrls: ['./boton-filtros.component.css']
+  styleUrls: ['./boton-filtros.component.css'],
 })
 export class BotonFiltrosComponent implements OnInit {
-
   @Input() tipo: 'pets' | 'vets' = 'pets';
   @Input() isAdminView: boolean = false;
   @Input() vetId?: number;
-  @Output() filtrosAplicados = new EventEmitter<Pet[] | Vet[]>();
-  
+  @Output() filtrosAplicados = new EventEmitter<PetDTO[] | Vet[]>();
+
   showModal = false;
   isLoading = false;
-  
+
   // Opciones disponibles
   especies: any[] = [];
   todasLasRazas: any[] = [];
   razasFiltradas: any[] = [];
   especialidades: any[] = [];
   enfermedades: any[] = [];
-  mascotas: any[] = [];
-  
+  mascotas: PetDTO[] = [];
+
   // Estados de búsqueda y filtrado para dropdowns
   especieSearch = '';
   razaSearch = '';
@@ -47,12 +54,12 @@ export class BotonFiltrosComponent implements OnInit {
   mascotaSearch = '';
   estadoPetSearch = '';
   estadoVetSearch = '';
-  
+
   especiesFiltradas: any[] = [];
   enfermedadesFiltradas: any[] = [];
   especialidadesFiltradas: any[] = [];
   mascotasFiltradas: any[] = [];
-  
+
   // Control de dropdowns abiertos
   dropdownOpen: { [key: string]: boolean } = {
     especie: false,
@@ -62,19 +69,19 @@ export class BotonFiltrosComponent implements OnInit {
     especialidad: false,
     estadoPet: false,
     estadoVet: false,
-    mascota: false
+    mascota: false,
   };
 
   // Estilos en línea para posicionar dropdowns con `position: fixed`
   dropdownStyles: { [key: string]: any } = {};
-  
+
   // Filtros Pets
   filtrosPets: FiltrosPetsDto = {};
   mostrarMisMascotas: boolean = false;
-  
+
   // Filtros Vets
   filtrosVets: FiltrosVetsDto = {};
-  
+
   // Estado del botón (si hay filtros activos)
   tieneFilterActivos = false;
   private restaurado = false;
@@ -87,7 +94,7 @@ export class BotonFiltrosComponent implements OnInit {
     private enfermedadesService: EnfermedadesService,
     private petService: PetService,
     private filtrosEstadoService: FiltrosEstadoService,
-    private elementRef: ElementRef
+    private elementRef: ElementRef,
   ) {}
 
   ngOnInit() {
@@ -186,9 +193,9 @@ export class BotonFiltrosComponent implements OnInit {
     if (!petId || petId === '') {
       return '';
     }
-    
+
     // En selectMascota se guarda el nombre, así que buscamos por nombre
-    const mascota = this.mascotas.find(m => m.nombre === petId);
+    const mascota = this.mascotas.find((m) => m.nombre === petId);
     return mascota ? mascota.nombre : petId;
   }
 
@@ -200,12 +207,14 @@ export class BotonFiltrosComponent implements OnInit {
     if (this.filtrosPets.especie) {
       // Filtrar razas por especie seleccionada
       this.razasFiltradas = this.todasLasRazas.filter(
-        (raza: any) => raza.especie?.nombre === this.filtrosPets.especie
+        (raza: any) => raza.especie?.nombre === this.filtrosPets.especie,
       );
 
       if (
         this.filtrosPets.raza &&
-        !this.razasFiltradas.some((raza: any) => raza.nombre === this.filtrosPets.raza)
+        !this.razasFiltradas.some(
+          (raza: any) => raza.nombre === this.filtrosPets.raza,
+        )
       ) {
         this.filtrosPets.raza = undefined;
       }
@@ -226,7 +235,7 @@ export class BotonFiltrosComponent implements OnInit {
   }
 
   cerrarTodosLosDropdowns() {
-    Object.keys(this.dropdownOpen).forEach(key => {
+    Object.keys(this.dropdownOpen).forEach((key) => {
       this.dropdownOpen[key] = false;
     });
     this.dropdownStyles = {};
@@ -286,25 +295,27 @@ export class BotonFiltrosComponent implements OnInit {
     this.isLoading = true;
 
     this.normalizarFiltros();
-    
+
     if (this.tipo === 'pets') {
-      this.filtrosService.getPetsFiltrados(this.filtrosPets, this.mostrarMisMascotas, this.vetId).subscribe({
-        next: (pets) => {
-          this.tieneFilterActivos = this.verificarFiltrosActivos();
-          if (guardarEstado) {
-            this.filtrosEstadoService.guardar(this.getStorageKey(), {
-              filtrosPets: this.filtrosPets,
-              mostrarMisMascotas: this.mostrarMisMascotas,
-            });
-          }
-          this.filtrosAplicados.emit(pets);
-          this.isLoading = false;
-          this.cerrarModal();
-        },
-        error: () => {
-          this.isLoading = false;
-        }
-      });
+      this.filtrosService
+        .getPetsFiltrados(this.filtrosPets, this.mostrarMisMascotas, this.vetId)
+        .subscribe({
+          next: (pets) => {
+            this.tieneFilterActivos = this.verificarFiltrosActivos();
+            if (guardarEstado) {
+              this.filtrosEstadoService.guardar(this.getStorageKey(), {
+                filtrosPets: this.filtrosPets,
+                mostrarMisMascotas: this.mostrarMisMascotas,
+              });
+            }
+            this.filtrosAplicados.emit(pets);
+            this.isLoading = false;
+            this.cerrarModal();
+          },
+          error: () => {
+            this.isLoading = false;
+          },
+        });
     } else {
       this.filtrosService.getVetsFiltrados(this.filtrosVets).subscribe({
         next: (vets: any) => {
@@ -320,7 +331,7 @@ export class BotonFiltrosComponent implements OnInit {
         },
         error: () => {
           this.isLoading = false;
-        }
+        },
       });
     }
   }
@@ -356,10 +367,15 @@ export class BotonFiltrosComponent implements OnInit {
 
   private verificarFiltrosActivos(): boolean {
     if (this.tipo === 'pets') {
-      return Object.values(this.filtrosPets).some(v => v !== undefined && v !== null && v !== '') ||
-             this.mostrarMisMascotas;
+      return (
+        Object.values(this.filtrosPets).some(
+          (v) => v !== undefined && v !== null && v !== '',
+        ) || this.mostrarMisMascotas
+      );
     } else {
-      return Object.values(this.filtrosVets).some(v => v !== undefined && v !== null && v !== '');
+      return Object.values(this.filtrosVets).some(
+        (v) => v !== undefined && v !== null && v !== '',
+      );
     }
   }
 
@@ -375,27 +391,31 @@ export class BotonFiltrosComponent implements OnInit {
   openDropdown(key: string) {
     this.cerrarTodosLosDropdowns();
     // calcular posición del trigger y fijar el dropdown en la ventana (fixed)
-    const dropdownWrapper = this.elementRef.nativeElement.querySelector(`[data-dropdown="${key}"]`);
+    const dropdownWrapper = this.elementRef.nativeElement.querySelector(
+      `[data-dropdown="${key}"]`,
+    );
     if (dropdownWrapper) {
-      const triggerEl = dropdownWrapper.querySelector('input') || dropdownWrapper.querySelector('div');
+      const triggerEl =
+        dropdownWrapper.querySelector('input') ||
+        dropdownWrapper.querySelector('div');
       if (triggerEl && triggerEl.getBoundingClientRect) {
         const rect = triggerEl.getBoundingClientRect();
         const maxHeight = 240; // 15rem en pixels (1rem = 16px * 15 = 240px)
         const spaceBelow = window.innerHeight - rect.bottom;
         const spaceAbove = rect.top;
-        
+
         // Decidir si posicionar arriba o abajo
         const posicionAriba = spaceBelow < maxHeight && spaceAbove > maxHeight;
-        
+
         // dejar 6px de separación
         const styles: any = {
           position: 'fixed',
           left: `${rect.left}px`,
           width: `${rect.width}px`,
           'max-height': '15rem',
-          'overflow-y': 'auto'
+          'overflow-y': 'auto',
         };
-        
+
         if (posicionAriba) {
           // Posicionar arriba
           styles.bottom = `${window.innerHeight - rect.top + 6}px`;
@@ -403,7 +423,7 @@ export class BotonFiltrosComponent implements OnInit {
           // Posicionar abajo (por defecto)
           styles.top = `${rect.bottom + 6}px`;
         }
-        
+
         this.dropdownStyles[key] = styles;
       }
     }
@@ -432,20 +452,30 @@ export class BotonFiltrosComponent implements OnInit {
     }
 
     // Si el click fue dentro del modal, pero fuera del dropdown activo, cerramos dropdowns
-    const openKey = Object.keys(this.dropdownOpen).find(k => this.dropdownOpen[k]);
+    const openKey = Object.keys(this.dropdownOpen).find(
+      (k) => this.dropdownOpen[k],
+    );
     if (!openKey) {
       return;
     }
 
-    const dropdownWrapper = this.elementRef.nativeElement.querySelector(`[data-dropdown="${openKey}"]`) as HTMLElement | null;
-    const dropdownContent = this.elementRef.nativeElement.querySelector(`[data-dropdown-content="${openKey}"]`) as HTMLElement | null;
+    const dropdownWrapper = this.elementRef.nativeElement.querySelector(
+      `[data-dropdown="${openKey}"]`,
+    ) as HTMLElement | null;
+    const dropdownContent = this.elementRef.nativeElement.querySelector(
+      `[data-dropdown-content="${openKey}"]`,
+    ) as HTMLElement | null;
     if (!dropdownWrapper && !dropdownContent) {
       this.cerrarTodosLosDropdowns();
       return;
     }
 
-    const clickedInsideWrapper = dropdownWrapper ? dropdownWrapper.contains(target) : false;
-    const clickedInsideContent = dropdownContent ? dropdownContent.contains(target) : false;
+    const clickedInsideWrapper = dropdownWrapper
+      ? dropdownWrapper.contains(target)
+      : false;
+    const clickedInsideContent = dropdownContent
+      ? dropdownContent.contains(target)
+      : false;
     if (!clickedInsideWrapper && !clickedInsideContent) {
       this.cerrarTodosLosDropdowns();
     }
@@ -458,8 +488,8 @@ export class BotonFiltrosComponent implements OnInit {
       this.filtrosPets.raza = undefined;
       this.razasFiltradas = [];
     }
-    this.especiesFiltradas = this.especies.filter(e =>
-      e.nombre.toLowerCase().includes(this.especieSearch.toLowerCase())
+    this.especiesFiltradas = this.especies.filter((e) =>
+      e.nombre.toLowerCase().includes(this.especieSearch.toLowerCase()),
     );
   }
 
@@ -474,9 +504,10 @@ export class BotonFiltrosComponent implements OnInit {
     if (!this.razaSearch.trim()) {
       this.filtrosPets.raza = undefined;
     }
-    this.razasFiltradas = this.todasLasRazas.filter(r =>
-      r.especie?.nombre === this.filtrosPets.especie &&
-      r.nombre.toLowerCase().includes(this.razaSearch.toLowerCase())
+    this.razasFiltradas = this.todasLasRazas.filter(
+      (r) =>
+        r.especie?.nombre === this.filtrosPets.especie &&
+        r.nombre.toLowerCase().includes(this.razaSearch.toLowerCase()),
     );
   }
 
@@ -490,8 +521,8 @@ export class BotonFiltrosComponent implements OnInit {
     if (!this.enfermedadSearch.trim()) {
       this.filtrosPets.enfermedad = undefined;
     }
-    this.enfermedadesFiltradas = this.enfermedades.filter(e =>
-      e.nombre.toLowerCase().includes(this.enfermedadSearch.toLowerCase())
+    this.enfermedadesFiltradas = this.enfermedades.filter((e) =>
+      e.nombre.toLowerCase().includes(this.enfermedadSearch.toLowerCase()),
     );
   }
 
@@ -518,8 +549,8 @@ export class BotonFiltrosComponent implements OnInit {
     if (!this.especialidadSearch.trim()) {
       this.filtrosVets.especialidad = undefined;
     }
-    this.especialidadesFiltradas = this.especialidades.filter(e =>
-      e.nombre.toLowerCase().includes(this.especialidadSearch.toLowerCase())
+    this.especialidadesFiltradas = this.especialidades.filter((e) =>
+      e.nombre.toLowerCase().includes(this.especialidadSearch.toLowerCase()),
     );
   }
 
@@ -545,8 +576,8 @@ export class BotonFiltrosComponent implements OnInit {
     if (!this.mascotaSearch.trim()) {
       this.filtrosVets.pet = undefined;
     }
-    this.mascotasFiltradas = this.mascotas.filter(m =>
-      m.nombre.toLowerCase().includes(this.mascotaSearch.toLowerCase())
+    this.mascotasFiltradas = this.mascotas.filter((m) =>
+      m.nombre.toLowerCase().includes(this.mascotaSearch.toLowerCase()),
     );
   }
 
@@ -555,6 +586,4 @@ export class BotonFiltrosComponent implements OnInit {
     this.mascotaSearch = mascota.nombre;
     this.closeDropdown('mascota');
   }
-
 }
-
