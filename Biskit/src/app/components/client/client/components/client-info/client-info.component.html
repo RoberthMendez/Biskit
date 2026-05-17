@@ -17,7 +17,7 @@
 
   <!-- Datos -->
   <article
-    class="flex flex-col sm:flex-row justify-evenly gap-4 sm:gap-6 md:gap-12 lg:gap-20 xl:gap-32 mx-4 sm:mx-8 md:mx-15"
+    class="grid grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mx-4 sm:mx-8 md:mx-15"
   >
     <app-client-detail-item
       icon="cedula"
@@ -31,10 +31,14 @@
       [value]="client.celular"
     ></app-client-detail-item>
 
-    <app-client-detail-item
-      icon="correo"
-      label="Correo"
-      [value]="client.correo"
-    ></app-client-detail-item>
+    <div class="col-span-2 lg:col-span-1 flex justify-center overflow-hidden">
+      <div class="w-full max-w-xs min-w-0 overflow-hidden">
+        <app-client-detail-item
+          icon="correo"
+          label="Correo"
+          [value]="client.correo"
+        ></app-client-detail-item>
+      </div>
+    </div>
   </article>
 </section>
