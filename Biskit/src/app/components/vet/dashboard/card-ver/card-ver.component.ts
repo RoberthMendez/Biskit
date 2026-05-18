@@ -5,12 +5,8 @@ import { RouterLink } from '@angular/router';
 @Component({
   selector: 'app-card-ver',
   imports: [RouterLink],
-  templateUrl: './card-ver.component.html'
+  templateUrl: './card-ver.component.html',
 })
 export class CardVerComponent {
-
   @Input() titulo: string = '';
-
-  @Input() vetId: number = 0;
-
 }

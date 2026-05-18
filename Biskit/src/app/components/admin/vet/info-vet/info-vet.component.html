@@ -1,6 +1,6 @@
 <app-back-button
   [label]="'Lista de Veterinarios'"
-  [ruta]="['/admin', adminId, 'vets']"
+  [ruta]="['/admin', 'vets']"
 ></app-back-button>
 <main
   class="screen-enter mx-4 mt-2 my-6 space-y-6 sm:mx-8 sm:mt-6 sm:mb-10 md:mx-12 lg:mx-20 xl:mx-28"
@@ -20,7 +20,7 @@
       >
         <app-treatments-card
           [title]="'Tratamientos de ' + vet.nombre"
-          [routeBase]="['/admin', adminId]"
+          [routeBase]="['/admin']"
           [routeSegment]="'vets'"
           [entityId]="vet.id"
           [helperText]="

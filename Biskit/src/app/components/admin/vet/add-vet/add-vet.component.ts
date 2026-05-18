@@ -14,10 +14,9 @@ import { BackButtonComponent } from '../../../reusables/back-button/back-button.
 })
 export class AddVetComponent {
   vetId: number | null = null;
-  adminId: number | null = null;
-  backLink: Array<string | number> = ['/admin', 0, 'vets'];
+  backLink: Array<string | number> = ['/admin', 'vets'];
   backLabel = 'Lista de Veterinarios';
-  returnRoute: string | Array<string | number> = ['/admin', 0, 'vets'];
+  returnRoute: string | Array<string | number> = ['/admin', 'vets'];
 
   constructor(
     private route: ActivatedRoute,
@@ -30,19 +29,12 @@ export class AddVetComponent {
     const idVet = this.route.snapshot.paramMap.get('idVet');
     this.vetId = idVet ? Number(idVet) : null;
 
-    const idAdmin = this.route.snapshot.paramMap.get('idAdmin');
-    this.adminId = idAdmin ? Number(idAdmin) : null;
-    if (this.adminId != null) {
-      this.returnRoute = ['/admin', this.adminId, 'vets'];
-      this.backLink = ['/admin', this.adminId, 'vets'];
-    }
-
     const fromDetail =
       this.route.snapshot.queryParamMap.get('from') === 'detail';
-    if (this.adminId != null && this.vetId != null && fromDetail) {
-      this.backLink = ['/admin', this.adminId, 'vets', this.vetId];
+    if (this.vetId != null && fromDetail) {
+      this.backLink = ['/admin', 'vets', this.vetId];
       this.backLabel = 'Detalle de Veterinario';
-      this.returnRoute = ['/admin', this.adminId, 'vets', this.vetId];
+      this.returnRoute = ['/admin', 'vets', this.vetId];
     }
   }
 }

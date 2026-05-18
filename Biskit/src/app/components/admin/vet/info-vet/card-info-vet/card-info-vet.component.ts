@@ -13,7 +13,5 @@ import { Vet } from '../../../../../models/Vets/vet-cl';
 })
 export class CardInfoVetComponent {
   @Input({ required: true }) vet!: Vet;
-  @Input({ required: true }) adminId!: number;
   @Input() onDelete?: (vetId: number) => void;
-
 }

@@ -16,10 +16,10 @@ import { BackButtonComponent } from '../../../reusables/back-button/back-button.
 })
 export class AddClientComponent {
   clientId: number | null = null;
-  vetId: number | null = null;
+  isAdminView = false;
   basePath = '/vet/clients';
-  returnRoute: string | Array<string | number> = '/vet/clients';
-  backLink: string | Array<string | number> = '/vet/clients';
+  returnRoute: string | Array<string | number> = ['/vet', 'clients'];
+  backLink: string | Array<string | number> = ['/vet', 'clients'];
   backLabel = 'Lista de Clientes';
 
   constructor(
@@ -32,32 +32,30 @@ export class AddClientComponent {
 
   ngOnInit(): void {
     const routePath = this.route.snapshot.routeConfig?.path ?? '';
-    const isAdminView = routePath.startsWith('admin/');
-    const contextParam = isAdminView ? 'idAdmin' : 'vetId';
-    const contextId = this.route.snapshot.paramMap.get(contextParam) ?? '';
+    this.isAdminView = routePath.startsWith('admin/');
+    const basePath = this.isAdminView ? 'admin' : 'vet';
+
     const fromDetail =
       this.route.snapshot.queryParamMap.get('from') === 'detail';
 
-    if (contextId) {
-      this.basePath = `/${isAdminView ? 'admin' : 'vet'}/${contextId}`;
-      this.returnRoute = [this.basePath, 'clients'];
-    }
+    this.basePath = basePath;
+    this.returnRoute = [basePath, 'clients'];
 
     const id = this.route.snapshot.paramMap.get('id');
     this.clientId = id ? Number(id) : null;
 
-    this.updateBackNavigation(fromDetail);
+    this.updateBackNavigation(basePath, fromDetail);
   }
 
-  private updateBackNavigation(fromDetail = false): void {
+  private updateBackNavigation(basePath: string, fromDetail = false): void {
     if (this.clientId != null && fromDetail) {
-      this.backLink = [this.basePath, 'clients', this.clientId];
+      this.backLink = [basePath, 'clients', this.clientId];
       this.backLabel = 'Detalle de Cliente';
-      this.returnRoute = [this.basePath, 'clients', this.clientId];
+      this.returnRoute = [basePath, 'clients', this.clientId];
       return;
     }
 
-    this.backLink = [this.basePath, 'clients'];
+    this.backLink = [basePath, 'clients'];
     this.backLabel = 'Lista de Clientes';
   }
 }

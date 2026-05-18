@@ -129,9 +129,7 @@ export class HeaderComponent {
   }
 
   adminRoute(segment: 'pets' | 'vets' | 'clients'): Array<string | number> {
-    return this.idUsuario != null
-      ? ['/admin', this.idUsuario, segment]
-      : ['/admin'];
+    return ['/admin', segment];
   }
 
   solicitarCerrarSesion(): void {

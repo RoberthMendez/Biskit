@@ -25,8 +25,6 @@ import { EspecialidadesService } from '../../../../../services/especialidades.se
 export class FormularioComponent {
   @Input() vetId: number | null = null;
 
-  @Input() adminId: number | null = null;
-
   @Input() returnRoute: string | Array<string | number> = ['/admin'];
 
   constructor(

@@ -36,9 +36,9 @@ type PetListado = PetDTO & {
 export class PetsComponent implements AfterViewInit {
   public pets: PetListado[] = [];
   public petsFiltrados: PetListado[] = [];
-  public vetId: number = 0;
   public basePath = '';
   public isAdminView = false;
+  public vetId: number | undefined;
   public showOnlyMyPets: boolean = false;
   public hayFiltrosActivos: boolean = false;
   public isLoadingPets = true;
@@ -60,9 +60,28 @@ export class PetsComponent implements AfterViewInit {
     this.isAdminView = routePath.startsWith('admin/');
     this.setReducedMotionPreference();
 
-    const contextParam = this.isAdminView ? 'idAdmin' : 'vetId';
-    this.vetId = Number(this.route.snapshot.paramMap.get(contextParam));
-    this.basePath = `/${this.isAdminView ? 'admin' : 'vet'}/${this.vetId}`;
+    this.basePath = `/${this.isAdminView ? 'admin' : 'vet'}`;
+
+    // Obtener vetId del servicio correspondiente
+    if (this.isAdminView) {
+      this.adminService.getDetails().subscribe(
+        (admin) => {
+          this.vetId = admin.id;
+        },
+        () => {
+          this.vetId = undefined;
+        },
+      );
+    } else {
+      this.vetService.getDetails().subscribe(
+        (vet) => {
+          this.vetId = vet.id;
+        },
+        () => {
+          this.vetId = undefined;
+        },
+      );
+    }
 
     this.petService.findAll().subscribe(
       (pets) => {

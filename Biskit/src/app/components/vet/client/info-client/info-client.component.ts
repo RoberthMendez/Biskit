@@ -27,8 +27,8 @@ import { PetDTO } from '../../../../models/dtos/pet-dto';
 export class InfoClientComponent {
   client: Client = new Client();
   pets: PetDTO[] = [];
-  vetId: number | null = null;
-  basePath = '/vet/clients';
+  isAdminView = false;
+  basePath = '';
   clientsRoute = '/vet/clients';
 
   constructor(
@@ -41,14 +41,10 @@ export class InfoClientComponent {
 
   ngOnInit(): void {
     const routePath = this.route.snapshot.routeConfig?.path ?? '';
-    const isAdminView = routePath.startsWith('admin/');
-    const contextParam = isAdminView ? 'idAdmin' : 'vetId';
-    const contextId = this.route.snapshot.paramMap.get(contextParam) ?? '';
+    this.isAdminView = routePath.startsWith('admin/');
 
-    if (contextId) {
-      this.basePath = `/${isAdminView ? 'admin' : 'vet'}/${contextId}/clients`;
-      this.clientsRoute = this.basePath;
-    }
+    this.basePath = `/${this.isAdminView ? 'admin' : 'vet'}`;
+    this.clientsRoute = `/${this.isAdminView ? 'admin' : 'vet'}/clients`;
 
     const id = this.route.snapshot.paramMap.get('id');
     const clientId = id ? Number(id) : 0;

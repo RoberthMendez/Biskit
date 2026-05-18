@@ -33,7 +33,6 @@ export class FormularioComponent implements OnInit {
   private readonly datePickerComponentType = DatepickerComponent;
 
   @Input() petId: number | null = null;
-  @Input() vetId: number | null = null;
   @Input() basePath = '';
   // ── Formulario ───────────────────────────────────────────────────────────────
   formPet: Pet = new Pet();

@@ -26,7 +26,6 @@ export class InfoPetComponent {
   pet!: PetDTO;
   owner: Client = new Client();
   tratamientos: ItemTratamientoDto[] = [];
-  vetId!: number;
   basePath = '';
 
   constructor(
@@ -42,9 +41,7 @@ export class InfoPetComponent {
     const petId = Number(id);
     const routePath = this.route.snapshot.routeConfig?.path ?? '';
     const isAdminView = routePath.startsWith('admin/');
-    const contextParam = isAdminView ? 'idAdmin' : 'vetId';
-    this.vetId = Number(this.route.snapshot.paramMap.get(contextParam));
-    this.basePath = `/${isAdminView ? 'admin' : 'vet'}/${this.vetId}`;
+    this.basePath = `/${isAdminView ? 'admin' : 'vet'}`;
 
     if (!id || Number.isNaN(petId)) {
       console.error('Parametro petId invalido en la ruta:', id);

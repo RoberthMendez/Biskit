@@ -46,13 +46,11 @@ export class InfoTratamientoComponent implements OnInit {
   ngOnInit(): void {
     const routePath = this.route.snapshot.routeConfig?.path ?? '';
     const petIdParam = this.route.snapshot.paramMap.get('petId');
-    const vetIdParam = this.route.snapshot.paramMap.get('vetId');
     const tratamientoIdParam =
       this.route.snapshot.paramMap.get('tratamientoId');
     const clientIdParam = this.route.snapshot.paramMap.get('clientId');
 
     const petId = petIdParam !== null ? Number(petIdParam) : null;
-    const vetId = vetIdParam !== null ? Number(vetIdParam) : null;
     const tratamientoId =
       tratamientoIdParam !== null ? Number(tratamientoIdParam) : null;
     this.routeTratamientoId =
@@ -61,30 +59,22 @@ export class InfoTratamientoComponent implements OnInit {
         : null;
     const clientId = clientIdParam !== null ? Number(clientIdParam) : null;
     const isAdminPage = routePath.startsWith('admin/');
-    const isAdminVetDetailPage =
-      isAdminPage && vetId !== null && !Number.isNaN(vetId);
 
     this.isClientView = routePath.startsWith('client/');
 
-    if (this.isClientView && clientId !== null && !Number.isNaN(clientId)) {
-      this.backLink = `/client/${clientId}/pet/${petId}`;
+    if (this.isClientView) {
+      this.backLink = `/client/pet/${petId}`;
       this.backLabel = 'Detalle de Mascota';
       this.isClientView = true;
     }
 
     if (!this.isClientView) {
-      const contextParam = isAdminPage ? 'idAdmin' : 'vetId';
-      const contextId = Number(this.route.snapshot.paramMap.get(contextParam));
-      this.basePath = `/${isAdminPage ? 'admin' : 'vet'}/${contextId}`;
+      this.basePath = `/${isAdminPage ? 'admin' : 'vet'}`;
       const hasPetContext = petId !== null && !Number.isNaN(petId);
-      const hasVetContext = vetId !== null && !Number.isNaN(vetId);
 
       if (hasPetContext) {
         this.backLink = `${this.basePath}/pets/${petId}`;
         this.backLabel = 'Detalle de Mascota';
-      } else if (isAdminPage && hasVetContext) {
-        this.backLink = `${this.basePath}/vets/${vetId}`;
-        this.backLabel = 'Detalle del Veterinario';
       } else {
         this.backLink = isAdminPage ? '/admin' : '/vet';
         this.backLabel = isAdminPage
@@ -98,13 +88,6 @@ export class InfoTratamientoComponent implements OnInit {
         !Number.isNaN(tratamientoId)
       ) {
         this.editLink = `${this.basePath}/pets/${petId}/tratamiento/update/${tratamientoId}`;
-      } else if (
-        isAdminPage &&
-        hasVetContext &&
-        tratamientoId !== null &&
-        !Number.isNaN(tratamientoId)
-      ) {
-        this.editLink = `${this.basePath}/vets/${vetId}/tratamiento/update/${tratamientoId}`;
       }
     }
 
@@ -121,20 +104,8 @@ export class InfoTratamientoComponent implements OnInit {
             this.pet = tratamiento.pet;
           }
 
-          if (
-            petId === null &&
-            tratamiento.pet?.id != null &&
-            !isAdminVetDetailPage
-          ) {
+          if (petId === null && tratamiento.pet?.id != null && !isAdminPage) {
             this.editLink = `${this.basePath}/pets/${tratamiento.pet.id}/tratamiento/update/${tratamiento.id}`;
-          }
-
-          if (
-            isAdminVetDetailPage &&
-            tratamientoId !== null &&
-            !Number.isNaN(tratamientoId)
-          ) {
-            this.editLink = `${this.basePath}/vets/${vetId}/tratamiento/update/${tratamiento.id}`;
           }
         },
         error: (error) => {

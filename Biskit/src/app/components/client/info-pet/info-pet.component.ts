@@ -35,10 +35,9 @@ export class InfoPetComponent {
 
   ngOnInit(): void {
     const petId = this.route.snapshot.paramMap.get('petId');
-    const clientId = this.route.snapshot.paramMap.get('clientId');
 
     this.clientService
-      .findById(clientId ? Number(clientId) : 0)
+      .getDetails()
       .pipe(
         mergeMap((client) => {
           this.client = client;

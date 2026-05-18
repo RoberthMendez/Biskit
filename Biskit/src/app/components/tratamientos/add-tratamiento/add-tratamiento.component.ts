@@ -73,12 +73,7 @@ export class AddTratamientoComponent implements OnInit {
     const routePath = this.route.snapshot.routeConfig?.path ?? '';
     this.isAdminView = routePath.startsWith('admin/');
 
-    const contextParam = this.isAdminView ? 'idAdmin' : 'vetId';
-    this.vetId = this.resolveContextVetId(contextParam);
-    this.basePath =
-      this.vetId != null
-        ? `/${this.isAdminView ? 'admin' : 'vet'}/${this.vetId}`
-        : `/${this.isAdminView ? 'admin' : 'vet'}`;
+    this.basePath = `/${this.isAdminView ? 'admin' : 'vet'}`;
 
     const petIdParam = this.route.snapshot.paramMap.get('petId');
     this.preselectedPetId = petIdParam ? Number(petIdParam) : null;
@@ -532,29 +527,6 @@ export class AddTratamientoComponent implements OnInit {
       this.editTratamientoId ??
       undefined
     );
-  }
-
-  private resolveContextVetId(contextParam: string): number | null {
-    const routeValue = this.route.snapshot.paramMap.get(contextParam);
-    const routeId = routeValue != null ? Number(routeValue) : NaN;
-
-    if (!Number.isNaN(routeId) && routeId > 0) {
-      return routeId;
-    }
-
-    const storedRole = localStorage.getItem('authRole');
-    let storedId = 0;
-    if (storedRole === 'VET') {
-      this.vetService.getDetails().subscribe((vet) => {
-        storedId = vet.id!;
-      });
-    }
-
-    if (storedRole === 'VET' && !Number.isNaN(storedId) && storedId > 0) {
-      return storedId;
-    }
-
-    return null;
   }
 
   private getTodayDateString(): string {

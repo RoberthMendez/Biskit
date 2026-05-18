@@ -20,9 +20,6 @@ export class CardPetComponent {
   pet!: PetDTO & { tratamientos?: Array<{ vet?: { id?: number } | null }> };
 
   @Input()
-  vetId!: number;
-
-  @Input()
   basePath = '';
 
   @ViewChild('toggleSwitch')

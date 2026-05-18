@@ -15,7 +15,6 @@ import { BackButtonComponent } from '../../../reusables/back-button/back-button.
 })
 export class AddPetComponent {
   petId: number | null = null;
-  vetId: number = 0;
   basePath = '';
   isAdminView = false;
   backLink: string | Array<string | number> = '';
@@ -34,9 +33,7 @@ export class AddPetComponent {
     this.petId = id ? Number(id) : null;
     const routePath = this.route.snapshot.routeConfig?.path ?? '';
     this.isAdminView = routePath.startsWith('admin/');
-    const contextParam = this.isAdminView ? 'idAdmin' : 'vetId';
-    this.vetId = Number(this.route.snapshot.paramMap.get(contextParam));
-    this.basePath = `/${this.isAdminView ? 'admin' : 'vet'}/${this.vetId}`;
+    this.basePath = `/${this.isAdminView ? 'admin' : 'vet'}`;
     this.updateBackNavigation();
   }
 
@@ -53,6 +50,4 @@ export class AddPetComponent {
     this.backLink = `${this.basePath}/pets`;
     this.backLabel = 'Lista de Mascotas';
   }
-
-
 }

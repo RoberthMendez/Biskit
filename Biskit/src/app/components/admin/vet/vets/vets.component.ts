@@ -34,7 +34,6 @@ export class VetsComponent implements OnDestroy {
   public vets: Vet[] = [];
   public vetsFiltrados: Vet[] = [];
   public searchTerm: string = '';
-  public adminId = 1;
   public hayFiltrosActivos: boolean = false;
 
   @ViewChild(HeaderComponent) header?: HeaderComponent;
@@ -112,12 +111,6 @@ export class VetsComponent implements OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.comprobarId();
-    const idAdmin = Number(this.route.snapshot.paramMap.get('idAdmin'));
-    if (!Number.isNaN(idAdmin) && idAdmin > 0) {
-      this.adminId = idAdmin;
-    }
-
     this.cargarVets();
   }
 
@@ -173,7 +166,7 @@ export class VetsComponent implements OnDestroy {
       return;
     }
 
-    this.router.navigate(['/admin', this.adminId, 'vets', vet.id]);
+    this.router.navigate(['/admin/vets', vet.id]);
   }
 
   public onActionClick(event: TablaActionClickEvent): void {
@@ -183,7 +176,7 @@ export class VetsComponent implements OnDestroy {
     }
 
     if (event.actionId === 'edit') {
-      this.router.navigate(['/admin', this.adminId, 'vets', 'update', vet.id]);
+      this.router.navigate(['/admin/vets/update', vet.id]);
       return;
     }
 
@@ -197,7 +190,7 @@ export class VetsComponent implements OnDestroy {
       return;
     }
 
-    this.router.navigate(['/admin', this.adminId, 'vets', vet.id]);
+    this.router.navigate(['/admin/vets', vet.id]);
   }
 
   public onEditCard(vet: Vet): void {
@@ -205,7 +198,7 @@ export class VetsComponent implements OnDestroy {
       return;
     }
 
-    this.router.navigate(['/admin', this.adminId, 'vets', 'update', vet.id]);
+    this.router.navigate(['/admin/vets/update', vet.id]);
   }
 
   public onDeleteCard(vet: Vet): void {
@@ -265,21 +258,6 @@ export class VetsComponent implements OnDestroy {
     }
 
     return row as Vet;
-  }
-
-  private comprobarId(): void {
-    const idAdminParam = Number(this.route.snapshot.paramMap.get('idAdmin'));
-    if (idAdminParam) {
-      this.adminService.existsById(idAdminParam).subscribe({
-        next: () => {},
-        error: (error) => {
-          const mensaje = error.error?.detalle || 'Administrador no encontrado';
-          this.router.navigate(['/error'], {
-            queryParams: { mensaje },
-          });
-        },
-      });
-    }
   }
 
   // CÓDIGO DE ANIMACIONES

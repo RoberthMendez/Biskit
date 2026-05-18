@@ -1,8 +1,6 @@
 <article
   class="bg-[#FBFAF8] py-6 sm:py-8 lg:py-10 px-5 sm:px-6 lg:px-8 rounded-2xl border border-[#E0E0E0] flex items-center flex-row gap-4 sm:gap-6 lg:gap-8 w-full sm:min-w-70 cursor-pointer hover:shadow-md transition-all duration-200"
-  [routerLink]="
-    titulo === 'Mascotas' ? ['/vet', vetId, 'pets'] : ['/vet', vetId, 'clients']
-  "
+  [routerLink]="titulo === 'Mascotas' ? ['/vet', 'pets'] : ['/vet', 'clients']"
 >
   <!-- Ícono -->
   <div

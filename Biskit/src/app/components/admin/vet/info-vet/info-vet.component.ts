@@ -25,7 +25,6 @@ import { ItemTratamientoDto } from '../../../../models/dtos/item-tratamiento-dto
 })
 export class InfoVetComponent {
   vet!: Vet;
-  adminId = 0;
   tratamientos: ItemTratamientoDto[] = [];
   protected vetCardComponent = CardInfoVetComponent;
 
@@ -39,14 +38,11 @@ export class InfoVetComponent {
   protected get vetCardInputs(): Record<string, unknown> {
     return {
       vet: this.vet,
-      adminId: this.adminId,
       onDelete: this.openDeleteModal.bind(this),
     };
   }
 
   ngOnInit(): void {
-    this.adminId = Number(this.route.snapshot.paramMap.get('idAdmin'));
-
     const id = this.route.snapshot.paramMap.get('vetId');
     const vetId = Number(id);
 
@@ -92,7 +88,7 @@ export class InfoVetComponent {
     this.shouldNavigateAfterDelete = false;
 
     if (shouldNavigate) {
-      this.router.navigate(['/admin', this.adminId, 'vets']);
+      this.router.navigate(['/admin', 'vets']);
     }
   }
 

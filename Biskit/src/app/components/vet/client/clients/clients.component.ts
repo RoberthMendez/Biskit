@@ -39,9 +39,8 @@ export class ClientsComponent implements OnDestroy {
   searchTerm: string = '';
   selectedId: number | null = null;
   showModal = false;
-  vetId: string | null = null;
-  basePath = '/vet';
   isAdminView = false;
+  basePath = '';
   deleteSuccessMessage = '';
   isLoadingClients = true;
 
@@ -90,14 +89,7 @@ export class ClientsComponent implements OnDestroy {
   ngOnInit() {
     const routePath = this.route.snapshot.routeConfig?.path ?? '';
     this.isAdminView = routePath.startsWith('admin/');
-    const vetIdParam = this.route.snapshot.paramMap.get('vetId');
-
-    const contextParam = this.isAdminView ? 'idAdmin' : 'vetId';
-    this.vetId = this.route.snapshot.paramMap.get(contextParam);
-
-    if (this.vetId) {
-      this.basePath = `/${this.isAdminView ? 'admin' : 'vet'}/${this.vetId}`;
-    }
+    this.basePath = `/${this.isAdminView ? 'admin' : 'vet'}`;
 
     this.clientService.findAll().subscribe(
       (clients) => {
@@ -164,21 +156,23 @@ export class ClientsComponent implements OnDestroy {
 
   onRowClick(event: TablaFilaClickEvent): void {
     const client = this.extraerClient(event.row);
-    if (!client?.id || !this.vetId) {
+    if (!client?.id) {
       return;
     }
 
-    this.router.navigate([this.basePath, 'clients', client.id]);
+    const basePath = this.isAdminView ? 'admin' : 'vet';
+    this.router.navigate([basePath, 'clients', client.id]);
   }
 
   onActionClick(event: TablaActionClickEvent): void {
     const client = this.extraerClient(event.row);
-    if (!client?.id || !this.vetId) {
+    if (!client?.id) {
       return;
     }
 
+    const basePath = this.isAdminView ? 'admin' : 'vet';
     if (event.actionId === 'edit') {
-      this.router.navigate([this.basePath, 'clients', 'update', client.id]);
+      this.router.navigate([basePath, 'clients', 'update', client.id]);
       return;
     }
 

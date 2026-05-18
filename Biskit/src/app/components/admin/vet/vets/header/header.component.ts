@@ -19,7 +19,6 @@ import { CommonModule } from '@angular/common';
   templateUrl: './header.component.html',
 })
 export class HeaderComponent {
-  @Input() adminId: number = 0;
   @Input() hayFiltrosActivos: boolean = false;
   @Output() filtrosAplicados = new EventEmitter<any>();
   @Output() filtrosActivosChange = new EventEmitter<boolean>();

@@ -26,7 +26,6 @@ import { FiltrosEstadoService } from '../../../services/filtros-estado.service';
   styleUrls: ['./dashboard.component.css'],
 })
 export class DashboardComponent {
-  vetId: number = 0;
   vet: Vet = new Vet();
   vetLoaded = false;
   tratamientos: ItemTratamientoDto[] = [];
@@ -53,15 +52,15 @@ export class DashboardComponent {
         this.vet = vet;
         this.vetLoaded = true;
 
-        this.vetId = this.vet.id!;
+        const vetId = this.vet.id!;
 
-        this.vetService.countTratamientosByVet(this.vetId).subscribe({
+        this.vetService.countTratamientosByVet(vetId).subscribe({
           next: (count) => {
             this.numTratamientosByVet = count;
           },
         });
 
-        this.vetService.findTratamientosByVet(this.vetId).subscribe({
+        this.vetService.findTratamientosByVet(vetId).subscribe({
           next: (tratamientos) => {
             this.tratamientos = tratamientos;
           },

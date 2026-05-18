@@ -19,10 +19,8 @@
   <section
     class="flex flex-col xl:flex-row justify-around items-stretch xl:items-center gap-6 lg:gap-8 xl:gap-10"
   >
-    <app-card-ver class="w-full xl:w-1/2" [titulo]="'Mascotas'" [vetId]="vetId">
-    </app-card-ver>
-    <app-card-ver class="w-full xl:w-1/2" [titulo]="'Clientes'" [vetId]="vetId">
-    </app-card-ver>
+    <app-card-ver class="w-full xl:w-1/2" [titulo]="'Mascotas'"> </app-card-ver>
+    <app-card-ver class="w-full xl:w-1/2" [titulo]="'Clientes'"> </app-card-ver>
   </section>
   <!-- Mascotas Activas y Accesos Rápidos -->
   <section
@@ -34,8 +32,7 @@
       [total]="numPets"
       [data]="[numPetsActivos, numPetsInactivos]"
     ></app-card-dona>
-    <app-card-acceso-rapido class="w-full xl:w-1/2" [vetId]="vetId">
-    </app-card-acceso-rapido>
+    <app-card-acceso-rapido class="w-full xl:w-1/2"> </app-card-acceso-rapido>
   </section>
   <!-- Tratamientos -->
   <section class="w-full">
@@ -44,7 +41,7 @@
       [title]="'Tus Tratamientos'"
       [helperText]="'Tratamientos Realizados: ' + numTratamientosByVet"
       [tratamientos]="tratamientos"
-      [routeBase]="['/vet', vetId]"
+      [routeBase]="['/vet']"
       routeSegment="tratamientos"
       [variant]="'vet'"
       [listVariant]="'vet'"

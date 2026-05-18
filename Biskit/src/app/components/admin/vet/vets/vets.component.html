@@ -6,7 +6,6 @@
   class="mx-4 mt-2 my-6 space-y-5 sm:mx-8 sm:mt-4 sm:mb-8 md:mx-12 lg:mx-20 xl:mx-28"
 >
   <app-header
-    [adminId]="adminId"
     (filtrosAplicados)="onFiltrosAplicados($event)"
     [hayFiltrosActivos]="hayFiltrosActivos"
     (filtrosActivosChange)="hayFiltrosActivos = $event"

@@ -23,9 +23,6 @@ export class CardInfoPetComponent implements AfterViewInit, OnChanges {
   pet!: PetDTO;
 
   @Input()
-  vetId!: number;
-
-  @Input()
   basePath = '';
 
   @Output()
