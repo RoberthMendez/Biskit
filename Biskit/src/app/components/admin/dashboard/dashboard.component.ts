@@ -52,8 +52,6 @@ export class DashboardComponent {
   constructor(
     private adminService: AdminService,
     private petService: PetService,
-    private route: ActivatedRoute,
-    private router: Router,
     private filtrosEstadoService: FiltrosEstadoService,
   ) {}
 

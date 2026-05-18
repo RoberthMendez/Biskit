@@ -12,6 +12,7 @@ import { CardDonaComponent } from '../../admin/dashboard/card-dona/card-dona.com
 import { CardAccesoRapidoComponent } from './card-acceso-rapido/card-acceso-rapido.component';
 import { TreatmentsCardComponent } from '../../reusables/treatments-card/treatments-card.component';
 import { FiltrosEstadoService } from '../../../services/filtros-estado.service';
+import { SemanaCitasComponent } from './semana-citas/semana-citas.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -21,6 +22,7 @@ import { FiltrosEstadoService } from '../../../services/filtros-estado.service';
     CardDonaComponent,
     CardAccesoRapidoComponent,
     TreatmentsCardComponent,
+    SemanaCitasComponent,
   ],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],

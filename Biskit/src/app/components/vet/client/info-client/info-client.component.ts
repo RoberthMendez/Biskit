@@ -33,8 +33,6 @@ export class InfoClientComponent {
 
   constructor(
     private clientService: ClientService,
-    private vetService: VetService,
-    private adminService: AdminService,
     private route: ActivatedRoute,
     private router: Router,
   ) {}
