@@ -1,6 +1,10 @@
 {
   "dependencies": {
     "@angular/cli": "^19.2.22",
+    "@fullcalendar/angular": "^6.1.20",
+    "@fullcalendar/daygrid": "^6.1.20",
+    "@fullcalendar/interaction": "^6.1.20",
+    "@fullcalendar/timegrid": "^6.1.20",
     "flowbite": "^4.0.1",
     "flowbite-datepicker": "^2.0.0"
   }

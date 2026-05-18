@@ -6,6 +6,7 @@ import { Pet } from '../models/Pets/pet';
 import { HorarioDia } from '../models/Citas/horario-dia';
 import { CitaDto } from '../models/dtos/cita-dto';
 import { ItemTratamientoDto } from '../models/dtos/item-tratamiento-dto';
+import { HorarioDiaDto } from '../models/dtos/horario-dia-dto';
 
 @Injectable({
   providedIn: 'root',
@@ -57,14 +58,16 @@ export class VetService {
     return this.http.get<void>(`http://localhost:8080/vets/${id}/exists`);
   }
 
-  getHorarioSemanalByVetId(vetId: number): Observable<HorarioDia[]> {
-    return this.http.get<HorarioDia[]>(
+  getHorarioSemanalByVetId(
+    vetId: string | number,
+  ): Observable<HorarioDiaDto[]> {
+    return this.http.get<HorarioDiaDto[]>(
       `http://localhost:8080/vets/${vetId}/horario-semanal`,
     );
   }
 
   getCitasSemanalesByVetId(
-    vetId: number,
+    vetId: string | number,
     numSemana: number,
   ): Observable<CitaDto[]> {
     return this.http.get<CitaDto[]>(

@@ -6,3 +6,209 @@
          ╵               [32m~~~~~~~~~~~~~~~~~~~~~~~~[0m
 
 [39m[22m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mNG8001: 'app-semana-citas' is not a known element:
+1. If 'app-semana-citas' is an Angular component, then verify that it is included in the '@Component.imports' of this component.
+2. If 'app-semana-citas' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@Component.schemas' of this component to suppress this message.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/vet/dashboard/dashboard.component.html:54:4:
+[37m      54 │     [32m<app-semana-citas [vetId]="vetId">[37m</app-semana-citas>
+         ╵     [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component DashboardComponent.
+
+    src/app/components/vet/dashboard/dashboard.component.ts:25:15:
+[37m      25 │   templateUrl: [32m'./dashboard.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mNG8002: Can't bind to 'vetId' since it isn't a known property of 'app-semana-citas'.
+1. If 'app-semana-citas' is an Angular component and it has 'vetId' input, then verify that it is included in the '@Component.imports' of this component.
+2. If 'app-semana-citas' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@Component.schemas' of this component to suppress this message.
+3. To allow any property add 'NO_ERRORS_SCHEMA' to the '@Component.schemas' of this component.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/vet/dashboard/dashboard.component.html:54:22:
+[37m      54 │     <app-semana-citas [32m[vetId]="vetId"[37m></app-semana-citas>
+         ╵                       [32m~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component DashboardComponent.
+
+    src/app/components/vet/dashboard/dashboard.component.ts:25:15:
+[37m      25 │   templateUrl: [32m'./dashboard.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[39m[22m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS-992008: Could not find stylesheet file './semana-citas.component.scss'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/vet/dashboard/semana-citas/semana-citas.component.ts:49:14:
+[37m      49 │   styleUrls: [[32m'./semana-citas.component.scss'[37m],
+         ╵               [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[39m[22m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2304: Cannot find name 'HorarioDiaDto'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/vet/dashboard/semana-citas/semana-citas.component.ts:55:11:
+[37m      55 │   horario: [32mHorarioDiaDto[37m[] = [];
+         ╵            [32m~~~~~~~~~~~~~[0m
+
+[39m[22m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2304: Cannot find name 'HorarioDiaDto'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/vet/dashboard/semana-citas/semana-citas.component.ts:55:11:
+[37m      55 │   horario: [32mHorarioDiaDto[37m[] = [];
+         ╵            [32m~~~~~~~~~~~~~[0m
+
+[39m[22m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2322: Type 'HorarioDia[]' is not assignable to type 'HorarioDiaDto[]'.
+  Type 'HorarioDia' is missing the following properties from type 'HorarioDiaDto': horaInicio, horaFin[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/vet/dashboard/semana-citas/semana-citas.component.ts:93:12:
+[37m      93 │             [32mthis.horario[37m = data;
+         ╵             [32m~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'turno' does not exist on type 'HorarioDiaDto'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/vet/dashboard/semana-citas/semana-citas.component.ts:270:25:
+[37m      270 │       Number(this.a24h(h.[32mturno[37m.horaInicio).split(':')[0]),
+          ╵                          [32m~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'turno' does not exist on type 'HorarioDiaDto'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/vet/dashboard/semana-citas/semana-citas.component.ts:278:25:
+[37m      278 │       Number(this.a24h(h.[32mturno[37m.horaFin).split(':')[0]),
+          ╵                          [32m~~~~~[0m
+
+[39m[22m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'turno' does not exist on type 'HorarioDiaDto'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/vet/dashboard/semana-citas/semana-citas.component.ts:270:25:
+[37m      270 │       Number(this.a24h(h.[32mturno[37m.horaInicio).split(':')[0]),
+          ╵                          [32m~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'turno' does not exist on type 'HorarioDiaDto'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/vet/dashboard/semana-citas/semana-citas.component.ts:278:25:
+[37m      278 │       Number(this.a24h(h.[32mturno[37m.horaFin).split(':')[0]),
+          ╵                          [32m~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2552: Cannot find name 'HorarioDiaDto'. Did you mean 'HorarioDia'?[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/services/vet.service.ts:62:16:
+[37m      62 │   ): Observable<[32mHorarioDiaDto[37m[]> {
+         ╵                 [32m~~~~~~~~~~~~~[0m
+
+[39m[22m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'turno' does not exist on type 'HorarioDiaDto'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/vet/dashboard/semana-citas/semana-citas.component.ts:270:25:
+[37m      270 │       Number(this.a24h(h.[32mturno[37m.horaInicio).split(':')[0]),
+          ╵                          [32m~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'turno' does not exist on type 'HorarioDiaDto'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/vet/dashboard/semana-citas/semana-citas.component.ts:278:25:
+[37m      278 │       Number(this.a24h(h.[32mturno[37m.horaFin).split(':')[0]),
+          ╵                          [32m~~~~~[0m
+
+[39m[22m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2729: Property 'fechaInicioSemana' is used before its initialization.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/vet/dashboard/semana-citas/semana-citas.component.ts:68:22:
+[37m      68 │     initialDate: this.[32mfechaInicioSemana[37m,
+         ╵                       [32m~~~~~~~~~~~~~~~~~[0m
+
+  'fechaInicioSemana' is declared here.
+
+    src/app/components/vet/dashboard/semana-citas/semana-citas.component.ts:85:10:
+[37m      85 │   private [32mfechaInicioSemana[37m: Date = this.lunesDeSemana(0);
+         ╵           [32m~~~~~~~~~~~~~~~~~[0m
+
+[39m[22m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS-991010: Host directive must be a reference
+  Value could not be determined statically.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/vet/dashboard/semana-citas/semana-citas.component.ts:51:18:
+[37m      51 │   hostDirectives: [32m[[37m
+         ╵                   [32m^[0m
+
+  Unable to evaluate this expression statically.
+
+    src/app/components/vet/dashboard/semana-citas/semana-citas.component.ts:53:17:
+[37m      53 │     { directive: [32mforwardRef(() => MyHostDirective)[37m },
+         ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  Unknown reference.
+
+    src/app/components/vet/dashboard/semana-citas/semana-citas.component.ts:53:17:
+[37m      53 │     { directive: [32mforwardRef[37m(() => MyHostDirective) },
+         ╵                  [32m~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2304: Cannot find name 'forwardRef'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/vet/dashboard/semana-citas/semana-citas.component.ts:53:17:
+[37m      53 │     { directive: [32mforwardRef[37m(() => MyHostDirective) },
+         ╵                  [32m~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2304: Cannot find name 'MyHostDirective'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/vet/dashboard/semana-citas/semana-citas.component.ts:53:34:
+[37m      53 │     { directive: forwardRef(() => [32mMyHostDirective[37m) },
+         ╵                                   [32m~~~~~~~~~~~~~~~[0m
+
+[39m[22m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS-991010: Host directive must be a reference
+  Value could not be determined statically.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/vet/dashboard/semana-citas/semana-citas.component.ts:52:18:
+[37m      52 │   hostDirectives: [32m[[37m
+         ╵                   [32m^[0m
+
+  Unable to evaluate this expression statically.
+
+    src/app/components/vet/dashboard/semana-citas/semana-citas.component.ts:54:17:
+[37m      54 │     { directive: [32mforwardRef(() => MyHostDirective)[37m },
+         ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  Unknown reference.
+
+    src/app/components/vet/dashboard/semana-citas/semana-citas.component.ts:54:34:
+[37m      54 │     { directive: forwardRef(() => [32mMyHostDirective[37m) },
+         ╵                                   [32m~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2304: Cannot find name 'MyHostDirective'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/vet/dashboard/semana-citas/semana-citas.component.ts:54:34:
+[37m      54 │     { directive: forwardRef(() => [32mMyHostDirective[37m) },
+         ╵                                   [32m~~~~~~~~~~~~~~~[0m
+
+[39m[22m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'length' does not exist on type 'EventSourceInput'.
+  Property 'length' does not exist on type 'EventSourceInputObject'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/vet/dashboard/semana-citas/semana-citas.component.ts:348:37:
+[37m      348 │     if (this.calendarOptions.events?.[32mlength[37m) {
+          ╵                                      [32m~~~~~~[0m
+
+[39m[22m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'length' does not exist on type 'EventSourceInput'.
+  Property 'length' does not exist on type 'EventSourceInputObject'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/vet/dashboard/semana-citas/semana-citas.component.ts:348:37:
+[37m      348 │     if (this.calendarOptions.events?.[32mlength[37m) {
+          ╵                                      [32m~~~~~~[0m
+
+[39m[22m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2353: Object literal may only specify known properties, and 'slotMinHeight' does not exist in type 'CalendarOptions'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/vet/dashboard/semana-citas/semana-citas.component.ts:95:4:
+[37m      95 │     [32mslotMinHeight[37m: 34,
+         ╵     [32m~~~~~~~~~~~~~[0m
+
+[39m[22m

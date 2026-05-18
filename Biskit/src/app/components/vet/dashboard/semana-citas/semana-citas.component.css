@@ -1,0 +1,226 @@
+/* ── Host ──────────────────────────────────────────────────────────────────── */
+:host {
+  display: block;
+  width: 100%;
+}
+
+/* ── Overrides de FullCalendar para que encaje con Biskit ──────────────────── */
+::ng-deep .fc {
+  --fc-page-bg-color: #ffffff;
+  --fc-border-color: #e5edf8;
+  --fc-neutral-bg-color: #ffffff;
+  --fc-today-bg-color: transparent;
+  --fc-list-event-hover-bg-color: #f7faff;
+  --fc-highlight-color: rgba(43, 83, 146, 0.08);
+  --fc-event-border-color: transparent;
+  --fc-event-text-color: #1f3557;
+  background: #fff;
+}
+
+::ng-deep .fc .fc-scrollgrid,
+::ng-deep .fc td,
+::ng-deep .fc th {
+  border-color: var(--fc-border-color);
+}
+
+::ng-deep .fc .fc-col-header-cell {
+  background: #ffffff;
+  border-color: #e5edf8;
+  padding: 8px 0;
+}
+
+::ng-deep .fc .fc-col-header-cell-cushion {
+  color: #4a6288;
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+}
+
+::ng-deep .fc .fc-col-header-cell.fc-day-today {
+  position: relative;
+}
+
+::ng-deep .fc .fc-col-header-cell.fc-day-today::after {
+  content: "";
+  position: absolute;
+  left: 18px;
+  right: 18px;
+  bottom: 6px;
+  height: 3px;
+  border-radius: 999px;
+  background: #2b5392;
+}
+
+::ng-deep .fc .fc-day-today .fc-col-header-cell-cushion {
+  background: transparent;
+  color: #2b5392;
+  border-radius: 0;
+  padding: 0;
+}
+
+::ng-deep .fc .fc-day-today {
+  background: #fff;
+}
+
+::ng-deep .fc .fc-timegrid-slot {
+  border-color: #edf2f8;
+  background: #fff;
+  height: 34px;
+  border-bottom: 1px solid #edf2f8;
+}
+
+::ng-deep .fc .fc-timegrid-slot-minor {
+  border-color: #f7f9fc;
+  background: #fff;
+  border-bottom: 1px solid #edf2f8;
+}
+
+::ng-deep .fc .fc-timegrid-slot-label {
+  color: #7c8ca6;
+  font-size: 0.75rem;
+}
+
+::ng-deep .fc .fc-timegrid-now-indicator-line {
+  border-color: #2b5392;
+  border-width: 2px;
+}
+
+::ng-deep .fc .fc-timegrid-now-indicator-arrow {
+  border-top-color: #2b5392;
+  border-bottom-color: #2b5392;
+}
+
+::ng-deep .fc .fc-non-business {
+  /* Neutralizar estilo de non-business para que las celdas luzcan iguales */
+  background: transparent !important;
+  border-color: var(--fc-border-color) !important;
+}
+
+::ng-deep .fc .fc-more-link {
+  color: #2b5392;
+  font-size: 0.75rem;
+}
+
+::ng-deep .fc .fc-timegrid-axis,
+::ng-deep .fc .fc-timegrid-axis-frame,
+::ng-deep .fc .fc-timegrid-slot-label-frame {
+  background: #fff;
+}
+
+::ng-deep .fc .fc-timegrid-axis-cushion {
+  color: #7c8ca6;
+  font-weight: 600;
+}
+
+::ng-deep .fc .fc-timegrid-slot-lane {
+  background: #fff;
+}
+
+::ng-deep .fc .fc-timegrid-body,
+::ng-deep .fc .fc-scrollgrid-section-body {
+  background: #fff;
+}
+
+::ng-deep .fc .fc-view-harness {
+  overflow: auto;
+}
+
+::ng-deep .fc .fc-scroller {
+  scrollbar-gutter: stable;
+}
+
+::ng-deep .fc .fc-scroller::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::ng-deep .fc .fc-scroller::-webkit-scrollbar-thumb {
+  background: #c9d8ef;
+  border-radius: 999px;
+}
+
+::ng-deep .fc .fc-scroller::-webkit-scrollbar-track {
+  background: #f7f9fc;
+}
+
+::ng-deep .fc .fc-timegrid-event .fc-event-main {
+  padding: 0;
+  overflow: hidden;
+}
+
+::ng-deep .fc .fc-timegrid-event-harness,
+::ng-deep .fc .fc-timegrid-event-harness-inset {
+  left: 3px !important;
+  right: 3px !important;
+  width: calc(100% - 6px) !important;
+}
+
+::ng-deep .fc .fc-timegrid-event {
+  border-radius: 12px;
+  border-left-width: 5px;
+  box-shadow: none;
+  margin: 2px 0 3px !important;
+  width: 100% !important;
+}
+
+::ng-deep .fc .fc-timegrid-event .fc-event-main-frame,
+::ng-deep .fc .fc-timegrid-event .fc-event-main {
+  width: 100%;
+}
+
+::ng-deep .fc .fc-event-title {
+  display: none;
+}
+
+/* ── Contenido personalizado del evento ───────────────────────────────────── */
+::ng-deep .fc-ev {
+  padding: 9px 10px;
+  font-size: 12px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  justify-content: center;
+}
+
+::ng-deep .fc-ev-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 10px;
+  line-height: 1;
+  opacity: 0.9;
+}
+
+::ng-deep .fc-ev-hora {
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+::ng-deep .fc-ev-dur {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+::ng-deep .fc-ev-mascota {
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+::ng-deep .fc-ev-dueno {
+  font-size: 11px;
+  opacity: 0.78;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+::ng-deep .fc .fc-timegrid-event .fc-event-main,
+::ng-deep .fc .fc-timegrid-event .fc-event-main-frame {
+  border-radius: 12px;
+}
