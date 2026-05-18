@@ -1,0 +1,76 @@
+:host {
+  display: contents;
+}
+
+/* CÓDIGO DE ANIMACIONES */
+.delete-modal-backdrop {
+  animation: deleteModalBackdropIn 180ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  will-change: opacity;
+}
+
+.delete-modal-backdrop.is-closing {
+  animation: deleteModalBackdropOut 140ms cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+.delete-modal-panel {
+  transform-origin: center;
+  animation: deleteModalPanelIn 180ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  will-change: transform, opacity;
+}
+
+.delete-modal-panel.is-closing {
+  animation: deleteModalPanelOut 140ms cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+@keyframes deleteModalBackdropIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes deleteModalBackdropOut {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes deleteModalPanelIn {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 12px, 0) scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes deleteModalPanelOut {
+  from {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: translate3d(0, 10px, 0) scale(0.97);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .delete-modal-backdrop,
+  .delete-modal-backdrop.is-closing,
+  .delete-modal-panel,
+  .delete-modal-panel.is-closing {
+    animation: none !important;
+  }
+}

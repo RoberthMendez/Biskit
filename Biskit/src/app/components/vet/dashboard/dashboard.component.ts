@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { VetService } from '../../../services/vet.service';
 import { PetService } from '../../../services/pet.service';
@@ -15,16 +16,19 @@ import { FiltrosEstadoService } from '../../../services/filtros-estado.service';
 @Component({
   selector: 'app-dashboard',
   imports: [
+    CommonModule,
     CardVerComponent,
     CardDonaComponent,
     CardAccesoRapidoComponent,
     TreatmentsCardComponent,
   ],
   templateUrl: './dashboard.component.html',
+  styleUrls: ['./dashboard.component.css'],
 })
 export class DashboardComponent {
   vetId: number = 0;
   vet: Vet = new Vet();
+  vetLoaded = false;
   tratamientos: ItemTratamientoDto[] = [];
   numTratamientosByVet: number = 0;
   numPets: number = 0;
@@ -47,6 +51,7 @@ export class DashboardComponent {
     this.vetService.getDetails().subscribe({
       next: (vet) => {
         this.vet = vet;
+        this.vetLoaded = true;
 
         this.vetId = this.vet.id!;
 

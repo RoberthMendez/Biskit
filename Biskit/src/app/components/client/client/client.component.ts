@@ -12,10 +12,12 @@ import { PetsSectionComponent } from './components/pets-section/pets-section.com
   selector: 'app-client',
   templateUrl: './client.component.html',
   imports: [ClientInfoComponent, PetsSectionComponent],
+  styleUrls: ['./client.component.css'],
 })
 export class ClientComponent {
   @Input() client: Client = new Client();
   @Input() pets: PetDTO[] = [];
+  public clientLoaded = false;
 
   constructor(
     private clientService: ClientService,
@@ -29,6 +31,7 @@ export class ClientComponent {
       .pipe(
         switchMap((client) => {
           this.client = client;
+          this.clientLoaded = true;
 
           return this.clientService.getPetsByClientId(client.id!);
         }),

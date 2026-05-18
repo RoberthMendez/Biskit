@@ -8,9 +8,30 @@
   <app-header
     [adminId]="adminId"
     (filtrosAplicados)="onFiltrosAplicados($event)"
+    [hayFiltrosActivos]="hayFiltrosActivos"
+    (filtrosActivosChange)="hayFiltrosActivos = $event"
+    (limpiarFiltros)="clearAllFilters()"
   ></app-header>
   <app-barra-busqueda (search)="onSearch($event)"></app-barra-busqueda>
-  @if (filteredVets.length > 0) {
+  @if (showLoadingVets) {
+    <div
+      class="loading-shell mx-auto my-16 flex min-h-32 max-w-3xl flex-col items-center justify-center gap-5 py-8 sm:px-10"
+      [class.loading-hidden]="loadingVetsExiting"
+    >
+      <div class="loader-dots" aria-hidden="true">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <div>
+        <p class="mt-3 text-sm font-medium text-[#8d8580dd]">
+          Cargando veterinarios...
+        </p>
+      </div>
+    </div>
+  }
+
+  @if (!isLoadingVets && filteredVets.length > 0) {
     <div class="flex flex-col gap-3 md:hidden">
       @for (vet of filteredVets; track vet.id) {
         <app-vet-card-mobile
@@ -29,19 +50,91 @@
       (rowClick)="onRowClick($event)"
       (actionClick)="onActionClick($event)"
     ></app-tabla>
-  } @else {
+  }
+
+  @if (!isLoadingVets && filteredVets.length === 0) {
     <app-empty-results
       [message]="'No hay veterinarios para mostrar.'"
       (clear)="clearAllFilters()"
     ></app-empty-results>
   }
 
-  @if (showModal) {
-    <app-delete-modal
-      [entityLabel]="'veterinario'"
-      [successMessage]="deleteSuccessMessage"
-      (close)="closeModal()"
-      (confirm)="confirmDelete()"
-    ></app-delete-modal>
-  }
+  <app-delete-modal
+    [visible]="showModal"
+    [entityLabel]="'veterinario'"
+    [successMessage]="deleteSuccessMessage"
+    (close)="closeModal()"
+    (confirm)="confirmDelete()"
+  ></app-delete-modal>
 </main>
+
+<!-- CÓDIGO DE ANIMACIONES -->
+<style>
+  .loading-shell {
+    transition:
+      opacity 0.35s ease,
+      transform 0.35s ease,
+      filter 0.35s ease;
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .loading-shell.loading-hidden {
+    opacity: 0;
+    transform: translateY(-14px) scale(0.98);
+    filter: blur(1px);
+    pointer-events: none;
+  }
+
+  .loader-dots {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+  }
+
+  .loader-dots span {
+    width: 0.85rem;
+    height: 0.85rem;
+    border-radius: 9999px;
+    background: #2b5392;
+    animation: vets-loading-dot 1s ease-in-out infinite;
+    opacity: 0.75;
+  }
+
+  .loader-dots span:nth-child(2) {
+    animation-delay: 0.15s;
+    background: #8eb3ef;
+  }
+
+  .loader-dots span:nth-child(3) {
+    animation-delay: 0.3s;
+    background: #d7e3f7;
+  }
+
+  @keyframes vets-loading-dot {
+    0%,
+    80%,
+    100% {
+      transform: translateY(0) scale(0.85);
+      opacity: 0.5;
+    }
+
+    40% {
+      transform: translateY(-10px) scale(1);
+      opacity: 1;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .loading-shell,
+    .loading-shell.loading-hidden,
+    .loader-dots span {
+      transition: none !important;
+      animation: none !important;
+      transform: none !important;
+      filter: none !important;
+      opacity: 1 !important;
+    }
+  }
+</style>

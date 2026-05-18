@@ -1,9 +1,17 @@
 <main
-  class="flex flex-col gap-8 mx-4 mb-10 sm:mx-8 md:mx-12 lg:mx-20 xl:mx-60 mt-2"
+  class="screen-enter flex flex-col gap-8 mx-4 mb-10 mt-2 sm:mx-8 md:mx-12 lg:mx-20 xl:mx-60"
+  [class.client-ready]="clientLoaded"
 >
   <!-- Info cliente -->
-  <app-client-info [client]="client"></app-client-info>
+  <app-client-info
+    class="screen-enter-stagger"
+    [client]="client"
+  ></app-client-info>
 
   <!-- Mascotas -->
-  <app-pets-section [client]="client" [pets]="pets"></app-pets-section>
+  <app-pets-section
+    class="screen-enter-stagger"
+    [client]="client"
+    [pets]="pets"
+  ></app-pets-section>
 </main>

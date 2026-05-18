@@ -1,0 +1,61 @@
+:host {
+  display: block;
+}
+
+main.client-ready > *:nth-child(1) {
+  --section-delay: 0ms;
+}
+
+main.client-ready > *:nth-child(2) {
+  --section-delay: 110ms;
+}
+
+/* CÓDIGO DE ANIMACIONES */
+main {
+  opacity: 0;
+  transform: translateY(14px);
+}
+
+main.client-ready {
+  animation: clientPageEnter 520ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+main.client-ready > * {
+  opacity: 0;
+  transform: translateY(14px);
+  animation: clientSectionEnter 480ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: calc(var(--section-delay, 0ms));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  main,
+  main.client-ready > * {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes clientPageEnter {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes clientSectionEnter {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

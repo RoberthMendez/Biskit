@@ -20,20 +20,9 @@ import { EspecialidadesService } from '../../../../../services/especialidades.se
   standalone: true,
   imports: [FormsModule, CommonModule, AddEspecialidadComponent],
   templateUrl: './formulario.component.html',
-  animations: [
-    trigger('dropdownAnim', [
-      state(
-        'void',
-        style({ opacity: 0, transform: 'translateY(-4px) scale(0.95)' }),
-      ),
-      state('*', style({ opacity: 1, transform: 'translateY(0) scale(1)' })),
-      transition(':enter', animate('150ms ease-out')),
-      transition(':leave', animate('150ms ease-in')),
-    ]),
-  ],
+  animations: [dropdownAnimation()],
 })
 export class FormularioComponent {
-
   @Input() vetId: number | null = null;
 
   @Input() adminId: number | null = null;
@@ -52,13 +41,14 @@ export class FormularioComponent {
 
   especialidadSearch = '';
   dropdownVisible = false;
+  estadoDropdownVisible = false;
   showAddModal = false;
 
   errorMessage: string | null = null;
   successMessage: string | null = null;
+  loading = false;
 
   ngOnInit(): void {
-
     if (this.vetId) {
       this.vetService.findById(this.vetId).subscribe({
         next: (vet) => {
@@ -67,20 +57,19 @@ export class FormularioComponent {
         },
         error: () => {
           this.formVet = new Vet();
-        }
+        },
       });
       this.especialidadSearch = this.formVet.especialidad.nombre;
     }
-    
+
     this.especialidadesService.findAll().subscribe({
       next: (especialidades) => {
         this.especialidades = especialidades;
       },
       error: () => {
         this.especialidades = [];
-      }
+      },
     });
-
   }
 
   get filteredEspecialidades(): Especialidad[] {
@@ -94,10 +83,12 @@ export class FormularioComponent {
   // ── Dropdown ──────────────────────────────────────────────
 
   openDropdown(): void {
+    this.estadoDropdownVisible = false;
     this.dropdownVisible = true;
   }
 
   onSearchInput(): void {
+    this.estadoDropdownVisible = false;
     this.dropdownVisible = true;
     // Si el usuario borró el texto, limpiar la selección
     if (!this.especialidadSearch.trim()) {
@@ -111,11 +102,26 @@ export class FormularioComponent {
     this.dropdownVisible = false;
   }
 
+  openEstadoDropdown(): void {
+    this.dropdownVisible = false;
+    this.estadoDropdownVisible = true;
+  }
+
+  selectEstado(estado: boolean): void {
+    this.formVet.estado = estado;
+    this.estadoDropdownVisible = false;
+  }
+
+  get estadoLabel(): string {
+    return this.formVet.estado ? 'Activo' : 'Inactivo';
+  }
+
   /** Cierra el dropdown al hacer clic fuera del componente. */
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent): void {
     if (!this.elRef.nativeElement.contains(event.target)) {
       this.dropdownVisible = false;
+      this.estadoDropdownVisible = false;
     }
   }
 
@@ -125,21 +131,23 @@ export class FormularioComponent {
     event?.preventDefault();
     event?.stopPropagation();
     this.dropdownVisible = false;
+    this.estadoDropdownVisible = false;
     this.showAddModal = true;
   }
 
   onEspecialidadCreated(esp: Especialidad): void {
     this.especialidades = [...this.especialidades, esp];
     this.selectEspecialidad(esp);
-    window.scrollTo({ top: 0, behavior: 'auto' });
     this.errorMessage = null;
-    this.successMessage = 'Especialidad agregada correctamente';
-    this.showAddModal = false;
   }
 
   // ── Guardar Veterinario ──────────────────────────────────────────────
 
   saveVet(): void {
+    if (this.loading) {
+      return;
+    }
+
     this.errorMessage = null;
     this.successMessage = null;
 
@@ -164,12 +172,16 @@ export class FormularioComponent {
       return;
     }
 
+    this.loading = true;
+
     this.vetService.saveVet(this.formVet).subscribe({
       next: () => {
-
+        this.loading = false;
         window.scrollTo({ top: 0, behavior: 'auto' });
 
-        this.vetId ? this.successMessage = 'Cambios guardados correctamente' : this.successMessage = 'Veterinario guardado correctamente';
+        this.vetId
+          ? (this.successMessage = 'Cambios guardados correctamente')
+          : (this.successMessage = 'Veterinario guardado correctamente');
         setTimeout(() => {
           this.router.navigate(
             Array.isArray(this.returnRoute)
@@ -181,9 +193,9 @@ export class FormularioComponent {
         this.formVet = new Vet(); //Resetear el formulario
         this.especialidadSearch = '';
         return;
-        
       },
       error: () => {
+        this.loading = false;
         window.scrollTo({ top: 0, behavior: 'auto' });
         this.errorMessage = this.vetId
           ? 'No fue posible guardar los cambios del veterinario.'
@@ -191,4 +203,17 @@ export class FormularioComponent {
       },
     });
   }
+}
+
+// CÓDIGO DE ANIMACIONES
+function dropdownAnimation() {
+  return trigger('dropdownAnim', [
+    state(
+      'void',
+      style({ opacity: 0, transform: 'translateY(-4px) scale(0.95)' }),
+    ),
+    state('*', style({ opacity: 1, transform: 'translateY(0) scale(1)' })),
+    transition(':enter', animate('150ms ease-out')),
+    transition(':leave', animate('150ms ease-in')),
+  ]);
 }

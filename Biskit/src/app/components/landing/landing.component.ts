@@ -40,11 +40,6 @@ export class LandingComponent implements AfterViewInit, OnDestroy {
     { label: 'Iniciar Sesión', route: '/login', variant: 'button' },
   ];
 
-  private readonly document = inject(DOCUMENT);
-  private observer: IntersectionObserver | null = null;
-  private timeoutIds: number[] = [];
-  private rafIds: number[] = [];
-
   constructor(private router: Router) {}
 
   ngOnInit(): void {
@@ -79,6 +74,31 @@ export class LandingComponent implements AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
+    this.setupLandingAnimations();
+  }
+
+  ngOnDestroy(): void {
+    this.clearLandingAnimations();
+  }
+
+  private tokenExpirado(token: string): boolean {
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+
+      // exp viene en segundos
+      return payload.exp * 1000 < Date.now();
+    } catch {
+      return true;
+    }
+  }
+
+  // CÓDIGO DE ANIMACIONES
+  private readonly document = inject(DOCUMENT);
+  private observer: IntersectionObserver | null = null;
+  private timeoutIds: number[] = [];
+  private rafIds: number[] = [];
+
+  private setupLandingAnimations(): void {
     const windowRef = this.document.defaultView;
     if (!windowRef) {
       return;
@@ -176,7 +196,7 @@ export class LandingComponent implements AfterViewInit, OnDestroy {
     animationTargets.forEach((element) => this.observer?.observe(element));
   }
 
-  ngOnDestroy(): void {
+  private clearLandingAnimations(): void {
     this.observer?.disconnect();
     this.observer = null;
 
@@ -189,16 +209,5 @@ export class LandingComponent implements AfterViewInit, OnDestroy {
 
     this.timeoutIds = [];
     this.rafIds = [];
-  }
-
-  private tokenExpirado(token: string): boolean {
-    try {
-      const payload = JSON.parse(atob(token.split('.')[1]));
-
-      // exp viene en segundos
-      return payload.exp * 1000 < Date.now();
-    } catch {
-      return true;
-    }
   }
 }

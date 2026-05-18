@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { VetService } from '../../../../services/vet.service';
 import { AdminService } from '../../../../services/admin.service';
@@ -14,16 +14,23 @@ import { HeaderComponent } from './header/header.component';
 import { ViewChild } from '@angular/core';
 import { EmptyResultsComponent } from '../../../reusables/empty-results/empty-results.component';
 import { BarraBusquedaComponent } from './barra-busqueda/barra-busqueda.component';
-import { BackButtonComponent } from "../../../reusables/back-button/back-button.component";
+import { BackButtonComponent } from '../../../reusables/back-button/back-button.component';
 import { MobileVetCardComponent } from './mobile-vet-card/mobile-vet-card.component';
 
 @Component({
   selector: 'app-vets',
-  imports: [TablaComponent, DeleteModalComponent, HeaderComponent, BarraBusquedaComponent, BackButtonComponent, MobileVetCardComponent, EmptyResultsComponent],
+  imports: [
+    TablaComponent,
+    DeleteModalComponent,
+    HeaderComponent,
+    BarraBusquedaComponent,
+    BackButtonComponent,
+    MobileVetCardComponent,
+    EmptyResultsComponent,
+  ],
   templateUrl: './vets.component.html',
 })
-export class VetsComponent {
-
+export class VetsComponent implements OnDestroy {
   public vets: Vet[] = [];
   public vetsFiltrados: Vet[] = [];
   public searchTerm: string = '';
@@ -36,6 +43,7 @@ export class VetsComponent {
   public showModal = false;
   public selectedDeleteId: number | null = null;
   public deleteSuccessMessage = '';
+  public isLoadingVets = true;
 
   public readonly columnasVet: TablaColumnaInput[] = [
     {
@@ -48,7 +56,8 @@ export class VetsComponent {
     { header: 'Nombre', key: 'nombre' },
     {
       header: 'Especialidad',
-      accessor: (fila) => (fila as Vet).especialidad?.nombre ?? 'Sin especialidad',
+      accessor: (fila) =>
+        (fila as Vet).especialidad?.nombre ?? 'Sin especialidad',
     },
     { header: 'Correo', key: 'correo' },
     { header: 'Cedula', key: 'cedula' },
@@ -112,10 +121,13 @@ export class VetsComponent {
     this.cargarVets();
   }
 
+  ngOnDestroy(): void {
+    this.clearLoadingVetsAnimation();
+  }
+
   // Capturar filtros emitidos desde el componente header
   onFiltrosAplicados(vetsFiltrados: Vet[]) {
     this.vetsFiltrados = vetsFiltrados;
-    this.hayFiltrosActivos = true;
   }
 
   // Clear search and filters, delegate to header to reset boton-filtros
@@ -132,20 +144,22 @@ export class VetsComponent {
     if (this.hayFiltrosActivos) {
       const term = this.searchTerm.trim().toLowerCase();
       if (!term) return this.vetsFiltrados;
-      return this.vetsFiltrados.filter((vet) =>
-        vet.nombre.toLowerCase().includes(term) ||
-        vet.correo.toLowerCase().includes(term) ||
-        vet.cedula.toLowerCase().includes(term),
+      return this.vetsFiltrados.filter(
+        (vet) =>
+          vet.nombre.toLowerCase().includes(term) ||
+          vet.correo.toLowerCase().includes(term) ||
+          vet.cedula.toLowerCase().includes(term),
       );
     }
 
     // Sino, usar la búsqueda normal
     const term = this.searchTerm.trim().toLowerCase();
     if (!term) return this.vets;
-    return this.vets.filter((vet) =>
-      vet.nombre.toLowerCase().includes(term) ||
-      vet.correo.toLowerCase().includes(term) ||
-      vet.cedula.toLowerCase().includes(term),
+    return this.vets.filter(
+      (vet) =>
+        vet.nombre.toLowerCase().includes(term) ||
+        vet.correo.toLowerCase().includes(term) ||
+        vet.cedula.toLowerCase().includes(term),
     );
   }
 
@@ -236,9 +250,11 @@ export class VetsComponent {
     this.vetService.findAll().subscribe({
       next: (vets) => {
         this.vets = vets;
+        this.finishLoadingVets();
       },
       error: () => {
         this.vets = [];
+        this.finishLoadingVets();
       },
     });
   }
@@ -255,8 +271,7 @@ export class VetsComponent {
     const idAdminParam = Number(this.route.snapshot.paramMap.get('idAdmin'));
     if (idAdminParam) {
       this.adminService.existsById(idAdminParam).subscribe({
-        next: () => {
-        },
+        next: () => {},
         error: (error) => {
           const mensaje = error.error?.detalle || 'Administrador no encontrado';
           this.router.navigate(['/error'], {
@@ -264,6 +279,42 @@ export class VetsComponent {
           });
         },
       });
+    }
+  }
+
+  // CÓDIGO DE ANIMACIONES
+  public showLoadingVets = true;
+  public loadingVetsExiting = false;
+
+  private loadingVetsTimeoutId?: ReturnType<typeof setTimeout>;
+  private loadingVetsHideTimeoutId?: ReturnType<typeof setTimeout>;
+
+  private finishLoadingVets(): void {
+    if (this.loadingVetsTimeoutId) {
+      clearTimeout(this.loadingVetsTimeoutId);
+    }
+
+    this.loadingVetsTimeoutId = setTimeout(() => {
+      this.isLoadingVets = false;
+      this.loadingVetsExiting = true;
+
+      this.loadingVetsHideTimeoutId = setTimeout(() => {
+        this.showLoadingVets = false;
+        this.loadingVetsExiting = false;
+        this.loadingVetsHideTimeoutId = undefined;
+      }, 20);
+
+      this.loadingVetsTimeoutId = undefined;
+    }, 450);
+  }
+
+  private clearLoadingVetsAnimation(): void {
+    if (this.loadingVetsTimeoutId) {
+      clearTimeout(this.loadingVetsTimeoutId);
+    }
+
+    if (this.loadingVetsHideTimeoutId) {
+      clearTimeout(this.loadingVetsHideTimeoutId);
     }
   }
 }

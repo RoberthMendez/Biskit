@@ -3,11 +3,11 @@
   [ruta]="['/admin', adminId, 'vets']"
 ></app-back-button>
 <main
-  class="mx-4 mt-2 my-6 space-y-6 sm:mx-8 sm:mt-6 sm:mb-10 md:mx-12 lg:mx-20 xl:mx-28"
+  class="screen-enter mx-4 mt-2 my-6 space-y-6 sm:mx-8 sm:mt-6 sm:mb-10 md:mx-12 lg:mx-20 xl:mx-28"
 >
   @if (vet) {
     <section
-      class="mx-auto grid w-full max-w-6xl grid-cols-1 items-center gap-8 md:grid-cols-2 lg:grid-cols-3"
+      class="screen-enter-stagger mx-auto grid w-full max-w-6xl grid-cols-1 items-center gap-8 md:grid-cols-2 lg:grid-cols-3"
     >
       <!-- Card del vet -->
       <ng-container
@@ -15,7 +15,9 @@
       />
 
       <!-- Tratamientos -->
-      <aside class="flex w-full flex-col justify-center lg:col-span-2">
+      <aside
+        class="screen-enter-stagger flex w-full flex-col justify-center lg:col-span-2"
+      >
         <app-treatments-card
           [title]="'Tratamientos de ' + vet.nombre"
           [routeBase]="['/admin', adminId]"
@@ -37,12 +39,11 @@
     </section>
   }
 
-  @if (showModal) {
-    <app-delete-modal
-      [entityLabel]="'veterinario'"
-      [successMessage]="deleteSuccessMessage"
-      (close)="closeModal()"
-      (confirm)="confirmDelete()"
-    />
-  }
+  <app-delete-modal
+    [visible]="showModal"
+    [entityLabel]="'veterinario'"
+    [successMessage]="deleteSuccessMessage"
+    (close)="closeModal()"
+    (confirm)="confirmDelete()"
+  />
 </main>

@@ -2,9 +2,11 @@
   <app-back-button [label]="backLabel" [ruta]="backLink"></app-back-button>
 
   <section
-    class="mx-4 mt-5 mb-10 grid grid-cols-1 items-center gap-6 sm:mx-8 md:mx-12 md:grid-cols-2 md:gap-8 lg:mx-20 lg:gap-12 xl:mx-28"
+    class="screen-enter mx-4 mt-5 mb-10 grid grid-cols-1 items-center gap-6 sm:mx-8 md:mx-12 md:grid-cols-2 md:gap-8 lg:mx-20 lg:gap-12 xl:mx-28"
   >
-    <article class="relative order-last h-100 overflow-hidden rounded-[20px]">
+    <article
+      class="screen-enter-stagger relative order-last h-100 overflow-hidden rounded-[20px]"
+    >
       <img
         src="/images/add-tratamiento/tratamiento.jpg"
         alt="Tratamiento"
@@ -36,7 +38,7 @@
     </article>
 
     <article
-      class="flex flex-col overflow-visible rounded-b-2xl shadow-[0_10px_30px_-6px_rgba(0,0,0,0.08)]"
+      class="screen-enter-stagger flex flex-col overflow-visible rounded-b-2xl shadow-[0_10px_30px_-6px_rgba(0,0,0,0.08)]"
     >
       <div class="flex items-center gap-7 rounded-t-2xl bg-[#F6F7F8] px-8 py-5">
         <img src="/images/marca/icono.png" alt="Biskit" class="h-10 w-10" />
@@ -104,7 +106,7 @@
 
             @if (petDropdownOpen) {
               <div
-                class="custom-scroll absolute z-10 mt-1 max-h-60 w-full overflow-y-auto rounded-xl border border-gray-200 bg-white shadow-lg"
+                class="dropdown-panel custom-scroll absolute z-10 mt-1 max-h-60 w-full overflow-y-auto rounded-xl border border-gray-200 bg-white shadow-lg"
               >
                 @for (pet of filteredPets; track pet.id ?? pet.nombre) {
                   <div
@@ -161,7 +163,7 @@
 
               @if (vetDropdownOpen) {
                 <div
-                  class="custom-scroll absolute z-10 mt-1 max-h-60 w-full overflow-y-auto rounded-xl border border-gray-200 bg-white shadow-lg"
+                  class="dropdown-panel custom-scroll absolute z-10 mt-1 max-h-60 w-full overflow-y-auto rounded-xl border border-gray-200 bg-white shadow-lg"
                 >
                   @for (vet of filteredVets; track vet.id ?? vet.nombre) {
                     <div
@@ -267,7 +269,13 @@
                         track drug.id ?? drug.nombre
                       ) {
                         <div
-                          class="cursor-pointer border-b border-gray-100 px-4 py-3 hover:bg-blue-50"
+                          class="border-b border-gray-100 px-4 py-3 transition"
+                          [class.cursor-pointer]="isDrugAvailable(drug)"
+                          [class.hover:bg-blue-50]="isDrugAvailable(drug)"
+                          [class.cursor-not-allowed]="!isDrugAvailable(drug)"
+                          [class.bg-gray-50]="!isDrugAvailable(drug)"
+                          [class.opacity-70]="!isDrugAvailable(drug)"
+                          [attr.aria-disabled]="!isDrugAvailable(drug)"
                           (mousedown)="selectDrug(index, drug)"
                         >
                           <div
@@ -315,21 +323,17 @@
             [disabled]="saving"
             class="mt-6 flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-[#2b5392] py-3 text-base font-semibold text-[#FBFAF8] shadow-md transition hover:bg-[#1a3a6b] disabled:cursor-not-allowed disabled:opacity-70"
           >
-            <svg
-              class="h-6 w-6 sm:h-7 sm:w-7"
-              fill="#FBFAF8"
-              viewBox="0 0 14 14"
-              role="img"
-              focusable="false"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M 5.1437726,1 C 3.8705419,1 3.6677179,2.73201 3.9942398,3.6074767 4.2014407,4.1664121 4.8325467,4.7063497 5.4802212,4.4766355 6.317792,4.0625461 6.5544419,3.0007815 6.3213426,2.1775701 6.2083061,1.6291807 5.7708219,1 5.1437726,1 Z M 8.7045202,1 C 8.0774706,1 7.639987,1.6291807 7.5269501,2.1775701 7.2938514,3.0007815 7.530503,4.0625461 8.3680716,4.4766355 9.0157459,4.7063497 9.6468518,4.1664121 9.8540529,3.6074767 10.180575,2.73201 9.9777512,1 8.7045202,1 Z M 1.4974872,3.775701 C 0.99453653,4.2786516 1.0603984,5.7259965 1.9741226,6.3271028 2.566345,6.6306959 3.1674111,6.238153 3.3759918,5.7663552 3.7282343,5.0962718 3.6314374,4.1437972 3.0115058,3.6635514 2.4181204,3.2675013 1.9623141,3.3108741 1.4974872,3.775701 Z M 10.974123,3.6635514 c -0.432609,0.2497664 -0.716729,1.4327204 -0.364486,2.1028038 0.208581,0.4717982 0.837684,0.8643407 1.429906,0.5607476 C 12.953267,5.7259965 13.000929,4.288489 12.488141,3.775701 12.010882,3.3762084 11.445922,3.3911577 10.974123,3.6635514 Z M 6.9928142,4.9252337 c -2.2297852,0 -4.0373832,1.807598 -4.0373832,4.0373831 C 2.955431,11.192402 4.763029,13 6.9928142,13 9.222599,13 11.030197,11.192402 11.030197,8.9626168 c 0,-2.2297851 -1.807598,-4.0373831 -4.0373828,-4.0373831 z m -0.8971963,1.3457944 1.7943926,0 0,1.7943925 1.7943925,0 0,1.7943924 -1.7943925,0.02804 0,1.766356 -1.7943926,0 0,-1.794393 -1.7943925,0 0,-1.7943924 1.7943925,0 z"
-              ></path>
-            </svg>
+            @if (saving) {
+              <span
+                class="inline-block h-5 w-5 animate-spin rounded-full border-2 border-white/40 border-t-white"
+              ></span>
+            }
             <span>{{
-              isEditMode ? "Guardar Cambios" : "Registrar Tratamiento"
+              saving
+                ? "Guardando..."
+                : isEditMode
+                  ? "Guardar Cambios"
+                  : "Registrar Tratamiento"
             }}</span>
           </button>
         </form>

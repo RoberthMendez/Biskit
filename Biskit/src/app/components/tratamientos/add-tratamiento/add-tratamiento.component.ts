@@ -210,13 +210,17 @@ export class AddTratamientoComponent implements OnInit {
   selectDrug(index: number, drug: DrogaDto): void {
     const row = this.drugRows[index];
 
-    if (!row) {
+    if (!row || !this.isDrugAvailable(drug)) {
       return;
     }
 
     row.selectedDrug = drug;
     row.searchText = drug.nombre;
     row.open = false;
+  }
+
+  isDrugAvailable(drug: DrogaDto): boolean {
+    return drug.unidadesDisponibles > 0;
   }
 
   agregarDroga(): void {

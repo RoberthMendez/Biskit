@@ -11,15 +11,19 @@
   >
     @if (pet) {
       <!-- Card de la Mascota -->
-      <app-card-info-pet
-        [pet]="pet"
-        [vetId]="vetId"
-        [basePath]="basePath"
-        (estadoChange)="onEstadoChange($event)"
-      />
+      <div class="screen-enter-stagger">
+        <app-card-info-pet
+          [pet]="pet"
+          [vetId]="vetId"
+          [basePath]="basePath"
+          (estadoChange)="onEstadoChange($event)"
+        ></app-card-info-pet>
+      </div>
 
       <!-- Tratamientos y Dueño -->
-      <aside class="flex flex-col gap-5 lg:col-span-2 justify-center">
+      <aside
+        class="screen-enter-stagger flex flex-col gap-5 lg:col-span-2 justify-center"
+      >
         <app-treatments-card
           [tratamientos]="tratamientos"
           [petActivo]="pet.estado"

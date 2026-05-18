@@ -1,6 +1,6 @@
 <form
   (ngSubmit)="onSubmit()"
-  class="relative mt-6 max-w-md space-y-9"
+  class="screen-enter-stagger relative mt-6 max-w-md space-y-9"
   autocomplete="on"
 >
   <div class="relative">
@@ -24,12 +24,12 @@
   <div class="relative">
     <input
       id="contrasena"
-      type="password"
+      [type]="mostrarContrasena ? 'text' : 'password'"
       name="contrasena"
       [(ngModel)]="contrasena"
       required
       placeholder=" "
-      class="peer w-full border-0 border-b border-gray-300 bg-transparent px-0 pt-6 pb-2 text-gray-900 outline-none focus:border-gray-800 focus:ring-0"
+      class="peer w-full border-0 border-b border-gray-300 bg-transparent px-0 pt-6 pr-12 pb-2 text-gray-900 outline-none focus:border-gray-800 focus:ring-0"
     />
     <label
       for="contrasena"
@@ -37,15 +37,37 @@
     >
       Contraseña
     </label>
+    @if (contrasena) {
+      <button
+        type="button"
+        class="absolute right-0 bottom-2 flex h-9 w-9 cursor-pointer items-center justify-center rounded-full text-gray-500 transition-colors hover:text-gray-800 focus-visible:ring-2 focus-visible:ring-[#2b5392] focus-visible:ring-offset-2 focus-visible:outline-none"
+        (click)="mostrarContrasena = !mostrarContrasena"
+        [attr.aria-label]="
+          mostrarContrasena ? 'Ocultar contraseña' : 'Mostrar contraseña'
+        "
+        [attr.aria-pressed]="mostrarContrasena"
+      >
+        <i
+          class="pi text-base"
+          [ngClass]="mostrarContrasena ? 'pi-eye-slash' : 'pi-eye'"
+          aria-hidden="true"
+        ></i>
+      </button>
+    }
   </div>
 
   <div class="flex flex-col items-start space-y-2 pt-2">
-
     <button
       type="submit"
-      class="h-12 w-44 cursor-pointer rounded-full bg-[#2b5392] font-medium text-white shadow-[0_10px_25px_rgba(120,169,215,0.35)] transition-all duration-300 hover:bg-[#1a3a6b]"
+      [disabled]="loading"
+      class="h-12 w-44 flex cursor-pointer items-center justify-center gap-2 rounded-full bg-[#2b5392] font-medium text-white shadow-[0_10px_25px_rgba(120,169,215,0.35)] transition-all duration-300 hover:bg-[#1a3a6b] disabled:cursor-not-allowed disabled:bg-gray-400 disabled:shadow-none"
     >
-      Ingresar
+      @if (loading) {
+        <span
+          class="inline-block h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white"
+        ></span>
+      }
+      <span>{{ loading ? "Ingresando..." : "Ingresar" }}</span>
     </button>
 
     <a
@@ -54,7 +76,6 @@
     >
       ¿Olvidaste tu contraseña?
     </a>
-
   </div>
 
   <!-- Error -->

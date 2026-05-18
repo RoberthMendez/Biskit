@@ -1,3 +1,76 @@
+:host {
+  display: contents;
+}
+
+/* CÓDIGO DE ANIMACIONES */
+.boton-filtros-modal-backdrop {
+  animation: botonFiltrosBackdropIn 180ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  will-change: opacity;
+}
+
+.boton-filtros-modal-backdrop.is-closing {
+  animation: botonFiltrosBackdropOut 140ms cubic-bezier(0.4, 0, 0.2, 1) both;
+  pointer-events: none;
+}
+
+.boton-filtros-modal-panel {
+  animation: botonFiltrosPanelIn 180ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  will-change: opacity;
+}
+
+.boton-filtros-modal-panel.is-closing {
+  animation: botonFiltrosPanelOut 140ms cubic-bezier(0.4, 0, 0.2, 1) both;
+  pointer-events: none;
+}
+
+@keyframes botonFiltrosBackdropIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes botonFiltrosBackdropOut {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes botonFiltrosPanelIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes botonFiltrosPanelOut {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .boton-filtros-modal-backdrop,
+  .boton-filtros-modal-backdrop.is-closing,
+  .boton-filtros-modal-panel,
+  .boton-filtros-modal-panel.is-closing {
+    animation: none !important;
+  }
+}
 /* Animación de carga */
 @keyframes spin {
   to {

@@ -24,18 +24,20 @@ export class ClientFormComponent {
   errorMessage: string | null = null;
   successMessage: string | null = null;
   editingClientId: number | null = null;
+  loading = false;
 
   ngOnInit(): void {
     if (this.clientId) {
-      this.clientService.findById(this.clientId).subscribe(
-        (client) => {
-          this.formClient = client;
-        }
-      );
+      this.clientService.findById(this.clientId).subscribe((client) => {
+        this.formClient = client;
+      });
     }
   }
 
   saveClient(): void {
+    if (this.loading) {
+      return;
+    }
 
     this.errorMessage = null;
     this.successMessage = null;
@@ -57,24 +59,31 @@ export class ClientFormComponent {
       return;
     }
 
+    this.loading = true;
+
     this.clientService.saveClient(this.formClient).subscribe({
       next: () => {
+        this.loading = false;
         window.scrollTo({ top: 0, behavior: 'auto' });
         this.successMessage = this.clientId
           ? 'Cambios guardados correctamente'
           : 'Cliente guardado correctamente';
 
         setTimeout(() => {
-          this.router.navigate(Array.isArray(this.returnRoute) ? this.returnRoute : [this.returnRoute]);
+          this.router.navigate(
+            Array.isArray(this.returnRoute)
+              ? this.returnRoute
+              : [this.returnRoute],
+          );
         }, 600);
       },
       error: () => {
+        this.loading = false;
         window.scrollTo({ top: 0, behavior: 'auto' });
         this.errorMessage = this.clientId
           ? 'No fue posible guardar los cambios del cliente.'
           : 'No fue posible guardar el cliente.';
       },
     });
-
   }
 }

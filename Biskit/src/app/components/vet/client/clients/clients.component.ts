@@ -1,5 +1,5 @@
 // clients.component.ts
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnDestroy, ViewChild } from '@angular/core';
 import { ClientService } from '../../../../services/client.service';
 import { Client } from '../../../../models/Client/client';
 import { ClientsHeaderComponent } from './clients-header/clients-header.component';
@@ -31,7 +31,7 @@ import { EmptyResultsComponent } from '../../../reusables/empty-results/empty-re
     EmptyResultsComponent,
   ],
 })
-export class ClientsComponent {
+export class ClientsComponent implements OnDestroy {
   @ViewChild(ClientsSearchComponent) searchComponent?: ClientsSearchComponent;
 
   clients: Client[] = [];
@@ -43,6 +43,7 @@ export class ClientsComponent {
   basePath = '/vet';
   isAdminView = false;
   deleteSuccessMessage = '';
+  isLoadingClients = true;
 
   public readonly columnasClient: TablaColumnaInput[] = [
     { header: 'Nombre', key: 'nombre', align: 'left' },
@@ -82,6 +83,10 @@ export class ClientsComponent {
     private router: Router,
   ) {}
 
+  ngOnDestroy(): void {
+    this.clearLoadingClientsAnimation();
+  }
+
   ngOnInit() {
     const routePath = this.route.snapshot.routeConfig?.path ?? '';
     this.isAdminView = routePath.startsWith('admin/');
@@ -94,10 +99,18 @@ export class ClientsComponent {
       this.basePath = `/${this.isAdminView ? 'admin' : 'vet'}/${this.vetId}`;
     }
 
-    this.clientService.findAll().subscribe((clients) => {
-      this.clients = clients;
-      this.filteredClients = clients;
-    });
+    this.clientService.findAll().subscribe(
+      (clients) => {
+        this.clients = clients;
+        this.filteredClients = clients;
+        this.finishLoadingClients();
+      },
+      () => {
+        this.clients = [];
+        this.filteredClients = [];
+        this.finishLoadingClients();
+      },
+    );
   }
 
   onSearch(searchTerm: string) {
@@ -180,5 +193,41 @@ export class ClientsComponent {
     }
 
     return row as Client;
+  }
+
+  // CÓDIGO DE ANIMACIONES
+  showLoadingClients = true;
+  loadingClientsExiting = false;
+
+  private loadingClientsTimeoutId?: ReturnType<typeof setTimeout>;
+  private loadingClientsHideTimeoutId?: ReturnType<typeof setTimeout>;
+
+  private finishLoadingClients(): void {
+    if (this.loadingClientsTimeoutId) {
+      clearTimeout(this.loadingClientsTimeoutId);
+    }
+
+    this.loadingClientsTimeoutId = setTimeout(() => {
+      this.isLoadingClients = false;
+      this.loadingClientsExiting = true;
+
+      this.loadingClientsHideTimeoutId = setTimeout(() => {
+        this.showLoadingClients = false;
+        this.loadingClientsExiting = false;
+        this.loadingClientsHideTimeoutId = undefined;
+      }, 20);
+
+      this.loadingClientsTimeoutId = undefined;
+    }, 450);
+  }
+
+  private clearLoadingClientsAnimation(): void {
+    if (this.loadingClientsTimeoutId) {
+      clearTimeout(this.loadingClientsTimeoutId);
+    }
+
+    if (this.loadingClientsHideTimeoutId) {
+      clearTimeout(this.loadingClientsHideTimeoutId);
+    }
   }
 }

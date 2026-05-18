@@ -10,6 +10,7 @@
   >
     <div
       class="custom-scroll overflow-x-auto overflow-y-auto"
+      #scrollContainer
       [style.max-height]="maxHeight"
     >
       <table
@@ -36,13 +37,14 @@
           @for (fila of filasNormalizadas; track $index) {
             <tr
               app-fila
+              class="tabla-row clients-row group cursor-pointer border-b border-[#EAE6E1] transition-colors duration-200 hover:bg-[#F2F6FC]"
+              [style.--row-index]="$index"
               [celdas]="fila"
               [alineaciones]="alineacionesColumnas"
               [filaOriginal]="datos[$index]"
               [filaIndex]="$index"
               (filaClick)="onFilaClick($event)"
               (accionClick)="onActionClick($event)"
-              class="clients-row group cursor-pointer border-b border-[#EAE6E1] transition-colors duration-200 hover:bg-[#F2F6FC]"
             ></tr>
           }
         </tbody>

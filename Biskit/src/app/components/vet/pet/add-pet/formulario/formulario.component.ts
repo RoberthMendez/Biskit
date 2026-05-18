@@ -1,5 +1,6 @@
 import { Component, Input, OnInit, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { mergeMap } from 'rxjs';
@@ -26,6 +27,7 @@ type DropdownKey = 'cliente' | 'especie' | 'raza' | 'enfermedad';
   standalone: true,
   imports: [CommonModule, FormsModule, DatepickerComponent],
   templateUrl: './formulario.component.html',
+  styleUrls: ['./formulario.component.css'],
 })
 export class FormularioComponent implements OnInit {
   private readonly datePickerComponentType = DatepickerComponent;
@@ -38,6 +40,7 @@ export class FormularioComponent implements OnInit {
   fechaNacimientoStr: string = '';
   errorMessage: string | null = null;
   successMessage: string | null = null;
+  savingPet = false;
   private loadedPetDto: PetDTO | null = null;
 
   // ── Listas de datos ──────────────────────────────────────────────────────────s
@@ -71,6 +74,8 @@ export class FormularioComponent implements OnInit {
   // ── Modales ──────────────────────────────────────────────────────────────────
   showAddRazaModal: boolean = false;
   showAddEnfermedadModal: boolean = false;
+  isClosingAddRazaModal: boolean = false;
+  isClosingAddEnfermedadModal: boolean = false;
 
   newRazaNombre: string = '';
   newEnfermedadNombre: string = '';
@@ -317,23 +322,33 @@ export class FormularioComponent implements OnInit {
     this.addRazaError = null;
     this.addRazaSuccess = null;
     this.showAddRazaModal = true;
+    this.isClosingAddRazaModal = false;
     this.showRazaModalEspecieDropdown = false;
     this.dropdownOpen.raza = false;
   }
 
   closeAddRazaModal(): void {
+    if (!this.showAddRazaModal || this.isClosingAddRazaModal) {
+      return;
+    }
+
     if (this.closeRazaModalTimeout) {
       clearTimeout(this.closeRazaModalTimeout);
       this.closeRazaModalTimeout = null;
     }
 
-    this.showAddRazaModal = false;
-    this.addRazaError = null;
-    this.addRazaSuccess = null;
-    this.newRazaNombre = '';
-    this.razaModalEspecieSearch = '';
     this.showRazaModalEspecieDropdown = false;
-    this.savingRaza = false;
+    this.isClosingAddRazaModal = true;
+
+    this.closeRazaModalTimeout = setTimeout(() => {
+      this.showAddRazaModal = false;
+      this.isClosingAddRazaModal = false;
+      this.addRazaError = null;
+      this.addRazaSuccess = null;
+      this.newRazaNombre = '';
+      this.razaModalEspecieSearch = '';
+      this.savingRaza = false;
+    }, 150);
   }
 
   saveNewRaza(): void {
@@ -387,8 +402,11 @@ export class FormularioComponent implements OnInit {
           this.closeAddRazaModal();
         }, 600);
       },
-      error: () => {
-        this.addRazaError = 'Ocurrió un error al guardar la raza';
+      error: (err: unknown) => {
+        this.addRazaError = this.getBackendErrorMessage(
+          err,
+          'Ocurrió un error al guardar la raza',
+        );
         this.addRazaSuccess = null;
         this.savingRaza = false;
       },
@@ -406,20 +424,30 @@ export class FormularioComponent implements OnInit {
     this.addEnfermedadError = null;
     this.addEnfermedadSuccess = null;
     this.showAddEnfermedadModal = true;
+    this.isClosingAddEnfermedadModal = false;
     this.dropdownOpen.enfermedad = false;
   }
 
   closeAddEnfermedadModal(): void {
+    if (!this.showAddEnfermedadModal || this.isClosingAddEnfermedadModal) {
+      return;
+    }
+
     if (this.closeEnfermedadModalTimeout) {
       clearTimeout(this.closeEnfermedadModalTimeout);
       this.closeEnfermedadModalTimeout = null;
     }
 
-    this.showAddEnfermedadModal = false;
-    this.addEnfermedadError = null;
-    this.addEnfermedadSuccess = null;
-    this.newEnfermedadNombre = '';
-    this.savingEnfermedad = false;
+    this.isClosingAddEnfermedadModal = true;
+
+    this.closeEnfermedadModalTimeout = setTimeout(() => {
+      this.showAddEnfermedadModal = false;
+      this.isClosingAddEnfermedadModal = false;
+      this.addEnfermedadError = null;
+      this.addEnfermedadSuccess = null;
+      this.newEnfermedadNombre = '';
+      this.savingEnfermedad = false;
+    }, 150);
   }
 
   saveNewEnfermedad(): void {
@@ -453,9 +481,12 @@ export class FormularioComponent implements OnInit {
           this.closeAddEnfermedadModal();
         }, 600);
       },
-      error: () => {
+      error: (err: unknown) => {
         this.addEnfermedadSuccess = null;
-        this.addEnfermedadError = 'Ocurrió un error al guardar la enfermedad';
+        this.addEnfermedadError = this.getBackendErrorMessage(
+          err,
+          'Ocurrió un error al guardar la enfermedad',
+        );
         this.savingEnfermedad = false;
       },
     });
@@ -463,6 +494,10 @@ export class FormularioComponent implements OnInit {
 
   // ─── Guardar mascota ──────────────────────────────────────────────────────────
   savePet(): void {
+    if (this.savingPet) {
+      return;
+    }
+
     this.errorMessage = null;
     this.successMessage = null;
 
@@ -499,11 +534,14 @@ export class FormularioComponent implements OnInit {
       return;
     }
 
+    this.savingPet = true;
+
     this.formPet.fechaNacimiento = new Date(this.fechaNacimientoStr);
     this.syncPetRelationsFromSelections();
 
     this.petService.savePet(this.formPet).subscribe({
       next: () => {
+        this.savingPet = false;
         window.scrollTo({ top: 0, behavior: 'auto' });
         this.successMessage = this.petId
           ? 'Cambios guardados correctamente'
@@ -514,6 +552,7 @@ export class FormularioComponent implements OnInit {
         }, 600);
       },
       error: () => {
+        this.savingPet = false;
         window.scrollTo({ top: 0, behavior: 'auto' });
         this.errorMessage = this.petId
           ? 'No fue posible guardar los cambios de la mascota.'
@@ -640,5 +679,27 @@ export class FormularioComponent implements OnInit {
     const date = new Date();
     date.setFullYear(date.getFullYear() - edadValue);
     return date.toISOString().split('T')[0];
+  }
+
+  private getBackendErrorMessage(err: unknown, fallback: string): string {
+    if (err instanceof HttpErrorResponse) {
+      const body = err.error;
+
+      if (typeof body === 'string' && body.trim()) {
+        return body;
+      }
+
+      const message =
+        body?.detalle ||
+        body?.detail ||
+        body?.message ||
+        body?.mensaje ||
+        body?.error ||
+        err.message;
+
+      return message || fallback;
+    }
+
+    return err instanceof Error ? err.message : fallback;
   }
 }

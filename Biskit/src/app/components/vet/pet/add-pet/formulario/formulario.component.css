@@ -1,0 +1,72 @@
+/* CÓDIGO DE ANIMACIONES */
+.pet-modal-backdrop {
+  animation: petModalBackdropIn 180ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  will-change: opacity;
+}
+
+.pet-modal-backdrop.is-closing {
+  animation: petModalBackdropOut 140ms cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+.pet-modal-panel {
+  animation: petModalPanelIn 180ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  transform-origin: center;
+  will-change: transform, opacity;
+}
+
+.pet-modal-panel.is-closing {
+  animation: petModalPanelOut 140ms cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+@keyframes petModalBackdropIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes petModalBackdropOut {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes petModalPanelIn {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 12px, 0) scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes petModalPanelOut {
+  from {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: translate3d(0, 10px, 0) scale(0.97);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pet-modal-backdrop,
+  .pet-modal-backdrop.is-closing,
+  .pet-modal-panel,
+  .pet-modal-panel.is-closing {
+    animation: none !important;
+  }
+}

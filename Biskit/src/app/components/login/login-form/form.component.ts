@@ -19,10 +19,16 @@ export class LoginFormComponent {
 
   usuario = '';
   contrasena = '';
+  mostrarContrasena = false;
 
   error: string | null = null;
+  loading = false;
 
   onSubmit(): void {
+    if (this.loading) {
+      return;
+    }
+
     if (!this.usuario.trim() || !this.contrasena.trim()) {
       this.error = 'Completa usuario y contrasena.';
       return;
@@ -33,10 +39,18 @@ export class LoginFormComponent {
       password: this.contrasena,
     };
 
+    this.loading = true;
+
     this.credencialesService.authenticate(credenciales).subscribe({
       next: (response) => {
+        this.loading = false;
         localStorage.setItem('token', response.token);
         localStorage.setItem('authRole', response.rol);
+
+        const responseWithId = response as typeof response & { id?: number };
+        if (responseWithId.id != null) {
+          localStorage.setItem('authId', String(responseWithId.id));
+        }
 
         if (response.rol === 'CLIENT') {
           this.router.navigate(['/client']);
@@ -54,6 +68,7 @@ export class LoginFormComponent {
         }
       },
       error: (error) => {
+        this.loading = false;
         const tipo = error.error?.tipo;
 
         if (tipo === 'VETERINARIO_INACTIVO') {

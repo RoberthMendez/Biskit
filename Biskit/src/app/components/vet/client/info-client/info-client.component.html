@@ -5,31 +5,37 @@
 
 <main
   id="info-client-main"
-  class="mx-4 mt-2 mb-10 flex flex-col gap-2 sm:mx-8 md:mx-12 lg:mx-20 xl:mx-35"
+  class="screen-enter mx-4 mt-2 mb-10 flex flex-col gap-2 sm:mx-8 md:mx-12 lg:mx-20 xl:mx-35"
 >
   <!-- CLIENT INFO -->
   <section
-    class="info-client-top my-3 flex h-auto flex-col gap-6 rounded-2xl bg-[#FBFAF8] px-4 py-8 shadow-[0_10px_30px_-6px_rgba(0,0,0,0.08)] transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1 hover:shadow-[0_16px_40px_-8px_rgba(0,0,0,0.12)] lg:gap-8 lg:px-6 lg:py-10 xl:gap-12 xl:px-8 xl:py-15"
+    class="screen-enter-stagger info-client-top my-3 flex h-auto flex-col gap-6 rounded-2xl bg-[#FBFAF8] px-4 py-8 shadow-[0_10px_30px_-6px_rgba(0,0,0,0.08)] transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1 hover:shadow-[0_16px_40px_-8px_rgba(0,0,0,0.12)] lg:gap-8 lg:px-6 lg:py-10 xl:gap-12 xl:px-8 xl:py-15"
   >
     <app-client-header
+      class="screen-enter-stagger"
       [client]="client"
       [basePath]="basePath"
       (deleteClient)="openDeleteModal($event)"
     ></app-client-header>
 
-    <app-client-details [client]="client"></app-client-details>
+    <app-client-details
+      class="screen-enter-stagger"
+      [client]="client"
+    ></app-client-details>
   </section>
 
   <!-- PETS -->
-  <app-pets-section [pets]="pets ? pets : []"></app-pets-section>
+  <app-pets-section
+    class="screen-enter-stagger"
+    [pets]="pets ? pets : []"
+  ></app-pets-section>
 
   <!-- MODAL -->
-  @if (showModal) {
-    <app-delete-modal
-      [entityLabel]="'cliente'"
-      [successMessage]="deleteSuccessMessage"
-      (close)="closeModal()"
-      (confirm)="confirmDelete()"
-    ></app-delete-modal>
-  }
+  <app-delete-modal
+    [visible]="showModal"
+    [entityLabel]="'cliente'"
+    [successMessage]="deleteSuccessMessage"
+    (close)="closeModal()"
+    (confirm)="confirmDelete()"
+  ></app-delete-modal>
 </main>

@@ -1,6 +1,6 @@
 <!-- vet-form.component.html -->
 <article
-  class="flex flex-col gap-0 shadow-[0_10px_30px_-6px_rgba(0,0,0,0.08)] rounded-b-2xl overflow-hidden"
+  class="screen-enter-fade flex flex-col gap-0 overflow-hidden rounded-b-2xl shadow-[0_10px_30px_-6px_rgba(0,0,0,0.08)]"
 >
   <!-- ── Encabezado ── -->
   <div
@@ -220,36 +220,78 @@
           >
             Estado
           </label>
-          <select
-            [(ngModel)]="formVet.estado"
-            name="estado"
-            class="bg-gray-50 w-full text-[#4A4A4A] border border-gray-200 rounded-xl px-3 py-2 h-12"
-          >
-            <option [ngValue]="true">Activo</option>
-            <option [ngValue]="false">Inactivo</option>
-          </select>
+          <div class="relative">
+            <button
+              type="button"
+              class="bg-gray-50 w-full text-left text-[#4A4A4A] border border-gray-200 rounded-xl px-3 py-3 h-12 flex items-center justify-between gap-3"
+              (click)="openEstadoDropdown()"
+            >
+              <span class="text-sm sm:text-base font-medium">{{
+                estadoLabel
+              }}</span>
+              <svg
+                class="w-4 h-4 shrink-0 transition-transform duration-200"
+                [class.rotate-180]="estadoDropdownVisible"
+                viewBox="0 0 20 20"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true"
+              >
+                <path
+                  d="M5 7.5L10 12.5L15 7.5"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                ></path>
+              </svg>
+            </button>
+
+            @if (estadoDropdownVisible) {
+              <div
+                [@dropdownAnim]
+                class="absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded-xl shadow-lg overflow-hidden"
+              >
+                <button
+                  type="button"
+                  (mousedown)="selectEstado(true)"
+                  class="w-full text-left px-4 py-3 hover:bg-blue-50 cursor-pointer border-b border-gray-100"
+                >
+                  <p class="font-semibold text-sm text-gray-800">Activo</p>
+                </button>
+                <button
+                  type="button"
+                  (mousedown)="selectEstado(false)"
+                  class="w-full text-left px-4 py-3 hover:bg-blue-50 cursor-pointer"
+                >
+                  <p class="font-semibold text-sm text-gray-800">Inactivo</p>
+                </button>
+              </div>
+            }
+          </div>
         </div>
       }
 
       <!-- Botón submit -->
       <button
         type="submit"
-        class="flex items-center justify-center w-full mt-4 sm:mt-6 cursor-pointer bg-[#2b5392] text-[#FBFAF8] text-sm sm:text-base font-semibold py-2.5 sm:py-3 rounded-xl gap-2 shadow-md hover:bg-[#1a3a6b] transition-colors duration-200"
+        [disabled]="loading"
+        class="flex items-center justify-center w-full mt-4 sm:mt-6 cursor-pointer bg-[#2b5392] text-[#FBFAF8] text-sm sm:text-base font-semibold py-2.5 sm:py-3 rounded-xl gap-2 shadow-md hover:bg-[#1a3a6b] transition-colors duration-200 disabled:cursor-not-allowed disabled:opacity-70"
       >
-        <svg
-          class="h-6 w-6 sm:h-7 sm:w-7"
-          fill="#FBFAF8"
-          viewBox="0 0 14 14"
-          role="img"
-          focusable="false"
-          aria-hidden="true"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M 5.1437726,1 C 3.8705419,1 3.6677179,2.73201 3.9942398,3.6074767 4.2014407,4.1664121 4.8325467,4.7063497 5.4802212,4.4766355 6.317792,4.0625461 6.5544419,3.0007815 6.3213426,2.1775701 6.2083061,1.6291807 5.7708219,1 5.1437726,1 Z M 8.7045202,1 C 8.0774706,1 7.639987,1.6291807 7.5269501,2.1775701 7.2938514,3.0007815 7.530503,4.0625461 8.3680716,4.4766355 9.0157459,4.7063497 9.6468518,4.1664121 9.8540529,3.6074767 10.180575,2.73201 9.9777512,1 8.7045202,1 Z M 1.4974872,3.775701 C 0.99453653,4.2786516 1.0603984,5.7259965 1.9741226,6.3271028 2.566345,6.6306959 3.1674111,6.238153 3.3759918,5.7663552 3.7282343,5.0962718 3.6314374,4.1437972 3.0115058,3.6635514 2.4181204,3.2675013 1.9623141,3.3108741 1.4974872,3.775701 Z M 10.974123,3.6635514 c -0.432609,0.2497664 -0.716729,1.4327204 -0.364486,2.1028038 0.208581,0.4717982 0.837684,0.8643407 1.429906,0.5607476 C 12.953267,5.7259965 13.000929,4.288489 12.488141,3.775701 12.010882,3.3762084 11.445922,3.3911577 10.974123,3.6635514 Z M 6.9928142,4.9252337 c -2.2297852,0 -4.0373832,1.807598 -4.0373832,4.0373831 C 2.955431,11.192402 4.763029,13 6.9928142,13 9.222599,13 11.030197,11.192402 11.030197,8.9626168 c 0,-2.2297851 -1.807598,-4.0373831 -4.0373828,-4.0373831 z m -0.8971963,1.3457944 1.7943926,0 0,1.7943925 1.7943925,0 0,1.7943924 -1.7943925,0.02804 0,1.766356 -1.7943926,0 0,-1.794393 -1.7943925,0 0,-1.7943924 1.7943925,0 z"
-          ></path>
-        </svg>
-        <span>{{ vetId ? "Guardar Cambios" : "Registrar Veterinario" }}</span>
+        @if (loading) {
+          <span
+            class="inline-block h-5 w-5 animate-spin rounded-full border-2 border-white/40 border-t-white"
+          ></span>
+        }
+        <span>{{
+          loading
+            ? vetId
+              ? "Guardando..."
+              : "Registrando..."
+            : vetId
+              ? "Guardar Cambios"
+              : "Registrar Veterinario"
+        }}</span>
       </button>
 
       @if (!vetId) {
@@ -263,9 +305,8 @@
 </article>
 
 <!-- ── Modal agregar especialidad ── -->
-@if (showAddModal) {
-  <app-add-especialidad
-    (close)="showAddModal = false"
-    (especialidadCreated)="onEspecialidadCreated($event)"
-  />
-}
+<app-add-especialidad
+  [visible]="showAddModal"
+  (close)="showAddModal = false"
+  (especialidadCreated)="onEspecialidadCreated($event)"
+/>

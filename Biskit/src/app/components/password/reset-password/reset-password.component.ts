@@ -7,15 +7,13 @@ import { Credenciales } from '../../../models/Credenciales/credenciales';
 @Component({
   selector: 'app-reset-password',
   imports: [FormsModule],
-  templateUrl: './reset-password.component.html'
+  templateUrl: './reset-password.component.html',
 })
 export class ResetPasswordComponent {
-
-
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private credentialService: CredencialesService
+    private credentialService: CredencialesService,
   ) {}
 
   id: number | null = null;
@@ -24,6 +22,7 @@ export class ResetPasswordComponent {
   confirmarPassword: string = '';
   errorMessage: string | null = null;
   successMessage: string | null = null;
+  loading = false;
 
   ngOnInit(): void {
     const idParam = this.route.snapshot.paramMap.get('id');
@@ -33,6 +32,9 @@ export class ResetPasswordComponent {
   }
 
   resetPassword(): void {
+    if (this.loading) {
+      return;
+    }
 
     this.errorMessage = null;
     this.successMessage = null;
@@ -50,10 +52,17 @@ export class ResetPasswordComponent {
       return;
     }
 
-    const credenciales = new Credenciales(undefined, this.correo, this.nuevaPassword);
+    const credenciales = new Credenciales(
+      undefined,
+      this.correo,
+      this.nuevaPassword,
+    );
+
+    this.loading = true;
 
     this.credentialService.resetPassword(this.id!, credenciales).subscribe({
       next: () => {
+        this.loading = false;
         this.successMessage = 'Contraseña restablecida exitosamente';
 
         setTimeout(() => {
@@ -61,10 +70,9 @@ export class ResetPasswordComponent {
         }, 600);
       },
       error: () => {
+        this.loading = false;
         this.errorMessage = 'Error al restablecer la contraseña';
-      }
+      },
     });
-
   }
-
 }

@@ -33,17 +33,19 @@
 </div>
 
 <!-- Modal Backdrop -->
-@if (showModal) {
+@if (renderModal) {
   <div
-    class="fixed inset-0 z-40 bg-black/40 transition-opacity duration-200"
+    class="boton-filtros-modal-backdrop fixed inset-0 z-40 bg-black/40"
+    [class.is-closing]="isClosing"
     (click)="cerrarModal()"
   ></div>
 }
 
 <!-- Modal -->
-@if (showModal) {
+@if (renderModal) {
   <div
-    class="fixed inset-x-4 top-4 z-50 mx-auto flex max-h-[calc(100vh-2rem)] w-[calc(100vw-2rem)] max-w-sm flex-col overflow-visible rounded-lg border border-[#d4c5b9] bg-white shadow-2xl sm:inset-x-auto sm:right-8 sm:top-6 sm:w-[min(28rem,calc(100vw-4rem))] md:right-12 lg:right-24 lg:top-8 lg:max-h-[calc(100vh-4rem)]"
+    class="boton-filtros-modal-panel fixed inset-x-4 top-4 z-50 mx-auto flex max-h-[calc(100vh-2rem)] w-[calc(100vw-2rem)] max-w-sm flex-col overflow-visible rounded-lg border border-[#d4c5b9] bg-white shadow-2xl sm:inset-x-auto sm:right-8 sm:top-6 sm:w-[min(28rem,calc(100vw-4rem))] md:right-12 lg:right-24 lg:top-8 lg:max-h-[calc(100vh-4rem)]"
+    [class.is-closing]="isClosing"
   >
     <div class="flex min-h-0 flex-1 flex-col">
       <!-- Header -->
@@ -55,7 +57,7 @@
         </h2>
         <button
           (click)="cerrarModal()"
-          class="text-[#8d8580] transition-colors duration-200 hover:text-[#4a4a4a]"
+          class="cursor-pointer text-[#8d8580] transition-colors duration-200 hover:text-[#4a4a4a]"
         >
           <svg
             class="h-6 w-6"
@@ -105,7 +107,7 @@
                 Especie
               </label>
               <div
-                class="rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 sm:px-4 sm:py-3"
+                class="relative rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 pr-10 sm:px-4 sm:py-3"
                 (click)="openDropdown('especie')"
               >
                 <input
@@ -119,12 +121,34 @@
                   (input)="onEspecieSearchChange()"
                   class="w-full bg-transparent text-sm text-[#4A4A4A] placeholder-[#4A4A4A]/50 outline-none sm:text-base"
                 />
+                @if (tieneValorCampo(especieSearch)) {
+                  <button
+                    type="button"
+                    (click)="limpiarCampoFiltro('especie')"
+                    class="absolute right-2 top-1/2 -translate-y-1/2 rounded-full p-1 text-[#8d8580] transition-colors duration-200 hover:bg-[#f5ede3] hover:text-[#4a4a4a]"
+                    aria-label="Limpiar especie"
+                  >
+                    <svg
+                      class="h-4 w-4"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M6 6L18 18M18 6L6 18"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                      />
+                    </svg>
+                  </button>
+                }
               </div>
 
               <!-- Dropdown especie -->
               @if (dropdownOpen["especie"]) {
                 <div
-                  class="custom-scroll z-60 rounded-xl border border-gray-200 bg-white shadow-lg"
+                  class="dropdown-panel custom-scroll z-60 rounded-xl border border-gray-200 bg-white shadow-lg"
                   data-dropdown-content="especie"
                   [ngStyle]="dropdownStyles['especie']"
                 >
@@ -163,7 +187,7 @@
                   Raza
                 </label>
                 <div
-                  class="rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 sm:px-4 sm:py-3"
+                  class="relative rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 pr-10 sm:px-4 sm:py-3"
                 >
                   <input
                     [(ngModel)]="razaSearch"
@@ -176,12 +200,34 @@
                     (input)="onRazaSearchChange()"
                     class="w-full bg-transparent text-sm text-[#4A4A4A] placeholder-[#4A4A4A]/50 outline-none sm:text-base"
                   />
+                  @if (tieneValorCampo(razaSearch)) {
+                    <button
+                      type="button"
+                      (click)="limpiarCampoFiltro('raza')"
+                      class="absolute right-2 top-1/2 -translate-y-1/2 rounded-full p-1 text-[#8d8580] transition-colors duration-200 hover:bg-[#f5ede3] hover:text-[#4a4a4a]"
+                      aria-label="Limpiar raza"
+                    >
+                      <svg
+                        class="h-4 w-4"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M6 6L18 18M18 6L6 18"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                        />
+                      </svg>
+                    </button>
+                  }
                 </div>
 
                 <!-- Dropdown raza -->
                 @if (dropdownOpen["raza"]) {
                   <div
-                    class="custom-scroll z-60 rounded-xl border border-gray-200 bg-white shadow-lg"
+                    class="dropdown-panel custom-scroll z-60 rounded-xl border border-gray-200 bg-white shadow-lg"
                     data-dropdown-content="raza"
                     [ngStyle]="dropdownStyles['raza']"
                   >
@@ -221,7 +267,7 @@
                 Enfermedad
               </label>
               <div
-                class="rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 sm:px-4 sm:py-3"
+                class="relative rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 pr-10 sm:px-4 sm:py-3"
                 (click)="$event.stopPropagation(); openDropdown('enfermedad')"
               >
                 <input
@@ -235,12 +281,34 @@
                   (input)="onEnfermedadSearchChange()"
                   class="w-full bg-transparent text-sm text-[#4A4A4A] placeholder-[#4A4A4A]/50 outline-none sm:text-base"
                 />
+                @if (tieneValorCampo(enfermedadSearch)) {
+                  <button
+                    type="button"
+                    (click)="limpiarCampoFiltro('enfermedad')"
+                    class="absolute right-2 top-1/2 -translate-y-1/2 rounded-full p-1 text-[#8d8580] transition-colors duration-200 hover:bg-[#f5ede3] hover:text-[#4a4a4a]"
+                    aria-label="Limpiar enfermedad"
+                  >
+                    <svg
+                      class="h-4 w-4"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M6 6L18 18M18 6L6 18"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                      />
+                    </svg>
+                  </button>
+                }
               </div>
 
               <!-- Dropdown enfermedad -->
               @if (dropdownOpen["enfermedad"]) {
                 <div
-                  class="custom-scroll z-60 rounded-xl border border-gray-200 bg-white shadow-lg"
+                  class="dropdown-panel custom-scroll z-60 rounded-xl border border-gray-200 bg-white shadow-lg"
                   data-dropdown-content="enfermedad"
                   [ngStyle]="dropdownStyles['enfermedad']"
                 >
@@ -277,13 +345,37 @@
               <label class="mb-2 block text-sm font-medium text-[#4a4a4a]">
                 Edad mínima (años)
               </label>
-              <input
-                type="number"
-                [(ngModel)]="filtrosPets.edad"
-                min="0"
-                class="w-full rounded-lg border border-[#d4c5b9] px-3 py-2 text-sm text-[#4a4a4a] transition-colors duration-200 focus:border-[#2B5392] focus:outline-none"
-                placeholder="Ej: 5"
-              />
+              <div class="relative">
+                <input
+                  type="number"
+                  [(ngModel)]="filtrosPets.edad"
+                  min="0"
+                  class="no-number-spinners w-full rounded-lg border border-[#d4c5b9] px-3 py-2 pr-10 text-sm text-[#4a4a4a] transition-colors duration-200 focus:border-[#2B5392] focus:outline-none"
+                  placeholder="Ej: 5"
+                />
+                @if (tieneValorCampo(filtrosPets.edad)) {
+                  <button
+                    type="button"
+                    (click)="limpiarCampoFiltro('edad')"
+                    class="absolute right-2 top-1/2 cursor-pointer -translate-y-1/2 rounded-full p-1 text-[#8d8580] transition-colors duration-200 hover:bg-[#f5ede3] hover:text-[#4a4a4a]"
+                    aria-label="Limpiar edad mínima"
+                  >
+                    <svg
+                      class="h-4 w-4"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M6 6L18 18M18 6L6 18"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                      />
+                    </svg>
+                  </button>
+                }
+              </div>
             </div>
 
             <!-- Peso -->
@@ -291,13 +383,37 @@
               <label class="mb-2 block text-sm font-medium text-[#4a4a4a]">
                 Peso mínimo (kg)
               </label>
-              <input
-                type="number"
-                [(ngModel)]="filtrosPets.peso"
-                min="0"
-                class="w-full rounded-lg border border-[#d4c5b9] px-3 py-2 text-sm text-[#4a4a4a] transition-colors duration-200 focus:border-[#2B5392] focus:outline-none"
-                placeholder="Ej: 25"
-              />
+              <div class="relative">
+                <input
+                  type="number"
+                  [(ngModel)]="filtrosPets.peso"
+                  min="0"
+                  class="no-number-spinners w-full rounded-lg border border-[#d4c5b9] px-3 py-2 pr-10 text-sm text-[#4a4a4a] transition-colors duration-200 focus:border-[#2B5392] focus:outline-none"
+                  placeholder="Ej: 25"
+                />
+                @if (tieneValorCampo(filtrosPets.peso)) {
+                  <button
+                    type="button"
+                    (click)="limpiarCampoFiltro('peso')"
+                    class="absolute right-2 top-1/2 cursor-pointer -translate-y-1/2 rounded-full p-1 text-[#8d8580] transition-colors duration-200 hover:bg-[#f5ede3] hover:text-[#4a4a4a]"
+                    aria-label="Limpiar peso mínimo"
+                  >
+                    <svg
+                      class="h-4 w-4"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M6 6L18 18M18 6L6 18"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                      />
+                    </svg>
+                  </button>
+                }
+              </div>
             </div>
 
             <!-- Cantidad de Tratamientos -->
@@ -305,13 +421,37 @@
               <label class="mb-2 block text-sm font-medium text-[#4a4a4a]">
                 Cantidad mínima de Tratamientos
               </label>
-              <input
-                type="number"
-                [(ngModel)]="filtrosPets.tratamientos"
-                min="0"
-                class="w-full rounded-lg border border-[#d4c5b9] px-3 py-2 text-sm text-[#4a4a4a] transition-colors duration-200 focus:border-[#2B5392] focus:outline-none"
-                placeholder="Ej: 3"
-              />
+              <div class="relative">
+                <input
+                  type="number"
+                  [(ngModel)]="filtrosPets.tratamientos"
+                  min="0"
+                  class="no-number-spinners w-full rounded-lg border border-[#d4c5b9] px-3 py-2 pr-10 text-sm text-[#4a4a4a] transition-colors duration-200 focus:border-[#2B5392] focus:outline-none"
+                  placeholder="Ej: 3"
+                />
+                @if (tieneValorCampo(filtrosPets.tratamientos)) {
+                  <button
+                    type="button"
+                    (click)="limpiarCampoFiltro('tratamientosPets')"
+                    class="absolute right-2 top-1/2 cursor-pointer -translate-y-1/2 rounded-full p-1 text-[#8d8580] transition-colors duration-200 hover:bg-[#f5ede3] hover:text-[#4a4a4a]"
+                    aria-label="Limpiar cantidad mínima de tratamientos"
+                  >
+                    <svg
+                      class="h-4 w-4"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M6 6L18 18M18 6L6 18"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                      />
+                    </svg>
+                  </button>
+                }
+              </div>
             </div>
 
             <!-- Estado -->
@@ -322,7 +462,7 @@
                 Estado
               </label>
               <div
-                class="rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 sm:px-4 sm:py-3"
+                class="relative rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 pr-10 sm:px-4 sm:py-3"
               >
                 <input
                   [(ngModel)]="estadoPetSearch"
@@ -335,12 +475,34 @@
                   (input)="onEstadoPetSearchChange()"
                   class="w-full bg-transparent text-sm text-[#4A4A4A] placeholder-[#4A4A4A]/50 outline-none sm:text-base"
                 />
+                @if (tieneValorCampo(estadoPetSearch)) {
+                  <button
+                    type="button"
+                    (click)="limpiarCampoFiltro('estadoPet')"
+                    class="absolute right-2 top-1/2 -translate-y-1/2 rounded-full p-1 text-[#8d8580] transition-colors duration-200 hover:bg-[#f5ede3] hover:text-[#4a4a4a]"
+                    aria-label="Limpiar estado"
+                  >
+                    <svg
+                      class="h-4 w-4"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M6 6L18 18M18 6L6 18"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                      />
+                    </svg>
+                  </button>
+                }
               </div>
 
               <!-- Dropdown estado -->
               @if (dropdownOpen["estadoPet"]) {
                 <div
-                  class="z-60 w-full rounded-xl border border-gray-200 bg-white shadow-lg"
+                  class="dropdown-panel z-60 w-full rounded-xl border border-gray-200 bg-white shadow-lg"
                   data-dropdown-content="estadoPet"
                   [ngStyle]="dropdownStyles['estadoPet']"
                 >
@@ -354,7 +516,7 @@
                       class="cursor-pointer border-b border-gray-100 px-4 py-3 hover:bg-blue-50"
                       (click)="selectEstadoPet(true)"
                     >
-                      <p class="text-sm font-semibold text-gray-800">Activas</p>
+                      <p class="text-sm font-semibold text-gray-800">Activos</p>
                     </div>
                   }
                   @if (
@@ -368,7 +530,7 @@
                       (click)="selectEstadoPet(false)"
                     >
                       <p class="text-sm font-semibold text-gray-800">
-                        Inactivas
+                        Inactivos
                       </p>
                     </div>
                   }
@@ -402,7 +564,7 @@
                 Especialidad
               </label>
               <div
-                class="rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 sm:px-4 sm:py-3"
+                class="relative rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 pr-10 sm:px-4 sm:py-3"
               >
                 <input
                   [(ngModel)]="especialidadSearch"
@@ -415,12 +577,34 @@
                   (input)="onEspecialidadSearchChange()"
                   class="w-full bg-transparent text-sm text-[#4A4A4A] placeholder-[#4A4A4A]/50 outline-none sm:text-base"
                 />
+                @if (tieneValorCampo(especialidadSearch)) {
+                  <button
+                    type="button"
+                    (click)="limpiarCampoFiltro('especialidad')"
+                    class="absolute right-2 top-1/2 -translate-y-1/2 rounded-full p-1 text-[#8d8580] transition-colors duration-200 hover:bg-[#f5ede3] hover:text-[#4a4a4a]"
+                    aria-label="Limpiar especialidad"
+                  >
+                    <svg
+                      class="h-4 w-4"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M6 6L18 18M18 6L6 18"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                      />
+                    </svg>
+                  </button>
+                }
               </div>
 
               <!-- Dropdown especialidad -->
               @if (dropdownOpen["especialidad"]) {
                 <div
-                  class="custom-scroll z-60 rounded-xl border border-gray-200 bg-white shadow-lg"
+                  class="dropdown-panel custom-scroll z-60 rounded-xl border border-gray-200 bg-white shadow-lg"
                   data-dropdown-content="especialidad"
                   [ngStyle]="dropdownStyles['especialidad']"
                 >
@@ -457,13 +641,37 @@
               <label class="mb-2 block text-sm font-medium text-[#4a4a4a]">
                 Cantidad mínima de Tratamientos
               </label>
-              <input
-                type="number"
-                [(ngModel)]="filtrosVets.tratamientos"
-                min="0"
-                class="w-full rounded-lg border border-[#d4c5b9] px-3 py-2 text-sm text-[#4a4a4a] transition-colors duration-200 focus:border-[#2B5392] focus:outline-none"
-                placeholder="Ej: 10"
-              />
+              <div class="relative">
+                <input
+                  type="number"
+                  [(ngModel)]="filtrosVets.tratamientos"
+                  min="0"
+                  class="no-number-spinners w-full rounded-lg border border-[#d4c5b9] px-3 py-2 pr-10 text-sm text-[#4a4a4a] transition-colors duration-200 focus:border-[#2B5392] focus:outline-none"
+                  placeholder="Ej: 10"
+                />
+                @if (tieneValorCampo(filtrosVets.tratamientos)) {
+                  <button
+                    type="button"
+                    (click)="limpiarCampoFiltro('tratamientosVets')"
+                    class="absolute right-2 top-1/2 cursor-pointer -translate-y-1/2 rounded-full p-1 text-[#8d8580] transition-colors duration-200 hover:bg-[#f5ede3] hover:text-[#4a4a4a]"
+                    aria-label="Limpiar cantidad mínima de tratamientos"
+                  >
+                    <svg
+                      class="h-4 w-4"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M6 6L18 18M18 6L6 18"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                      />
+                    </svg>
+                  </button>
+                }
+              </div>
             </div>
 
             <!-- Estado -->
@@ -474,7 +682,7 @@
                 Estado
               </label>
               <div
-                class="rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 sm:px-4 sm:py-3"
+                class="relative rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 pr-10 sm:px-4 sm:py-3"
               >
                 <input
                   [(ngModel)]="estadoVetSearch"
@@ -487,12 +695,34 @@
                   (input)="onEstadoVetSearchChange()"
                   class="w-full bg-transparent text-sm text-[#4A4A4A] placeholder-[#4A4A4A]/50 outline-none sm:text-base"
                 />
+                @if (tieneValorCampo(estadoVetSearch)) {
+                  <button
+                    type="button"
+                    (click)="limpiarCampoFiltro('estadoVet')"
+                    class="absolute right-2 top-1/2 -translate-y-1/2 rounded-full p-1 text-[#8d8580] transition-colors duration-200 hover:bg-[#f5ede3] hover:text-[#4a4a4a]"
+                    aria-label="Limpiar estado"
+                  >
+                    <svg
+                      class="h-4 w-4"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M6 6L18 18M18 6L6 18"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                      />
+                    </svg>
+                  </button>
+                }
               </div>
 
               <!-- Dropdown estado -->
               @if (dropdownOpen["estadoVet"]) {
                 <div
-                  class="z-60 w-full rounded-xl border border-gray-200 bg-white shadow-lg"
+                  class="dropdown-panel z-60 w-full rounded-xl border border-gray-200 bg-white shadow-lg"
                   data-dropdown-content="estadoVet"
                   [ngStyle]="dropdownStyles['estadoVet']"
                 >
@@ -506,7 +736,7 @@
                       class="cursor-pointer border-b border-gray-100 px-4 py-3 hover:bg-blue-50"
                       (click)="selectEstadoVet(true)"
                     >
-                      <p class="text-sm font-semibold text-gray-800">Activas</p>
+                      <p class="text-sm font-semibold text-gray-800">Activos</p>
                     </div>
                   }
                   @if (
@@ -520,7 +750,7 @@
                       (click)="selectEstadoVet(false)"
                     >
                       <p class="text-sm font-semibold text-gray-800">
-                        Inactivas
+                        Inactivos
                       </p>
                     </div>
                   }
@@ -549,7 +779,7 @@
                 Buscar vets por mascota
               </label>
               <div
-                class="rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 sm:px-4 sm:py-3"
+                class="relative rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 pr-10 sm:px-4 sm:py-3"
               >
                 <input
                   [(ngModel)]="mascotaSearch"
@@ -562,21 +792,37 @@
                   (input)="onMascotaSearchChange()"
                   class="w-full bg-transparent text-sm text-[#4A4A4A] placeholder-[#4A4A4A]/50 outline-none sm:text-base"
                 />
+                @if (tieneValorCampo(mascotaSearch)) {
+                  <button
+                    type="button"
+                    (click)="limpiarCampoFiltro('mascota')"
+                    class="absolute right-2 top-1/2 -translate-y-1/2 rounded-full p-1 text-[#8d8580] transition-colors duration-200 hover:bg-[#f5ede3] hover:text-[#4a4a4a]"
+                    aria-label="Limpiar mascota"
+                  >
+                    <svg
+                      class="h-4 w-4"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M6 6L18 18M18 6L6 18"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                      />
+                    </svg>
+                  </button>
+                }
               </div>
 
               <!-- Dropdown mascota -->
               @if (dropdownOpen["mascota"]) {
                 <div
-                  class="custom-scroll z-60 rounded-xl border border-gray-200 bg-white shadow-lg"
+                  class="dropdown-panel custom-scroll z-60 rounded-xl border border-gray-200 bg-white shadow-lg"
                   data-dropdown-content="mascota"
                   [ngStyle]="dropdownStyles['mascota']"
                 >
-                  <div
-                    class="cursor-pointer border-b border-gray-100 px-4 py-3 hover:bg-blue-50"
-                    (click)="selectMascota({ nombre: '' })"
-                  >
-                    <p class="text-sm font-semibold text-gray-800">Todas</p>
-                  </div>
                   @for (
                     mascota of mascotaSearch ? mascotasFiltradas : mascotas;
                     track mascota.id

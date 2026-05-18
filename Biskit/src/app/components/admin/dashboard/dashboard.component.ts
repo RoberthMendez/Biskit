@@ -29,6 +29,7 @@ import { PetService } from '../../../services/pet.service';
     CardRepuestosComponent,
   ],
   templateUrl: './dashboard.component.html',
+  styleUrls: ['./dashboard.component.css'],
 })
 export class DashboardComponent {
   public adminId: string = '';
@@ -46,6 +47,7 @@ export class DashboardComponent {
   public drogaTratamientosMesCount: DrogaTratamientosCountDto[] = [];
   public drogasBajasEnStock: StockDrogaDto[] = [];
   public admin: Admin = new Admin();
+  public adminLoaded = false;
 
   constructor(
     private adminService: AdminService,
@@ -57,10 +59,11 @@ export class DashboardComponent {
 
   ngOnInit() {
     this.filtrosEstadoService.limpiarTodo();
-    
+
     this.adminService.getDetails().subscribe({
       next: (admin) => {
         this.admin = admin;
+        this.adminLoaded = true;
       },
     });
 

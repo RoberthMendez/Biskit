@@ -1,10 +1,12 @@
 <main>
   <app-back-button [label]="backLabel" [ruta]="backLink"></app-back-button>
-  <section class="mx-4 mb-10 sm:mx-8 md:mx-16 lg:mx-24 xl:mx-32">
+  <section class="screen-enter mx-4 mb-10 sm:mx-8 md:mx-16 lg:mx-24 xl:mx-32">
     <div class="container mx-auto max-w-6xl px-0 pb-6 sm:px-4">
-      <div class="relative flex flex-col gap-6 px-4 sm:px-6 lg:px-8 lg:pb-2">
+      <div
+        class="screen-enter-stagger relative flex flex-col gap-6 px-4 sm:px-6 lg:px-8 lg:pb-2"
+      >
         <div
-          class="flex w-full flex-col items-center justify-center gap-4 text-center lg:pt-4"
+          class="screen-enter-stagger flex w-full flex-col items-center justify-center gap-4 text-center lg:pt-4"
         >
           <div class="relative z-10 flex w-full justify-center">
             <div
@@ -58,7 +60,7 @@
 
         @if (!isClientView) {
           <div
-            class="flex w-full flex-col gap-3 sm:flex-row sm:justify-end lg:absolute lg:right-8 lg:bottom-1 lg:w-auto lg:shrink-0"
+            class="screen-enter-stagger flex w-full flex-col gap-3 sm:flex-row sm:justify-end lg:absolute lg:right-8 lg:bottom-1 lg:w-auto lg:shrink-0"
           >
             <a
               [routerLink]="editLink"
@@ -123,7 +125,9 @@
 
     <div class="container mx-auto max-w-6xl px-0 pb-12 sm:px-4">
       <!-- MEDICAMENTOS -->
-      <div class="mb-6 overflow-hidden rounded-2xl bg-white shadow-md">
+      <div
+        class="screen-enter-stagger mb-6 overflow-hidden rounded-2xl bg-white shadow-md"
+      >
         <div
           class="flex flex-col gap-4 bg-blue-50 px-4 py-4 sm:px-6 lg:flex-row lg:items-center lg:justify-between"
         >
@@ -230,7 +234,7 @@
         <div class="p-4 sm:p-6">
           @if ((tratamiento?.drogas?.length ?? 0) > 0) {
             <div
-              class="grid gap-3 sm:grid-cols-2 custom-scroll"
+              class="screen-enter-stagger grid gap-3 sm:grid-cols-2 custom-scroll"
               [style.max-height]="
                 (tratamiento?.drogas?.length ?? 0) > 6 ? '15.25rem' : 'none'
               "
@@ -1057,12 +1061,11 @@
     </div>
   </section>
 
-  @if (showDeleteModal) {
-    <app-delete-modal
-      [entityLabel]="'tratamiento'"
-      [successMessage]="deleteSuccessMessage"
-      (close)="closeDeleteModal()"
-      (confirm)="confirmDeleteTratamiento()"
-    ></app-delete-modal>
-  }
+  <app-delete-modal
+    [visible]="showDeleteModal"
+    [entityLabel]="'tratamiento'"
+    [successMessage]="deleteSuccessMessage"
+    (close)="closeDeleteModal()"
+    (confirm)="confirmDeleteTratamiento()"
+  ></app-delete-modal>
 </main>

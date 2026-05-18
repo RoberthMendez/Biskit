@@ -1,5 +1,5 @@
 <article
-  class="flex flex-col gap-0 overflow-hidden rounded-b-2xl shadow-[0_10px_30px_-6px_rgba(0,0,0,0.08)]"
+  class="screen-enter-fade flex flex-col gap-0 overflow-hidden rounded-b-2xl shadow-[0_10px_30px_-6px_rgba(0,0,0,0.08)]"
 >
   <!-- ── Cabecera ─────────────────────────────────────────────────────────── -->
   <div
@@ -90,7 +90,7 @@
           <!-- Dropdown especie -->
           @if (dropdownOpen.especie) {
             <div
-              class="custom-scroll absolute z-30 mt-1 max-h-60 w-full overflow-y-auto rounded-xl border border-gray-200 bg-white shadow-lg"
+              class="dropdown-panel custom-scroll absolute z-30 mt-1 max-h-60 w-full overflow-y-auto rounded-xl border border-gray-200 bg-white shadow-lg"
             >
               @for (especie of especiesFiltradas; track especie.id) {
                 <div
@@ -133,7 +133,7 @@
           <!-- Dropdown raza -->
           @if (dropdownOpen.raza) {
             <div
-              class="custom-scroll absolute z-30 mt-1 max-h-60 w-full overflow-y-auto rounded-xl border border-gray-200 bg-white shadow-lg"
+              class="dropdown-panel custom-scroll absolute z-30 mt-1 max-h-60 w-full overflow-y-auto rounded-xl border border-gray-200 bg-white shadow-lg"
             >
               @for (raza of razasFiltradaPorBusqueda; track raza.id) {
                 <div
@@ -193,8 +193,12 @@
             Fecha de nacimiento
           </label>
           <div>
-            <div class="text-sm rounded-xl border border-gray-200 bg-gray-50 pr-3 pl-10 py-2 sm:pr-4 sm:pl-10 sm:py-3 relative">
-              <span class="pointer-events-none absolute inset-y-0 left-3 flex items-center">
+            <div
+              class="text-sm rounded-xl border border-gray-200 bg-gray-50 pr-3 pl-10 py-2 sm:pr-4 sm:pl-10 sm:py-3 relative"
+            >
+              <span
+                class="pointer-events-none absolute inset-y-0 left-3 flex items-center"
+              >
                 <svg
                   class="h-5 w-5"
                   viewBox="0 0 24 24"
@@ -266,7 +270,7 @@
         <!-- Dropdown cliente -->
         @if (dropdownOpen.cliente) {
           <div
-            class="custom-scroll absolute z-10 mt-1 max-h-60 w-full overflow-y-auto rounded-xl border border-gray-200 bg-white shadow-lg"
+            class="dropdown-panel custom-scroll absolute z-10 mt-1 max-h-60 w-full overflow-y-auto rounded-xl border border-gray-200 bg-white shadow-lg"
           >
             @for (cliente of clientesFiltrados; track cliente.id) {
               <div
@@ -312,7 +316,7 @@
         <!-- Dropdown enfermedad -->
         @if (dropdownOpen.enfermedad) {
           <div
-            class="custom-scroll absolute z-30 mt-1 max-h-50 w-full overflow-y-auto rounded-xl border border-gray-200 bg-white shadow-lg"
+            class="dropdown-panel custom-scroll absolute z-30 mt-1 max-h-50 w-full overflow-y-auto rounded-xl border border-gray-200 bg-white shadow-lg"
           >
             @for (enfermedad of enfermedadesFiltradas; track enfermedad.id) {
               <div
@@ -412,183 +416,183 @@
     </form>
   </div>
   <!-- fin cuerpo -->
+</article>
 
-  <!-- ══════════════════════════════════════════════════════════════════════════ -->
-  <!-- Modal: Agregar Raza                                                        -->
-  <!-- ══════════════════════════════════════════════════════════════════════════ -->
-  @if (showAddRazaModal) {
+<!-- ══════════════════════════════════════════════════════════════════════════ -->
+<!-- Modal: Agregar Raza                                                        -->
+<!-- ══════════════════════════════════════════════════════════════════════════ -->
+@if (showAddRazaModal) {
+  <div
+    class="fixed inset-0 z-2147483647 flex items-center justify-center bg-black/50 px-4 backdrop-blur-sm"
+    (click)="closeAddRazaModal()"
+  >
     <div
-      class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4"
-      (click)="closeAddRazaModal()"
+      class="w-full max-w-md rounded-2xl bg-[#FBFAF8] p-6 shadow-xl"
+      (click)="$event.stopPropagation(); showRazaModalEspecieDropdown = false"
     >
-      <div
-        class="w-full max-w-md rounded-2xl bg-[#FBFAF8] p-6 shadow-xl"
-        (click)="$event.stopPropagation(); showRazaModalEspecieDropdown = false"
-      >
-        <div class="mb-4 flex items-center justify-between">
-          <h3 class="text-lg font-bold text-[#4A4A4A]">Agregar Raza</h3>
-          <button
-            type="button"
-            class="cursor-pointer text-xl leading-none text-[#8D8580] hover:text-[#4A4A4A]"
-            (click)="closeAddRazaModal()"
-          >
-            ×
-          </button>
-        </div>
-
-        <p class="mb-3 text-sm text-[#8D8580]">
-          Escribe el nombre de la raza para agregarla a la lista.
-        </p>
-
-        <div
-          class="relative mb-3"
-          data-dropdown="raza-modal-especie"
-          (click)="$event.stopPropagation()"
+      <div class="mb-4 flex items-center justify-between">
+        <h3 class="text-lg font-bold text-[#4A4A4A]">Agregar Raza</h3>
+        <button
+          type="button"
+          class="cursor-pointer text-xl leading-none text-[#8D8580] hover:text-[#4A4A4A]"
+          (click)="closeAddRazaModal()"
         >
-          <label class="mb-2 block text-sm font-semibold text-[#4A4A4A]">
-            Especie
-          </label>
-          <div class="rounded-xl border border-gray-200 bg-gray-50 px-4 py-3">
-            <input
-              [(ngModel)]="razaModalEspecieSearch"
-              name="newRazaEspecieId"
-              type="text"
-              placeholder="Seleccione la especie..."
-              autocomplete="off"
-              (focus)="openRazaModalEspecieDropdown()"
-              class="w-full bg-transparent text-sm text-[#4A4A4A] placeholder-[#4A4A4A]/50 outline-none"
-            />
-          </div>
-
-          @if (showRazaModalEspecieDropdown) {
-            <div
-              class="custom-scroll absolute z-30 mt-1 max-h-60 w-full overflow-y-auto rounded-xl border border-gray-200 bg-white shadow-lg"
-            >
-              @for (especie of especiesFiltradasModalRaza; track especie.id) {
-                <div
-                  class="cursor-pointer border-b border-gray-100 px-4 py-3 hover:bg-blue-50"
-                  (click)="selectRazaModalEspecie(especie)"
-                >
-                  <p class="text-sm font-semibold text-gray-800">
-                    {{ especie.nombre }}
-                  </p>
-                </div>
-              }
-              @if (especiesFiltradasModalRaza.length === 0) {
-                <p class="px-4 py-3 text-sm text-gray-400">Sin resultados</p>
-              }
-            </div>
-          }
-        </div>
-
-        <input
-          [(ngModel)]="newRazaNombre"
-          name="newRazaNombre"
-          type="text"
-          placeholder="Ej. Labrador, Siamés..."
-          (keydown.enter)="saveNewRaza()"
-          class="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-[#4A4A4A] outline-none focus:border-[#2b5392] focus:ring-2 focus:ring-[#2b5392]/20"
-        />
-
-        @if (addRazaError) {
-          <p class="mt-2 text-sm font-medium text-red-600">
-            {{ addRazaError }}
-          </p>
-        }
-
-        @if (addRazaSuccess) {
-          <p class="mt-2 text-sm font-medium text-green-700">
-            {{ addRazaSuccess }}
-          </p>
-        }
-
-        <div class="mt-5 flex justify-end gap-2">
-          <button
-            type="button"
-            class="cursor-pointer rounded-xl border border-gray-200 px-4 py-2 text-sm font-semibold text-[#4A4A4A] hover:bg-gray-100"
-            (click)="closeAddRazaModal()"
-          >
-            Cancelar
-          </button>
-          <button
-            type="button"
-            [disabled]="savingRaza"
-            class="cursor-pointer rounded-xl bg-[#2b5392] px-4 py-2 text-sm font-semibold text-[#FBFAF8] hover:bg-[#1a3a6b] disabled:opacity-50"
-            (click)="saveNewRaza()"
-          >
-            {{ savingRaza ? "Guardando..." : "Guardar" }}
-          </button>
-        </div>
+          ×
+        </button>
       </div>
-    </div>
-  }
 
-  <!-- ══════════════════════════════════════════════════════════════════════════ -->
-  <!-- Modal: Agregar Enfermedad                                                  -->
-  <!-- ══════════════════════════════════════════════════════════════════════════ -->
-  @if (showAddEnfermedadModal) {
-    <div
-      class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4"
-      (click)="closeAddEnfermedadModal()"
-    >
+      <p class="mb-3 text-sm text-[#8D8580]">
+        Escribe el nombre de la raza para agregarla a la lista.
+      </p>
+
       <div
-        class="w-full max-w-md rounded-2xl bg-[#FBFAF8] p-6 shadow-xl"
+        class="relative mb-3"
+        data-dropdown="raza-modal-especie"
         (click)="$event.stopPropagation()"
       >
-        <div class="mb-4 flex items-center justify-between">
-          <h3 class="text-lg font-bold text-[#4A4A4A]">Agregar Enfermedad</h3>
-          <button
-            type="button"
-            class="cursor-pointer text-xl leading-none text-[#8D8580] hover:text-[#4A4A4A]"
-            (click)="closeAddEnfermedadModal()"
-          >
-            ×
-          </button>
+        <label class="mb-2 block text-sm font-semibold text-[#4A4A4A]">
+          Especie
+        </label>
+        <div class="rounded-xl border border-gray-200 bg-gray-50 px-4 py-3">
+          <input
+            [(ngModel)]="razaModalEspecieSearch"
+            name="newRazaEspecieId"
+            type="text"
+            placeholder="Seleccione la especie..."
+            autocomplete="off"
+            (focus)="openRazaModalEspecieDropdown()"
+            class="w-full bg-transparent text-sm text-[#4A4A4A] placeholder-[#4A4A4A]/50 outline-none"
+          />
         </div>
 
-        <p class="mb-3 text-sm text-[#8D8580]">
-          Escribe el nombre de la enfermedad para agregarla a la lista.
+        @if (showRazaModalEspecieDropdown) {
+          <div
+            class="dropdown-panel custom-scroll absolute z-30 mt-1 max-h-60 w-full overflow-y-auto rounded-xl border border-gray-200 bg-white shadow-lg"
+          >
+            @for (especie of especiesFiltradasModalRaza; track especie.id) {
+              <div
+                class="cursor-pointer border-b border-gray-100 px-4 py-3 hover:bg-blue-50"
+                (click)="selectRazaModalEspecie(especie)"
+              >
+                <p class="text-sm font-semibold text-gray-800">
+                  {{ especie.nombre }}
+                </p>
+              </div>
+            }
+            @if (especiesFiltradasModalRaza.length === 0) {
+              <p class="px-4 py-3 text-sm text-gray-400">Sin resultados</p>
+            }
+          </div>
+        }
+      </div>
+
+      <input
+        [(ngModel)]="newRazaNombre"
+        name="newRazaNombre"
+        type="text"
+        placeholder="Ej. Labrador, Siamés..."
+        (keydown.enter)="saveNewRaza()"
+        class="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-[#4A4A4A] outline-none focus:border-[#2b5392] focus:ring-2 focus:ring-[#2b5392]/20"
+      />
+
+      @if (addRazaError) {
+        <p class="mt-2 text-sm font-medium text-red-600">
+          {{ addRazaError }}
         </p>
+      }
 
-        <input
-          [(ngModel)]="newEnfermedadNombre"
-          name="newEnfermedadNombre"
-          type="text"
-          placeholder="Ej. Dermatitis, Gastritis..."
-          (keydown.enter)="saveNewEnfermedad()"
-          class="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-[#4A4A4A] outline-none focus:border-[#2b5392] focus:ring-2 focus:ring-[#2b5392]/20"
-        />
+      @if (addRazaSuccess) {
+        <p class="mt-2 text-sm font-medium text-green-700">
+          {{ addRazaSuccess }}
+        </p>
+      }
 
-        @if (addEnfermedadSuccess) {
-          <p class="mt-2 text-sm font-medium text-green-600">
-            {{ addEnfermedadSuccess }}
-          </p>
-        }
-
-        @if (addEnfermedadError) {
-          <p class="mt-2 text-sm font-medium text-red-600">
-            {{ addEnfermedadError }}
-          </p>
-        }
-
-        <div class="mt-5 flex justify-end gap-2">
-          <button
-            type="button"
-            class="cursor-pointer rounded-xl border border-gray-200 px-4 py-2 text-sm font-semibold text-[#4A4A4A] hover:bg-gray-100"
-            (click)="closeAddEnfermedadModal()"
-          >
-            Cancelar
-          </button>
-          <button
-            type="button"
-            [disabled]="savingEnfermedad"
-            class="cursor-pointer rounded-xl bg-[#2b5392] px-4 py-2 text-sm font-semibold text-[#FBFAF8] hover:bg-[#1a3a6b] disabled:opacity-50"
-            (click)="saveNewEnfermedad()"
-          >
-            {{ savingEnfermedad ? "Guardando..." : "Guardar" }}
-          </button>
-        </div>
+      <div class="mt-5 flex justify-end gap-2">
+        <button
+          type="button"
+          class="cursor-pointer rounded-xl border border-gray-200 px-4 py-2 text-sm font-semibold text-[#4A4A4A] hover:bg-gray-100"
+          (click)="closeAddRazaModal()"
+        >
+          Cancelar
+        </button>
+        <button
+          type="button"
+          [disabled]="savingRaza"
+          class="cursor-pointer rounded-xl bg-[#2b5392] px-4 py-2 text-sm font-semibold text-[#FBFAF8] hover:bg-[#1a3a6b] disabled:opacity-50"
+          (click)="saveNewRaza()"
+        >
+          {{ savingRaza ? "Guardando..." : "Guardar" }}
+        </button>
       </div>
     </div>
-  }
-</article>
+  </div>
+}
+
+<!-- ══════════════════════════════════════════════════════════════════════════ -->
+<!-- Modal: Agregar Enfermedad                                                  -->
+<!-- ══════════════════════════════════════════════════════════════════════════ -->
+@if (showAddEnfermedadModal) {
+  <div
+    class="fixed inset-0 z-2147483647 flex items-center justify-center bg-black/50 px-4 backdrop-blur-sm"
+    (click)="closeAddEnfermedadModal()"
+  >
+    <div
+      class="w-full max-w-md rounded-2xl bg-[#FBFAF8] p-6 shadow-xl"
+      (click)="$event.stopPropagation()"
+    >
+      <div class="mb-4 flex items-center justify-between">
+        <h3 class="text-lg font-bold text-[#4A4A4A]">Agregar Enfermedad</h3>
+        <button
+          type="button"
+          class="cursor-pointer text-xl leading-none text-[#8D8580] hover:text-[#4A4A4A]"
+          (click)="closeAddEnfermedadModal()"
+        >
+          ×
+        </button>
+      </div>
+
+      <p class="mb-3 text-sm text-[#8D8580]">
+        Escribe el nombre de la enfermedad para agregarla a la lista.
+      </p>
+
+      <input
+        [(ngModel)]="newEnfermedadNombre"
+        name="newEnfermedadNombre"
+        type="text"
+        placeholder="Ej. Dermatitis, Gastritis..."
+        (keydown.enter)="saveNewEnfermedad()"
+        class="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-[#4A4A4A] outline-none focus:border-[#2b5392] focus:ring-2 focus:ring-[#2b5392]/20"
+      />
+
+      @if (addEnfermedadSuccess) {
+        <p class="mt-2 text-sm font-medium text-green-600">
+          {{ addEnfermedadSuccess }}
+        </p>
+      }
+
+      @if (addEnfermedadError) {
+        <p class="mt-2 text-sm font-medium text-red-600">
+          {{ addEnfermedadError }}
+        </p>
+      }
+
+      <div class="mt-5 flex justify-end gap-2">
+        <button
+          type="button"
+          class="cursor-pointer rounded-xl border border-gray-200 px-4 py-2 text-sm font-semibold text-[#4A4A4A] hover:bg-gray-100"
+          (click)="closeAddEnfermedadModal()"
+        >
+          Cancelar
+        </button>
+        <button
+          type="button"
+          [disabled]="savingEnfermedad"
+          class="cursor-pointer rounded-xl bg-[#2b5392] px-4 py-2 text-sm font-semibold text-[#FBFAF8] hover:bg-[#1a3a6b] disabled:opacity-50"
+          (click)="saveNewEnfermedad()"
+        >
+          {{ savingEnfermedad ? "Guardando..." : "Guardar" }}
+        </button>
+      </div>
+    </div>
+  </div>
+}

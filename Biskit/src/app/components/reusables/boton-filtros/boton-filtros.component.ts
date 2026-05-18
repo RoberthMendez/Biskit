@@ -4,6 +4,7 @@ import {
   Output,
   EventEmitter,
   OnInit,
+  OnDestroy,
   HostListener,
   ElementRef,
 } from '@angular/core';
@@ -29,13 +30,15 @@ import { FiltrosEstadoService } from '../../../services/filtros-estado.service';
   templateUrl: './boton-filtros.component.html',
   styleUrls: ['./boton-filtros.component.css'],
 })
-export class BotonFiltrosComponent implements OnInit {
+export class BotonFiltrosComponent implements OnInit, OnDestroy {
   @Input() tipo: 'pets' | 'vets' = 'pets';
   @Input() isAdminView: boolean = false;
   @Input() vetId?: number;
   @Output() filtrosAplicados = new EventEmitter<PetDTO[] | Vet[]>();
+  @Output() filtrosActivosChange = new EventEmitter<boolean>();
 
-  showModal = false;
+  renderModal = false;
+  isClosing = false;
   isLoading = false;
 
   // Opciones disponibles
@@ -85,6 +88,7 @@ export class BotonFiltrosComponent implements OnInit {
   // Estado del botón (si hay filtros activos)
   tieneFilterActivos = false;
   private restaurado = false;
+  private closeAnimationTimeout: ReturnType<typeof setTimeout> | null = null;
 
   constructor(
     private filtrosService: FiltrosService,
@@ -99,6 +103,10 @@ export class BotonFiltrosComponent implements OnInit {
 
   ngOnInit() {
     this.cargarOpciones();
+  }
+
+  ngOnDestroy(): void {
+    this.clearCloseAnimationTimeout();
   }
 
   private cargarOpciones() {
@@ -236,13 +244,24 @@ export class BotonFiltrosComponent implements OnInit {
   }
 
   abrirModal() {
-    this.showModal = true;
+    this.clearCloseAnimationTimeout();
+    this.renderModal = true;
+    this.isClosing = false;
     this.cerrarTodosLosDropdowns();
   }
 
   cerrarModal() {
-    this.showModal = false;
+    if (!this.renderModal || this.isClosing) {
+      return;
+    }
+
     this.cerrarTodosLosDropdowns();
+    this.isClosing = true;
+    this.closeAnimationTimeout = setTimeout(() => {
+      this.renderModal = false;
+      this.isClosing = false;
+      this.clearCloseAnimationTimeout();
+    }, 180);
   }
 
   cerrarTodosLosDropdowns() {
@@ -274,7 +293,85 @@ export class BotonFiltrosComponent implements OnInit {
     this.cerrarTodosLosDropdowns();
     this.tieneFilterActivos = false;
     this.filtrosEstadoService.eliminar(this.getStorageKey());
+    this.filtrosActivosChange.emit(false);
     this.aplicarFiltros(false);
+  }
+
+  tieneValorCampo(valor: unknown): boolean {
+    return valor !== undefined && valor !== null && valor !== '';
+  }
+
+  limpiarCampoFiltro(
+    campo:
+      | 'especie'
+      | 'raza'
+      | 'enfermedad'
+      | 'edad'
+      | 'peso'
+      | 'tratamientosPets'
+      | 'estadoPet'
+      | 'especialidad'
+      | 'tratamientosVets'
+      | 'estadoVet'
+      | 'mascota',
+  ): void {
+    if (this.tipo === 'pets') {
+      switch (campo) {
+        case 'especie':
+          this.filtrosPets.especie = undefined;
+          this.filtrosPets.raza = undefined;
+          this.especieSearch = '';
+          this.razaSearch = '';
+          this.razasFiltradas = [];
+          this.cerrarTodosLosDropdowns();
+          return;
+        case 'raza':
+          this.filtrosPets.raza = undefined;
+          this.razaSearch = '';
+          this.cerrarTodosLosDropdowns();
+          return;
+        case 'enfermedad':
+          this.filtrosPets.enfermedad = undefined;
+          this.enfermedadSearch = '';
+          this.cerrarTodosLosDropdowns();
+          return;
+        case 'edad':
+          this.filtrosPets.edad = undefined;
+          return;
+        case 'peso':
+          this.filtrosPets.peso = undefined;
+          return;
+        case 'tratamientosPets':
+          this.filtrosPets.tratamientos = undefined;
+          return;
+        case 'estadoPet':
+          this.filtrosPets.estado = undefined;
+          this.estadoPetSearch = '';
+          this.cerrarTodosLosDropdowns();
+          return;
+      }
+    } else {
+      switch (campo) {
+        case 'especialidad':
+          this.filtrosVets.especialidad = undefined;
+          this.especialidadSearch = '';
+          this.cerrarTodosLosDropdowns();
+          return;
+        case 'tratamientosVets':
+          this.filtrosVets.tratamientos = undefined;
+          return;
+        case 'estadoVet':
+          this.filtrosVets.estado = undefined;
+          this.estadoVetSearch = '';
+          this.cerrarTodosLosDropdowns();
+          return;
+        case 'mascota':
+          this.filtrosVets.pet = undefined;
+          this.mascotaSearch = '';
+          this.cerrarTodosLosDropdowns();
+          return;
+      }
+    }
   }
 
   // Reset filters state without emitting filtrosAplicados (used by parent to clear filters centrally)
@@ -311,6 +408,7 @@ export class BotonFiltrosComponent implements OnInit {
       this.filtrosService.getPetsFiltrados(this.filtrosPets).subscribe({
         next: (pets) => {
           this.tieneFilterActivos = this.verificarFiltrosActivos();
+          this.filtrosActivosChange.emit(this.tieneFilterActivos);
           if (guardarEstado) {
             this.filtrosEstadoService.guardar(this.getStorageKey(), {
               filtrosPets: this.filtrosPets,
@@ -329,6 +427,7 @@ export class BotonFiltrosComponent implements OnInit {
       this.filtrosService.getVetsFiltrados(this.filtrosVets).subscribe({
         next: (vets: any) => {
           this.tieneFilterActivos = this.verificarFiltrosActivos();
+          this.filtrosActivosChange.emit(this.tieneFilterActivos);
           if (guardarEstado) {
             this.filtrosEstadoService.guardar(this.getStorageKey(), {
               filtrosVets: this.filtrosVets,
@@ -461,7 +560,7 @@ export class BotonFiltrosComponent implements OnInit {
   @HostListener('document:mousedown', ['$event'])
   onDocumentMouseDown(event: Event): void {
     const target = event.target as HTMLElement | null;
-    if (!this.showModal || !target) {
+    if (!this.renderModal || !target || this.isClosing) {
       return;
     }
 
@@ -556,6 +655,13 @@ export class BotonFiltrosComponent implements OnInit {
     this.filtrosPets.estado = estado;
     this.estadoPetSearch = this.getEstadoLabel(estado);
     this.closeDropdown('estadoPet');
+  }
+
+  private clearCloseAnimationTimeout(): void {
+    if (this.closeAnimationTimeout) {
+      clearTimeout(this.closeAnimationTimeout);
+      this.closeAnimationTimeout = null;
+    }
   }
 
   onEstadoPetSearchChange() {

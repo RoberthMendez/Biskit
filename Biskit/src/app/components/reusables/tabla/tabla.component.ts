@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FilaComponent } from "./fila/fila.component";
+import { FilaComponent } from './fila/fila.component';
 import {
   TablaActionClickEvent,
   TablaColumna,
@@ -11,12 +11,12 @@ import {
   selector: 'app-tabla',
   imports: [FilaComponent],
   templateUrl: './tabla.component.html',
+  styleUrls: ['./tabla.component.css'],
   host: {
-    class: 'block w-full'
-  }
+    class: 'block w-full',
+  },
 })
 export class TablaComponent {
-
   @Input() showOnMobile = false;
 
   @Input() maxHeight: string | null = null;
@@ -40,7 +40,7 @@ export class TablaComponent {
       if (typeof columna === 'string') {
         return {
           header: columna,
-          key: keysBase[index]
+          key: keysBase[index],
         };
       }
 
@@ -55,7 +55,7 @@ export class TablaComponent {
       columnas.map((columna, index) => {
         const valor = this.obtenerValorCelda(fila, columna, index);
         return this.normalizarCelda(valor, columna);
-      })
+      }),
     );
   }
 
@@ -70,7 +70,9 @@ export class TablaComponent {
       const muestra = this.datos
         .slice(0, 20)
         .map((fila) => this.obtenerValorCelda(fila, columna, index))
-        .filter((valor) => valor !== null && valor !== undefined && valor !== '');
+        .filter(
+          (valor) => valor !== null && valor !== undefined && valor !== '',
+        );
 
       if (muestra.length === 0) {
         return 'left';
@@ -102,14 +104,14 @@ export class TablaComponent {
 
     if (Array.isArray(primeraFila)) {
       return primeraFila.map((_, index) => ({
-        header: `Columna ${index + 1}`
+        header: `Columna ${index + 1}`,
       }));
     }
 
     if (typeof primeraFila === 'object') {
       return Object.keys(primeraFila as Record<string, unknown>).map((key) => ({
         header: this.formatearHeader(key),
-        key
+        key,
       }));
     }
 
@@ -119,14 +121,22 @@ export class TablaComponent {
   private obtenerKeysBase(): string[] {
     const primeraFila = this.datos[0];
 
-    if (primeraFila && typeof primeraFila === 'object' && !Array.isArray(primeraFila)) {
+    if (
+      primeraFila &&
+      typeof primeraFila === 'object' &&
+      !Array.isArray(primeraFila)
+    ) {
       return Object.keys(primeraFila as Record<string, unknown>);
     }
 
     return [];
   }
 
-  private obtenerValorCelda(fila: unknown, columna: TablaColumna, index: number): unknown {
+  private obtenerValorCelda(
+    fila: unknown,
+    columna: TablaColumna,
+    index: number,
+  ): unknown {
     if (columna.accessor) {
       return columna.accessor(fila);
     }
@@ -147,7 +157,7 @@ export class TablaComponent {
       }
 
       const keyFallback = this.obtenerKeysBase()[index];
-      return keyFallback ? registro[keyFallback] ?? '' : '';
+      return keyFallback ? (registro[keyFallback] ?? '') : '';
     }
 
     return index === 0 ? fila : '';
@@ -200,5 +210,4 @@ export class TablaComponent {
         return valor;
     }
   }
-
 }

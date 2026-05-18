@@ -9,8 +9,26 @@
 <section class="mx-4 mb-10 sm:mx-16 md:mx-24 lg:mx-36">
   <app-clients-buscador (search)="onSearch($event)"></app-clients-buscador>
 
+  @if (showLoadingClients) {
+    <div
+      class="loading-shell mx-auto my-16 flex min-h-32 max-w-3xl flex-col items-center justify-center gap-5 py-8 sm:px-10"
+      [class.loading-hidden]="loadingClientsExiting"
+    >
+      <div class="loader-dots" aria-hidden="true">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <div>
+        <p class="text-sm font-medium text-[#8d8580dd] mt-3">
+          Cargando clientes...
+        </p>
+      </div>
+    </div>
+  }
+
   <!-- Mensaje cuando no hay clientes -->
-  @if (filteredClients.length === 0) {
+  @if (!isLoadingClients && filteredClients.length === 0) {
     <app-empty-results
       [message]="'No hay clientes registrados en el sistema'"
       (clear)="onSearch('')"
@@ -18,7 +36,7 @@
   }
 
   <!-- Tabla y Cards cuando hay clientes -->
-  @if (filteredClients.length > 0) {
+  @if (!isLoadingClients && filteredClients.length > 0) {
     <!-- Tabla -->
     <app-tabla
       [columnas]="columnasClient"
@@ -45,3 +63,74 @@
   (close)="closeModal()"
 >
 </app-delete-modal>
+
+<!-- CÓDIGO DE ANIMACIONES -->
+<style>
+  .loading-shell {
+    transition:
+      opacity 0.35s ease,
+      transform 0.35s ease,
+      filter 0.35s ease;
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .loading-shell.loading-hidden {
+    opacity: 0;
+    transform: translateY(-14px) scale(0.98);
+    filter: blur(1px);
+    pointer-events: none;
+  }
+
+  .loader-dots {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+  }
+
+  .loader-dots span {
+    width: 0.85rem;
+    height: 0.85rem;
+    border-radius: 9999px;
+    background: #2b5392;
+    animation: clients-loading-dot 1s ease-in-out infinite;
+    opacity: 0.75;
+  }
+
+  .loader-dots span:nth-child(2) {
+    animation-delay: 0.15s;
+    background: #8eb3ef;
+  }
+
+  .loader-dots span:nth-child(3) {
+    animation-delay: 0.3s;
+    background: #d7e3f7;
+  }
+
+  @keyframes clients-loading-dot {
+    0%,
+    80%,
+    100% {
+      transform: translateY(0) scale(0.85);
+      opacity: 0.5;
+    }
+
+    40% {
+      transform: translateY(-10px) scale(1);
+      opacity: 1;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .loading-shell,
+    .loading-shell.loading-hidden,
+    .loader-dots span {
+      transition: none !important;
+      animation: none !important;
+      transform: none !important;
+      filter: none !important;
+      opacity: 1 !important;
+    }
+  }
+</style>

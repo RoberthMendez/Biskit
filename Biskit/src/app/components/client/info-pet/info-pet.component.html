@@ -5,13 +5,16 @@
   ></app-back-button>
 
   <section
-    class="mx-auto mt-5 mb-10 grid w-full max-w-6xl grid-cols-1 items-center gap-8 px-5 sm:px-8 md:grid-cols-2 lg:grid-cols-3"
+    class="screen-enter mx-auto mt-5 mb-10 grid w-full max-w-6xl grid-cols-1 items-center gap-8 px-5 sm:px-8 md:grid-cols-2 lg:grid-cols-3"
   >
     <!-- Card mascota -->
-    <app-pet-card [pet]="pet"></app-pet-card>
+    <app-pet-card class="screen-enter-stagger" [pet]="pet"></app-pet-card>
 
     <!-- Tratamientos -->
-    <aside class="flex w-full lg:col-span-2" *ngIf="client.id">
+    <aside
+      class="screen-enter-stagger flex w-full lg:col-span-2"
+      *ngIf="client.id"
+    >
       <app-treatments-card
         [tratamientos]="pet.tratamientos ?? []"
         [routeBase]="['/client', client.id!]"
