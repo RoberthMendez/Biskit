@@ -33,7 +33,7 @@ export class AddClientComponent {
   ngOnInit(): void {
     const routePath = this.route.snapshot.routeConfig?.path ?? '';
     this.isAdminView = routePath.startsWith('admin/');
-    const basePath = this.isAdminView ? 'admin' : 'vet';
+    const basePath = this.isAdminView ? '/admin' : '/vet';
 
     const fromDetail =
       this.route.snapshot.queryParamMap.get('from') === 'detail';
