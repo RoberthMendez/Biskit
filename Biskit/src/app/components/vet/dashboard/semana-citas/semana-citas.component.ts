@@ -62,8 +62,6 @@ const COLOR_FALLBACK: ColorTipo = {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SemanaCitasComponent implements OnInit, OnDestroy {
-  @Input() vetId!: string | number;
-
   @ViewChild('calendarEl')
   set calendarEl(ref: ElementRef<HTMLDivElement> | undefined) {
     this.calendarContainer = ref;
@@ -77,6 +75,7 @@ export class SemanaCitasComponent implements OnInit, OnDestroy {
     this.calendar = undefined;
   }
 
+  vetId: number = 0;
   semanaOffset = 0;
   horario: HorarioDiaDto[] = [];
   cargando = true;
