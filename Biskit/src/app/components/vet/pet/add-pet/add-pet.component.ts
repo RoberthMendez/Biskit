@@ -41,6 +41,15 @@ export class AddPetComponent {
     const fromDetail =
       this.route.snapshot.queryParamMap.get('from') === 'detail';
 
+    const navFrom =
+      (window.history.state && (window.history.state.from as string)) || '';
+
+    if (navFrom === 'vet' && !fromDetail) {
+      this.backLink = `${this.basePath}`;
+      this.backLabel = 'Panel de Veterinario';
+      return;
+    }
+
     if (this.petId != null && fromDetail) {
       this.backLink = `${this.basePath}/pets/${this.petId}`;
       this.backLabel = 'Detalle de Mascota';

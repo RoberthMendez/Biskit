@@ -17,7 +17,9 @@ export class ItemAccesoRapidoComponent {
       return;
     }
 
-    this.router.navigate(['/vet', routeSegment, 'add']);
+    this.router.navigate(['/vet', routeSegment, 'add'], {
+      state: { from: 'vet' },
+    });
   }
 
   private getRouteSegmentForTitulo(titulo: string): string {

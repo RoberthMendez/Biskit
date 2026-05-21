@@ -48,6 +48,16 @@ export class AddClientComponent {
   }
 
   private updateBackNavigation(basePath: string, fromDetail = false): void {
+    const navFrom =
+      (window.history.state && (window.history.state.from as string)) || '';
+
+    if (navFrom === 'vet' && !fromDetail) {
+      this.backLink = basePath;
+      this.backLabel = 'Panel de Veterinario';
+      this.returnRoute = basePath;
+      return;
+    }
+
     if (this.clientId != null && fromDetail) {
       this.backLink = [basePath, 'clients', this.clientId];
       this.backLabel = 'Detalle de Cliente';

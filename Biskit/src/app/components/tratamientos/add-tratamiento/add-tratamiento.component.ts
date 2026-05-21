@@ -351,6 +351,15 @@ export class AddTratamientoComponent implements OnInit {
   }
 
   private updateBackLink(): void {
+    const navFrom =
+      (window.history.state && (window.history.state.from as string)) || '';
+
+    if (navFrom === 'vet') {
+      this.backLink = `${this.basePath}`;
+      this.backLabel = 'Panel de Veterinario';
+      return;
+    }
+
     if (this.preselectedPetId != null && !Number.isNaN(this.preselectedPetId)) {
       this.backLink = `${this.basePath}/pets/${this.preselectedPetId}`;
       this.backLabel = 'Información de la Mascota';
