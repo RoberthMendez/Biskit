@@ -128,6 +128,13 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'vet/add-cita',
+    loadComponent: () =>
+      import('./components/vet/citas/add-cita/add-cita.component').then(
+        (m) => m.AddCitaComponent,
+      ),
+  },
+  {
     path: 'client',
     loadComponent: () =>
       import('./components/client/client/client.component').then(

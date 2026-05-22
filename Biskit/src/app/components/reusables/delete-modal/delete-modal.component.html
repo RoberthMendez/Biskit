@@ -1,13 +1,18 @@
 @if (renderModal) {
   <article
-    class="delete-modal-backdrop fixed inset-0 z-2147483647 flex items-center justify-center bg-black/50 backdrop-blur-sm"
+    class="delete-modal-backdrop flex items-center justify-center bg-transparent"
+    [class.fixed]="portalToBody"
+    [class.absolute]="!portalToBody"
+    [class.inset-0]="portalToBody || !portalToBody"
     [class.is-closing]="isExiting"
+    (click)="onBackdropClick($event)"
     role="dialog"
     aria-modal="true"
   >
     <div
       class="delete-modal-panel w-[90%] max-w-md justify-center space-y-4 rounded-2xl bg-[#FBFAF8] px-8 py-10 text-center shadow-xl"
       [class.is-closing]="isExiting"
+      (click)="$event.stopPropagation()"
     >
       <h2 class="text-xl font-extrabold tracking-wide text-[#4A4A4A]">
         {{ title }}
@@ -21,7 +26,7 @@
         <button
           type="button"
           (click)="onCancel()"
-          [disabled]="showSuccess"
+          [disabled]="showSuccess || busy"
           class="cursor-pointer rounded-lg border border-[#2B5392] px-4 py-2 text-[#2B5392] transition hover:bg-[#2B5392] hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
         >
           {{ cancelLabel }}
@@ -30,7 +35,7 @@
         <button
           type="button"
           (click)="onConfirm()"
-          [disabled]="showSuccess"
+          [disabled]="showSuccess || busy"
           class="cursor-pointer rounded-lg border border-[#B22222] px-4 py-2 text-[#B22222] transition hover:bg-[#B22222] hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
         >
           {{ confirmLabel }}

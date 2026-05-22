@@ -10,6 +10,7 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Calendar } from '@fullcalendar/core';
+import { forkJoin } from 'rxjs';
 import {
   CalendarOptions,
   EventInput,
@@ -17,12 +18,20 @@ import {
 } from '@fullcalendar/core';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import dayGridPlugin from '@fullcalendar/daygrid';
-import interactionPlugin from '@fullcalendar/interaction';
+import interactionPlugin, { DateClickArg } from '@fullcalendar/interaction';
 import esLocale from '@fullcalendar/core/locales/es';
 import { VetService } from '../../../../services/vet.service';
 import { CitasService } from '../../../../services/citas.service';
+import { PetService } from '../../../../services/pet.service';
 import { CitaDto } from '../../../../models/dtos/cita-dto';
 import { HorarioDiaDto } from '../../../../models/dtos/horario-dia-dto';
+import { TipoCita } from '../../../../models/Citas/tipo-cita';
+import { PetDTO } from '../../../../models/dtos/pet-dto';
+import {
+  AddCitaComponent,
+  SlotCitaSeleccionado,
+} from '../../citas/add-cita/add-cita.component';
+import { DeleteModalComponent } from '../../../reusables/delete-modal/delete-modal.component';
 
 // ── Mapeo de días español → número JS (0=Dom, 1=Lun, …) ────────────────────
 const DIA_A_NUM: Record<string, number> = {
@@ -39,13 +48,42 @@ const DIA_A_NUM: Record<string, number> = {
 type ColorTipo = { bg: string; border: string; text: string };
 
 const PALETA_TIPOS: ColorTipo[] = [
-  { bg: '#eaf1ff', border: '#bfd0f1', text: '#35507a' },
-  { bg: '#eff3ff', border: '#c7cef3', text: '#3d4f88' },
-  { bg: '#f5efff', border: '#d8c7f3', text: '#5b4a84' },
-  { bg: '#fff2ea', border: '#f0ceb7', text: '#7a5a43' },
-  { bg: '#eef7f6', border: '#c6dfdb', text: '#3f6761' },
-  { bg: '#f6f2ea', border: '#e1d5bf', text: '#6f634c' },
+  { bg: '#e8f1ff', border: '#b9cff1', text: '#35537f' },
+  { bg: '#eef8ea', border: '#c6e1be', text: '#4a7450' },
+  { bg: '#fff0e5', border: '#efc6a8', text: '#8a5b3d' },
+  { bg: '#f6ecff', border: '#d8c2ef', text: '#6b4b8a' },
+  { bg: '#eaf8f6', border: '#c4e3de', text: '#3f6761' },
+  { bg: '#fff7e8', border: '#efdcb5', text: '#8a6b38' },
+  { bg: '#f4eefc', border: '#d9c8ee', text: '#66518b' },
+  { bg: '#fceef2', border: '#edc7d2', text: '#8d4f66' },
 ];
+
+const COLOR_POR_TIPO_EXPLICITO: Record<string, ColorTipo> = {
+  'consulta general': { bg: '#e8f1ff', border: '#b9cff1', text: '#35537f' },
+  'consulta de control': { bg: '#eef8ea', border: '#c6e1be', text: '#4a7450' },
+  desparasitacion: { bg: '#eaf8f6', border: '#bfe2db', text: '#35635a' },
+  'consulta especializada': {
+    bg: '#fff7d9',
+    border: '#e8d792',
+    text: '#8a6a18',
+  },
+  'certificado para viaje': {
+    bg: '#fde7f0',
+    border: '#ecbfd2',
+    text: '#8f4e73',
+  },
+  'examenes diagnosticos': {
+    bg: '#fff1e3',
+    border: '#efc6a4',
+    text: '#8a5b3d',
+  },
+  vacunacion: { bg: '#fceef2', border: '#edc7d2', text: '#8d4f66' },
+  'consulta domiciliaria': {
+    bg: '#f5ecff',
+    border: '#d8c3ef',
+    text: '#6b4b8a',
+  },
+};
 
 const COLOR_FALLBACK: ColorTipo = {
   bg: '#f2f5fb',
@@ -56,7 +94,7 @@ const COLOR_FALLBACK: ColorTipo = {
 @Component({
   selector: 'app-semana-citas',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, AddCitaComponent, DeleteModalComponent],
   templateUrl: './semana-citas.component.html',
   styleUrls: ['./semana-citas.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -81,6 +119,19 @@ export class SemanaCitasComponent implements OnInit, OnDestroy {
   cargando = true;
   error = false;
   tiposCita: string[] = [];
+  tiposCitaCatalogo: TipoCita[] = [];
+  mascotasCatalogo: PetDTO[] = [];
+  catalogosCrearCitaCargados = false;
+  cargandoCatalogosCrearCita = false;
+  modalCrearCitaAbierto = false;
+  slotSeleccionado: SlotCitaSeleccionado | null = null;
+  modalEliminarCitaAbierto = false;
+  citaEliminarId: number | null = null;
+  citaEliminarNombre = '';
+  eliminandoCita = false;
+  eliminarCitaMensaje = '';
+  eliminarCitaSuccess = '';
+  private recargarCitasAlCerrarEliminacion = false;
 
   calendarOptions: CalendarOptions = {
     plugins: [timeGridPlugin, dayGridPlugin, interactionPlugin],
@@ -90,14 +141,16 @@ export class SemanaCitasComponent implements OnInit, OnDestroy {
     allDaySlot: false,
     slotDuration: '00:15:00',
     slotLabelInterval: '00:30:00',
-    height: 620,
+    height: 550,
     eventMinHeight: 58,
     expandRows: true,
     nowIndicator: true,
     firstDay: 1, // semana empieza el lunes
     businessHours: [],
     events: [],
+    dateClick: (info) => this.onDateClick(info),
     eventClick: (info) => this.onEventClick(info),
+    eventDidMount: (info) => this.ajustarTooltipEvento(info),
     eventContent: (arg) => this.renderEvento(arg),
     slotLabelFormat: { hour: 'numeric', minute: '2-digit', hour12: true },
   };
@@ -106,19 +159,23 @@ export class SemanaCitasComponent implements OnInit, OnDestroy {
   private calendar?: Calendar;
   private calendarContainer?: ElementRef<HTMLDivElement>;
   private colorPorTipo = new Map<string, ColorTipo>();
+  private fechaModalPendiente: Date | null = null;
+  private eliminarCitaTimeout: ReturnType<typeof setTimeout> | null = null;
 
   constructor(
     private vetService: VetService,
     private citasService: CitasService,
+    private petService: PetService,
     private cdr: ChangeDetectorRef,
   ) {}
 
   ngOnDestroy(): void {
     this.calendar?.destroy();
+    this.clearEliminarCitaTimeout();
   }
 
   ngOnInit(): void {
-    this.cargarTiposCita();
+    this.cargarCatalogosCrearCita();
 
     // 1. Carga el horario estático del veterinario
     this.vetService.getDetails().subscribe({
@@ -183,10 +240,11 @@ export class SemanaCitasComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (citas) => {
           this.fechaInicioSemana = this.lunesDeSemana(this.semanaOffset);
+          const eventosCitas = this.mapearCitas(citas);
           this.calendarOptions = {
             ...this.calendarOptions,
             initialDate: this.fechaInicioSemana,
-            events: this.mapearCitas(citas),
+            events: [...this.mapearSlotsDisponibles(citas), ...eventosCitas],
           };
           this.sincronizarCalendar();
           this.cargando = false;
@@ -207,15 +265,16 @@ export class SemanaCitasComponent implements OnInit, OnDestroy {
       const fin = this.sumarMin(inicio, c.duracionMinutos);
       const color = this.colorDeTipo(c.tipoCitaNombre);
       return {
-        id: String(c.id),
-        title: c.petNombre,
+        id: c.id != null ? String(c.id) : undefined,
+        title: c.petNombre ?? 'Mascota',
         start: `${fecha}T${inicio}`,
         end: `${fecha}T${fin}`,
         backgroundColor: color.bg,
         borderColor: color.border,
         textColor: color.text,
         extendedProps: {
-          ownerNombre: c.ownerNombre,
+          citaId: c.id,
+          ownerNombre: c.ownerNombre ?? '',
           tipoCitaNombre: c.tipoCitaNombre,
           duracionMinutos: c.duracionMinutos,
           hora: c.hora,
@@ -226,23 +285,111 @@ export class SemanaCitasComponent implements OnInit, OnDestroy {
 
   // ── Render personalizado de la tarjeta de evento ───────────────────────────
   private renderEvento(arg: any): { html: string } {
-    const { ownerNombre, hora, duracionMinutos } = arg.event.extendedProps;
+    if (arg.event.extendedProps?.esSlotDisponible) {
+      return { html: '' };
+    }
+
+    const { ownerNombre, hora, duracionMinutos, tipoCitaNombre, citaId } =
+      arg.event.extendedProps;
+    const tipoSeguro = this.escapeHtml(tipoCitaNombre ?? 'Tipo de cita');
+    const mascotaSegura = this.escapeHtml(arg.event.title ?? 'Mascota');
+    const ownerSeguro = this.escapeHtml(ownerNombre ?? '');
+    const horaSegura = this.escapeHtml(hora ?? '');
+    const duracionSegura = this.escapeHtml(String(duracionMinutos ?? ''));
+    const citaIdNumerico = Number(citaId ?? arg.event.id);
+    const botonEliminar =
+      Number.isFinite(citaIdNumerico) && citaIdNumerico > 0
+        ? `
+          <button
+            type="button"
+            class="fc-ev-delete"
+            data-cita-id="${citaIdNumerico}"
+            aria-label="Cancelar cita de ${mascotaSegura}"
+            title="Cancelar cita"
+          >
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path
+                d="M4 6H20M16 6L15.7294 5.18807C15.4671 4.40125 15.3359 4.00784 15.0927 3.71698C14.8779 3.46013 14.6021 3.26132 14.2905 3.13878C13.9376 3 13.523 3 12.6936 3H11.3064C10.477 3 10.0624 3 9.70951 3.13878C9.39792 3.26132 9.12208 3.46013 8.90729 3.71698C8.66405 4.00784 8.53292 4.40125 8.27064 5.18807L8 6M18 6V16.2C18 17.8802 18 18.7202 17.673 19.362C17.3854 19.9265 16.9265 20.3854 16.362 20.673C15.7202 21 14.8802 21 13.2 21H10.8C9.11984 21 8.27976 21 7.63803 20.673C7.07354 20.3854 6.6146 19.9265 6.32698 19.362C6 18.7202 6 17.8802 6 16.2V6M14 10V17M10 10V17"
+                stroke="currentColor"
+                stroke-width="1.75"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              ></path>
+            </svg>
+          </button>`
+        : '';
+
     return {
       html: `
-        <div class="fc-ev">
+        <div class="fc-ev" data-tipo-cita="${tipoSeguro}">
+          ${botonEliminar}
           <div class="fc-ev-meta">
-            <span class="fc-ev-hora">${hora}</span>
-            <span class="fc-ev-dur">${duracionMinutos}'</span>
+            <span class="fc-ev-hora">${horaSegura}</span>
+            <span class="fc-ev-dur">${duracionSegura}'</span>
           </div>
-          <div class="fc-ev-mascota">${arg.event.title}</div>
-          <div class="fc-ev-dueno">${ownerNombre}</div>
+          <div class="fc-ev-mascota">${mascotaSegura}</div>
+          <div class="fc-ev-dueno">${ownerSeguro}</div>
         </div>`,
     };
   }
 
   // Aquí puedes abrir un modal/panel lateral con el detalle de la cita
   private onEventClick(info: any): void {
+    if (info.event.extendedProps?.esSlotDisponible) {
+      this.abrirModalCrearCita(info.event.start);
+      return;
+    }
+
     console.log('Cita:', info.event.id, info.event.extendedProps);
+  }
+
+  private onDateClick(info: DateClickArg): void {
+    if (!this.esSlotDisponible(info.date)) {
+      return;
+    }
+
+    this.abrirModalCrearCita(info.date);
+  }
+
+  private ajustarTooltipEvento(info: any): void {
+    if (info.event.extendedProps?.esSlotDisponible) {
+      info.el.parentElement?.classList.add('fc-slot-disponible-harness');
+      info.el.style.minHeight = '0';
+      info.el.style.height = '100%';
+
+      info.el.addEventListener('click', (event: MouseEvent) => {
+        event.preventDefault();
+        event.stopPropagation();
+        this.abrirModalCrearCita(info.event.start);
+      });
+      return;
+    }
+
+    const deleteButton = info.el.querySelector(
+      '.fc-ev-delete',
+    ) as HTMLButtonElement | null;
+
+    deleteButton?.addEventListener('click', (event: MouseEvent) => {
+      event.preventDefault();
+      event.stopPropagation();
+
+      const citaId = Number(
+        deleteButton.dataset['citaId'] ??
+          info.event.extendedProps?.citaId ??
+          info.event.id,
+      );
+
+      if (!Number.isFinite(citaId) || citaId <= 0) {
+        return;
+      }
+
+      this.abrirConfirmacionEliminarCita(citaId, info.event.title);
+    });
+
+    const horaInicio = info.event.start?.getHours() ?? 0;
+    if (horaInicio < 10) {
+      info.el.classList.add('fc-ev-tooltip-below');
+    }
   }
 
   // ── Utilidades ─────────────────────────────────────────────────────────────
@@ -273,6 +420,17 @@ export class SemanaCitasComponent implements OnInit, OnDestroy {
     return `${String(Math.floor(t / 60)).padStart(2, '0')}:${String(t % 60).padStart(2, '0')}:00`;
   }
 
+  private minutosAHora(minutosTotales: number): string {
+    return `${String(Math.floor(minutosTotales / 60)).padStart(2, '0')}:${String(
+      minutosTotales % 60,
+    ).padStart(2, '0')}:00`;
+  }
+
+  private horaAMinutos(h24: string): number {
+    const [h, m] = h24.split(':').map(Number);
+    return h * 60 + (m ?? 0);
+  }
+
   private lunesDeSemana(off: number): Date {
     const hoy = new Date();
     const dow = hoy.getDay();
@@ -290,6 +448,13 @@ export class SemanaCitasComponent implements OnInit, OnDestroy {
     return d.toISOString().slice(0, 10);
   }
 
+  private fechaDeDiaNumero(numDia: number): string {
+    const off = numDia === 0 ? 6 : numDia - 1;
+    const d = new Date(this.fechaInicioSemana);
+    d.setDate(d.getDate() + off);
+    return this.formatearFechaLocal(d);
+  }
+
   private colorDeTipo(tipo: string): ColorTipo {
     const key = this.norm(tipo);
     const existente = this.colorPorTipo.get(key);
@@ -297,11 +462,276 @@ export class SemanaCitasComponent implements OnInit, OnDestroy {
       return existente;
     }
 
+    const colorFijo = COLOR_POR_TIPO_EXPLICITO[key];
+    if (colorFijo) {
+      this.colorPorTipo.set(key, colorFijo);
+      return colorFijo;
+    }
+
+    const hash = this.hashCadena(key);
     const color =
-      PALETA_TIPOS[this.colorPorTipo.size % PALETA_TIPOS.length] ??
-      COLOR_FALLBACK;
+      PALETA_TIPOS[Math.abs(hash) % PALETA_TIPOS.length] ?? COLOR_FALLBACK;
     this.colorPorTipo.set(key, color);
     return color;
+  }
+
+  private hashCadena(texto: string): number {
+    let hash = 0;
+
+    for (let i = 0; i < texto.length; i++) {
+      hash = (hash * 31 + texto.charCodeAt(i)) | 0;
+    }
+
+    return hash;
+  }
+
+  private clearEliminarCitaTimeout(): void {
+    if (!this.eliminarCitaTimeout) {
+      return;
+    }
+
+    clearTimeout(this.eliminarCitaTimeout);
+    this.eliminarCitaTimeout = null;
+  }
+
+  private escapeHtml(texto: string): string {
+    return texto
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  private esSlotDisponible(fecha: Date): boolean {
+    return this.estaDentroDelHorario(fecha) && !this.tieneCitaSolapada(fecha);
+  }
+
+  private estaDentroDelHorario(fecha: Date): boolean {
+    const dia = fecha.getDay();
+    const minutos = fecha.getHours() * 60 + fecha.getMinutes();
+
+    return this.horario.some((h) => {
+      if (this.diaANum(h.diaSemana) !== dia) {
+        return false;
+      }
+
+      return (
+        minutos >= this.horaAMinutos(this.a24h(h.horaInicio)) &&
+        minutos < this.horaAMinutos(this.a24h(h.horaFin))
+      );
+    });
+  }
+
+  private tieneCitaSolapada(fecha: Date): boolean {
+    const inicio = fecha.getTime();
+    const fin = inicio + 15 * 60 * 1000;
+
+    return (this.calendar?.getEvents() ?? []).some((evento) => {
+      if (evento.extendedProps?.['esSlotDisponible']) {
+        return false;
+      }
+
+      if (!evento.id || !evento.start || !evento.end) {
+        return false;
+      }
+
+      return inicio < evento.end.getTime() && fin > evento.start.getTime();
+    });
+  }
+
+  private abrirModalCrearCita(fecha: Date | null | undefined): void {
+    if (!fecha) {
+      return;
+    }
+
+    if (!this.catalogosCrearCitaCargados) {
+      this.fechaModalPendiente = new Date(fecha);
+
+      if (!this.cargandoCatalogosCrearCita) {
+        this.cargarCatalogosCrearCita();
+      }
+
+      return;
+    }
+
+    this.fechaModalPendiente = null;
+    this.slotSeleccionado = {
+      diaSemana: this.nombreDiaSemana(fecha),
+      hora: this.formatearHora12(fecha),
+      numSemana: this.numSemanaDeFecha(fecha),
+      fecha: this.formatearFechaLocal(fecha),
+    };
+    this.modalCrearCitaAbierto = true;
+    this.cdr.markForCheck();
+  }
+
+  cerrarModalCrearCita(): void {
+    this.modalCrearCitaAbierto = false;
+    this.slotSeleccionado = null;
+    this.cdr.markForCheck();
+  }
+
+  onCitaCreada(): void {
+    this.cerrarModalCrearCita();
+    this.cargarCitas();
+  }
+
+  abrirConfirmacionEliminarCita(citaId: number, mascotaNombre: string): void {
+    this.clearEliminarCitaTimeout();
+    this.citaEliminarId = citaId;
+    this.citaEliminarNombre = mascotaNombre;
+    this.eliminandoCita = false;
+    this.recargarCitasAlCerrarEliminacion = false;
+    this.eliminarCitaMensaje = mascotaNombre
+      ? `Estas seguro de que quieres cancelar la cita de ${mascotaNombre}? Esta accion no se puede deshacer.`
+      : 'Estas seguro de que quieres cancelar esta cita? Esta accion no se puede deshacer.';
+    this.eliminarCitaSuccess = '';
+    this.modalEliminarCitaAbierto = true;
+    this.cdr.markForCheck();
+  }
+
+  cerrarModalEliminarCita(): void {
+    if (this.eliminandoCita) {
+      return;
+    }
+
+    this.clearEliminarCitaTimeout();
+    this.modalEliminarCitaAbierto = false;
+    this.citaEliminarId = null;
+    this.citaEliminarNombre = '';
+    this.eliminarCitaMensaje = '';
+    this.eliminarCitaSuccess = '';
+
+    if (this.recargarCitasAlCerrarEliminacion) {
+      this.recargarCitasAlCerrarEliminacion = false;
+      this.cargarCitas();
+    }
+
+    this.cdr.markForCheck();
+  }
+
+  confirmarEliminarCita(): void {
+    if (!this.citaEliminarId || this.eliminandoCita) {
+      return;
+    }
+
+    this.eliminandoCita = true;
+    this.eliminarCitaMensaje =
+      this.citaEliminarNombre && this.citaEliminarNombre.trim().length > 0
+        ? `Estas seguro de que quieres cancelar la cita de ${this.citaEliminarNombre}? Esta accion no se puede deshacer.`
+        : 'Estas seguro de que quieres cancelar esta cita? Esta accion no se puede deshacer.';
+    this.eliminarCitaSuccess = '';
+
+    this.citasService.eliminarCita(this.citaEliminarId).subscribe({
+      next: () => {
+        this.eliminandoCita = false;
+        this.recargarCitasAlCerrarEliminacion = true;
+        this.eliminarCitaSuccess = 'Cita cancelada correctamente';
+        this.cdr.markForCheck();
+      },
+      error: () => {
+        this.eliminandoCita = false;
+        this.eliminarCitaMensaje = 'No fue posible cancelar la cita.';
+        this.cdr.markForCheck();
+      },
+    });
+  }
+
+  private formatearFechaLocal(fecha: Date): string {
+    return [
+      fecha.getFullYear(),
+      String(fecha.getMonth() + 1).padStart(2, '0'),
+      String(fecha.getDate()).padStart(2, '0'),
+    ].join('-');
+  }
+
+  private formatearHora12(fecha: Date): string {
+    const horas = fecha.getHours();
+    const minutos = fecha.getMinutes();
+    const periodo = horas >= 12 ? 'PM' : 'AM';
+    const hora12 = horas % 12 || 12;
+
+    return `${String(hora12).padStart(2, '0')}:${String(minutos).padStart(2, '0')} ${periodo}`;
+  }
+
+  private nombreDiaSemana(fecha: Date): string {
+    const dias = [
+      'Domingo',
+      'Lunes',
+      'Martes',
+      'Miércoles',
+      'Jueves',
+      'Viernes',
+      'Sábado',
+    ];
+
+    return dias[fecha.getDay()] ?? 'Lunes';
+  }
+
+  private numSemanaDeFecha(fecha: Date): number {
+    const inicioSemanaSeleccionada = this.lunesDeFecha(fecha);
+    const inicioSemanaActual = this.lunesDeSemana(0);
+    const milisegundosSemana = 7 * 24 * 60 * 60 * 1000;
+
+    return Math.round(
+      (inicioSemanaSeleccionada.getTime() - inicioSemanaActual.getTime()) /
+        milisegundosSemana,
+    );
+  }
+
+  private lunesDeFecha(fecha: Date): Date {
+    const dow = fecha.getDay();
+    const lunes = new Date(fecha);
+    lunes.setDate(fecha.getDate() - (dow === 0 ? 6 : dow - 1));
+    lunes.setHours(0, 0, 0, 0);
+    return lunes;
+  }
+
+  private mapearSlotsDisponibles(citas: CitaDto[]): EventInput[] {
+    const ocupados = citas.map((c) => {
+      const fecha = this.fechaDeCita(c.diaSemana);
+      const inicio = this.horaAMinutos(this.a24h(c.hora));
+
+      return {
+        fecha,
+        inicio,
+        fin: inicio + c.duracionMinutos,
+      };
+    });
+
+    const slots: EventInput[] = [];
+
+    this.horario.forEach((diaHorario) => {
+      const numDia = this.diaANum(diaHorario.diaSemana);
+      const fecha = this.fechaDeDiaNumero(numDia);
+      const inicioDia = this.horaAMinutos(this.a24h(diaHorario.horaInicio));
+      const finDia = this.horaAMinutos(this.a24h(diaHorario.horaFin));
+
+      for (let inicio = inicioDia; inicio + 15 <= finDia; inicio += 15) {
+        const fin = inicio + 15;
+        const estaOcupado = ocupados.some(
+          (o) => o.fecha === fecha && inicio < o.fin && fin > o.inicio,
+        );
+
+        if (estaOcupado) {
+          continue;
+        }
+
+        slots.push({
+          id: `slot-${fecha}-${inicio}`,
+          start: `${fecha}T${this.minutosAHora(inicio)}`,
+          end: `${fecha}T${this.minutosAHora(fin)}`,
+          display: 'background',
+          classNames: ['fc-slot-disponible'],
+          extendedProps: {
+            esSlotDisponible: true,
+          },
+        });
+      }
+    });
+
+    return slots;
   }
 
   getEstiloLeyenda(tipo: string): Record<string, string> {
@@ -313,15 +743,44 @@ export class SemanaCitasComponent implements OnInit, OnDestroy {
     };
   }
 
-  private cargarTiposCita(): void {
-    this.citasService.getTiposCita().subscribe({
-      next: (tipos) => {
-        this.tiposCita = tipos;
-        tipos.forEach((tipo) => this.colorDeTipo(tipo));
+  private cargarCatalogosCrearCita(): void {
+    if (this.cargandoCatalogosCrearCita) {
+      return;
+    }
+
+    this.cargandoCatalogosCrearCita = true;
+
+    forkJoin({
+      tipos: this.citasService.getTiposCita(),
+      mascotas: this.petService.findAll(),
+    }).subscribe({
+      next: ({ tipos, mascotas }) => {
+        this.tiposCitaCatalogo = tipos;
+        this.mascotasCatalogo = mascotas;
+        this.catalogosCrearCitaCargados = true;
+        this.cargandoCatalogosCrearCita = false;
+
+        const nombresTipos = tipos.map((t) => t.nombre);
+        this.tiposCita = nombresTipos;
+        nombresTipos.forEach((tipo) => this.colorDeTipo(tipo));
+
+        const fechaPendiente = this.fechaModalPendiente;
+        this.fechaModalPendiente = null;
+
+        if (fechaPendiente) {
+          this.abrirModalCrearCita(fechaPendiente);
+          return;
+        }
+
         this.cdr.markForCheck();
       },
       error: () => {
         this.tiposCita = [];
+        this.tiposCitaCatalogo = [];
+        this.mascotasCatalogo = [];
+        this.catalogosCrearCitaCargados = false;
+        this.cargandoCatalogosCrearCita = false;
+        this.fechaModalPendiente = null;
         this.cdr.markForCheck();
       },
     });

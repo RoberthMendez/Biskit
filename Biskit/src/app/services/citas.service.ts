@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CitaDto } from '../models/dtos/cita-dto';
+import { TipoCita } from '../models/Citas/tipo-cita';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +16,7 @@ export class CitasService {
   }
 
   getTiposCita() {
-    return this.http.get<string[]>('http://localhost:8080/citas/tipos');
+    return this.http.get<TipoCita[]>('http://localhost:8080/citas/tipos');
   }
 
   editarCita(id: number, citaDto: CitaDto) {

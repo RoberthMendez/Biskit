@@ -27,6 +27,8 @@ export class DeleteModalComponent implements OnChanges, OnDestroy, OnInit {
   @Input() confirmLabel = 'Eliminar';
   @Input() successMessage = '';
   @Input() successCloseDelayMs = 600;
+  @Input() busy = false;
+  @Input() portalToBody = true;
 
   @Output() close = new EventEmitter<void>();
   @Output() confirm = new EventEmitter<void>();
@@ -45,7 +47,9 @@ export class DeleteModalComponent implements OnChanges, OnDestroy, OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.moveHostToBody();
+    if (this.portalToBody) {
+      this.moveHostToBody();
+    }
 
     if (this.visible) {
       this.openModal();
@@ -74,11 +78,14 @@ export class DeleteModalComponent implements OnChanges, OnDestroy, OnInit {
   ngOnDestroy(): void {
     this.clearSuccessTimeout();
     this.clearCloseAnimationTimeout();
-    this.restoreHostPosition();
+
+    if (this.portalToBody) {
+      this.restoreHostPosition();
+    }
   }
 
   onCancel(): void {
-    if (this.showSuccess || this.isExiting) {
+    if (this.showSuccess || this.isExiting || this.busy) {
       return;
     }
 
@@ -86,11 +93,23 @@ export class DeleteModalComponent implements OnChanges, OnDestroy, OnInit {
   }
 
   onConfirm(): void {
-    if (this.showSuccess || this.isExiting) {
+    if (this.showSuccess || this.isExiting || this.busy) {
       return;
     }
 
     this.confirm.emit();
+  }
+
+  onBackdropClick(event: MouseEvent): void {
+    if (this.showSuccess || this.isExiting || this.busy) {
+      return;
+    }
+
+    if (event.target !== event.currentTarget) {
+      return;
+    }
+
+    this.close.emit();
   }
 
   get modalMessage(): string {

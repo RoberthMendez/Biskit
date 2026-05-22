@@ -8,18 +8,18 @@ export type DiaSemana =
   | 'Domingo';
 
 export class CitaDto {
-  id?: number;
+  id?: number | null;
   diaSemana: DiaSemana | string;
   hora: string;
   tipoCitaNombre: string;
   duracionMinutos: number;
   petId: number;
-  petNombre: string;
-  ownerNombre: string;
+  petNombre?: string;
+  ownerNombre?: string;
   vetId: number;
 
   constructor(
-    id?: number,
+    id: number | null = null,
     diaSemana: DiaSemana | string = '',
     hora: string = '',
     tipoCitaNombre: string = '',
