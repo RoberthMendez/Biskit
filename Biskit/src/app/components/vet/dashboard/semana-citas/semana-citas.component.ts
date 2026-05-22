@@ -31,7 +31,6 @@ import {
   AddCitaComponent,
   SlotCitaSeleccionado,
 } from '../../citas/add-cita/add-cita.component';
-import { DeleteModalComponent } from '../../../reusables/delete-modal/delete-modal.component';
 
 // ── Mapeo de días español → número JS (0=Dom, 1=Lun, …) ────────────────────
 const DIA_A_NUM: Record<string, number> = {
@@ -94,7 +93,7 @@ const COLOR_FALLBACK: ColorTipo = {
 @Component({
   selector: 'app-semana-citas',
   standalone: true,
-  imports: [CommonModule, AddCitaComponent, DeleteModalComponent],
+  imports: [CommonModule, AddCitaComponent],
   templateUrl: './semana-citas.component.html',
   styleUrls: ['./semana-citas.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -129,9 +128,8 @@ export class SemanaCitasComponent implements OnInit, OnDestroy {
   citaEliminarId: number | null = null;
   citaEliminarNombre = '';
   eliminandoCita = false;
-  eliminarCitaMensaje = '';
+  eliminarCitaError = '';
   eliminarCitaSuccess = '';
-  private recargarCitasAlCerrarEliminacion = false;
 
   calendarOptions: CalendarOptions = {
     plugins: [timeGridPlugin, dayGridPlugin, interactionPlugin],
@@ -582,10 +580,7 @@ export class SemanaCitasComponent implements OnInit, OnDestroy {
     this.citaEliminarId = citaId;
     this.citaEliminarNombre = mascotaNombre;
     this.eliminandoCita = false;
-    this.recargarCitasAlCerrarEliminacion = false;
-    this.eliminarCitaMensaje = mascotaNombre
-      ? `Estas seguro de que quieres cancelar la cita de ${mascotaNombre}? Esta accion no se puede deshacer.`
-      : 'Estas seguro de que quieres cancelar esta cita? Esta accion no se puede deshacer.';
+    this.eliminarCitaError = '';
     this.eliminarCitaSuccess = '';
     this.modalEliminarCitaAbierto = true;
     this.cdr.markForCheck();
@@ -600,14 +595,8 @@ export class SemanaCitasComponent implements OnInit, OnDestroy {
     this.modalEliminarCitaAbierto = false;
     this.citaEliminarId = null;
     this.citaEliminarNombre = '';
-    this.eliminarCitaMensaje = '';
+    this.eliminarCitaError = '';
     this.eliminarCitaSuccess = '';
-
-    if (this.recargarCitasAlCerrarEliminacion) {
-      this.recargarCitasAlCerrarEliminacion = false;
-      this.cargarCitas();
-    }
-
     this.cdr.markForCheck();
   }
 
@@ -617,22 +606,23 @@ export class SemanaCitasComponent implements OnInit, OnDestroy {
     }
 
     this.eliminandoCita = true;
-    this.eliminarCitaMensaje =
-      this.citaEliminarNombre && this.citaEliminarNombre.trim().length > 0
-        ? `Estas seguro de que quieres cancelar la cita de ${this.citaEliminarNombre}? Esta accion no se puede deshacer.`
-        : 'Estas seguro de que quieres cancelar esta cita? Esta accion no se puede deshacer.';
+    this.eliminarCitaError = '';
     this.eliminarCitaSuccess = '';
 
     this.citasService.eliminarCita(this.citaEliminarId).subscribe({
       next: () => {
         this.eliminandoCita = false;
-        this.recargarCitasAlCerrarEliminacion = true;
         this.eliminarCitaSuccess = 'Cita cancelada correctamente';
         this.cdr.markForCheck();
+
+        this.eliminarCitaTimeout = setTimeout(() => {
+          this.cerrarModalEliminarCita();
+          this.cargarCitas();
+        }, 600);
       },
       error: () => {
         this.eliminandoCita = false;
-        this.eliminarCitaMensaje = 'No fue posible cancelar la cita.';
+        this.eliminarCitaError = 'No fue posible cancelar la cita.';
         this.cdr.markForCheck();
       },
     });
