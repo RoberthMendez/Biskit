@@ -182,22 +182,6 @@
         ? Esta accion no se puede deshacer.
       </p>
 
-      @if (eliminarCitaError) {
-        <p
-          class="mt-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700"
-        >
-          {{ eliminarCitaError }}
-        </p>
-      }
-
-      @if (eliminarCitaSuccess) {
-        <p
-          class="mt-4 rounded-xl bg-green-50 px-4 py-3 text-sm font-medium text-green-700"
-        >
-          {{ eliminarCitaSuccess }}
-        </p>
-      }
-
       <div class="mt-6 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
         <button
           type="button"
@@ -222,6 +206,21 @@
           <span>{{ eliminandoCita ? "Cancelando..." : "Cancelar cita" }}</span>
         </button>
       </div>
+      @if (eliminarCitaError) {
+        <p
+          class="mt-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700"
+        >
+          {{ eliminarCitaError }}
+        </p>
+      }
+
+      @if (eliminarCitaSuccess) {
+        <p
+          class="mt-4 rounded-xl bg-green-50 px-4 py-3 text-sm font-medium text-green-700"
+        >
+          {{ eliminarCitaSuccess }}
+        </p>
+      }
     </section>
   </div>
 }
