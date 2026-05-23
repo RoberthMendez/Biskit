@@ -1,5 +1,5 @@
 <article
-  class="screen-enter-fade flex flex-col gap-0 overflow-hidden rounded-b-2xl shadow-[0_10px_30px_-6px_rgba(0,0,0,0.08)]"
+  class="screen-enter-fade relative flex flex-col gap-0 overflow-visible rounded-b-2xl shadow-[0_10px_30px_-6px_rgba(0,0,0,0.08)]"
 >
   <!-- ── Cabecera ─────────────────────────────────────────────────────────── -->
   <div
@@ -90,7 +90,7 @@
           <!-- Dropdown especie -->
           @if (dropdownOpen.especie) {
             <div
-              class="dropdown-panel custom-scroll absolute z-30 mt-1 max-h-60 w-full overflow-y-auto rounded-xl border border-gray-200 bg-white shadow-lg"
+              class="dropdown-panel custom-scroll absolute z-50 mt-1 max-h-60 w-full overflow-y-auto rounded-xl border border-gray-200 bg-white shadow-lg"
             >
               @for (especie of especiesFiltradas; track especie.id) {
                 <div
@@ -133,7 +133,7 @@
           <!-- Dropdown raza -->
           @if (dropdownOpen.raza) {
             <div
-              class="dropdown-panel custom-scroll absolute z-30 mt-1 max-h-60 w-full overflow-y-auto rounded-xl border border-gray-200 bg-white shadow-lg"
+              class="dropdown-panel custom-scroll absolute z-50 mt-1 max-h-60 w-full overflow-y-auto rounded-xl border border-gray-200 bg-white shadow-lg"
             >
               @for (raza of razasFiltradaPorBusqueda; track raza.id) {
                 <div
@@ -270,7 +270,7 @@
         <!-- Dropdown cliente -->
         @if (dropdownOpen.cliente) {
           <div
-            class="dropdown-panel custom-scroll absolute z-10 mt-1 max-h-60 w-full overflow-y-auto rounded-xl border border-gray-200 bg-white shadow-lg"
+            class="dropdown-panel custom-scroll absolute z-50 mt-1 max-h-60 w-full overflow-y-auto rounded-xl border border-gray-200 bg-white shadow-lg"
           >
             @for (cliente of clientesFiltrados; track cliente.id) {
               <div
@@ -316,7 +316,7 @@
         <!-- Dropdown enfermedad -->
         @if (dropdownOpen.enfermedad) {
           <div
-            class="dropdown-panel custom-scroll absolute z-30 mt-1 max-h-50 w-full overflow-y-auto rounded-xl border border-gray-200 bg-white shadow-lg"
+            class="dropdown-panel custom-scroll absolute z-50 mt-1 max-h-50 w-full overflow-y-auto rounded-xl border border-gray-200 bg-white shadow-lg"
           >
             @for (enfermedad of enfermedadesFiltradas; track enfermedad.id) {
               <div
@@ -384,6 +384,142 @@
           />
         </div>
       </div>
+
+      <!-- Cita asociada -->
+      <div
+        class="rounded-xl border border-gray-200 bg-gray-50 px-3 py-3 sm:px-4"
+      >
+        <label class="flex cursor-pointer items-center gap-3">
+          <input
+            [(ngModel)]="tieneCita"
+            name="tieneCita"
+            type="checkbox"
+            (ngModelChange)="onTieneCitaChange()"
+            class="h-4 w-4 cursor-pointer rounded border-gray-300 accent-[#2b5392]"
+          />
+          <span class="text-sm font-semibold text-[#4A4A4A] sm:text-base">
+            La mascota tenia cita?
+          </span>
+        </label>
+      </div>
+
+      @if (tieneCita) {
+        @if (isAdminView) {
+          <div class="relative" data-dropdown="vet">
+            <label
+              class="mb-2 block text-sm font-semibold text-[#4A4A4A] sm:text-base"
+            >
+              Veterinario
+            </label>
+            <div
+              class="rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 sm:px-4 sm:py-3"
+            >
+              <input
+                [(ngModel)]="vetSearch"
+                name="vetSearch"
+                type="text"
+                placeholder="Seleccione el veterinario..."
+                autocomplete="off"
+                (focus)="openDropdown('vet')"
+                (input)="onVetInputChange()"
+                class="w-full bg-transparent text-sm text-[#4A4A4A] placeholder-[#4A4A4A]/50 outline-none sm:text-base"
+              />
+            </div>
+
+            @if (dropdownOpen.vet) {
+              <div
+                class="dropdown-panel custom-scroll absolute z-50 mt-1 max-h-60 w-full overflow-y-auto rounded-xl border border-gray-200 bg-white shadow-lg"
+              >
+                @if (loadingVets) {
+                  <p class="px-4 py-3 text-sm text-gray-400">
+                    Cargando veterinarios...
+                  </p>
+                } @else {
+                  @for (vet of vetsFiltrados; track vet.id) {
+                    <div
+                      class="cursor-pointer border-b border-gray-100 px-4 py-3 hover:bg-blue-50"
+                      (click)="selectVet(vet)"
+                    >
+                      <p class="text-sm font-semibold text-gray-800">
+                        {{ vet.nombre }}
+                      </p>
+                      <p class="text-xs text-gray-500">
+                        Cedula: {{ vet.cedula }}
+                      </p>
+                    </div>
+                  }
+                  @if (vetsFiltrados.length === 0) {
+                    <p class="px-4 py-3 text-sm text-gray-400">
+                      Sin resultados
+                    </p>
+                  }
+                }
+              </div>
+            }
+          </div>
+        }
+
+        <div class="relative" data-dropdown="cita">
+          <label
+            class="mb-2 block text-sm font-semibold text-[#4A4A4A] sm:text-base"
+          >
+            Citas de Esta Semana Sin Mascota Asociada
+          </label>
+          <div
+            class="rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 sm:px-4 sm:py-3"
+            [class.opacity-60]="isAdminView && !selectedVetId"
+          >
+            <input
+              [(ngModel)]="citaSearch"
+              name="citaSearch"
+              type="text"
+              placeholder="Seleccione la cita..."
+              autocomplete="off"
+              [disabled]="isAdminView && !selectedVetId"
+              (focus)="openCitasDropdown()"
+              (input)="onCitaInputChange()"
+              class="w-full bg-transparent text-sm text-[#4A4A4A] placeholder-[#4A4A4A]/50 outline-none disabled:cursor-not-allowed sm:text-base"
+            />
+          </div>
+
+          @if (dropdownOpen.cita) {
+            <div
+              class="dropdown-panel custom-scroll absolute top-full left-0 z-50 mt-1 max-h-60 w-full overflow-y-auto rounded-xl border border-gray-200 bg-white shadow-lg"
+            >
+              @if (loadingCitas || loadingLoggedVet) {
+                <p class="px-4 py-3 text-sm text-gray-400">Cargando citas...</p>
+              } @else {
+                @for (cita of citasFiltradas; track cita.id) {
+                  <div
+                    class="cursor-pointer border-b border-gray-100 px-4 py-3 hover:bg-blue-50"
+                    (click)="selectCita(cita)"
+                  >
+                    <p class="text-sm font-semibold text-gray-800">
+                      {{ getCitaLabel(cita) }}
+                    </p>
+                  </div>
+                }
+                @if (citasFiltradas.length === 0) {
+                  <p class="px-4 py-3 text-sm text-gray-400">
+                    No hay citas para mostrar.
+                  </p>
+                }
+              }
+            </div>
+          }
+
+          @if (isAdminView && !selectedVetId) {
+            <p class="mt-2 text-xs font-medium text-[#8D8580]">
+              Selecciona un veterinario para consultar sus citas.
+            </p>
+          }
+          @if (citasError) {
+            <p class="mt-2 text-sm font-medium text-red-600">
+              {{ citasError }}
+            </p>
+          }
+        </div>
+      }
 
       <!-- Botón submit -->
       <button

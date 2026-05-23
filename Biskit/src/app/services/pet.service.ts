@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Pet } from '../models/Pets/pet';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { PetDTO } from '../models/dtos/pet-dto';
 import { Client } from '../models/Client/client';
@@ -13,7 +13,10 @@ export class PetService {
   constructor(private http: HttpClient) {}
 
   // ----- Crear Mascota (CREATE) -----
-  savePet(pet: Pet): Observable<Pet> {
+  savePet(pet: Pet, citaId: number): Observable<Pet> {
+    let params = new HttpParams();
+    if (citaId != 0) params = params.set('citaId', citaId.toString());
+
     if (pet.id) {
       return this.http.put<Pet>(
         `http://localhost:8080/pets/update/${pet.id}`,
@@ -21,7 +24,9 @@ export class PetService {
       );
     }
 
-    return this.http.post<Pet>('http://localhost:8080/pets/add', pet);
+    return this.http.post<Pet>('http://localhost:8080/pets/add', pet, {
+      params,
+    });
   }
 
   // ----- Mostrar Mascotas (READ) -----
@@ -73,4 +78,7 @@ export class PetService {
   existsById(id: number): Observable<void> {
     return this.http.get<void>(`http://localhost:8080/pets/${id}/exists`);
   }
+}
+function newHttpParams() {
+  throw new Error('Function not implemented.');
 }

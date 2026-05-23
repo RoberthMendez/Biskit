@@ -18,9 +18,18 @@ import { EspeciesService } from '../../../../../services/especies.service';
 import { RazasService } from '../../../../../services/razas.service';
 import { EnfermedadesService } from '../../../../../services/enfermedades.service';
 import { DatepickerComponent } from '../../../../reusables/date-picker/date-picker.component';
+import { Vet } from '../../../../../models/Vets/vet-cl';
+import { VetService } from '../../../../../services/vet.service';
+import { CitaDto } from '../../../../../models/dtos/cita-dto';
 
 // ─── Tipos de dropdown ─────────────────────────────────────────────────────────
-type DropdownKey = 'cliente' | 'especie' | 'raza' | 'enfermedad';
+type DropdownKey =
+  | 'cliente'
+  | 'especie'
+  | 'raza'
+  | 'enfermedad'
+  | 'vet'
+  | 'cita';
 
 @Component({
   selector: 'app-formulario',
@@ -34,6 +43,7 @@ export class FormularioComponent implements OnInit {
 
   @Input() petId: number | null = null;
   @Input() basePath = '';
+  @Input() isAdminView = false;
   // ── Formulario ───────────────────────────────────────────────────────────────
   formPet: Pet = new Pet();
   fechaNacimientoStr: string = '';
@@ -48,18 +58,32 @@ export class FormularioComponent implements OnInit {
   razas: Raza[] = []; // todas las razas
   razasFiltradas: Raza[] = []; // razas filtradas por especie seleccionada
   enfermedades: Enfermedad[] = [];
+  vets: Vet[] = [];
+  citasSemana: CitaDto[] = [];
 
   // ── Textos de búsqueda en los inputs visibles ────────────────────────────────
   clienteSearch: string = '';
   especieSearch: string = '';
   razaSearch: string = '';
   enfermedadSearch: string = '';
+  vetSearch: string = '';
+  citaSearch: string = '';
 
   // ── IDs seleccionados (los que se envían al backend) ─────────────────────────
   selectedClienteId: number | null = null;
   selectedEspecieId: number | null = null;
   selectedRazaId: number | null = null;
   selectedEnfermedadId: number | null = null;
+  selectedVetId: number | null = null;
+  selectedCitaId: number | null = null;
+
+  tieneCita: boolean = false;
+  loadingVets: boolean = false;
+  loadingLoggedVet: boolean = false;
+  loadingCitas: boolean = false;
+  citasError: string | null = null;
+  private loggedVetId: number | null = null;
+  private citasLoadedVetId: number | null = null;
 
   // ── Estado de dropdowns ──────────────────────────────────────────────────────
   dropdownOpen: Record<DropdownKey, boolean> = {
@@ -67,6 +91,8 @@ export class FormularioComponent implements OnInit {
     especie: false,
     raza: false,
     enfermedad: false,
+    vet: false,
+    cita: false,
   };
   showRazaModalEspecieDropdown: boolean = false;
 
@@ -99,11 +125,13 @@ export class FormularioComponent implements OnInit {
     private especiesService: EspeciesService,
     private razasService: RazasService,
     private enfermedadesService: EnfermedadesService,
+    private vetService: VetService,
     private router: Router,
   ) {}
 
   ngOnInit(): void {
     this.loadLists();
+    this.loadAppointmentPrerequisites();
 
     if (this.petId) {
       this.petService
@@ -143,6 +171,94 @@ export class FormularioComponent implements OnInit {
     });
   }
 
+  private loadAppointmentPrerequisites(): void {
+    if (this.isAdminView) {
+      this.loadVetsForAdmin();
+      return;
+    }
+
+    this.loadLoggedVet();
+  }
+
+  private loadVetsForAdmin(): void {
+    if (this.loadingVets || this.vets.length > 0) {
+      return;
+    }
+
+    this.loadingVets = true;
+    this.vetService.findAll().subscribe({
+      next: (vets) => {
+        this.vets = vets;
+        this.loadingVets = false;
+      },
+      error: () => {
+        this.loadingVets = false;
+        this.citasError = 'No fue posible cargar los veterinarios.';
+      },
+    });
+  }
+
+  private loadLoggedVet(): void {
+    if (this.loadingLoggedVet || this.loggedVetId) {
+      return;
+    }
+
+    this.loadingLoggedVet = true;
+    this.vetService.getDetails().subscribe({
+      next: (vet) => {
+        this.loggedVetId = vet.id ?? null;
+        this.loadingLoggedVet = false;
+
+        if (this.tieneCita && this.loggedVetId) {
+          this.loadCitasSemana(this.loggedVetId);
+        }
+      },
+      error: () => {
+        this.loadingLoggedVet = false;
+        if (this.tieneCita) {
+          this.citasError = 'No fue posible identificar el veterinario.';
+        }
+      },
+    });
+  }
+
+  private loadCitasSemana(vetId: number): void {
+    if (!vetId) {
+      this.citasError = this.isAdminView
+        ? 'Selecciona un veterinario antes de consultar las citas.'
+        : 'No fue posible identificar el veterinario.';
+      return;
+    }
+
+    const requestedVetId = vetId;
+    this.loadingCitas = true;
+    this.citasError = null;
+    this.citasSemana = [];
+    this.selectedCitaId = null;
+    this.citaSearch = '';
+    this.citasLoadedVetId = null;
+
+    this.vetService.getCitasSemanalesByVetIdSinMascota(vetId, 0).subscribe({
+      next: (citas) => {
+        if (this.resolveVetIdForCitas() !== requestedVetId) {
+          return;
+        }
+
+        this.citasSemana = citas;
+        this.loadingCitas = false;
+        this.citasLoadedVetId = vetId;
+      },
+      error: () => {
+        if (this.resolveVetIdForCitas() !== requestedVetId) {
+          return;
+        }
+
+        this.loadingCitas = false;
+        this.citasError = 'No fue posible cargar las citas de la semana.';
+      },
+    });
+  }
+
   // ─── Getters de filtrado en tiempo real ───────────────────────────────────────
   get clientesFiltrados(): Client[] {
     const q = this.clienteSearch.toLowerCase();
@@ -173,6 +289,22 @@ export class FormularioComponent implements OnInit {
   get enfermedadesFiltradas(): Enfermedad[] {
     const q = this.enfermedadSearch.toLowerCase();
     return this.enfermedades.filter((e) => e.nombre.toLowerCase().includes(q));
+  }
+
+  get vetsFiltrados(): Vet[] {
+    const q = this.vetSearch.toLowerCase();
+    return this.vets.filter(
+      (v) =>
+        (v.nombre ?? '').toLowerCase().includes(q) ||
+        (v.cedula ?? '').toLowerCase().includes(q),
+    );
+  }
+
+  get citasFiltradas(): CitaDto[] {
+    const q = this.citaSearch.toLowerCase();
+    return this.citasSemana.filter((cita) =>
+      this.getCitaLabel(cita).toLowerCase().includes(q),
+    );
   }
 
   // ─── Control de dropdowns ─────────────────────────────────────────────────────
@@ -292,11 +424,129 @@ export class FormularioComponent implements OnInit {
     this.dropdownOpen.enfermedad = false;
   }
 
+  onTieneCitaChange(): void {
+    this.citasError = null;
+    this.selectedCitaId = null;
+    this.citaSearch = '';
+    this.citasSemana = [];
+    this.dropdownOpen.cita = false;
+    this.citasLoadedVetId = null;
+
+    if (!this.tieneCita) {
+      this.selectedVetId = null;
+      this.vetSearch = '';
+      this.dropdownOpen.vet = false;
+      return;
+    }
+
+    if (this.isAdminView) {
+      this.loadVetsForAdmin();
+      return;
+    }
+
+    if (this.loggedVetId) {
+      this.loadCitasSemana(this.loggedVetId);
+      return;
+    }
+
+    this.loadLoggedVet();
+  }
+
+  selectVet(vet: Vet): void {
+    this.vetSearch = vet.nombre;
+    this.selectedVetId = vet.id ?? null;
+    this.dropdownOpen.vet = false;
+
+    this.selectedCitaId = null;
+    this.citaSearch = '';
+    this.citasSemana = [];
+    this.citasLoadedVetId = null;
+
+    if (this.selectedVetId) {
+      this.loadCitasSemana(this.selectedVetId);
+      return;
+    }
+
+    this.citasError = 'No fue posible seleccionar el veterinario.';
+  }
+
+  selectCita(cita: CitaDto): void {
+    if (!cita.id) {
+      this.citasError = 'No fue posible seleccionar la cita.';
+      return;
+    }
+
+    this.selectedCitaId = cita.id;
+    this.citaSearch = this.getCitaLabel(cita);
+    this.dropdownOpen.cita = false;
+    this.citasError = null;
+  }
+
+  onVetInputChange(): void {
+    const vetValido = this.vets.some(
+      (v) => v.id === this.selectedVetId && v.nombre === this.vetSearch,
+    );
+
+    if (vetValido) {
+      return;
+    }
+
+    this.selectedVetId = null;
+    this.selectedCitaId = null;
+    this.citaSearch = '';
+    this.citasSemana = [];
+    this.citasLoadedVetId = null;
+  }
+
+  onCitaInputChange(): void {
+    const citaValida = this.citasSemana.some(
+      (cita) =>
+        cita.id === this.selectedCitaId &&
+        this.getCitaLabel(cita) === this.citaSearch,
+    );
+
+    if (!citaValida) {
+      this.selectedCitaId = null;
+    }
+  }
+
+  openCitasDropdown(): void {
+    const vetId = this.resolveVetIdForCitas();
+
+    if (!vetId) {
+      if (!this.isAdminView) {
+        this.openDropdown('cita');
+        this.loadLoggedVet();
+        return;
+      }
+
+      this.citasError =
+        'Selecciona un veterinario antes de consultar las citas.';
+      return;
+    }
+
+    this.openDropdown('cita');
+
+    if (this.citasLoadedVetId !== vetId && !this.loadingCitas) {
+      this.loadCitasSemana(vetId);
+    }
+  }
+
   /** Filtra razas según la especie seleccionada */
   filterRazasByEspecie(especieId: number | null): void {
     this.razasFiltradas = especieId
       ? this.razas.filter((r) => r.especie?.id === especieId)
       : [...this.razas];
+  }
+
+  getCitaLabel(cita: CitaDto): string {
+    const tipo = cita.tipoCitaNombre ? ` - ${cita.tipoCitaNombre}` : '';
+
+    return `${cita.diaSemana} ${cita.hora}${tipo}`;
+  }
+
+  private resolveVetIdForCitas(): number | null {
+    return this.isAdminView ? this.selectedVetId : this.loggedVetId;
   }
 
   /** Limpia la especie y raza cuando el usuario borra el input de especie */
@@ -532,13 +782,25 @@ export class FormularioComponent implements OnInit {
       this.errorMessage = 'URL de foto requerida';
       return;
     }
+    if (this.tieneCita) {
+      if (this.isAdminView && (!this.selectedVetId || !this.existeVet())) {
+        this.errorMessage = 'Selecciona un veterinario de la lista';
+        return;
+      }
+
+      if (!this.selectedCitaId || !this.existeCita()) {
+        this.errorMessage = 'Selecciona una cita de la semana actual';
+        return;
+      }
+    }
 
     this.savingPet = true;
 
     this.formPet.fechaNacimiento = new Date(this.fechaNacimientoStr);
     this.syncPetRelationsFromSelections();
+    const citaId = this.tieneCita ? (this.selectedCitaId ?? 0) : 0;
 
-    this.petService.savePet(this.formPet).subscribe({
+    this.petService.savePet(this.formPet, citaId).subscribe({
       next: () => {
         this.savingPet = false;
         window.scrollTo({ top: 0, behavior: 'auto' });
@@ -584,6 +846,16 @@ export class FormularioComponent implements OnInit {
         e.id === this.selectedEnfermedadId &&
         e.nombre === this.enfermedadSearch,
     );
+  }
+
+  private existeVet(): boolean {
+    return this.vets.some(
+      (v) => v.id === this.selectedVetId && v.nombre === this.vetSearch,
+    );
+  }
+
+  private existeCita(): boolean {
+    return this.citasSemana.some((cita) => cita.id === this.selectedCitaId);
   }
 
   private syncPetSelectionsFromDto(): void {

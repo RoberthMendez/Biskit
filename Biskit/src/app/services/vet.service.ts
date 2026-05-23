@@ -75,6 +75,16 @@ export class VetService {
       { params: { numSemana: numSemana.toString() } },
     );
   }
+
+  getCitasSemanalesByVetIdSinMascota(
+    vetId: string | number,
+    numSemana: number,
+  ): Observable<CitaDto[]> {
+    return this.http.get<CitaDto[]>(
+      `http://localhost:8080/vets/${vetId}/citas-semanales-sin-mascota`,
+      { params: { numSemana: numSemana.toString() } },
+    );
+  }
   getDetails(): Observable<Vet> {
     return this.http.get<Vet>(`http://localhost:8080/vets/details`);
   }
