@@ -11,7 +11,7 @@
 
 .calendar-modal-active {
   filter: blur(1.2px);
-  opacity: 0.96;
+  opacity: .96;
 }
 
 .calendar-shell {
@@ -19,17 +19,17 @@
   overflow-y: hidden;
 }
 
-.calendar-shell > div {
-  min-width: 620px;
+.calendar-shell>.cal {
+  min-width:620px;
 }
 
 ::ng-deep .fc {
-  --fc-page-bg-color: #ffffff;
+  --fc-page-bg-color: #fff;
   --fc-border-color: #e5edf8;
-  --fc-neutral-bg-color: #ffffff;
+  --fc-neutral-bg-color: #fff;
   --fc-today-bg-color: transparent;
   --fc-list-event-hover-bg-color: #f7faff;
-  --fc-highlight-color: rgba(43, 83, 146, 0.08);
+  --fc-highlight-color: rgba(43, 83, 146, .08);
   --fc-event-border-color: transparent;
   --fc-event-text-color: #1f3557;
   position: relative;
@@ -43,13 +43,9 @@
 }
 
 ::ng-deep .fc .fc-col-header-cell {
-  background: #ffffff;
+  background: #fff;
   border-color: #e5edf8;
   padding: 8px 0;
-  box-shadow: inset 0.5px 0 0 #e5edf8;
-}
-
-::ng-deep .fc .fc-col-header-cell:not(:first-child) {
   box-shadow: inset 0.5px 0 0 #e5edf8;
 }
 
@@ -174,7 +170,7 @@
 }
 
 ::ng-deep .fc .fc-timegrid-slot:not(.fc-non-business) {
-  background-color: #ffffff !important;
+  background-color: #fff !important;
   background-image: none !important;
 }
 
@@ -189,6 +185,8 @@
 }
 
 ::ng-deep .fc-slot-disponible-harness {
+  bottom: auto !important;
+  height: 34px !important;
   min-height: 0 !important;
 }
 
@@ -222,7 +220,7 @@
 }
 
 ::ng-deep .fc .fc-view-harness {
-  overflow: auto;
+  overflow: hidden;
 }
 
 ::ng-deep .fc .fc-scroller {
@@ -261,6 +259,9 @@
   box-shadow: none;
   margin: 2px 0 3px !important;
   overflow: hidden;
+}
+
+::ng-deep .fc .fc-timegrid-event:not(.fc-event-dragging) {
   width: 100% !important;
 }
 
@@ -305,7 +306,7 @@
   background: rgba(255, 255, 255, 0.45);
   color: currentColor;
   cursor: pointer;
-  opacity: 0.62;
+  opacity: .62;
 }
 
 ::ng-deep .fc-ev-delete:hover {
@@ -326,7 +327,7 @@
   font-size: 10px;
   line-height: 1;
   min-width: 0;
-  opacity: 0.9;
+  opacity: .9;
 }
 
 ::ng-deep .fc-ev-meta span {
@@ -385,8 +386,8 @@
 }
 
 @media (max-width: 700px) {
-  .calendar-shell > div {
-    min-width: 560px;
+  .calendar-shell>.cal {
+    min-width:560px;
   }
 
   ::ng-deep .fc-ev {

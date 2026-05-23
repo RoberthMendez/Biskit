@@ -19,8 +19,10 @@ export class CitasService {
     return this.http.get<TipoCita[]>('http://localhost:8080/citas/tipos');
   }
 
-  editarCita(id: number, citaDto: CitaDto) {
-    return this.http.put(`http://localhost:8080/citas/update/${id}`, citaDto);
+  editarCita(id: number, citaDto: CitaDto, numSemana: number) {
+    return this.http.put(`http://localhost:8080/citas/update/${id}`, citaDto, {
+      params: { numSemana },
+    });
   }
 
   eliminarCita(id: number) {

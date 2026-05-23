@@ -1,7 +1,7 @@
 <div
   class="calendar-card rounded-2xl bg-white p-6 shadow-[0_1px_3px_rgba(0,0,0,0.06),0_1px_8px_rgba(0,0,0,0.04)]"
   [class.calendar-modal-active]="
-    modalCrearCitaAbierto || modalEliminarCitaAbierto
+    modalCrearCitaAbierto || modalEliminarCitaAbierto || modalEditarCitaAbierto
   "
 >
   <!-- ── Header con navegación ── -->
@@ -41,7 +41,7 @@
       <button
         class="flex h-8.5 w-8.5 items-center justify-center rounded-lg border border-[#c7d7f5] bg-white text-[#2b5392] shadow-[0_1px_2px_rgba(43,83,146,0.06)] transition-colors duration-150 enabled:cursor-pointer enabled:hover:bg-[#edf4ff] disabled:cursor-not-allowed disabled:opacity-40"
         (click)="semanaAnterior()"
-        [disabled]="cargando"
+        [disabled]="cargando || !!editandoCitaId"
         aria-label="Semana anterior"
       >
         <svg
@@ -59,14 +59,14 @@
       <button
         class="h-8.5 rounded-lg border-[1.5px] border-[#2b5392] bg-white px-3.5 text-[0.8rem] font-semibold text-[#2b5392] transition-all duration-150 enabled:cursor-pointer enabled:hover:bg-[#2b5392] enabled:hover:text-white disabled:cursor-not-allowed disabled:opacity-35"
         (click)="irAHoy()"
-        [disabled]="cargando || semanaOffset === 0"
+        [disabled]="cargando || !!editandoCitaId || semanaOffset === 0"
       >
         Hoy
       </button>
       <button
         class="flex h-8.5 w-8.5 items-center justify-center rounded-lg border border-[#c7d7f5] bg-white text-[#2b5392] shadow-[0_1px_2px_rgba(43,83,146,0.06)] transition-colors duration-150 enabled:cursor-pointer enabled:hover:bg-[#edf4ff] disabled:cursor-not-allowed disabled:opacity-40"
         (click)="semanaSiguiente()"
-        [disabled]="cargando"
+        [disabled]="cargando || !!editandoCitaId"
         aria-label="Semana siguiente"
       >
         <svg
@@ -120,6 +120,35 @@
       </div>
     }
 
+    @if (editandoCitaId) {
+      <div
+        class="mb-4 flex items-center justify-center gap-2.5 rounded-xl border border-[#d6e0ee] bg-[#f3f6fa] px-4 py-3 text-[0.82rem] font-medium text-[#4a6288]"
+      >
+        <div
+          class="h-4.5 w-4.5 animate-spin rounded-full border-2 border-[#d8e4f8] border-t-[#2b5392]"
+        ></div>
+        <span>Actualizando cita...</span>
+      </div>
+    }
+
+    @if (editarCitaError) {
+      <p
+        class="mb-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700"
+        aria-live="polite"
+      >
+        {{ editarCitaError }}
+      </p>
+    }
+
+    @if (editarCitaSuccess) {
+      <p
+        class="mb-4 rounded-xl bg-green-50 px-4 py-3 text-sm font-medium text-green-700"
+        aria-live="polite"
+      >
+        {{ editarCitaSuccess }}
+      </p>
+    }
+
     <!-- ── Leyenda de tipos ── -->
     <div
       class="flex flex-wrap gap-1.75 border-t border-[#e8edf5] py-5 justify-center"
@@ -136,8 +165,57 @@
     </div>
 
     <!-- ── FullCalendar ── -->
-    <div class="calendar-shell rounded-xl border border-[#dbe5f2] bg-white">
-      <div #calendarEl class="min-h-137.5"></div>
+    <div
+      class="calendar-shell relative rounded-xl border border-[#dbe5f2] bg-white"
+    >
+      @if (arrastrandoCita) {
+        <div
+          class="pointer-events-none absolute inset-y-0 left-0 z-20 flex w-20 items-center justify-center bg-linear-to-r from-[#edf4ff]/90 to-transparent transition-opacity"
+          [class.opacity-100]="dragNavDireccion === 'anterior'"
+          [class.opacity-45]="dragNavDireccion !== 'anterior'"
+        >
+          <div
+            class="flex h-12 w-12 items-center justify-center rounded-xl border border-[#c7d7f5] bg-white/95 text-[#2b5392] shadow-sm"
+            aria-hidden="true"
+          >
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+            >
+              <polyline points="15 18 9 12 15 6" />
+            </svg>
+          </div>
+        </div>
+
+        <div
+          class="pointer-events-none absolute inset-y-0 right-0 z-20 flex w-20 items-center justify-center bg-linear-to-l from-[#edf4ff]/90 to-transparent transition-opacity"
+          [class.opacity-100]="dragNavDireccion === 'siguiente'"
+          [class.opacity-45]="dragNavDireccion !== 'siguiente'"
+        >
+          <div
+            class="flex h-12 w-12 items-center justify-center rounded-xl border border-[#c7d7f5] bg-white/95 text-[#2b5392] shadow-sm"
+            aria-hidden="true"
+          >
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+            >
+              <polyline points="9 18 15 12 9 6" />
+            </svg>
+          </div>
+        </div>
+      }
+      <div #calendarEl class="cal min-h-137.5"></div>
     </div>
   </div>
 </div>
@@ -151,6 +229,204 @@
     (cerrar)="cerrarModalCrearCita()"
     (citaCreada)="onCitaCreada()"
   ></app-add-cita>
+}
+
+@if (modalEditarCitaAbierto && citaEditar && catalogosCrearCitaCargados) {
+  <div
+    class="fixed inset-0 z-2147483647 flex items-center justify-center px-4 py-6"
+    (click)="cerrarModalEditarCita()"
+  >
+    <section
+      class="screen-enter-fade w-full max-w-xl overflow-visible rounded-2xl bg-[#FBFAF8] shadow-[0_20px_60px_rgba(15,23,42,0.24)]"
+      (click)="$event.stopPropagation(); cerrarDropdownsEditarCita()"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="editar-cita-title"
+    >
+      <header
+        class="flex items-center justify-between gap-4 rounded-t-2xl bg-[#F6F7F8] px-5 py-4 sm:px-6"
+      >
+        <div class="flex min-w-0 items-center gap-4">
+          <img
+            src="/images/marca/icono.png"
+            alt="Biskit"
+            class="h-9 w-9 shrink-0"
+          />
+          <div class="min-w-0">
+            <h2
+              id="editar-cita-title"
+              class="truncate text-xl font-bold tracking-wide text-[#4A4A4A]"
+            >
+              Editar cita
+            </h2>
+            <p class="text-xs font-semibold text-[#8D8580]">
+              {{ citaEditar.diaSemana }} - {{ citaEditar.hora }}
+            </p>
+          </div>
+        </div>
+
+        <button
+          type="button"
+          class="flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-xl text-[#8D8580] transition hover:bg-white hover:text-[#4A4A4A] disabled:cursor-not-allowed disabled:opacity-50"
+          [disabled]="editandoCitaId !== null || !!guardarEditarCitaSuccess"
+          (click)="cerrarModalEditarCita()"
+          aria-label="Cerrar modal"
+        >
+          <svg
+            class="h-5 w-5"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M18 6 6 18" />
+            <path d="m6 6 12 12" />
+          </svg>
+        </button>
+      </header>
+
+      <form class="space-y-5 p-5 sm:p-6" (ngSubmit)="guardarEdicionCita()">
+        <div
+          class="relative"
+          data-editar-cita-dropdown="tipo"
+          (click)="$event.stopPropagation()"
+        >
+          <label
+            for="editarTipoCitaSearch"
+            class="mb-2 block text-sm font-semibold text-[#4A4A4A]"
+          >
+            Tipo de cita
+          </label>
+          <div class="rounded-xl border border-gray-200 bg-gray-50 px-4 py-3">
+            <input
+              id="editarTipoCitaSearch"
+              name="editarTipoCitaSearch"
+              type="text"
+              [(ngModel)]="editarTipoSearchText"
+              (focus)="abrirDropdownEditarCita('tipo')"
+              (input)="onEditarTipoInputChange()"
+              placeholder="Buscar tipo de cita..."
+              autocomplete="off"
+              [disabled]="editandoCitaId !== null || !!guardarEditarCitaSuccess"
+              class="w-full bg-transparent text-sm text-[#4A4A4A] placeholder-[#4A4A4A]/50 outline-none disabled:cursor-not-allowed disabled:opacity-60"
+            />
+          </div>
+
+          @if (editarDropdownOpen.tipo) {
+            <div
+              class="dropdown-panel custom-scroll absolute z-30 mt-1 max-h-60 w-full overflow-y-auto rounded-xl border border-gray-200 bg-white shadow-lg"
+            >
+              @for (tipo of tiposEditarFiltrados; track tipo.nombre) {
+                <button
+                  type="button"
+                  class="w-full cursor-pointer border-b border-gray-100 px-4 py-3 text-left hover:bg-blue-50"
+                  (click)="seleccionarTipoEditar(tipo)"
+                >
+                  <span class="block text-sm font-semibold text-gray-800">
+                    {{ tipo.nombre }}
+                  </span>
+                  <span class="text-xs text-gray-500">
+                    {{ tipo.duracionMinutos }} minutos
+                  </span>
+                </button>
+              } @empty {
+                <p class="px-4 py-3 text-sm text-gray-400">Sin resultados</p>
+              }
+            </div>
+          }
+
+          @if (tipoEditarSeleccionado) {
+            <p class="mt-2 text-xs font-medium text-[#8D8580]">
+              {{ tipoEditarSeleccionado.duracionMinutos }} minutos
+            </p>
+          }
+        </div>
+
+        <div
+          class="relative"
+          data-editar-cita-dropdown="mascota"
+          (click)="$event.stopPropagation()"
+        >
+          <label
+            for="editarMascotaSearch"
+            class="mb-2 block text-sm font-semibold text-[#4A4A4A]"
+          >
+            Mascota
+          </label>
+          <div class="rounded-xl border border-gray-200 bg-gray-50 px-4 py-3">
+            <input
+              id="editarMascotaSearch"
+              name="editarMascotaSearch"
+              type="text"
+              [(ngModel)]="editarMascotaSearchText"
+              (focus)="abrirDropdownEditarCita('mascota')"
+              (input)="onEditarMascotaInputChange()"
+              placeholder="Buscar mascota..."
+              autocomplete="off"
+              [disabled]="editandoCitaId !== null || !!guardarEditarCitaSuccess"
+              class="w-full bg-transparent text-sm text-[#4A4A4A] placeholder-[#4A4A4A]/50 outline-none disabled:cursor-not-allowed disabled:opacity-60"
+            />
+          </div>
+
+          @if (editarDropdownOpen.mascota) {
+            <div
+              class="dropdown-panel custom-scroll absolute z-20 mt-1 max-h-64 w-full overflow-y-auto rounded-xl border border-gray-200 bg-white shadow-lg"
+            >
+              @for (
+                mascota of mascotasEditarFiltradas;
+                track mascota.id ?? mascota.nombre
+              ) {
+                <button
+                  type="button"
+                  class="w-full cursor-pointer border-b border-gray-100 px-4 py-3 text-left hover:bg-blue-50"
+                  (click)="seleccionarMascotaEditar(mascota)"
+                >
+                  <span class="block text-sm font-semibold text-gray-800">
+                    {{ mascota.nombre }}
+                  </span>
+                  <span class="text-xs text-gray-500">
+                    {{ mascota.owner || "Sin dueno" }} -
+                    {{ mascota.especie || "Sin especie" }}
+                  </span>
+                </button>
+              } @empty {
+                <p class="px-4 py-3 text-sm text-gray-400">Sin resultados</p>
+              }
+            </div>
+          }
+        </div>
+
+        <div
+          class="flex flex-col-reverse gap-2 pt-2 sm:flex-row sm:justify-end"
+        >
+          <button
+            type="button"
+            class="cursor-pointer rounded-xl border border-gray-200 px-5 py-2.5 text-sm font-semibold text-[#4A4A4A] transition hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-50"
+            [disabled]="editandoCitaId !== null || !!guardarEditarCitaSuccess"
+            (click)="cerrarModalEditarCita()"
+          >
+            Cancelar
+          </button>
+          <button
+            type="submit"
+            class="flex cursor-pointer items-center justify-center gap-2 rounded-xl bg-[#2b5392] px-5 py-2.5 text-sm font-semibold text-[#FBFAF8] shadow-md transition hover:bg-[#1a3a6b] disabled:cursor-not-allowed disabled:opacity-60"
+            [disabled]="!puedeGuardarEditarCita"
+          >
+            @if (editandoCitaId !== null) {
+              <span
+                class="inline-block h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white"
+              ></span>
+            }
+            <span>{{
+              editandoCitaId !== null ? "Guardando..." : "Guardar cambios"
+            }}</span>
+          </button>
+        </div>
+      </form>
+    </section>
+  </div>
 }
 
 @if (modalEliminarCitaAbierto) {

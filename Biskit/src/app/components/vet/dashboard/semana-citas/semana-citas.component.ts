@@ -6,15 +6,18 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   ElementRef,
+  HostListener,
   ViewChild,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { Calendar } from '@fullcalendar/core';
 import { forkJoin } from 'rxjs';
 import {
   CalendarOptions,
   EventInput,
   BusinessHoursInput,
+  EventDropArg,
 } from '@fullcalendar/core';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import dayGridPlugin from '@fullcalendar/daygrid';
@@ -45,6 +48,7 @@ const DIA_A_NUM: Record<string, number> = {
 
 // ── Paleta de colores por tipo de cita ─────────────────────────────────────
 type ColorTipo = { bg: string; border: string; text: string };
+type EditarCitaDropdownKey = 'tipo' | 'mascota';
 
 const PALETA_TIPOS: ColorTipo[] = [
   { bg: '#e8f1ff', border: '#b9cff1', text: '#35537f' },
@@ -93,7 +97,7 @@ const COLOR_FALLBACK: ColorTipo = {
 @Component({
   selector: 'app-semana-citas',
   standalone: true,
-  imports: [CommonModule, AddCitaComponent],
+  imports: [CommonModule, FormsModule, AddCitaComponent],
   templateUrl: './semana-citas.component.html',
   styleUrls: ['./semana-citas.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -130,6 +134,25 @@ export class SemanaCitasComponent implements OnInit, OnDestroy {
   eliminandoCita = false;
   eliminarCitaError = '';
   eliminarCitaSuccess = '';
+  editandoCitaId: number | null = null;
+  editarCitaError = '';
+  editarCitaSuccess = '';
+  arrastrandoCita = false;
+  dragNavDireccion: 'anterior' | 'siguiente' | null = null;
+  modalEditarCitaAbierto = false;
+  citaEditar: CitaDto | null = null;
+  citaEditarId: number | null = null;
+  citaEditarFecha: Date | null = null;
+  editarTipoCitaNombre = '';
+  editarTipoSearchText = '';
+  editarPetId: number | null = null;
+  editarMascotaSearchText = '';
+  editarDropdownOpen: Record<EditarCitaDropdownKey, boolean> = {
+    tipo: false,
+    mascota: false,
+  };
+  guardarEditarCitaError = '';
+  guardarEditarCitaSuccess = '';
 
   calendarOptions: CalendarOptions = {
     plugins: [timeGridPlugin, dayGridPlugin, interactionPlugin],
@@ -144,10 +167,22 @@ export class SemanaCitasComponent implements OnInit, OnDestroy {
     expandRows: true,
     nowIndicator: true,
     firstDay: 1, // semana empieza el lunes
+    editable: true,
+    eventDurationEditable: false,
+    snapDuration: '00:15:00',
     businessHours: [],
     events: [],
     dateClick: (info) => this.onDateClick(info),
     eventClick: (info) => this.onEventClick(info),
+    eventDragStart: (info) => this.onEventDragStart(info),
+    eventDragStop: () => this.onEventDragStop(),
+    eventDrop: (info) => this.onEventDrop(info),
+    eventAllow: (dropInfo, draggedEvent) =>
+      this.esDropCitaPermitido(
+        dropInfo.start,
+        dropInfo.end,
+        draggedEvent?.id,
+      ),
     eventDidMount: (info) => this.ajustarTooltipEvento(info),
     eventContent: (arg) => this.renderEvento(arg),
     slotLabelFormat: { hour: 'numeric', minute: '2-digit', hour12: true },
@@ -159,6 +194,15 @@ export class SemanaCitasComponent implements OnInit, OnDestroy {
   private colorPorTipo = new Map<string, ColorTipo>();
   private fechaModalPendiente: Date | null = null;
   private eliminarCitaTimeout: ReturnType<typeof setTimeout> | null = null;
+  private editarCitaTimeout: ReturnType<typeof setTimeout> | null = null;
+  private editarCitaModalTimeout: ReturnType<typeof setTimeout> | null = null;
+  private dragNavTimeout: ReturnType<typeof setTimeout> | null = null;
+  private citasPorSemana = new Map<number, CitaDto[]>();
+  private semanasRenderizadas = new Set<number>();
+  private semanasCargandoParaDrag = new Set<number>();
+  private callbacksSemanaDrag = new Map<number, Array<() => void>>();
+  private onDocumentDragMove = (event: Event): void =>
+    this.onDragPointerMove(event as MouseEvent | TouchEvent);
 
   constructor(
     private vetService: VetService,
@@ -170,6 +214,9 @@ export class SemanaCitasComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.calendar?.destroy();
     this.clearEliminarCitaTimeout();
+    this.clearEditarCitaTimeout();
+    this.clearEditarCitaModalTimeout();
+    this.detenerArrastreCita();
   }
 
   ngOnInit(): void {
@@ -233,10 +280,16 @@ export class SemanaCitasComponent implements OnInit, OnDestroy {
     this.cargando = true;
     this.error = false;
 
+    if (!this.arrastrandoCita) {
+      this.citasPorSemana.clear();
+      this.semanasRenderizadas.clear();
+    }
+
     this.vetService
       .getCitasSemanalesByVetId(this.vetId, this.semanaOffset)
       .subscribe({
         next: (citas) => {
+          this.citasPorSemana.set(this.semanaOffset, citas);
           this.fechaInicioSemana = this.lunesDeSemana(this.semanaOffset);
           const eventosCitas = this.mapearCitas(citas);
           this.calendarOptions = {
@@ -245,6 +298,8 @@ export class SemanaCitasComponent implements OnInit, OnDestroy {
             events: [...this.mapearSlotsDisponibles(citas), ...eventosCitas],
           };
           this.sincronizarCalendar();
+          this.semanasRenderizadas.clear();
+          this.semanasRenderizadas.add(this.semanaOffset);
           this.cargando = false;
           this.cdr.markForCheck();
         },
@@ -256,9 +311,12 @@ export class SemanaCitasComponent implements OnInit, OnDestroy {
       });
   }
 
-  private mapearCitas(citas: CitaDto[]): EventInput[] {
+  private mapearCitas(
+    citas: CitaDto[],
+    inicioSemana: Date = this.fechaInicioSemana,
+  ): EventInput[] {
     return citas.map((c) => {
-      const fecha = this.fechaDeCita(c.diaSemana);
+      const fecha = this.fechaDeCita(c.diaSemana, inicioSemana);
       const inicio = this.a24h(c.hora);
       const fin = this.sumarMin(inicio, c.duracionMinutos);
       const color = this.colorDeTipo(c.tipoCitaNombre);
@@ -270,8 +328,12 @@ export class SemanaCitasComponent implements OnInit, OnDestroy {
         backgroundColor: color.bg,
         borderColor: color.border,
         textColor: color.text,
+        editable: true,
+        startEditable: true,
+        durationEditable: false,
         extendedProps: {
           citaId: c.id,
+          cita: { ...c },
           ownerNombre: c.ownerNombre ?? '',
           tipoCitaNombre: c.tipoCitaNombre,
           duracionMinutos: c.duracionMinutos,
@@ -338,7 +400,358 @@ export class SemanaCitasComponent implements OnInit, OnDestroy {
       return;
     }
 
-    console.log('Cita:', info.event.id, info.event.extendedProps);
+    this.abrirModalEditarCita(info);
+  }
+
+  private onEventDragStart(info: any): void {
+    if (info.event.extendedProps?.['esSlotDisponible']) {
+      return;
+    }
+
+    this.arrastrandoCita = true;
+    this.dragNavDireccion = null;
+    this.cdr.markForCheck();
+    this.escucharMovimientoArrastre();
+    this.prepararSemanaParaArrastre(this.semanaOffset - 1);
+    this.prepararSemanaParaArrastre(this.semanaOffset + 1);
+  }
+
+  private onEventDragStop(): void {
+    this.detenerArrastreCita();
+  }
+
+  private onEventDrop(info: EventDropArg): void {
+    if (info.event.extendedProps?.['esSlotDisponible']) {
+      info.revert();
+      return;
+    }
+
+    const citaOriginal = info.event.extendedProps?.['cita'] as
+      | CitaDto
+      | undefined;
+    const citaId = Number(
+      citaOriginal?.id ?? info.event.extendedProps?.['citaId'] ?? info.event.id,
+    );
+    const nuevaFecha = info.event.start;
+    const nuevaFechaFin = info.event.end;
+
+    if (
+      !citaOriginal ||
+      !Number.isFinite(citaId) ||
+      citaId <= 0 ||
+      !nuevaFecha ||
+      !this.esDropCitaPermitido(nuevaFecha, nuevaFechaFin, info.event.id)
+    ) {
+      info.revert();
+      this.mostrarErrorEditarCita('Ese horario no esta disponible.');
+      return;
+    }
+
+    const petId = this.resolverPetIdCita(citaOriginal);
+    const vetId = citaOriginal.vetId || this.vetId;
+
+    if (!petId) {
+      info.revert();
+      this.mostrarErrorEditarCita(
+        'No fue posible identificar la mascota de la cita.',
+      );
+      return;
+    }
+
+    if (!vetId) {
+      info.revert();
+      this.mostrarErrorEditarCita(
+        'No fue posible identificar el veterinario de la cita.',
+      );
+      return;
+    }
+
+    const citaEditada: CitaDto = {
+      ...citaOriginal,
+      id: citaId,
+      diaSemana: this.nombreDiaSemana(nuevaFecha),
+      hora: this.formatearHora12(nuevaFecha),
+      petId,
+      vetId,
+    };
+    const numSemana = this.numSemanaDeFecha(nuevaFecha);
+
+    info.event.setExtendedProp('hora', citaEditada.hora);
+    info.event.setExtendedProp('cita', citaEditada);
+
+    this.editandoCitaId = citaId;
+    this.editarCitaError = '';
+    this.editarCitaSuccess = '';
+    this.clearEditarCitaTimeout();
+    this.cdr.markForCheck();
+
+    this.citasService.editarCita(citaId, citaEditada, numSemana).subscribe({
+      next: () => {
+        this.editandoCitaId = null;
+        this.editarCitaSuccess = 'Cita actualizada correctamente';
+        this.cdr.markForCheck();
+        this.cargarCitas();
+        this.editarCitaTimeout = setTimeout(() => {
+          this.editarCitaSuccess = '';
+          this.cdr.markForCheck();
+        }, 2200);
+      },
+      error: () => {
+        info.revert();
+        info.event.setExtendedProp('hora', citaOriginal.hora);
+        info.event.setExtendedProp('cita', citaOriginal);
+        this.editandoCitaId = null;
+        this.mostrarErrorEditarCita('No fue posible actualizar la cita.');
+      },
+    });
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: Event): void {
+    const target = event.target as HTMLElement | null;
+
+    if (!target?.closest('[data-editar-cita-dropdown]')) {
+      this.cerrarDropdownsEditarCita();
+    }
+  }
+
+  private abrirModalEditarCita(info: any): void {
+    if (!this.catalogosCrearCitaCargados) {
+      this.cargarCatalogosCrearCita();
+      this.mostrarErrorEditarCita(
+        'Espera un momento mientras se cargan las mascotas y tipos de cita.',
+      );
+      return;
+    }
+
+    const citaOriginal = info.event.extendedProps?.['cita'] as
+      | CitaDto
+      | undefined;
+    const citaId = Number(
+      citaOriginal?.id ?? info.event.extendedProps?.['citaId'] ?? info.event.id,
+    );
+
+    if (!citaOriginal || !Number.isFinite(citaId) || citaId <= 0) {
+      this.mostrarErrorEditarCita('No fue posible identificar la cita.');
+      return;
+    }
+
+    const cita = { ...citaOriginal, id: citaId };
+    const tipo = this.buscarTipoCitaPorNombre(cita.tipoCitaNombre);
+    const petId = this.resolverPetIdCita(cita);
+    const mascota = petId
+      ? this.mascotasCatalogo.find((item) => item.id === petId)
+      : undefined;
+
+    this.clearEditarCitaModalTimeout();
+    this.modalEditarCitaAbierto = true;
+    this.citaEditar = cita;
+    this.citaEditarId = citaId;
+    this.citaEditarFecha = info.event.start ? new Date(info.event.start) : null;
+    this.editarTipoCitaNombre = tipo?.nombre ?? cita.tipoCitaNombre ?? '';
+    this.editarTipoSearchText = this.editarTipoCitaNombre;
+    this.editarPetId = petId;
+    this.editarMascotaSearchText = mascota?.nombre ?? cita.petNombre ?? '';
+    this.cerrarDropdownsEditarCita();
+    this.guardarEditarCitaError = petId
+      ? ''
+      : 'No fue posible identificar la mascota actual. Selecciona una mascota.';
+    this.guardarEditarCitaSuccess = '';
+    this.cdr.markForCheck();
+  }
+
+  cerrarModalEditarCita(): void {
+    if (this.editandoCitaId !== null || this.guardarEditarCitaSuccess) {
+      return;
+    }
+
+    this.limpiarFormularioEditarCita();
+    this.cdr.markForCheck();
+  }
+
+  get tiposEditarFiltrados(): TipoCita[] {
+    const q = this.norm(this.editarTipoSearchText);
+
+    if (!q) {
+      return this.tiposCitaCatalogo;
+    }
+
+    return this.tiposCitaCatalogo.filter((tipo) =>
+      this.norm(tipo.nombre).includes(q),
+    );
+  }
+
+  get mascotasEditarFiltradas(): PetDTO[] {
+    const q = this.norm(this.editarMascotaSearchText);
+
+    if (!q) {
+      return this.mascotasCatalogo;
+    }
+
+    return this.mascotasCatalogo.filter((mascota) =>
+      [mascota.nombre, mascota.owner, mascota.especie, mascota.raza].some(
+        (valor) => this.norm(valor ?? '').includes(q),
+      ),
+    );
+  }
+
+  abrirDropdownEditarCita(key: EditarCitaDropdownKey): void {
+    (Object.keys(this.editarDropdownOpen) as EditarCitaDropdownKey[]).forEach(
+      (dropdownKey) =>
+        (this.editarDropdownOpen[dropdownKey] = dropdownKey === key),
+    );
+  }
+
+  cerrarDropdownsEditarCita(): void {
+    (Object.keys(this.editarDropdownOpen) as EditarCitaDropdownKey[]).forEach(
+      (dropdownKey) => (this.editarDropdownOpen[dropdownKey] = false),
+    );
+  }
+
+  seleccionarTipoEditar(tipo: TipoCita): void {
+    this.editarTipoCitaNombre = tipo.nombre;
+    this.editarTipoSearchText = tipo.nombre;
+    this.editarDropdownOpen.tipo = false;
+    this.guardarEditarCitaError = '';
+  }
+
+  seleccionarMascotaEditar(mascota: PetDTO): void {
+    this.editarPetId = mascota.id ?? null;
+    this.editarMascotaSearchText = mascota.nombre;
+    this.editarDropdownOpen.mascota = false;
+    this.guardarEditarCitaError = '';
+  }
+
+  onEditarTipoInputChange(): void {
+    if (this.tipoEditarSeleccionado?.nombre !== this.editarTipoSearchText) {
+      this.editarTipoCitaNombre = '';
+    }
+  }
+
+  onEditarMascotaInputChange(): void {
+    if (
+      this.mascotaEditarSeleccionada?.nombre !== this.editarMascotaSearchText
+    ) {
+      this.editarPetId = null;
+    }
+  }
+
+  guardarEdicionCita(): void {
+    if (!this.puedeGuardarEditarCita || !this.citaEditar) {
+      return;
+    }
+
+    this.cerrarDropdownsEditarCita();
+
+    const tipo = this.tipoEditarSeleccionado;
+    const mascota = this.mascotaEditarSeleccionada;
+    const citaId = Number(this.citaEditarId ?? this.citaEditar.id);
+
+    if (!tipo) {
+      this.guardarEditarCitaError = 'Selecciona un tipo de cita valido.';
+      return;
+    }
+
+    if (!mascota?.id) {
+      this.guardarEditarCitaError = 'Selecciona una mascota valida.';
+      return;
+    }
+
+    if (!Number.isFinite(citaId) || citaId <= 0) {
+      this.guardarEditarCitaError = 'No fue posible identificar la cita.';
+      return;
+    }
+
+    const fechaInicio =
+      this.citaEditarFecha ?? this.fechaDesdeCita(this.citaEditar);
+    const fechaFin = fechaInicio
+      ? new Date(fechaInicio.getTime() + tipo.duracionMinutos * 60 * 1000)
+      : null;
+
+    if (
+      !fechaInicio ||
+      !fechaFin ||
+      !this.estaRangoDentroDelHorario(fechaInicio, fechaFin)
+    ) {
+      this.guardarEditarCitaError =
+        'La duracion del tipo de cita no cabe en este horario.';
+      return;
+    }
+
+    if (this.tieneCitaSolapadaEnRango(fechaInicio, citaId, fechaFin)) {
+      this.guardarEditarCitaError =
+        'La duracion del tipo de cita se cruza con otra cita.';
+      return;
+    }
+
+    const citaEditada: CitaDto = {
+      ...this.citaEditar,
+      id: citaId,
+      tipoCitaNombre: tipo.nombre,
+      duracionMinutos: tipo.duracionMinutos,
+      petId: mascota.id,
+      petNombre: mascota.nombre,
+      ownerNombre: mascota.owner ?? this.citaEditar.ownerNombre ?? '',
+      vetId: this.citaEditar.vetId || this.vetId,
+    };
+    const numSemana = this.numSemanaDeFecha(fechaInicio);
+
+    this.editandoCitaId = citaId;
+    this.guardarEditarCitaError = '';
+    this.guardarEditarCitaSuccess = '';
+    this.clearEditarCitaModalTimeout();
+    this.clearEditarCitaTimeout();
+    this.cdr.markForCheck();
+
+    this.citasService.editarCita(citaId, citaEditada, numSemana).subscribe({
+      next: () => {
+        this.editandoCitaId = null;
+        this.guardarEditarCitaSuccess = 'Cita actualizada correctamente';
+        this.editarCitaSuccess = 'Cita actualizada correctamente';
+        this.cdr.markForCheck();
+
+        this.editarCitaModalTimeout = setTimeout(() => {
+          this.limpiarFormularioEditarCita();
+          this.cargarCitas();
+          this.editarCitaTimeout = setTimeout(() => {
+            this.editarCitaSuccess = '';
+            this.cdr.markForCheck();
+          }, 2200);
+        }, 600);
+      },
+      error: (error) => {
+        this.editandoCitaId = null;
+        this.guardarEditarCitaSuccess = '';
+        this.guardarEditarCitaError = this.manejarErrorEditarCita(error);
+        this.cdr.markForCheck();
+      },
+    });
+  }
+
+  get tipoEditarSeleccionado(): TipoCita | undefined {
+    return this.buscarTipoCitaPorNombre(this.editarTipoCitaNombre);
+  }
+
+  get mascotaEditarSeleccionada(): PetDTO | undefined {
+    const petId = Number(this.editarPetId);
+
+    if (!Number.isFinite(petId) || petId <= 0) {
+      return undefined;
+    }
+
+    return this.mascotasCatalogo.find((mascota) => mascota.id === petId);
+  }
+
+  get puedeGuardarEditarCita(): boolean {
+    return Boolean(
+      this.modalEditarCitaAbierto &&
+        this.citaEditar &&
+        this.citaEditarId &&
+        this.tipoEditarSeleccionado &&
+        this.mascotaEditarSeleccionada?.id &&
+        this.editandoCitaId === null &&
+        !this.guardarEditarCitaSuccess,
+    );
   }
 
   private onDateClick(info: DateClickArg): void {
@@ -438,17 +851,23 @@ export class SemanaCitasComponent implements OnInit, OnDestroy {
     return d;
   }
 
-  private fechaDeCita(diaSemana: string): string {
+  private fechaDeCita(
+    diaSemana: string,
+    inicioSemana: Date = this.fechaInicioSemana,
+  ): string {
     const numDia = this.diaANum(diaSemana);
     const off = numDia === 0 ? 6 : numDia - 1; // lunes = offset 0
-    const d = new Date(this.fechaInicioSemana);
+    const d = new Date(inicioSemana);
     d.setDate(d.getDate() + off);
-    return d.toISOString().slice(0, 10);
+    return this.formatearFechaLocal(d);
   }
 
-  private fechaDeDiaNumero(numDia: number): string {
+  private fechaDeDiaNumero(
+    numDia: number,
+    inicioSemana: Date = this.fechaInicioSemana,
+  ): string {
     const off = numDia === 0 ? 6 : numDia - 1;
-    const d = new Date(this.fechaInicioSemana);
+    const d = new Date(inicioSemana);
     d.setDate(d.getDate() + off);
     return this.formatearFechaLocal(d);
   }
@@ -492,6 +911,329 @@ export class SemanaCitasComponent implements OnInit, OnDestroy {
     this.eliminarCitaTimeout = null;
   }
 
+  private clearEditarCitaTimeout(): void {
+    if (!this.editarCitaTimeout) {
+      return;
+    }
+
+    clearTimeout(this.editarCitaTimeout);
+    this.editarCitaTimeout = null;
+  }
+
+  private clearEditarCitaModalTimeout(): void {
+    if (!this.editarCitaModalTimeout) {
+      return;
+    }
+
+    clearTimeout(this.editarCitaModalTimeout);
+    this.editarCitaModalTimeout = null;
+  }
+
+  private mostrarErrorEditarCita(mensaje: string): void {
+    this.clearEditarCitaTimeout();
+    this.editarCitaError = mensaje;
+    this.editarCitaSuccess = '';
+    this.cdr.markForCheck();
+    this.editarCitaTimeout = setTimeout(() => {
+      this.editarCitaError = '';
+      this.cdr.markForCheck();
+    }, 2600);
+  }
+
+  private resolverPetIdCita(cita: CitaDto): number | null {
+    const petId = Number(cita.petId);
+
+    if (Number.isFinite(petId) && petId > 0) {
+      return petId;
+    }
+
+    const mascota = this.buscarMascotaDeCita(cita);
+    return mascota?.id ?? null;
+  }
+
+  private buscarMascotaDeCita(cita: CitaDto): PetDTO | undefined {
+    const nombreMascota = this.norm(cita.petNombre ?? '');
+
+    if (!nombreMascota) {
+      return undefined;
+    }
+
+    const candidatas = this.mascotasCatalogo.filter(
+      (mascota) => this.norm(mascota.nombre ?? '') === nombreMascota,
+    );
+
+    if (candidatas.length === 1) {
+      return candidatas[0];
+    }
+
+    const ownerNombre = this.norm(cita.ownerNombre ?? '');
+
+    if (!ownerNombre) {
+      return undefined;
+    }
+
+    const candidatasPorOwner = candidatas.filter(
+      (mascota) => this.norm(mascota.owner ?? '') === ownerNombre,
+    );
+
+    return candidatasPorOwner.length === 1 ? candidatasPorOwner[0] : undefined;
+  }
+
+  private buscarTipoCitaPorNombre(nombre: string): TipoCita | undefined {
+    const tipoNormalizado = this.norm(nombre ?? '');
+
+    if (!tipoNormalizado) {
+      return undefined;
+    }
+
+    return this.tiposCitaCatalogo.find(
+      (tipo) => this.norm(tipo.nombre) === tipoNormalizado,
+    );
+  }
+
+  private fechaDesdeCita(cita: CitaDto): Date | null {
+    const fecha = this.fechaDeCita(cita.diaSemana);
+    const hora = this.a24h(cita.hora);
+    const fechaCita = new Date(`${fecha}T${hora}`);
+
+    return Number.isNaN(fechaCita.getTime()) ? null : fechaCita;
+  }
+
+  private limpiarFormularioEditarCita(): void {
+    this.clearEditarCitaModalTimeout();
+    this.modalEditarCitaAbierto = false;
+    this.citaEditar = null;
+    this.citaEditarId = null;
+    this.citaEditarFecha = null;
+    this.editarTipoCitaNombre = '';
+    this.editarTipoSearchText = '';
+    this.editarPetId = null;
+    this.editarMascotaSearchText = '';
+    this.cerrarDropdownsEditarCita();
+    this.guardarEditarCitaError = '';
+    this.guardarEditarCitaSuccess = '';
+  }
+
+  private manejarErrorEditarCita(error: any): string {
+    const backendMessage = this.getBackendErrorMessage(error);
+
+    if (backendMessage) {
+      return backendMessage;
+    }
+
+    if (error?.status === 0) {
+      return 'No se pudo conectar con el servidor.';
+    }
+
+    if (error?.status === 409) {
+      return 'Ese horario ya no esta disponible.';
+    }
+
+    return 'No fue posible actualizar la cita.';
+  }
+
+  private getBackendErrorMessage(error: any): string {
+    const body = error?.error;
+
+    if (typeof body === 'string' && body.trim()) {
+      return body.trim();
+    }
+
+    const message =
+      body?.detalle ||
+      body?.detail ||
+      body?.message ||
+      body?.mensaje ||
+      body?.error;
+
+    return typeof message === 'string' ? message.trim() : '';
+  }
+
+  private escucharMovimientoArrastre(): void {
+    document.addEventListener('mousemove', this.onDocumentDragMove, true);
+    document.addEventListener('touchmove', this.onDocumentDragMove, true);
+  }
+
+  private detenerArrastreCita(): void {
+    document.removeEventListener('mousemove', this.onDocumentDragMove, true);
+    document.removeEventListener('touchmove', this.onDocumentDragMove, true);
+    this.clearDragNavTimeout();
+
+    if (!this.arrastrandoCita && !this.dragNavDireccion) {
+      return;
+    }
+
+    this.arrastrandoCita = false;
+    this.dragNavDireccion = null;
+    this.cdr.markForCheck();
+  }
+
+  private onDragPointerMove(event: MouseEvent | TouchEvent): void {
+    if (!this.arrastrandoCita || this.editandoCitaId !== null) {
+      return;
+    }
+
+    const punto = this.obtenerPuntoArrastre(event);
+    const shell = this.calendarContainer?.nativeElement.parentElement;
+    const rect = shell?.getBoundingClientRect();
+
+    if (!punto || !rect || punto.y < rect.top || punto.y > rect.bottom) {
+      this.cancelarNavegacionArrastre();
+      return;
+    }
+
+    const margen = Math.min(96, Math.max(64, rect.width * 0.14));
+
+    if (punto.x <= rect.left + margen) {
+      this.programarNavegacionArrastre('anterior');
+      return;
+    }
+
+    if (punto.x >= rect.right - margen) {
+      this.programarNavegacionArrastre('siguiente');
+      return;
+    }
+
+    this.cancelarNavegacionArrastre();
+  }
+
+  private obtenerPuntoArrastre(
+    event: MouseEvent | TouchEvent,
+  ): { x: number; y: number } | null {
+    if ('touches' in event) {
+      const touch = event.touches[0] ?? event.changedTouches[0];
+      return touch ? { x: touch.clientX, y: touch.clientY } : null;
+    }
+
+    return { x: event.clientX, y: event.clientY };
+  }
+
+  private programarNavegacionArrastre(
+    direccion: 'anterior' | 'siguiente',
+  ): void {
+    if (this.dragNavDireccion === direccion && this.dragNavTimeout) {
+      return;
+    }
+
+    this.clearDragNavTimeout();
+    this.dragNavDireccion = direccion;
+    this.cdr.markForCheck();
+
+    this.dragNavTimeout = setTimeout(() => {
+      this.dragNavTimeout = null;
+      this.navegarSemanaDuranteArrastre(direccion);
+    }, 520);
+  }
+
+  private cancelarNavegacionArrastre(): void {
+    if (!this.dragNavDireccion && !this.dragNavTimeout) {
+      return;
+    }
+
+    this.clearDragNavTimeout();
+    this.dragNavDireccion = null;
+    this.cdr.markForCheck();
+  }
+
+  private clearDragNavTimeout(): void {
+    if (!this.dragNavTimeout) {
+      return;
+    }
+
+    clearTimeout(this.dragNavTimeout);
+    this.dragNavTimeout = null;
+  }
+
+  private navegarSemanaDuranteArrastre(
+    direccion: 'anterior' | 'siguiente',
+  ): void {
+    if (!this.arrastrandoCita || !this.calendar) {
+      return;
+    }
+
+    const delta = direccion === 'siguiente' ? 1 : -1;
+    const semanaDestino = this.semanaOffset + delta;
+
+    this.prepararSemanaParaArrastre(semanaDestino, () => {
+      if (
+        !this.arrastrandoCita ||
+        !this.calendar ||
+        this.dragNavDireccion !== direccion
+      ) {
+        return;
+      }
+
+      this.semanaOffset = semanaDestino;
+      this.fechaInicioSemana = this.lunesDeSemana(semanaDestino);
+      this.calendarOptions = {
+        ...this.calendarOptions,
+        initialDate: this.fechaInicioSemana,
+      };
+      this.calendar.gotoDate(this.fechaInicioSemana);
+      this.dragNavDireccion = null;
+      this.cdr.markForCheck();
+      this.prepararSemanaParaArrastre(semanaDestino + delta);
+    });
+  }
+
+  private prepararSemanaParaArrastre(
+    semana: number,
+    alTerminar?: () => void,
+  ): void {
+    const citasCacheadas = this.citasPorSemana.get(semana);
+
+    if (citasCacheadas) {
+      this.agregarSemanaAlCalendar(semana, citasCacheadas);
+      alTerminar?.();
+      return;
+    }
+
+    if (this.semanasCargandoParaDrag.has(semana)) {
+      if (alTerminar) {
+        const callbacks = this.callbacksSemanaDrag.get(semana) ?? [];
+        callbacks.push(alTerminar);
+        this.callbacksSemanaDrag.set(semana, callbacks);
+      }
+      return;
+    }
+
+    if (!this.vetId) {
+      return;
+    }
+
+    this.semanasCargandoParaDrag.add(semana);
+    this.vetService.getCitasSemanalesByVetId(this.vetId, semana).subscribe({
+      next: (citas) => {
+        this.citasPorSemana.set(semana, citas);
+        this.agregarSemanaAlCalendar(semana, citas);
+        this.semanasCargandoParaDrag.delete(semana);
+        const callbacks = this.callbacksSemanaDrag.get(semana) ?? [];
+        this.callbacksSemanaDrag.delete(semana);
+        callbacks.forEach((callback) => callback());
+        alTerminar?.();
+      },
+      error: () => {
+        this.semanasCargandoParaDrag.delete(semana);
+        this.callbacksSemanaDrag.delete(semana);
+        this.dragNavDireccion = null;
+        this.cdr.markForCheck();
+      },
+    });
+  }
+
+  private agregarSemanaAlCalendar(semana: number, citas: CitaDto[]): void {
+    if (!this.calendar || this.semanasRenderizadas.has(semana)) {
+      return;
+    }
+
+    const inicioSemana = this.lunesDeSemana(semana);
+    this.calendar.addEventSource([
+      ...this.mapearSlotsDisponibles(citas, inicioSemana),
+      ...this.mapearCitas(citas, inicioSemana),
+    ]);
+    this.semanasRenderizadas.add(semana);
+  }
+
   private escapeHtml(texto: string): string {
     return texto
       .replace(/&/g, '&amp;')
@@ -502,12 +1244,29 @@ export class SemanaCitasComponent implements OnInit, OnDestroy {
   }
 
   private esSlotDisponible(fecha: Date): boolean {
-    return this.estaDentroDelHorario(fecha) && !this.tieneCitaSolapada(fecha);
+    return (
+      this.estaRangoDentroDelHorario(
+        fecha,
+        new Date(fecha.getTime() + 15 * 60 * 1000),
+      ) && !this.tieneCitaSolapadaEnRango(fecha, undefined)
+    );
   }
 
   private estaDentroDelHorario(fecha: Date): boolean {
-    const dia = fecha.getDay();
-    const minutos = fecha.getHours() * 60 + fecha.getMinutes();
+    return this.estaRangoDentroDelHorario(
+      fecha,
+      new Date(fecha.getTime() + 15 * 60 * 1000),
+    );
+  }
+
+  private estaRangoDentroDelHorario(inicio: Date, fin: Date): boolean {
+    const dia = inicio.getDay();
+    const minutosInicio = inicio.getHours() * 60 + inicio.getMinutes();
+    const minutosFin = fin.getHours() * 60 + fin.getMinutes();
+
+    if (inicio.toDateString() !== fin.toDateString()) {
+      return false;
+    }
 
     return this.horario.some((h) => {
       if (this.diaANum(h.diaSemana) !== dia) {
@@ -515,15 +1274,26 @@ export class SemanaCitasComponent implements OnInit, OnDestroy {
       }
 
       return (
-        minutos >= this.horaAMinutos(this.a24h(h.horaInicio)) &&
-        minutos < this.horaAMinutos(this.a24h(h.horaFin))
+        minutosInicio >= this.horaAMinutos(this.a24h(h.horaInicio)) &&
+        minutosFin <= this.horaAMinutos(this.a24h(h.horaFin))
       );
     });
   }
 
   private tieneCitaSolapada(fecha: Date): boolean {
-    const inicio = fecha.getTime();
-    const fin = inicio + 15 * 60 * 1000;
+    return this.tieneCitaSolapadaEnRango(fecha, undefined);
+  }
+
+  private tieneCitaSolapadaEnRango(
+    inicioFecha: Date,
+    citaIdIgnorada: string | number | undefined,
+    finFecha?: Date | null,
+  ): boolean {
+    const inicio = inicioFecha.getTime();
+    const fin =
+      finFecha?.getTime() ?? inicioFecha.getTime() + 15 * 60 * 1000;
+    const citaIgnorada =
+      citaIdIgnorada == null ? null : String(citaIdIgnorada);
 
     return (this.calendar?.getEvents() ?? []).some((evento) => {
       if (evento.extendedProps?.['esSlotDisponible']) {
@@ -534,8 +1304,36 @@ export class SemanaCitasComponent implements OnInit, OnDestroy {
         return false;
       }
 
+      const citaEvento = String(
+        evento.extendedProps?.['citaId'] ?? evento.id,
+      );
+      if (
+        citaIgnorada &&
+        (evento.id === citaIgnorada || citaEvento === citaIgnorada)
+      ) {
+        return false;
+      }
+
       return inicio < evento.end.getTime() && fin > evento.start.getTime();
     });
+  }
+
+  private esDropCitaPermitido(
+    inicio: Date | null,
+    fin: Date | null,
+    citaIdIgnorada: string | number | undefined,
+  ): boolean {
+    if (!inicio || this.editandoCitaId !== null) {
+      return false;
+    }
+
+    const finCalculado =
+      fin ?? new Date(inicio.getTime() + 15 * 60 * 1000);
+
+    return (
+      this.estaRangoDentroDelHorario(inicio, finCalculado) &&
+      !this.tieneCitaSolapadaEnRango(inicio, citaIdIgnorada, finCalculado)
+    );
   }
 
   private abrirModalCrearCita(fecha: Date | null | undefined): void {
@@ -678,9 +1476,12 @@ export class SemanaCitasComponent implements OnInit, OnDestroy {
     return lunes;
   }
 
-  private mapearSlotsDisponibles(citas: CitaDto[]): EventInput[] {
+  private mapearSlotsDisponibles(
+    citas: CitaDto[],
+    inicioSemana: Date = this.fechaInicioSemana,
+  ): EventInput[] {
     const ocupados = citas.map((c) => {
-      const fecha = this.fechaDeCita(c.diaSemana);
+      const fecha = this.fechaDeCita(c.diaSemana, inicioSemana);
       const inicio = this.horaAMinutos(this.a24h(c.hora));
 
       return {
@@ -694,7 +1495,7 @@ export class SemanaCitasComponent implements OnInit, OnDestroy {
 
     this.horario.forEach((diaHorario) => {
       const numDia = this.diaANum(diaHorario.diaSemana);
-      const fecha = this.fechaDeDiaNumero(numDia);
+      const fecha = this.fechaDeDiaNumero(numDia, inicioSemana);
       const inicioDia = this.horaAMinutos(this.a24h(diaHorario.horaInicio));
       const finDia = this.horaAMinutos(this.a24h(diaHorario.horaFin));
 
@@ -714,6 +1515,9 @@ export class SemanaCitasComponent implements OnInit, OnDestroy {
           end: `${fecha}T${this.minutosAHora(fin)}`,
           display: 'background',
           classNames: ['fc-slot-disponible'],
+          editable: false,
+          startEditable: false,
+          durationEditable: false,
           extendedProps: {
             esSlotDisponible: true,
           },
@@ -828,6 +1632,12 @@ export class SemanaCitasComponent implements OnInit, OnDestroy {
     if (this.calendarOptions.slotMaxTime) {
       this.calendar.setOption('slotMaxTime', this.calendarOptions.slotMaxTime);
     }
+
+    this.calendar.setOption('editable', this.calendarOptions.editable);
+    this.calendar.setOption(
+      'eventDurationEditable',
+      this.calendarOptions.eventDurationEditable,
+    );
 
     this.calendar.removeAllEvents();
     const events = this.calendarOptions.events;
