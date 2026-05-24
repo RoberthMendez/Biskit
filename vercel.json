@@ -1,7 +1,7 @@
 {
   "version": 2,
   "builds": [
-    { "src": "Biskit/package.json", "use": "@vercel/static-build", "config": { "distDir": "dist/biskit" } }
+    { "src": "Biskit/package.json", "use": "@vercel/static-build", "config": { "distDir": "dist/biskit/browser" } }
   ],
   "routes": [
     { "handle": "filesystem" },
