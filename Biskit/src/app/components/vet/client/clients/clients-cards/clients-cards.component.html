@@ -2,8 +2,9 @@
   @for (client of clients; track $index) {
     <app-client-card
       [client]="client"
+      [basePath]="basePath"
       (delete)="delete.emit($event)"
-      [routerLink]="['/vet/clients', client.id]"
+      [routerLink]="[basePath, 'clients', client.id]"
     >
     </app-client-card>
   }

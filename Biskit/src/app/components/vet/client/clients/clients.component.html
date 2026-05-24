@@ -49,6 +49,7 @@
     <!-- Cards -->
     <app-clients-cards
       [clients]="filteredClients"
+      [basePath]="basePath"
       (delete)="openDelete($event)"
     >
     </app-clients-cards>
