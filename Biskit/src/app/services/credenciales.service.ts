@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+﻿import { Injectable } from '@angular/core';
 import { Credenciales } from '../models/Credenciales/credenciales';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -11,34 +11,35 @@ import { LoginDto } from '../models/dtos/login-dto';
 export class CredencialesService {
   constructor(private http: HttpClient) {}
 
-  // ----- Autenticación de Usuario (LOGIN) -----
+  // ----- AutenticaciÃ³n de Usuario (LOGIN) -----
   authenticate(credenciales: Credenciales): Observable<LoginDto> {
     return this.http.post<LoginDto>(
-    'http://localhost:8080/login/nuevo',
+    'https://biskitserver.onrender.com/login/nuevo',
     credenciales
   );
 }
 
   addCredenciales(credenciales: Credenciales) {
-    return this.http.post('http://localhost:8080/register', credenciales);
+    return this.http.post('https://biskitserver.onrender.com/register', credenciales);
   }
 
-  // ----- Restablecimiento de Contraseña -----
+  // ----- Restablecimiento de ContraseÃ±a -----
   resetPassword(
     idUsuario: number,
     credenciales: Credenciales,
   ): Observable<void> {
     return this.http.put<void>(
-      `http://localhost:8080/login/${idUsuario}/reset-password`,
+      `https://biskitserver.onrender.com/login/${idUsuario}/reset-password`,
       credenciales,
     );
   }
 
-  // ----- Enviar Correo para Cambiar Contraseña -----
+  // ----- Enviar Correo para Cambiar ContraseÃ±a -----
   forgotPassword(correo: String): Observable<void> {
     return this.http.post<void>(
-      `http://localhost:8080/login/forgot-password`,
+      `https://biskitserver.onrender.com/login/forgot-password`,
       correo,
     );
   }
 }
+

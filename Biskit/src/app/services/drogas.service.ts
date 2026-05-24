@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+﻿import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { DrogaDto } from '../models/dtos/droga-dto';
@@ -18,7 +18,7 @@ export class DrogasService {
   // ----- Obtener todas las drogas (READ) -----
   findAll(): Observable<DrogaDto[]> {
     return this.http
-      .get<DrogaResponse[]>('http://localhost:8080/drogas')
+      .get<DrogaResponse[]>('https://biskitserver.onrender.com/drogas')
       .pipe(
         map((drogas) =>
           drogas.map(
@@ -29,3 +29,4 @@ export class DrogasService {
       );
   }
 }
+

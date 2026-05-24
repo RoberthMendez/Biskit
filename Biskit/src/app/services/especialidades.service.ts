@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+﻿import { Injectable } from '@angular/core';
 import { Especialidad } from '../models/Vets/Especialidad/especialidad';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -12,25 +12,26 @@ export class EspecialidadesService {
 
   especialidades: Especialidad[] = [
     new Especialidad(1, 'Medicina General'),
-    new Especialidad(2, 'Cirugía'),
-    new Especialidad(3, 'Dermatología'),
-    new Especialidad(4, 'Cardiología'),
-    new Especialidad(5, 'Neurología'),
-    new Especialidad(6, 'Oncología'),
-    new Especialidad(7, 'Oftalmología'),
-    new Especialidad(8, 'Odontología'),
+    new Especialidad(2, 'CirugÃ­a'),
+    new Especialidad(3, 'DermatologÃ­a'),
+    new Especialidad(4, 'CardiologÃ­a'),
+    new Especialidad(5, 'NeurologÃ­a'),
+    new Especialidad(6, 'OncologÃ­a'),
+    new Especialidad(7, 'OftalmologÃ­a'),
+    new Especialidad(8, 'OdontologÃ­a'),
     new Especialidad(9, 'Fisioterapia'),
     new Especialidad(10, 'Medicina interna'),
   ];
 
   
   findAll(): Observable<Especialidad[]> {
-    return this.http.get<Especialidad[]>('http://localhost:8080/especialidades');
+    return this.http.get<Especialidad[]>('https://biskitserver.onrender.com/especialidades');
   }
 
   addEspecialidad(especialidad: Especialidad): Observable<Especialidad> {
-    return this.http.post<Especialidad>('http://localhost:8080/especialidades/add', especialidad);
+    return this.http.post<Especialidad>('https://biskitserver.onrender.com/especialidades/add', especialidad);
   }
 
   
 }
+

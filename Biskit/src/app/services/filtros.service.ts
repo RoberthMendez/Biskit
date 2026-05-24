@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+﻿import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FiltrosPetsDto } from '../models/dtos/filtros-pets-dto';
 import { PetDTO } from '../models/dtos/pet-dto';
@@ -32,7 +32,7 @@ export class FiltrosService {
       params = params.set('misMascotas', filtro.misMascotas.toString());
     if (vetId != null) params = params.set('vetId', vetId.toString());
 
-    return this.http.get<PetDTO[]>(`http://localhost:8080/filtros/pets`, {
+    return this.http.get<PetDTO[]>(`https://biskitserver.onrender.com/filtros/pets`, {
       params,
     });
   }
@@ -51,8 +51,9 @@ export class FiltrosService {
 
     if (filtros.pet != null) params = params.set('pet', filtros.pet);
 
-    return this.http.get<Vet[]>(`http://localhost:8080/filtros/vets`, {
+    return this.http.get<Vet[]>(`https://biskitserver.onrender.com/filtros/vets`, {
       params,
     });
   }
 }
+
