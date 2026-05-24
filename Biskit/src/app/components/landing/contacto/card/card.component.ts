@@ -1,9 +1,6 @@
 import { Component, Input } from '@angular/core';
 
-type IconoContacto = 
-  | 'telefono'
-  | 'whatsapp'
-  | 'horarios';
+type IconoContacto = 'correo' | 'whatsapp' | 'horarios';
 
 @Component({
   selector: 'app-card',
@@ -11,14 +8,12 @@ type IconoContacto =
   templateUrl: './card.component.html',
 })
 export class CardComponent {
-
   @Input()
-  icono: IconoContacto = 'telefono';
+  icono: IconoContacto = 'correo';
 
   @Input()
   titulo: string = '';
 
   @Input()
   descripcion: string = '';
-
 }

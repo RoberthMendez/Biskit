@@ -1,4 +1,10 @@
-import { Component } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { AdminService } from '../../../services/admin.service';
 import { VetService } from '../../../services/vet.service';
 import { ClientService } from '../../../services/client.service';
@@ -7,26 +13,36 @@ import { Admin } from '../../../models/Admin/admin';
 import { Vet } from '../../../models/Vets/vet-cl';
 import { Client } from '../../../models/Client/client';
 import { DeleteModalComponent } from '../delete-modal/delete-modal.component';
+import { NavbarScrollCloseService } from '../../../services/navbar-scroll-close.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-header',
   imports: [RouterLink, RouterLinkActive, DeleteModalComponent],
   templateUrl: './header.component.html',
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit, OnDestroy {
+  @ViewChild('navToggle') navToggle?: ElementRef<HTMLInputElement>;
   nombreUsuario: string = '';
   idUsuario: number | null = null;
   rolUsuario: string | null = null;
   showLogoutModal = false;
+  private scrollCloseSubscription?: Subscription;
 
   constructor(
     private adminService: AdminService,
     private vetService: VetService,
     private clientService: ClientService,
     private router: Router,
+    private navbarScrollCloseService: NavbarScrollCloseService,
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
+    this.scrollCloseSubscription =
+      this.navbarScrollCloseService.scroll$.subscribe(() =>
+        this.closeMobileNav(),
+      );
+
     this.rolUsuario = this.normalizarRol(localStorage.getItem('authRole'));
     this.idUsuario = this.getIdFromCurrentUrl() ?? this.getStoredAuthId();
 
@@ -63,6 +79,16 @@ export class HeaderComponent {
         error: () => this.clearUserDetails(),
       });
     }
+  }
+
+  closeMobileNav(): void {
+    const toggle = this.navToggle?.nativeElement;
+
+    if (!toggle) {
+      return;
+    }
+
+    toggle.checked = false;
   }
 
   private setUserDetails(user: Admin | Vet | Client | null): void {
@@ -151,5 +177,9 @@ export class HeaderComponent {
     localStorage.removeItem('authId');
 
     this.router.navigate(['/']);
+  }
+
+  ngOnDestroy(): void {
+    this.scrollCloseSubscription?.unsubscribe();
   }
 }

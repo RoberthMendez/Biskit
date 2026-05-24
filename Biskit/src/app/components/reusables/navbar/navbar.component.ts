@@ -1,5 +1,14 @@
-import { Component, ElementRef, HostListener, Input, OnDestroy, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  Input,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { NavbarScrollCloseService } from '../../../services/navbar-scroll-close.service';
 
 export interface NavbarOption {
   label: string;
@@ -13,45 +22,35 @@ export interface NavbarOption {
   imports: [RouterLink],
   templateUrl: './navbar.component.html',
 })
-export class NavbarComponent implements OnDestroy {
+export class NavbarComponent implements OnInit, OnDestroy {
   @ViewChild('navToggle') navToggle?: ElementRef<HTMLInputElement>;
   @Input() options: NavbarOption[] = [];
   @Input() sticky = false;
   @Input() brandRoute: string | Array<string | number> = '/';
 
-  private ignoreScroll = false;
-  private ignoreScrollTimeoutId: ReturnType<typeof setTimeout> | null = null;
+  private scrollCloseSubscription?: Subscription;
 
-  onToggleChange(): void {
-    this.ignoreScroll = true;
+  constructor(private navbarScrollCloseService: NavbarScrollCloseService) {}
 
-    if (this.ignoreScrollTimeoutId) {
-      clearTimeout(this.ignoreScrollTimeoutId);
-    }
-
-    this.ignoreScrollTimeoutId = setTimeout(() => {
-      this.ignoreScroll = false;
-      this.ignoreScrollTimeoutId = null;
-    }, 400);
+  ngOnInit(): void {
+    this.scrollCloseSubscription =
+      this.navbarScrollCloseService.scroll$.subscribe(() =>
+        this.closeMobileNav(),
+      );
   }
 
-  @HostListener('window:scroll')
-  onWindowScroll(): void {
+  closeMobileNav(): void {
     const toggle = this.navToggle?.nativeElement;
 
     if (!toggle) {
       return;
     }
 
-    if (!this.ignoreScroll && toggle.checked) {
-      toggle.checked = false;
-    }
+    toggle.checked = false;
   }
 
   ngOnDestroy(): void {
-    if (this.ignoreScrollTimeoutId) {
-      clearTimeout(this.ignoreScrollTimeoutId);
-    }
+    this.scrollCloseSubscription?.unsubscribe();
   }
 
   isAnchorRoute(route: NavbarOption['route']): boolean {
@@ -61,5 +60,4 @@ export class NavbarComponent implements OnDestroy {
   isButton(option: NavbarOption): boolean {
     return option.variant === 'button';
   }
-
 }

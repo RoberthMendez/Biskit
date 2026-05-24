@@ -193,11 +193,11 @@ export class BotonFiltrosComponent implements OnInit, OnDestroy {
 
   private getEstadoLabel(estado?: boolean): string {
     if (estado === true) {
-      return 'Activas';
+      return 'Activos';
     }
 
     if (estado === false) {
-      return 'Inactivas';
+      return 'Inactivos';
     }
 
     return '';

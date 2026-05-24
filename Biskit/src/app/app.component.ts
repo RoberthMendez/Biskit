@@ -3,6 +3,7 @@ import { Router, RouterOutlet, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { FooterComponent } from './components/reusables/footer/footer.component';
 import { HeaderComponent } from './components/reusables/header/header.component';
+import { NavbarScrollCloseService } from './services/navbar-scroll-close.service';
 
 @Component({
   selector: 'app-root',
@@ -15,7 +16,10 @@ export class AppComponent {
   mostrarHeader = false;
   private scrollResetTimerIds: number[] = [];
 
-  constructor(router: Router) {
+  constructor(
+    router: Router,
+    private navbarScrollCloseService: NavbarScrollCloseService,
+  ) {
     router.events
       .pipe(
         filter(
@@ -64,14 +68,16 @@ export class AppComponent {
       });
   }
 
+  onAppShellScroll(): void {
+    this.navbarScrollCloseService.notifyScroll();
+  }
+
   private resetScrollAfterNavigation(ruta: string): void {
     if (ruta.includes('#')) {
       return;
     }
 
-    this.scrollResetTimerIds.forEach((timerId) =>
-      window.clearTimeout(timerId),
-    );
+    this.scrollResetTimerIds.forEach((timerId) => window.clearTimeout(timerId));
     this.scrollResetTimerIds = [];
 
     this.scrollAppToTop();

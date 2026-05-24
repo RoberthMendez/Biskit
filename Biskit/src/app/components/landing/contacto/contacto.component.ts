@@ -1,18 +1,13 @@
 import { Component } from '@angular/core';
-import { DireccionComponent } from "./direccion/direccion.component";
+import { DireccionComponent } from './direccion/direccion.component';
 import { CardComponent } from './card/card.component';
 
-type IconoContacto =
-  | 'telefono'
-  | 'whatsapp'
-  | 'horarios';
+type IconoContacto = 'correo' | 'whatsapp' | 'horarios';
 
-interface Contacto{
-
+interface Contacto {
   icono: IconoContacto;
   titulo: string;
   descripcion: string;
-
 }
 
 @Component({
@@ -21,23 +16,21 @@ interface Contacto{
   templateUrl: './contacto.component.html',
 })
 export class ContactoComponent {
-
   contactos: Contacto[] = [
     {
-      icono: 'telefono',
-      titulo: 'Teléfono',
-      descripcion: '+57 (319) 123-4567'
+      icono: 'correo',
+      titulo: 'Correo',
+      descripcion: 'veterinariabiskit@gmail.com',
     },
     {
       icono: 'whatsapp',
       titulo: 'WhatsApp',
-      descripcion: '+57 (319) 123-4567'
+      descripcion: '+57 (313) 896-4087',
     },
     {
       icono: 'horarios',
       titulo: 'Horarios',
-      descripcion: 'Lun-Dom: 24 horas'
-    }
-  ]
-
+      descripcion: 'Lun-Dom: 24 horas',
+    },
+  ];
 }
