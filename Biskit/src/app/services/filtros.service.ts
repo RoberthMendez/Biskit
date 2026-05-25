@@ -4,6 +4,7 @@ import { FiltrosPetsDto } from '../models/dtos/filtros-pets-dto';
 import { PetDTO } from '../models/dtos/pet-dto';
 import { FiltrosVetsDto } from '../models/dtos/filtros-vets-dto';
 import { Vet } from '../models/Vets/vet-cl';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -32,7 +33,7 @@ export class FiltrosService {
       params = params.set('misMascotas', filtro.misMascotas.toString());
     if (vetId != null) params = params.set('vetId', vetId.toString());
 
-    return this.http.get<PetDTO[]>(`https://biskitserver.onrender.com/filtros/pets`, {
+    return this.http.get<PetDTO[]>(`${environment.apiUrl}/filtros/pets`, {
       params,
     });
   }
@@ -51,9 +52,8 @@ export class FiltrosService {
 
     if (filtros.pet != null) params = params.set('pet', filtros.pet);
 
-    return this.http.get<Vet[]>(`https://biskitserver.onrender.com/filtros/vets`, {
+    return this.http.get<Vet[]>(`${environment.apiUrl}/filtros/vets`, {
       params,
     });
   }
 }
-

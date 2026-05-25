@@ -7,6 +7,7 @@ import { HorarioDia } from '../models/Citas/horario-dia';
 import { CitaDto } from '../models/dtos/cita-dto';
 import { ItemTratamientoDto } from '../models/dtos/item-tratamiento-dto';
 import { HorarioDiaDto } from '../models/dtos/horario-dia-dto';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -18,51 +19,51 @@ export class VetService {
   saveVet(vet: Vet): Observable<Vet> {
     if (vet.id)
       return this.http.put<Vet>(
-        `https://biskitserver.onrender.com/vets/update/${vet.id}`,
+        `${environment.apiUrl}/vets/update/${vet.id}`,
         vet,
       );
-    else return this.http.post<Vet>('https://biskitserver.onrender.com/vets/add', vet);
+    else return this.http.post<Vet>(`${environment.apiUrl}/vets/add`, vet);
   }
 
   // ----- Mostrar Todos los Veterinarios (READ) -----
   findAll(): Observable<Vet[]> {
-    return this.http.get<Vet[]>('https://biskitserver.onrender.com/vets');
+    return this.http.get<Vet[]>(`${environment.apiUrl}/vets`);
   }
 
   // ----- Mostrar Veterinario por ID (READ) -----
   findById(id: number): Observable<Vet> {
-    return this.http.get<Vet>(`https://biskitserver.onrender.com/vets/${id}`);
+    return this.http.get<Vet>(`${environment.apiUrl}/vets/${id}`);
   }
 
   // ----- Mostrar Tratamientos por ID de Vet (READ) -----
   findTratamientosByVet(vetId: number): Observable<ItemTratamientoDto[]> {
     return this.http.get<ItemTratamientoDto[]>(
-      `https://biskitserver.onrender.com/vets/${vetId}/tratamientos`,
+      `${environment.apiUrl}/vets/${vetId}/tratamientos`,
     );
   }
 
   // ----- Eliminar Veterinario (DELETE) -----
   deleteVet(id: number): Observable<void> {
-    return this.http.delete<void>(`https://biskitserver.onrender.com/vets/delete/${id}`);
+    return this.http.delete<void>(`${environment.apiUrl}/vets/delete/${id}`);
   }
 
   // ----- Numero de Tratamientos Realizados por un Veterinario -----
   countTratamientosByVet(vetId: number): Observable<number> {
     return this.http.get<number>(
-      `https://biskitserver.onrender.com/vets/${vetId}/tratamientos/count`,
+      `${environment.apiUrl}/vets/${vetId}/tratamientos/count`,
     );
   }
 
   //Comprobar si el id de vet existe
   existsById(id: number): Observable<void> {
-    return this.http.get<void>(`https://biskitserver.onrender.com/vets/${id}/exists`);
+    return this.http.get<void>(`${environment.apiUrl}/vets/${id}/exists`);
   }
 
   getHorarioSemanalByVetId(
     vetId: string | number,
   ): Observable<HorarioDiaDto[]> {
     return this.http.get<HorarioDiaDto[]>(
-      `https://biskitserver.onrender.com/vets/${vetId}/horario-semanal`,
+      `${environment.apiUrl}/vets/${vetId}/horario-semanal`,
     );
   }
 
@@ -71,7 +72,7 @@ export class VetService {
     numSemana: number,
   ): Observable<CitaDto[]> {
     return this.http.get<CitaDto[]>(
-      `https://biskitserver.onrender.com/vets/${vetId}/citas-semanales`,
+      `${environment.apiUrl}/vets/${vetId}/citas-semanales`,
       { params: { numSemana: numSemana.toString() } },
     );
   }
@@ -81,12 +82,11 @@ export class VetService {
     numSemana: number,
   ): Observable<CitaDto[]> {
     return this.http.get<CitaDto[]>(
-      `https://biskitserver.onrender.com/vets/${vetId}/citas-semanales-sin-mascota`,
+      `${environment.apiUrl}/vets/${vetId}/citas-semanales-sin-mascota`,
       { params: { numSemana: numSemana.toString() } },
     );
   }
   getDetails(): Observable<Vet> {
-    return this.http.get<Vet>(`https://biskitserver.onrender.com/vets/details`);
+    return this.http.get<Vet>(`${environment.apiUrl}/vets/details`);
   }
 }
-

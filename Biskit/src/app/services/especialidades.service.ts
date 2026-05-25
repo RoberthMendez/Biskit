@@ -2,12 +2,12 @@
 import { Especialidad } from '../models/Vets/Especialidad/especialidad';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class EspecialidadesService {
-
   constructor(private http: HttpClient) {}
 
   especialidades: Especialidad[] = [
@@ -23,15 +23,16 @@ export class EspecialidadesService {
     new Especialidad(10, 'Medicina interna'),
   ];
 
-  
   findAll(): Observable<Especialidad[]> {
-    return this.http.get<Especialidad[]>('https://biskitserver.onrender.com/especialidades');
+    return this.http.get<Especialidad[]>(
+      `${environment.apiUrl}/especialidades`,
+    );
   }
 
   addEspecialidad(especialidad: Especialidad): Observable<Especialidad> {
-    return this.http.post<Especialidad>('https://biskitserver.onrender.com/especialidades/add', especialidad);
+    return this.http.post<Especialidad>(
+      `${environment.apiUrl}/especialidades/add`,
+      especialidad,
+    );
   }
-
-  
 }
-

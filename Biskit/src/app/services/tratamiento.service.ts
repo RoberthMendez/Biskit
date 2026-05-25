@@ -4,6 +4,7 @@ import { Tratamiento } from '../models/Tratamiento/tratamiento';
 import { HttpClient } from '@angular/common/http';
 import { TratamientoDto } from '../models/dtos/tratamiento-dto';
 import { TratamientoDetalleDto } from '../models/dtos/tratamiento-detalle-dto';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -15,12 +16,12 @@ export class TratamientoService {
   saveTratamiento(tratamientoDto: TratamientoDto): Observable<Tratamiento> {
     if (tratamientoDto.id != null)
       return this.http.put<Tratamiento>(
-        `https://biskitserver.onrender.com/tratamientos/update/${tratamientoDto.id}`,
+        `${environment.apiUrl}/tratamientos/update/${tratamientoDto.id}`,
         tratamientoDto,
       );
     else
       return this.http.post<Tratamiento>(
-        'https://biskitserver.onrender.com/tratamientos/add',
+        `${environment.apiUrl}/tratamientos/add`,
         tratamientoDto,
       );
   }
@@ -28,15 +29,14 @@ export class TratamientoService {
   // ----- Mostrar Tratamiento por ID (READ) -----
   findById(id: number): Observable<TratamientoDetalleDto> {
     return this.http.get<TratamientoDetalleDto>(
-      `https://biskitserver.onrender.com/tratamientos/${id}`,
+      `${environment.apiUrl}/tratamientos/${id}`,
     );
   }
 
   // ----- Eliminar Tratamiento (DELETE) -----
   deleteTratamiento(id: number): Observable<void> {
     return this.http.delete<void>(
-      `https://biskitserver.onrender.com/tratamientos/delete/${id}`,
+      `${environment.apiUrl}/tratamientos/delete/${id}`,
     );
   }
 }
-
