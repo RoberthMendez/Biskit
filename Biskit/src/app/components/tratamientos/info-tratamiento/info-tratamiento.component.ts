@@ -49,6 +49,7 @@ export class InfoTratamientoComponent implements OnInit {
     const tratamientoIdParam =
       this.route.snapshot.paramMap.get('tratamientoId');
     const clientIdParam = this.route.snapshot.paramMap.get('clientId');
+    const vetIdParam = this.route.snapshot.paramMap.get('vetId');
 
     const petId = petIdParam !== null ? Number(petIdParam) : null;
     const tratamientoId =
@@ -58,6 +59,9 @@ export class InfoTratamientoComponent implements OnInit {
         ? tratamientoId
         : null;
     const clientId = clientIdParam !== null ? Number(clientIdParam) : null;
+    const vetId = vetIdParam !== null ? Number(vetIdParam) : null;
+    const hasPetContext = petId !== null && !Number.isNaN(petId);
+    const hasVetContext = vetId !== null && !Number.isNaN(vetId);
     const isAdminPage = routePath.startsWith('admin/');
 
     this.isClientView = routePath.startsWith('client/');
@@ -70,11 +74,13 @@ export class InfoTratamientoComponent implements OnInit {
 
     if (!this.isClientView) {
       this.basePath = `/${isAdminPage ? 'admin' : 'vet'}`;
-      const hasPetContext = petId !== null && !Number.isNaN(petId);
 
       if (hasPetContext) {
         this.backLink = `${this.basePath}/pets/${petId}`;
         this.backLabel = 'Detalle de Mascota';
+      } else if (isAdminPage && hasVetContext) {
+        this.backLink = `${this.basePath}/vets/${vetId}`;
+        this.backLabel = 'Detalle de Veterinario';
       } else {
         this.backLink = isAdminPage ? '/admin' : '/vet';
         this.backLabel = isAdminPage
@@ -82,12 +88,12 @@ export class InfoTratamientoComponent implements OnInit {
           : 'Panel Veterinario';
       }
 
-      if (
-        hasPetContext &&
-        tratamientoId !== null &&
-        !Number.isNaN(tratamientoId)
-      ) {
-        this.editLink = `${this.basePath}/pets/${petId}/tratamiento/update/${tratamientoId}`;
+      if (tratamientoId !== null && !Number.isNaN(tratamientoId)) {
+        if (hasPetContext) {
+          this.editLink = `${this.basePath}/pets/${petId}/tratamiento/update/${tratamientoId}`;
+        } else if (isAdminPage && hasVetContext) {
+          this.editLink = `${this.basePath}/vets/${vetId}/tratamiento/update/${tratamientoId}`;
+        }
       }
     }
 
