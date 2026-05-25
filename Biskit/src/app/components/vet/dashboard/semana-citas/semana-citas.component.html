@@ -1,5 +1,6 @@
 <div
   class="calendar-card rounded-2xl bg-white p-6 shadow-[0_1px_3px_rgba(0,0,0,0.06),0_1px_8px_rgba(0,0,0,0.04)]"
+  [class.calendar-mobile]="isMobileCalendar"
   [class.calendar-modal-active]="
     modalCrearCitaAbierto || modalEliminarCitaAbierto || modalEditarCitaAbierto
   "
@@ -59,7 +60,7 @@
       <button
         class="h-8.5 rounded-lg border-[1.5px] border-[#2b5392] bg-white px-3.5 text-[0.8rem] font-semibold text-[#2b5392] transition-all duration-150 enabled:cursor-pointer enabled:hover:bg-[#2b5392] enabled:hover:text-white disabled:cursor-not-allowed disabled:opacity-35"
         (click)="irAHoy()"
-        [disabled]="cargando || !!editandoCitaId || semanaOffset === 0"
+        [disabled]="cargando || !!editandoCitaId || esHoyVisible"
       >
         Hoy
       </button>
@@ -84,7 +85,37 @@
     </div>
   </div>
 
-  <div class="relative min-h-162.5">
+  @if (isMobileCalendar) {
+    <div
+      class="mb-4 flex gap-2 overflow-x-auto pb-2"
+      role="group"
+      aria-label="Dias de la semana"
+    >
+      @for (dia of diasSemanaMobile; track dia.index) {
+        <button
+          type="button"
+          class="flex min-w-16 flex-1 flex-col items-center justify-center rounded-xl border px-2 py-2 text-xs font-semibold transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-50"
+          [ngClass]="
+            dia.activo
+              ? 'border-[#2b5392] bg-[#edf3ff] text-[#2b5392]'
+              : 'border-[#dbe5f2] bg-white text-[#5c6b80]'
+          "
+          [disabled]="cargando || !!editandoCitaId"
+          [attr.aria-pressed]="dia.activo"
+          [attr.aria-current]="dia.esHoy ? 'date' : null"
+          [attr.aria-label]="'Ver citas de ' + dia.fechaCompleta"
+          (click)="seleccionarDiaMobile(dia.index)"
+        >
+          <span class="leading-none">{{ dia.etiqueta }}</span>
+          <span class="mt-1 text-[11px] leading-none opacity-80">
+            {{ dia.diaMes }}
+          </span>
+        </button>
+      }
+    </div>
+  }
+
+  <div class="calendar-body relative min-h-162.5">
     <!-- ── Loading ── -->
     @if (cargando) {
       <div

@@ -6,7 +6,7 @@
 <!-- Título -->
 <section
   id="pets-titulo"
-  class="mx-6 mt-4 mb-7 grid grid-cols-2 sm:mx-16 md:mx-24 lg:mx-36"
+  class="mx-6 mt-4 mb-7 grid grid-cols-1 gap-4 sm:mx-16 md:mx-24 md:grid-cols-2 lg:mx-36"
 >
   <!-- Mascotas Registradas -->
   <div class="text-[#4a4a4a]">
@@ -21,12 +21,14 @@
   </div>
 
   <!-- Acciones -->
-  <div class="flex items-center justify-end gap-3">
+  <div
+    class="flex flex-col items-stretch justify-end gap-3 md:flex-row md:items-center"
+  >
     @if (hayFiltrosActivos) {
       <button
         type="button"
         (click)="clearAllFilters()"
-        class="cursor-pointer flex items-center gap-2 rounded-lg border border-[#d4c5b9] bg-white px-3 py-2 text-[#6D6155] transition-colors duration-200 hover:bg-[#f5ede3]"
+        class="order-3 flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg border border-[#d4c5b9] bg-white px-3 py-2 text-[#6D6155] transition-colors duration-200 hover:bg-[#f5ede3] md:order-1 md:w-auto"
         aria-label="Limpiar filtros"
         title="Limpiar filtros"
       >
@@ -49,6 +51,7 @@
 
     <!-- Botón Filtro -->
     <app-boton-filtros
+      class="order-2 w-full md:order-2 md:w-auto"
       [tipo]="'pets'"
       [isAdminView]="isAdminView"
       [vetId]="vetId"
@@ -59,7 +62,7 @@
     <!-- Agregar Mascota -->
     <a
       [routerLink]="basePath + '/pets/add'"
-      class="flex items-center gap-2 rounded-lg border border-[#2B5392] bg-transparent px-3 py-2 text-[#2B5392] transition-colors duration-200 hover:bg-[#2B5392] hover:text-[#FBFAF8]"
+      class="order-1 flex w-full items-center justify-center gap-2 rounded-lg border border-[#2B5392] bg-transparent px-3 py-2 text-[#2B5392] transition-colors duration-200 hover:bg-[#2B5392] hover:text-[#FBFAF8] md:order-3 md:w-auto"
     >
       <svg
         class="h-6 w-auto"

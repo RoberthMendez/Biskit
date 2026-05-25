@@ -49,6 +49,25 @@ const DIA_A_NUM: Record<string, number> = {
 // ── Paleta de colores por tipo de cita ─────────────────────────────────────
 type ColorTipo = { bg: string; border: string; text: string };
 type EditarCitaDropdownKey = 'tipo' | 'mascota';
+type DiaMobile = {
+  index: number;
+  etiqueta: string;
+  diaMes: string;
+  fechaCompleta: string;
+  activo: boolean;
+  esHoy: boolean;
+};
+
+const MOBILE_CALENDAR_BREAKPOINT = 900;
+const DIAS_MOBILE = [
+  { etiqueta: 'Lun' },
+  { etiqueta: 'Mar' },
+  { etiqueta: 'Mie' },
+  { etiqueta: 'Jue' },
+  { etiqueta: 'Vie' },
+  { etiqueta: 'Sab' },
+  { etiqueta: 'Dom' },
+];
 
 const PALETA_TIPOS: ColorTipo[] = [
   { bg: '#e8f1ff', border: '#b9cff1', text: '#35537f' },
@@ -153,6 +172,8 @@ export class SemanaCitasComponent implements OnInit, OnDestroy {
   };
   guardarEditarCitaError = '';
   guardarEditarCitaSuccess = '';
+  isMobileCalendar = false;
+  diaSeleccionadoIndex = 0;
 
   calendarOptions: CalendarOptions = {
     plugins: [timeGridPlugin, dayGridPlugin, interactionPlugin],
@@ -220,6 +241,8 @@ export class SemanaCitasComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.diaSeleccionadoIndex = this.indiceDiaDeFecha(new Date());
+    this.aplicarVistaResponsiva();
     this.cargarCatalogosCrearCita();
 
     // 1. Carga el horario estático del veterinario
@@ -247,15 +270,71 @@ export class SemanaCitasComponent implements OnInit, OnDestroy {
     this.semanaOffset++;
     this.cargarCitas();
   }
+
   semanaAnterior(): void {
     this.semanaOffset--;
     this.cargarCitas();
   }
+
   irAHoy(): void {
+    const indiceHoy = this.indiceDiaDeFecha(new Date());
+
     if (this.semanaOffset !== 0) {
       this.semanaOffset = 0;
+      this.diaSeleccionadoIndex = indiceHoy;
       this.cargarCitas();
+      return;
     }
+
+    if (this.isMobileCalendar && this.diaSeleccionadoIndex !== indiceHoy) {
+      this.seleccionarDiaMobile(indiceHoy);
+    }
+  }
+
+  get diasSemanaMobile(): DiaMobile[] {
+    const hoy = this.formatearFechaLocal(new Date());
+
+    return DIAS_MOBILE.map((dia, index) => {
+      const fecha = this.fechaDeIndiceDia(index);
+
+      return {
+        index,
+        etiqueta: dia.etiqueta,
+        diaMes: fecha.toLocaleDateString('es-CO', {
+          day: 'numeric',
+          month: 'short',
+        }),
+        fechaCompleta: fecha.toLocaleDateString('es-CO', {
+          weekday: 'long',
+          day: 'numeric',
+          month: 'long',
+        }),
+        activo: index === this.diaSeleccionadoIndex,
+        esHoy: this.formatearFechaLocal(fecha) === hoy,
+      };
+    });
+  }
+
+  get esHoyVisible(): boolean {
+    return (
+      this.semanaOffset === 0 &&
+      (!this.isMobileCalendar ||
+        this.diaSeleccionadoIndex === this.indiceDiaDeFecha(new Date()))
+    );
+  }
+
+  seleccionarDiaMobile(index: number): void {
+    if (index < 0 || index > 6 || this.diaSeleccionadoIndex === index) {
+      return;
+    }
+
+    this.diaSeleccionadoIndex = index;
+    this.calendarOptions = {
+      ...this.calendarOptions,
+      initialDate: this.fechaVisibleCalendario(),
+    };
+    this.sincronizarCalendar();
+    this.cdr.markForCheck();
   }
 
   // ── Horario → businessHours de FullCalendar ────────────────────────────────
@@ -294,7 +373,7 @@ export class SemanaCitasComponent implements OnInit, OnDestroy {
           const eventosCitas = this.mapearCitas(citas);
           this.calendarOptions = {
             ...this.calendarOptions,
-            initialDate: this.fechaInicioSemana,
+            initialDate: this.fechaVisibleCalendario(),
             events: [...this.mapearSlotsDisponibles(citas), ...eventosCitas],
           };
           this.sincronizarCalendar();
@@ -513,6 +592,11 @@ export class SemanaCitasComponent implements OnInit, OnDestroy {
     if (!target?.closest('[data-editar-cita-dropdown]')) {
       this.cerrarDropdownsEditarCita();
     }
+  }
+
+  @HostListener('window:resize')
+  onWindowResize(): void {
+    this.aplicarVistaResponsiva();
   }
 
   private abrirModalEditarCita(info: any): void {
@@ -1167,9 +1251,9 @@ export class SemanaCitasComponent implements OnInit, OnDestroy {
       this.fechaInicioSemana = this.lunesDeSemana(semanaDestino);
       this.calendarOptions = {
         ...this.calendarOptions,
-        initialDate: this.fechaInicioSemana,
+        initialDate: this.fechaVisibleCalendario(),
       };
-      this.calendar.gotoDate(this.fechaInicioSemana);
+      this.calendar.gotoDate(this.fechaVisibleCalendario());
       this.dragNavDireccion = null;
       this.cdr.markForCheck();
       this.prepararSemanaParaArrastre(semanaDestino + delta);
@@ -1476,6 +1560,23 @@ export class SemanaCitasComponent implements OnInit, OnDestroy {
     return lunes;
   }
 
+  private fechaDeIndiceDia(index: number): Date {
+    const fecha = new Date(this.fechaInicioSemana);
+    fecha.setDate(this.fechaInicioSemana.getDate() + index);
+    return fecha;
+  }
+
+  private fechaVisibleCalendario(): Date {
+    return this.isMobileCalendar
+      ? this.fechaDeIndiceDia(this.diaSeleccionadoIndex)
+      : this.fechaInicioSemana;
+  }
+
+  private indiceDiaDeFecha(fecha: Date): number {
+    const dia = fecha.getDay();
+    return dia === 0 ? 6 : dia - 1;
+  }
+
   private mapearSlotsDisponibles(
     citas: CitaDto[],
     inicioSemana: Date = this.fechaInicioSemana,
@@ -1597,6 +1698,40 @@ export class SemanaCitasComponent implements OnInit, OnDestroy {
     return `${fmt(lun)} – ${fmt(dom)}, ${dom.getFullYear()}`;
   }
 
+  private aplicarVistaResponsiva(): void {
+    const esMobile = this.esViewportMobile();
+    const vista = esMobile ? 'timeGridDay' : 'timeGridWeek';
+    const eventMinHeight = esMobile ? 64 : 58;
+    const cambioVista =
+      this.isMobileCalendar !== esMobile ||
+      this.calendarOptions.initialView !== vista ||
+      this.calendarOptions.eventMinHeight !== eventMinHeight;
+
+    this.isMobileCalendar = esMobile;
+    this.calendarOptions = {
+      ...this.calendarOptions,
+      initialView: vista,
+      initialDate: this.fechaVisibleCalendario(),
+      eventMinHeight,
+    };
+
+    if (cambioVista) {
+      this.sincronizarCalendar();
+      this.calendar?.updateSize();
+      this.cdr.markForCheck();
+      return;
+    }
+
+    this.calendar?.updateSize();
+  }
+
+  private esViewportMobile(): boolean {
+    return (
+      typeof window !== 'undefined' &&
+      window.innerWidth <= MOBILE_CALENDAR_BREAKPOINT
+    );
+  }
+
   private inicializarCalendar(): void {
     if (this.calendar || !this.calendarContainer) {
       return;
@@ -1614,8 +1749,14 @@ export class SemanaCitasComponent implements OnInit, OnDestroy {
       return;
     }
 
-    if (this.calendarOptions.initialDate) {
-      this.calendar.gotoDate(this.calendarOptions.initialDate);
+    const vista = this.calendarOptions.initialView ?? 'timeGridWeek';
+    const fechaVisible =
+      this.calendarOptions.initialDate ?? this.fechaVisibleCalendario();
+
+    if (this.calendar.view.type !== vista) {
+      this.calendar.changeView(vista, fechaVisible);
+    } else if (fechaVisible) {
+      this.calendar.gotoDate(fechaVisible);
     }
 
     if (this.calendarOptions.businessHours) {
@@ -1637,6 +1778,10 @@ export class SemanaCitasComponent implements OnInit, OnDestroy {
     this.calendar.setOption(
       'eventDurationEditable',
       this.calendarOptions.eventDurationEditable,
+    );
+    this.calendar.setOption(
+      'eventMinHeight',
+      this.calendarOptions.eventMinHeight,
     );
 
     this.calendar.removeAllEvents();

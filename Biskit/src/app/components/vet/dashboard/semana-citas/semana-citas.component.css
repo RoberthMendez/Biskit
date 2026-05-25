@@ -11,7 +11,7 @@
 
 .calendar-modal-active {
   filter: blur(1.2px);
-  opacity: .96;
+  opacity: 0.96;
 }
 
 .calendar-shell {
@@ -19,8 +19,8 @@
   overflow-y: hidden;
 }
 
-.calendar-shell>.cal {
-  min-width:620px;
+.calendar-shell > .cal {
+  min-width: 620px;
 }
 
 ::ng-deep .fc {
@@ -29,7 +29,7 @@
   --fc-neutral-bg-color: #fff;
   --fc-today-bg-color: transparent;
   --fc-list-event-hover-bg-color: #f7faff;
-  --fc-highlight-color: rgba(43, 83, 146, .08);
+  --fc-highlight-color: rgba(43, 83, 146, 0.08);
   --fc-event-border-color: transparent;
   --fc-event-text-color: #1f3557;
   position: relative;
@@ -306,7 +306,7 @@
   background: rgba(255, 255, 255, 0.45);
   color: currentColor;
   cursor: pointer;
-  opacity: .62;
+  opacity: 0.62;
 }
 
 ::ng-deep .fc-ev-delete:hover {
@@ -327,7 +327,7 @@
   font-size: 10px;
   line-height: 1;
   min-width: 0;
-  opacity: .9;
+  opacity: 0.9;
 }
 
 ::ng-deep .fc-ev-meta span {
@@ -363,51 +363,53 @@
   text-overflow: ellipsis;
 }
 
-::ng-deep .fc-timegrid-event.fc-ev-tooltip-below .fc-ev::after {
-  top: calc(100% + 8px);
-  bottom: auto;
-  transform: translate(-50%, -4px);
-}
-
-::ng-deep .fc-timegrid-event:hover .fc-ev::after,
-::ng-deep .fc-timegrid-event:focus-within .fc-ev::after {
-  opacity: 1;
-  transform: translate(-50%, 0);
-}
-
-::ng-deep .fc-timegrid-event.fc-ev-tooltip-below:hover .fc-ev::after,
-::ng-deep .fc-timegrid-event.fc-ev-tooltip-below:focus-within .fc-ev::after {
-  transform: translate(-50%, 0);
-}
-
 ::ng-deep .fc .fc-timegrid-event .fc-event-main,
 ::ng-deep .fc .fc-timegrid-event .fc-event-main-frame {
   border-radius: 12px;
 }
 
-@media (max-width: 700px) {
-  .calendar-shell>.cal {
-    min-width:560px;
+@media (max-width: 900px) {
+  .calendar-card {
+    padding: 16px;
+    border-radius: 14px;
+    cursor: pointer;
+  }
+
+  .calendar-body {
+    min-height: 0;
+  }
+
+  .calendar-shell {
+    overflow-x: hidden;
+  }
+
+  .calendar-shell > .cal {
+    min-width: 100%;
   }
 
   ::ng-deep .fc-ev {
     gap: 2px;
-    padding: 7px 26px 7px 6px;
+    padding: 8px 30px 8px 8px;
   }
 
   ::ng-deep .fc-ev-meta {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 2px;
+    align-items: center;
+    flex-direction: row;
+    gap: 6px;
   }
 
   ::ng-deep .fc-ev-dueno {
-    display: none;
+    display: block;
   }
 }
 
 @media (max-width: 420px) {
-  ::ng-deep .fc-ev-dur {
-    display: none;
+  ::ng-deep .fc-ev {
+    padding-right: 28px;
+  }
+
+  ::ng-deep .fc-ev-delete {
+    height: 22px;
+    width: 22px;
   }
 }

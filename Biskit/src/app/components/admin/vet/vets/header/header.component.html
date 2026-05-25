@@ -1,6 +1,6 @@
 <!-- clients-header.component.html -->
 <section
-  class="mt-3 mb-5 grid grid-cols-1 gap-4 sm:mt-4 sm:mb-7 sm:grid-cols-2"
+  class="mt-3 mb-5 grid grid-cols-1 gap-4 sm:mt-4 sm:mb-7 md:grid-cols-2"
 >
   <div class="text-[#4a4a4a]">
     <h1
@@ -13,12 +13,14 @@
     </p>
   </div>
 
-  <div class="flex items-center justify-start gap-3 sm:justify-end">
+  <div
+    class="flex flex-col items-stretch gap-3 md:flex-row md:items-center md:justify-end"
+  >
     @if (hayFiltrosActivos) {
       <button
         type="button"
         (click)="limpiarFiltros.emit()"
-        class="cursor-pointer flex items-center gap-2 rounded-lg border border-[#d4c5b9] bg-white px-3 py-2 text-sm text-[#6D6155] transition-colors duration-200 hover:bg-[#f5ede3]"
+        class="order-3 flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg border border-[#d4c5b9] bg-white px-3 py-2 text-sm text-[#6D6155] transition-colors duration-200 hover:bg-[#f5ede3] md:order-1 md:w-auto"
         aria-label="Limpiar filtros"
         title="Limpiar filtros"
       >
@@ -41,6 +43,7 @@
 
     <!-- Botón Filtros -->
     <app-boton-filtros
+      class="order-2 w-full md:order-2 md:w-auto"
       [tipo]="'vets'"
       [isAdminView]="true"
       (filtrosAplicados)="onFiltrosAplicados($event)"
@@ -50,7 +53,7 @@
     <!-- Agregar Veterinario -->
     <a
       [routerLink]="['/admin', 'vets', 'add']"
-      class="flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg border border-[#2B5392] px-3 py-2 text-sm text-[#2B5392] transition-colors duration-200 hover:bg-[#2B5392] hover:text-white sm:w-auto sm:text-base"
+      class="order-1 flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg border border-[#2B5392] px-3 py-2 text-sm text-[#2B5392] transition-colors duration-200 hover:bg-[#2B5392] hover:text-white sm:text-base md:order-3 md:w-auto"
     >
       <svg
         class="h-5 w-auto sm:h-6"
