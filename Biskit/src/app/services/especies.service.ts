@@ -2,17 +2,15 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Especie } from '../models/Pets/especie';
+import { environment } from '../../environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class EspeciesService {
-
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   findAll(): Observable<Especie[]> {
-    return this.http.get<Especie[]>('https://biskitserver.onrender.com/especies');
+    return this.http.get<Especie[]>(`${environment.apiUrl}/especies`);
   }
-
 }
-

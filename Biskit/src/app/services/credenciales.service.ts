@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ResCredencialesDto } from '../models/dtos/res-credenciales-dto';
 import { LoginDto } from '../models/dtos/login-dto';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -14,13 +15,13 @@ export class CredencialesService {
   // ----- AutenticaciÃ³n de Usuario (LOGIN) -----
   authenticate(credenciales: Credenciales): Observable<LoginDto> {
     return this.http.post<LoginDto>(
-    'https://biskitserver.onrender.com/login/nuevo',
-    credenciales
-  );
-}
+      `${environment.apiUrl}/login/nuevo`,
+      credenciales,
+    );
+  }
 
   addCredenciales(credenciales: Credenciales) {
-    return this.http.post('https://biskitserver.onrender.com/register', credenciales);
+    return this.http.post(`${environment.apiUrl}/register`, credenciales);
   }
 
   // ----- Restablecimiento de ContraseÃ±a -----
@@ -29,7 +30,7 @@ export class CredencialesService {
     credenciales: Credenciales,
   ): Observable<void> {
     return this.http.put<void>(
-      `https://biskitserver.onrender.com/login/${idUsuario}/reset-password`,
+      `${environment.apiUrl}/login/${idUsuario}/reset-password`,
       credenciales,
     );
   }
@@ -37,9 +38,8 @@ export class CredencialesService {
   // ----- Enviar Correo para Cambiar ContraseÃ±a -----
   forgotPassword(correo: String): Observable<void> {
     return this.http.post<void>(
-      `https://biskitserver.onrender.com/login/forgot-password`,
+      `${environment.apiUrl}/login/forgot-password`,
       correo,
     );
   }
 }
-
