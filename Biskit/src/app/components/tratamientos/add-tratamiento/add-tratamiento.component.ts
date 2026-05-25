@@ -353,10 +353,35 @@ export class AddTratamientoComponent implements OnInit {
   private updateBackLink(): void {
     const navFrom =
       (window.history.state && (window.history.state.from as string)) || '';
+    const routeVetIdParam = this.route.snapshot.paramMap.get('vetId');
+    const routeTratamientoIdParam =
+      this.route.snapshot.queryParamMap.get('tratamientoId') ??
+      this.route.snapshot.paramMap.get('tratamientoId');
+
+    const routeVetId =
+      routeVetIdParam !== null && routeVetIdParam.trim() !== ''
+        ? Number(routeVetIdParam)
+        : null;
+    const routeTratamientoId =
+      routeTratamientoIdParam !== null && routeTratamientoIdParam.trim() !== ''
+        ? Number(routeTratamientoIdParam)
+        : null;
 
     if (navFrom === 'vet') {
       this.backLink = `${this.basePath}`;
       this.backLabel = 'Panel de Veterinario';
+      return;
+    }
+
+    if (
+      this.isAdminView &&
+      routeVetId != null &&
+      routeTratamientoId != null &&
+      !Number.isNaN(routeVetId) &&
+      !Number.isNaN(routeTratamientoId)
+    ) {
+      this.backLink = `${this.basePath}/vets/${routeVetId}/tratamiento/${routeTratamientoId}`;
+      this.backLabel = 'Detalle de Tratamiento';
       return;
     }
 
