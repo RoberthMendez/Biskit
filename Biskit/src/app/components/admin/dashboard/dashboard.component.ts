@@ -155,8 +155,4 @@ export class DashboardComponent {
   public descargarReporteUltimoMes() {
     this.adminService.descargarReporteExcel();
   }
-
-  public descargarReporteGeneral() {
-    this.adminService.descargarReporteExcel();
-  }
 }
