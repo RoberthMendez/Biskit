@@ -4,32 +4,24 @@
   <!-- Titulo -->
   <section
     *ngIf="adminLoaded"
-    class="text-[#4a4a4a] w-full flex flex-col items-center justify-center gap-2"
+    class="relative flex flex-col items-center gap-2 text-[#4a4a4a] w-full"
   >
     <h1
-      class="text-xl font-black tracking-wider text-[#4a4a4a] sm:text-3xl md:text-4xl"
+      class="text-center text-xl font-black tracking-wider text-[#4a4a4a] sm:text-3xl md:text-4xl"
     >
       Hola de nuevo {{ admin.nombre }}!
     </h1>
-    <p class="text-sm text-[#8d8580dd] font-medium text-center">
+
+    <p class="text-center text-sm font-medium text-[#8d8580dd]">
       Aquí puedes ver un resumen de las estadísticas de Biskit
     </p>
-    <!-- Botones -->
-    <div class="mt-4 flex flex-col sm:flex-row items-center gap-3">
-      <button
-        (click)="descargarReporteUltimoMes()"
-        class="w-full sm:w-auto cursor-pointer rounded-full bg-[#2b5392] px-6 py-3 text-sm font-semibold text-white shadow-md transition hover:bg-[#1a3a6b]"
-      >
-        Descargar Reporte del Mes
-      </button>
 
-      <button
-        (click)="descargarReporteGeneral()"
-        class="w-full sm:w-auto cursor-pointer rounded-full bg-white px-6 py-3 text-sm font-semibold text-[#2b5392] shadow-sm transition hover:bg-[#f3f6fb]"
-      >
-        Descargar Reporte General
-      </button>
-    </div>
+    <button
+      (click)="descargarReporteUltimoMes()"
+      class="cursor-pointer rounded-full bg-[#e8eef7] px-5 py-2.5 text-sm font-semibold text-[#2b5392] shadow-sm transition hover:bg-[#dbe7f6] sm:px-6 sm:py-3 lg:absolute lg:right-4 lg:top-1/2 lg:-translate-y-1/2"
+    >
+      Reporte del Mes
+    </button>
   </section>
   <!-- Ventas, Mascotas y Veterinarios -->
   <section
