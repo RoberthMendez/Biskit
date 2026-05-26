@@ -11,7 +11,9 @@ import { BackButtonComponent } from '../../reusables/back-button/back-button.com
 import { TratamientoDetalleDto } from '../../../models/dtos/tratamiento-detalle-dto';
 import { ChatModalComponent } from '../../reusables/chat/chat-modal/chat-modal.component';
 import { ChatPerson } from '../../../models/Chat/chat-person';
+import { ChatCrearDto } from '../../../models/dtos/chat-crear-dto';
 import { ChatService } from '../../../services/chat.service';
+import { Observable, catchError, of, switchMap } from 'rxjs';
 
 type ChatTarget = 'vet' | 'owner';
 
@@ -229,7 +231,29 @@ export class InfoTratamientoComponent implements OnInit {
 
   openChat(target: ChatTarget): void {
     this.selectedChatTarget = target;
-    this.showChatModal = true;
+
+    const clientId = this.owner?.id;
+    const vetId = this.veterinario?.id;
+
+    if (clientId == null || vetId == null) {
+      console.error('No fue posible resolver los participantes del chat.');
+      return;
+    }
+
+    this.resolveChatId(clientId, vetId).subscribe({
+      next: (chatId) => {
+        if (chatId <= 0) {
+          console.error('No fue posible crear un chat válido.');
+          return;
+        }
+
+        this.chatID = chatId;
+        this.showChatModal = true;
+      },
+      error: (error) => {
+        console.error('Error al preparar el chat:', error);
+      },
+    });
   }
 
   closeChat(): void {
@@ -367,5 +391,32 @@ export class InfoTratamientoComponent implements OnInit {
         console.error('Error al obtener chat ID de:', error);
       },
     });
+  }
+
+  private resolveChatId(clientId: number, vetId: number): Observable<number> {
+    const chatRequest = new ChatCrearDto(clientId, vetId);
+
+    return this.chatService.getChatID(clientId, vetId).pipe(
+      switchMap((chatId) => {
+        if (chatId > 0) {
+          return of(chatId);
+        }
+
+        return this.chatService.addChat(chatRequest);
+      }),
+      catchError((error) => {
+        console.warn(
+          'No fue posible obtener el chat, creando uno nuevo.',
+          error,
+        );
+
+        return this.chatService.addChat(chatRequest).pipe(
+          catchError((creationError) => {
+            console.error('Error al crear el chat:', creationError);
+            return of(0);
+          }),
+        );
+      }),
+    );
   }
 }

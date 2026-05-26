@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 import { ChatDto } from '../models/dtos/chat-dto';
+import { ChatCrearDto } from '../models/dtos/chat-crear-dto';
 import { MensajeDto } from '../models/dtos/mensaje-dto';
 
 @Injectable({
@@ -21,5 +22,9 @@ export class ChatService {
   }
   sendMessage(chatId: number, mensaje: MensajeDto) {
     return this.http.put(`${environment.apiUrl}/chat/send/${chatId}`, mensaje);
+  }
+
+  addChat(chat: ChatCrearDto): Observable<number> {
+    return this.http.post<number>(`${environment.apiUrl}/chat/add`, chat);
   }
 }
