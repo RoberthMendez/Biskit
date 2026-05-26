@@ -9,6 +9,11 @@ import { PetService } from '../../../services/pet.service';
 import { DeleteModalComponent } from '../../reusables/delete-modal/delete-modal.component';
 import { BackButtonComponent } from '../../reusables/back-button/back-button.component';
 import { TratamientoDetalleDto } from '../../../models/dtos/tratamiento-detalle-dto';
+import { ChatModalComponent } from '../../reusables/chat/chat-modal/chat-modal.component';
+import { ChatPerson } from '../../../models/Chat/chat-person';
+import { ChatService } from '../../../services/chat.service';
+
+type ChatTarget = 'vet' | 'owner';
 
 @Component({
   selector: 'app-info-tratamiento',
@@ -18,6 +23,7 @@ import { TratamientoDetalleDto } from '../../../models/dtos/tratamiento-detalle-
     RouterLink,
     DeleteModalComponent,
     BackButtonComponent,
+    ChatModalComponent,
   ],
   templateUrl: './info-tratamiento.component.html',
 })
@@ -27,20 +33,25 @@ export class InfoTratamientoComponent implements OnInit {
   pet: PetDTO | null = null;
   owner: Client | null = null;
   isClientView = false;
+  isVetView = false;
   basePath = '';
   backLink = '';
   backLabel = 'Volver';
   editLink = '';
   showDeleteModal = false;
+  showChatModal = false;
   deleteSuccessMessage = '';
   shouldNavigateAfterDelete = false;
   private routeTratamientoId: number | null = null;
+  private selectedChatTarget: ChatTarget | null = null;
+  chatID = 0;
 
   constructor(
     private route: ActivatedRoute,
     private tratamientoService: TratamientoService,
     private petService: PetService,
     private router: Router,
+    private chatService: ChatService,
   ) {}
 
   ngOnInit(): void {
@@ -65,6 +76,7 @@ export class InfoTratamientoComponent implements OnInit {
     const isAdminPage = routePath.startsWith('admin/');
 
     this.isClientView = routePath.startsWith('client/');
+    this.isVetView = routePath.startsWith('vet/');
 
     if (this.isClientView) {
       this.backLink = `/client/pet/${petId}`;
@@ -105,6 +117,13 @@ export class InfoTratamientoComponent implements OnInit {
           this.tratamiento = tratamiento;
           this.veterinario = tratamiento.vet;
           this.owner = tratamiento.client;
+
+          const resolvedClientId = this.owner?.id;
+          const resolvedVetId = this.veterinario?.id;
+
+          if (resolvedClientId != null && resolvedVetId != null) {
+            this.assignChatId(resolvedClientId, resolvedVetId);
+          }
 
           if (tratamiento.pet != null) {
             this.pet = tratamiento.pet;
@@ -168,6 +187,55 @@ export class InfoTratamientoComponent implements OnInit {
     }).format(parsedDate);
   }
 
+  get chatPerson(): ChatPerson | null {
+    if (this.selectedChatTarget === 'vet') {
+      return this.buildVetChatPerson();
+    }
+
+    if (this.selectedChatTarget === 'owner') {
+      return this.buildOwnerChatPerson();
+    }
+
+    return null;
+  }
+
+  get chatSubtitle(): string {
+    const chatPerson = this.chatPerson;
+
+    return chatPerson != null
+      ? `Conversacion con ${chatPerson.name}`
+      : 'Conversacion';
+  }
+
+  get chatPetSummary(): string {
+    const petDetails = [this.pet?.especie, this.pet?.raza].filter(Boolean);
+
+    return petDetails.length > 0
+      ? petDetails.join(' | ')
+      : 'Sin especie ni raza';
+  }
+
+  get currentChatSenderName(): string {
+    if (this.selectedChatTarget === 'vet') {
+      return this.owner?.nombre || 'Cliente';
+    }
+
+    if (this.selectedChatTarget === 'owner') {
+      return this.veterinario?.nombre || 'Veterinario';
+    }
+
+    return 'Biskit';
+  }
+
+  openChat(target: ChatTarget): void {
+    this.selectedChatTarget = target;
+    this.showChatModal = true;
+  }
+
+  closeChat(): void {
+    this.showChatModal = false;
+  }
+
   openDeleteModal(): void {
     this.deleteSuccessMessage = '';
     this.shouldNavigateAfterDelete = false;
@@ -207,6 +275,59 @@ export class InfoTratamientoComponent implements OnInit {
     });
   }
 
+  private buildVetChatPerson(): ChatPerson | null {
+    if (this.veterinario == null) {
+      return null;
+    }
+
+    return {
+      name: this.veterinario.nombre || 'Veterinario sin nombre',
+      role: this.veterinario.especialidad?.nombre
+        ? `Veterinario - ${this.veterinario.especialidad.nombre}`
+        : 'Veterinario asignado',
+      avatarUrl: this.veterinario.urlFoto || undefined,
+      statusLabel: this.veterinario.estado ? 'ACTIVO' : 'INACTIVO',
+      statusTone: this.veterinario.estado ? 'success' : 'neutral',
+      details: [
+        {
+          label: 'Correo',
+          value: this.veterinario.correo || 'No registrado',
+          icon: 'pi pi-envelope',
+        },
+        {
+          label: 'Especialidad',
+          value: this.veterinario.especialidad?.nombre || 'No registrada',
+          icon: 'pi pi-briefcase',
+        },
+      ],
+    };
+  }
+
+  private buildOwnerChatPerson(): ChatPerson | null {
+    if (this.owner == null) {
+      return null;
+    }
+
+    return {
+      name: this.owner.nombre || 'Propietario sin nombre',
+      role: this.pet?.nombre
+        ? `Propietario de ${this.pet.nombre}`
+        : 'Propietario',
+      details: [
+        {
+          label: 'Celular',
+          value: this.owner.celular || 'No registrado',
+          icon: 'pi pi-phone',
+        },
+        {
+          label: 'Correo',
+          value: this.owner.correo || 'No registrado',
+          icon: 'pi pi-envelope',
+        },
+      ],
+    };
+  }
+
   private resolveTratamientoId(
     tratamiento: TratamientoDetalleDto | null,
   ): number | null {
@@ -223,5 +344,28 @@ export class InfoTratamientoComponent implements OnInit {
       rawTratamiento?.idTratamiento ??
       this.routeTratamientoId
     );
+  }
+
+  private assignChatId(
+    clientId: number | null | undefined,
+    vetId: number | null | undefined,
+  ): void {
+    if (
+      clientId == null ||
+      vetId == null ||
+      Number.isNaN(clientId) ||
+      Number.isNaN(vetId)
+    ) {
+      return;
+    }
+
+    this.chatService.getChatID(clientId, vetId).subscribe({
+      next: (id) => {
+        this.chatID = id;
+      },
+      error: (error) => {
+        console.error('Error al obtener chat ID de:', error);
+      },
+    });
   }
 }

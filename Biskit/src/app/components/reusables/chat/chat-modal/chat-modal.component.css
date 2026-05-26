@@ -1,0 +1,76 @@
+:host {
+  display: contents;
+}
+
+.chat-modal-backdrop {
+  animation: chatModalBackdropIn 180ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  will-change: opacity;
+}
+
+.chat-modal-backdrop.is-closing {
+  animation: chatModalBackdropOut 140ms cubic-bezier(0.4, 0, 0.2, 1) both;
+  pointer-events: none;
+}
+
+.chat-modal-panel {
+  transform-origin: center;
+  animation: chatModalPanelIn 180ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  will-change: transform, opacity;
+}
+
+.chat-modal-panel.is-closing {
+  animation: chatModalPanelOut 140ms cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+@keyframes chatModalBackdropIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes chatModalBackdropOut {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes chatModalPanelIn {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 14px, 0) scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes chatModalPanelOut {
+  from {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: translate3d(0, 10px, 0) scale(0.98);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chat-modal-backdrop,
+  .chat-modal-backdrop.is-closing,
+  .chat-modal-panel,
+  .chat-modal-panel.is-closing {
+    animation: none !important;
+  }
+}

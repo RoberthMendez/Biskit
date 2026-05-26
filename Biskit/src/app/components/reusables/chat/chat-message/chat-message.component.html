@@ -1,0 +1,64 @@
+@if (message.direction === "system") {
+  <div class="flex justify-center">
+    <div
+      class="max-w-[92%] rounded-full bg-[#F1F5FB] px-4 py-2 text-center text-xs font-medium text-[#5E6A76]"
+    >
+      {{ message.text }}
+    </div>
+  </div>
+} @else {
+  <div
+    class="flex w-full gap-3"
+    [ngClass]="
+      message.direction === 'outgoing' ? 'justify-end' : 'justify-start'
+    "
+  >
+    @if (message.direction === "incoming") {
+      <div
+        class="flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full bg-blue-100 text-sm font-bold text-[#2B5392]"
+      >
+        @if (message.avatarUrl) {
+          <img
+            [src]="message.avatarUrl"
+            [alt]="'Foto de ' + message.senderName"
+            class="h-full w-full object-cover"
+          />
+        } @else {
+          {{ senderInitial }}
+        }
+      </div>
+    }
+
+    <div
+      class="max-w-[78%] rounded-2xl px-4 py-3 shadow-sm sm:max-w-[68%]"
+      [ngClass]="
+        message.direction === 'outgoing'
+          ? 'rounded-br-md bg-[#2B5392] text-white'
+          : 'rounded-bl-md border border-blue-100 bg-white text-[#2F3B4B]'
+      "
+    >
+      <div class="mb-1 flex items-center gap-3">
+        <span
+          class="truncate text-xs font-bold"
+          [ngClass]="
+            message.direction === 'outgoing' ? 'text-blue-50' : 'text-[#2B5392]'
+          "
+        >
+          {{ message.senderName }}
+        </span>
+        <span
+          class="shrink-0 text-[10px] font-medium"
+          [ngClass]="
+            message.direction === 'outgoing' ? 'text-blue-100' : 'text-gray-400'
+          "
+        >
+          {{ message.time }}
+        </span>
+      </div>
+
+      <p class="wrap-break-word text-sm leading-relaxed">
+        {{ message.text }}
+      </p>
+    </div>
+  </div>
+}

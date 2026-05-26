@@ -1,0 +1,64 @@
+@if (person; as currentPerson) {
+  <div class="flex flex-col gap-5">
+    <div class="flex flex-col items-center gap-3 text-center">
+      <div
+        class="flex h-24 w-24 items-center justify-center overflow-hidden rounded-2xl bg-blue-100 text-2xl font-bold text-[#2B5392] shadow-md"
+      >
+        @if (currentPerson.avatarUrl) {
+          <img
+            [src]="currentPerson.avatarUrl"
+            [alt]="'Foto de ' + currentPerson.name"
+            class="h-full w-full object-cover"
+          />
+        } @else {
+          {{ personInitial }}
+        }
+      </div>
+
+      <div class="min-w-0">
+        <h3 class="wrap-break-word text-xl font-bold text-gray-900">
+          {{ currentPerson.name }}
+        </h3>
+        <p class="text-sm font-medium text-[#6D6155]">
+          {{ currentPerson.role }}
+        </p>
+      </div>
+
+      @if (currentPerson.statusLabel) {
+        <span
+          class="rounded-full px-3 py-1 text-xs font-bold"
+          [ngClass]="
+            currentPerson.statusTone === 'success'
+              ? 'bg-[#E1F8EA] text-[#2BAB60]'
+              : 'bg-[#EDEDED] text-[#6B6B6B]'
+          "
+        >
+          {{ currentPerson.statusLabel }}
+        </span>
+      }
+    </div>
+
+    <div class="grid gap-3">
+      @for (detail of currentPerson.details; track detail.label) {
+        <div class="rounded-2xl bg-[#F5F4F3] px-4 py-3">
+          <div class="flex items-center gap-3">
+            <i
+              class="text-sm text-[#2B5392]"
+              [ngClass]="detail.icon || 'pi pi-id-card'"
+            ></i>
+            <div class="min-w-0">
+              <p
+                class="text-[10px] font-bold uppercase tracking-[0.18em] text-[#8D8580]"
+              >
+                {{ detail.label }}
+              </p>
+              <p class="wrap-break-word text-sm font-semibold text-[#2F3B4B]">
+                {{ detail.value }}
+              </p>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+}
