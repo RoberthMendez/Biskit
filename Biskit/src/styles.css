@@ -77,15 +77,67 @@ a {
   text-decoration: none;
 }
 
-.no-number-spinners {
+.no-number-spinners,
+input[type="number"] {
   -moz-appearance: textfield;
   appearance: textfield;
 }
 
 .no-number-spinners::-webkit-outer-spin-button,
-.no-number-spinners::-webkit-inner-spin-button {
+.no-number-spinners::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+
+.biskit-clearable-control {
+  padding-right: 2.5rem !important;
+}
+
+.biskit-clearable-control-with-action {
+  padding-right: 5rem !important;
+}
+
+.biskit-clearable-control-select,
+.biskit-clearable-control-date {
+  padding-right: 3.75rem !important;
+}
+
+.biskit-clear-control-button {
+  position: absolute;
+  z-index: 1;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  padding: 0;
+  border: 0;
+  border-radius: 9999px;
+  background: transparent;
+  color: #8d8580;
+  transform: translateY(-1px);
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.biskit-clear-control-button:hover,
+.biskit-clear-control-button:focus-visible {
+  background-color: #f5ede3;
+  color: #4a4a4a;
+  outline: none;
+}
+
+.biskit-clear-control-button svg {
+  width: 1rem;
+  height: 1rem;
+  pointer-events: none;
+}
+
+button[aria-label^="Limpiar"].absolute.rounded-full {
+  margin-top: -1px;
 }
 
 .redes-link:hover svg path {
@@ -230,6 +282,7 @@ a {
 }
 
 .dropdown-panel {
+  z-index: 70;
   transform-origin: top;
   animation: dropdownEnter 180ms cubic-bezier(0.16, 1, 0.3, 1) both;
   will-change: transform, opacity;
@@ -279,7 +332,9 @@ body.hero-ready #hero > div {
     stroke 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.datepicker.dropdown {
+.datepicker.dropdown,
+.datepicker-dropdown {
+  z-index: 70;
   visibility: visible;
   transition: visibility 0s linear 0s;
 }

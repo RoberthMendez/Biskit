@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy } from '@angular/core';
 import { Router, RouterOutlet, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { FooterComponent } from './components/reusables/footer/footer.component';
 import { HeaderComponent } from './components/reusables/header/header.component';
+import { CamposLimpiablesService } from './services/campos-limpiables.service';
 import { NavbarScrollCloseService } from './services/navbar-scroll-close.service';
 
 @Component({
@@ -11,7 +12,7 @@ import { NavbarScrollCloseService } from './services/navbar-scroll-close.service
   imports: [RouterOutlet, FooterComponent, HeaderComponent],
   templateUrl: './app.component.html',
 })
-export class AppComponent {
+export class AppComponent implements AfterViewInit, OnDestroy {
   title = 'Biskit';
   mostrarHeader = false;
   private scrollResetTimerIds: number[] = [];
@@ -19,6 +20,7 @@ export class AppComponent {
   constructor(
     router: Router,
     private navbarScrollCloseService: NavbarScrollCloseService,
+    private camposLimpiablesService: CamposLimpiablesService,
   ) {
     router.events
       .pipe(
@@ -66,6 +68,15 @@ export class AppComponent {
 
         this.resetScrollAfterNavigation(ruta);
       });
+  }
+
+  ngAfterViewInit(): void {
+    this.camposLimpiablesService.start();
+  }
+
+  ngOnDestroy(): void {
+    this.scrollResetTimerIds.forEach((timerId) => window.clearTimeout(timerId));
+    this.camposLimpiablesService.stop();
   }
 
   onAppShellScroll(): void {
